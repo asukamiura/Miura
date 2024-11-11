@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class HealthManager : MonoBehaviour
 {
-    [SerializeField] private int hp;  // HP
-    private int maxHP;  // HPè„å¿
+    [SerializeField] private float hp;  // HP
+    private float maxHP;  // HPè„å¿
     public bool isDead { get { return hp <= 0; } }  // éÄñSÉtÉâÉO
 
     private void Start()
@@ -13,7 +13,7 @@ public class HealthManager : MonoBehaviour
         maxHP = hp;
     }
 
-    public int HP
+    public float HP
     {
         get { return hp; }
         set
