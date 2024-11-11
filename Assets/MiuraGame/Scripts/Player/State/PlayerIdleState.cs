@@ -33,6 +33,11 @@ public class PlayerIdleState : IState
             stateMachine.ChangeState(PlayerStateID.Dodge);
         }
 
+        if (input.Parry)
+        {
+            stateMachine.ChangeState(PlayerStateID.Parry);
+        }
+
         if (input.AttackNormal)
         {
             stateMachine.ChangeState(PlayerStateID.AttackNormal1);

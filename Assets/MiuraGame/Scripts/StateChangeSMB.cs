@@ -9,7 +9,10 @@ public class ChangeStateSMB : StateMachineBehaviour
     // OnStateEnter is called before OnStateEnter is called on any state inside this state machine
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
-        
+    //    if (stateMachine != null)
+    //    {
+    //        stateMachine.ChangeState(PlayerStateID.Idle);
+    //    }
     //}
 
     // OnStateUpdate is called before OnStateUpdate is called on any state inside this state machine
@@ -20,7 +23,7 @@ public class ChangeStateSMB : StateMachineBehaviour
 
     // OnStateExit is called before OnStateExit is called on any state inside this state machine
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {  
+    {
         if (stateMachine != null)
         {
             stateMachine.ChangeState(PlayerStateID.Idle);
