@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerStateMachine
 {
-    public IState currentState;
+    private IState currentState;
     private Dictionary<PlayerStateID,IState> states = new Dictionary<PlayerStateID,IState>();
 
     public void RegisterState(IState state)

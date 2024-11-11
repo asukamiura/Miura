@@ -7,4 +7,8 @@ public enum PlayerStateID
     AttackNormal1,
     AttackNormal2,
     AttackNormal3,
+    AttackSpecial,
+    AttackUltimate,
+    Damage,
+    Dead,
 }
