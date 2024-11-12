@@ -6,6 +6,12 @@ public class PlayerStateMachine
 {
     private IState currentState;
     private Dictionary<PlayerStateID,IState> states = new Dictionary<PlayerStateID,IState>();
+    private Animator animator;
+
+    public PlayerStateMachine(Animator animator)
+    {
+        this.animator = animator;
+    }
 
     public void RegisterState(IState state)
     {
@@ -34,6 +40,8 @@ public class PlayerStateMachine
             currentState?.Exit();
             currentState = newState;
             currentState.Enter();
+            //animator.Play(animationName);
+            Debug.Log(currentState.ToString());
         }
     }
 

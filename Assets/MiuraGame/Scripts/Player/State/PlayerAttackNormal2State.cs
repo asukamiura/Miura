@@ -9,6 +9,7 @@ public class PlayerAttackNormal2State : IState
     private PlayerCore core;
     InputReciver input => InputReciver.Instance;
     private Animator anim => core.animator;
+    private bool isNextAttack = false;
 
     public PlayerAttackNormal2State(PlayerCore core, PlayerStateMachine stateMachine)
     {
@@ -18,19 +19,32 @@ public class PlayerAttackNormal2State : IState
 
     public void Enter()
     {
-        anim.SetTrigger("Attack");
+        anim.CrossFade("AttackNormal2", 0.1f, 0, 0);
     }
 
     public void Execute()
     {
-        if (input.AttackNormal)
+        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("AttackNormal2"))
         {
-            stateMachine.ChangeState(PlayerStateID.AttackNormal3);
+            if (input.AttackNormal)
+            {
+                isNextAttack = true;
+            }
+
+            if (isNextAttack && stateInfo.normalizedTime >= 0.6f)
+            {
+                stateMachine.ChangeState(PlayerStateID.AttackNormal3);
+            }
+            else if (stateInfo.normalizedTime >= 1)
+            {
+                stateMachine.ChangeState(PlayerStateID.Idle);
+            }
         }
     }
 
     public void Exit()
     {
-
+        isNextAttack = false;
     }
 }
