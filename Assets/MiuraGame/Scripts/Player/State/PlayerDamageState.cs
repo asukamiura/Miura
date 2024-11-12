@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerDamageState : IState
@@ -18,13 +19,20 @@ public class PlayerDamageState : IState
     public void Enter()
     {
         anim.applyRootMotion = true;
-        anim.SetTrigger("Damage");
-        rb.AddForce(new Vector3(0,0,-50), ForceMode.Impulse);
+        anim.CrossFade("Damage", 0, 0, 0);
+        //rb.AddForce(new Vector3(0,0,-50), ForceMode.Impulse);
     }
 
     public void Execute()
     {
-
+        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.IsName("Damage"))
+        {
+            if (stateInfo.normalizedTime >= 1)
+            {
+                stateMachine.ChangeState(PlayerStateID.Idle);
+            }
+        }
     }
 
     public void Exit()

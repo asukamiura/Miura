@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public interface IState
 {
     public PlayerStateID StateID { get; }

@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Windows;
 
-public class ChangeStateSMB : StateMachineBehaviour
+public class AttacksSMB : StateMachineBehaviour
 {
-    public PlayerStateMachine stateMachine { get;set;}
-
+    public PlayerStateMachine stateMachine { get; set; }
+    InputReciver input => InputReciver.Instance;
     // OnStateEnter is called before OnStateEnter is called on any state inside this state machine
     //override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     //{
-    //    if (stateMachine != null)
-    //    {
-    //        stateMachine.ChangeState(PlayerStateID.Idle);
-    //    }
+    //    
     //}
 
     // OnStateUpdate is called before OnStateUpdate is called on any state inside this state machine
@@ -22,13 +20,10 @@ public class ChangeStateSMB : StateMachineBehaviour
     //}
 
     // OnStateExit is called before OnStateExit is called on any state inside this state machine
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        if (stateMachine != null)
-        {
-            stateMachine.ChangeState(PlayerStateID.Idle);
-        }
-    }
+    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //{
+    //    
+    //}
 
     // OnStateMove is called before OnStateMove is called on any state inside this state machine
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -49,8 +44,20 @@ public class ChangeStateSMB : StateMachineBehaviour
     //}
 
     // OnStateMachineExit is called when exiting a state machine via its Exit Node
-    //override public void OnStateMachineExit(Animator animator, int stateMachinePathHash)
-    //{
-    //    
-    //}
+    override public void OnStateMachineExit(Animator animator, int stateMachinePathHash)
+    {
+        //if (stateMachine != null)
+        //{
+        //    Debug.Log("AAAAAAAAA");
+        //    if (input.Move == Vector2.zero)
+        //    {
+        //        stateMachine.ChangeState(PlayerStateID.Idle);
+        //    }
+        //    else
+        //    {
+        //        stateMachine.ChangeState(PlayerStateID.Move);
+        //    }
+        //}
+
+    }
 }

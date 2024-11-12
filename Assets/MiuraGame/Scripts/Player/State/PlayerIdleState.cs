@@ -16,17 +16,13 @@ public class PlayerIdleState : IState
 
     public void Enter()
     {
-        Debug.Log("Enter Idle");
+        //Debug.Log("Enter Idle");
         anim.applyRootMotion = false;
+        anim.CrossFade("Locomotion",0.2f,0,0);
     }
 
     public void Execute()
     {
-        
-        if (input.Move != Vector2.zero)
-        {
-            stateMachine.ChangeState(PlayerStateID.Move);
-        }
 
         if (input.Dodge)
         {
@@ -41,6 +37,11 @@ public class PlayerIdleState : IState
         if (input.AttackNormal)
         {
             stateMachine.ChangeState(PlayerStateID.AttackNormal1);
+        }
+
+        if (input.Move != Vector2.zero)
+        {
+            stateMachine.ChangeState(PlayerStateID.Move);
         }
     }
 

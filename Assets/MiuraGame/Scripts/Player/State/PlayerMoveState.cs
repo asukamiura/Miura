@@ -27,23 +27,14 @@ public class PlayerMoveState : IState
 
     public void Enter()
     {
-        Debug.Log("Enter Move");
+        //Debug.Log("Enter Move");
         anim.applyRootMotion = false;
+        anim.CrossFade("Locomotion", 0.2f, 0, 0);
     }
 
     public void Execute()
     {
-        // ƒJƒƒ‰‚ÌŠp“x‚É‰ˆ‚Á‚ÄˆÚ“®
-        Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
-        Vector3 moveDirection = cameraRotation * new Vector3(input.Move.x,0,input.Move.y).normalized;
-
-        if (moveDirection.magnitude > 0.1f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(moveDirection,Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10 * Time.deltaTime);
-        }
-
-        rb.velocity = moveDirection * moveSpeed;
+        Move();
 
         if (input.Move == Vector2.zero)
         {
@@ -71,5 +62,20 @@ public class PlayerMoveState : IState
     public void Exit()
     {
         rb.velocity = Vector3.zero;
+    }
+
+    void Move()
+    {
+        // ƒJƒƒ‰‚ÌŠp“x‚É‰ˆ‚Á‚ÄˆÚ“®
+        Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
+        Vector3 moveDirection = cameraRotation * new Vector3(input.Move.x, 0, input.Move.y).normalized;
+
+        if (moveDirection.magnitude > 0.1f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 10 * Time.deltaTime);
+        }
+
+        rb.velocity = moveDirection * moveSpeed;
     }
 }

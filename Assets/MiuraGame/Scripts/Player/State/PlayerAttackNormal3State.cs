@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerAttackNormal3State : IState
@@ -18,17 +19,20 @@ public class PlayerAttackNormal3State : IState
 
     public void Enter()
     {
-        anim.SetTrigger("Attack");
-        Debug.Log(3);
+        anim.CrossFade("AttackNormal3", 0.1f, 0, 0.1f);
     }
 
     public void Execute()
     {
-      
+        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        if (stateInfo.normalizedTime >= 1)
+        {
+            stateMachine.ChangeState(PlayerStateID.Idle);
+        }
     }
 
     public void Exit()
     {
-        //anim.ResetTrigger("AttackNormal");
+        
     }
 }
