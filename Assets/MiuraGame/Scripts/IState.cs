@@ -1,6 +1,6 @@
-public interface IState
+public interface IState<TStateID>
 {
-    public PlayerStateID StateID { get; }
+    TStateID StateID { get; }
     public void Enter();
     public void Execute();
     public void Exit();
