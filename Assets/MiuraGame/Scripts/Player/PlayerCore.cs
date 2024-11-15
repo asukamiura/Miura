@@ -8,47 +8,61 @@ public class PlayerCore : MonoBehaviour
     public Rigidbody rb;
     public Animator animator;
     public new Collider collider;
+    public Collider attackCollider;
     private HealthManager healthManager;
     private PlayerStateID state => PlayerStateID.Idle;
-    public bool isComboContinuing = false;
-    private PlayerStateMachine stateMachine;
+    private StateMachine<PlayerStateID> stateMachine;
 
     private void Awake()
     {
-        stateMachine = new PlayerStateMachine(animator);
-        stateMachine.RegisterState(new PlayerIdleState(this,stateMachine));
-        stateMachine.RegisterState(new PlayerMoveState(this,stateMachine));
-        stateMachine.RegisterState(new PlayerDodgeState(this,stateMachine));
-        stateMachine.RegisterState(new PlayerParryState(this,stateMachine));
-        stateMachine.RegisterState(new PlayerAttackNormal1State(this,stateMachine));
-        stateMachine.RegisterState(new PlayerAttackNormal2State(this,stateMachine));
-        stateMachine.RegisterState(new PlayerAttackNormal3State(this,stateMachine));
-        stateMachine.RegisterState(new PlayerDamageState(this,stateMachine));
-
-        stateMachine.Initialize(PlayerStateID.Idle);
+        stateMachine = new StateMachine<PlayerStateID>();
+        stateMachine.RegisterState(new PlayerIdle(this, stateMachine));
+        stateMachine.RegisterState(new PlayerMove(this, stateMachine));
+        stateMachine.RegisterState(new PlayerDodge(this, stateMachine));
+        stateMachine.RegisterState(new PlayerParry(this, stateMachine));
+        stateMachine.RegisterState(new PlayerAttackNormal1(this, stateMachine));
+        stateMachine.RegisterState(new PlayerAttackNormal2(this, stateMachine));
+        stateMachine.RegisterState(new PlayerAttackNormal3(this, stateMachine));
+        stateMachine.RegisterState(new PlayerDamage(this, stateMachine));
     }
 
     private void Start()
     {
+        stateMachine.Initialize(PlayerStateID.Idle);
         healthManager = GetComponent<HealthManager>();
     }
 
     private void Update()
     {
         stateMachine.Update();
-        if (state == PlayerStateID.Idle || state == PlayerStateID.Move)
-        {
-        }
-        animator.SetFloat("Speed", rb.velocity.magnitude,0.1f,Time.deltaTime);
-        
+
+        animator.SetFloat("Speed", rb.velocity.magnitude, 0.1f, Time.deltaTime);
+
         //if (healthManager.isDead)
         //{
         //    stateMachine.ChangeState(PlayerStateID.Dead);
         //}
+
+        if (InputReciver.Instance.AttackCharge)
+        {
+            Debug.Log("AttackCharge");
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        stateMachine.ChangeState(PlayerStateID.Damage);  
+        // 攻撃を受けたらダメージステートへ遷移
+        stateMachine.ChangeState(PlayerStateID.Damage);
+        attackCollider.enabled = false;
+    }
+
+    public void AttackStart()
+    {
+        attackCollider.enabled = true;
+    }
+
+    public void AttackEnd()
+    {
+        attackCollider.enabled = false;
     }
 }

@@ -210,8 +210,19 @@
                 {
                     "name": "",
                     "id": "835ac404-f16e-4760-a68d-2a61cba48963",
-                    "path": "",
-                    "interactions": "",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Hold(duration=0.5)",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "AttackCharge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "70872e33-ef0b-4265-8892-96e80e2e5723",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "Hold(duration=0.5,pressPoint=0.5)",
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "AttackCharge",

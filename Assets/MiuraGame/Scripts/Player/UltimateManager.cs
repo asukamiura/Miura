@@ -21,7 +21,7 @@ public class UltimateManager : MonoBehaviour
         }
     }
 
-    public void Heal(int healVal)
+    public void IncreaseGauge(int healVal)
     {
         if (ultVal < maxUltVal)
         {
@@ -29,7 +29,7 @@ public class UltimateManager : MonoBehaviour
         }
     }
 
-    public void Damage(int damageVal)
+    public void DecreaseGauge(int damageVal)
     {
         if (ultVal > 0)
         {
