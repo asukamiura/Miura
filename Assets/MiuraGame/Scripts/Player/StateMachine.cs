@@ -5,6 +5,7 @@ using UnityEngine;
 public class StateMachine<TStateID>
 {
     private IState<TStateID> currentState;
+    public TStateID StateID;
     private Dictionary<TStateID,IState<TStateID>> states = new Dictionary<TStateID,IState<TStateID>>();
 
     public void RegisterState(IState<TStateID> state)
@@ -34,6 +35,7 @@ public class StateMachine<TStateID>
             currentState?.Exit();
             currentState = newState;
             currentState.Enter();
+            StateID = stateID;
             Debug.Log(currentState.ToString());
         }
     }

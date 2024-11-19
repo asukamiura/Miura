@@ -8,6 +8,8 @@ public class PlayerParry : IState<PlayerStateID>
     private PlayerCore core;
     private Animator anim => core.animator;
     private Rigidbody rb => core.rb;
+    private Transform transform => core.transform;
+    private bool successParry => core.successParry;
 
     public PlayerParry(PlayerCore core, StateMachine<PlayerStateID> stateMachine)
     {
@@ -17,25 +19,25 @@ public class PlayerParry : IState<PlayerStateID>
 
     public void Enter()
     {
-        anim.applyRootMotion = true;
+        //anim.applyRootMotion = true;
         anim.CrossFade("Parry",0,0,0);
     }
 
     public void Execute()
     {
-        if (input.AttackNormal)
-        {
-            anim.CrossFade("AttackSpecial2", 0, 0, 0);
-        }
         AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.normalizedTime >= 0.7f)
+        if (stateInfo.normalizedTime >= 1f)
         {
             stateMachine.ChangeState(PlayerStateID.Idle);
+        }
+        if (successParry)
+        {
+            stateMachine.ChangeState(PlayerStateID.ParrySuccess);
         }
     }
 
     public void Exit()
     {
-
+        core.successParry = false;
     }
 }
