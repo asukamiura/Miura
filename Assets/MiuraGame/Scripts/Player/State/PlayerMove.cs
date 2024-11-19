@@ -45,10 +45,10 @@ public class PlayerMove : IState<PlayerStateID>
             stateMachine.ChangeState(PlayerStateID.Dodge);
         }
 
-        if (input.Parry)
-        {
-            stateMachine.ChangeState(PlayerStateID.Parry);
-        }
+        //if (input.Parry)
+        //{
+        //    stateMachine.ChangeState(PlayerStateID.Parry);
+        //}
 
         if (input.AttackNormal)
         {
