@@ -9,7 +9,6 @@ public class PlayerCore : MonoBehaviour
 {
     public Rigidbody rb;
     public Animator animator;
-    public new Collider collider;
     public Collider swordCollider;
     [SerializeField] GameObject playerCM;
     [SerializeField] GameObject justGuardCM;
