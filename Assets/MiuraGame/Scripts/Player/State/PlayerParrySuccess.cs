@@ -9,7 +9,6 @@ public class PlayerParrySuccess : IState<PlayerStateID>
     private Animator anim => core.animator;
     private Rigidbody rb => core.rb;
     private Transform transform => core.transform;
-    private bool successParry => core.successParry;
 
     public PlayerParrySuccess(PlayerCore core, StateMachine<PlayerStateID> stateMachine)
     {
@@ -41,6 +40,6 @@ public class PlayerParrySuccess : IState<PlayerStateID>
     public void Exit()
     {
         rb.velocity = Vector3.zero;
-        core.successParry = false;
+        core.isBlock = false;
     }
 }

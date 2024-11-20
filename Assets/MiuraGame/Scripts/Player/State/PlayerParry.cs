@@ -9,7 +9,7 @@ public class PlayerParry : IState<PlayerStateID>
     private Animator anim => core.animator;
     private Rigidbody rb => core.rb;
     private Transform transform => core.transform;
-    private bool successParry => core.successParry;
+    private bool isBlock => core.isBlock;
 
     public PlayerParry(PlayerCore core, StateMachine<PlayerStateID> stateMachine)
     {
@@ -30,7 +30,7 @@ public class PlayerParry : IState<PlayerStateID>
         {
             stateMachine.ChangeState(PlayerStateID.Idle);
         }
-        if (successParry)
+        if (isBlock)
         {
             stateMachine.ChangeState(PlayerStateID.ParrySuccess);
         }
@@ -38,6 +38,6 @@ public class PlayerParry : IState<PlayerStateID>
 
     public void Exit()
     {
-        core.successParry = false;
+        core.isBlock = false;
     }
 }

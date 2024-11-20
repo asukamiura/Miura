@@ -17,7 +17,7 @@ public class PlayerCore : MonoBehaviour
     private HealthManager healthManager;
     private JustParryJudgement justParryJudgement;
     public StateMachine<PlayerStateID> stateMachine;
-    public bool successParry = false;
+    public bool isBlock = false;
     InputReciver input => InputReciver.Instance;
 
     private void Awake()
@@ -28,8 +28,8 @@ public class PlayerCore : MonoBehaviour
         stateMachine.RegisterState(new PlayerDodge(this, stateMachine));
         stateMachine.RegisterState(new PlayerGuard(this, stateMachine));
         stateMachine.RegisterState(new PlayerBlock(this, stateMachine));
-        stateMachine.RegisterState(new PlayerParry(this, stateMachine));
-        stateMachine.RegisterState(new PlayerParrySuccess(this, stateMachine));
+        //stateMachine.RegisterState(new PlayerParry(this, stateMachine));
+        //stateMachine.RegisterState(new PlayerParrySuccess(this, stateMachine));
         stateMachine.RegisterState(new PlayerAttackNormal1(this, stateMachine));
         stateMachine.RegisterState(new PlayerAttackNormal2(this, stateMachine));
         stateMachine.RegisterState(new PlayerAttackNormal3(this, stateMachine));
@@ -58,7 +58,7 @@ public class PlayerCore : MonoBehaviour
         }
 
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        if(input.Parry && stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Damage)
+        if(input.Guard && stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Damage)
         {
             stateMachine.ChangeState(PlayerStateID.Guard);
         }
@@ -71,7 +71,7 @@ public class PlayerCore : MonoBehaviour
             if (stateMachine.StateID == PlayerStateID.Dead) { return; }
             if (stateMachine.StateID == PlayerStateID.Guard)
             {
-                successParry = true;
+                isBlock = true;
                 return;
             }
             // 攻撃を受けたらダメージステートへ遷移

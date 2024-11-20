@@ -11,7 +11,7 @@ public class InputReciver : MonoBehaviour
 
     public Vector2 Move { get { return gameInput.Player.Move.ReadValue<Vector2>(); } }
     public bool Dodge { get { return gameInput.Player.Dodge.triggered; } }
-    public bool Parry { get { return gameInput.Player.Parry.triggered; } }
+    public bool Guard { get { return gameInput.Player.Parry.triggered; } }
     public bool AttackNormal { get { return gameInput.Player.AttackNormal.WasPressedThisFrame(); } }
     public bool AttackCharge { get { return gameInput.Player.AttackCharge.WasPerformedThisFrame(); } }
 
