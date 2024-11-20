@@ -10,7 +10,7 @@ public class PlayerGuard : IState<PlayerStateID>
     private Animator anim => core.animator;
     private Rigidbody rb => core.rb;
     private Transform transform => core.transform;
-    private bool successParry => core.successParry;
+    private bool isBlock => core.isBlock;
 
     public PlayerGuard(PlayerCore core, StateMachine<PlayerStateID> stateMachine)
     {
@@ -32,7 +32,7 @@ public class PlayerGuard : IState<PlayerStateID>
         {
             stateMachine.ChangeState(PlayerStateID.Idle);
         }
-        if (successParry)
+        if (isBlock)
         {
             stateMachine.ChangeState(PlayerStateID.Block);
             if (currentFrame > 0 && currentFrame < 0.2f)
@@ -52,6 +52,6 @@ public class PlayerGuard : IState<PlayerStateID>
 
     public void Exit()
     {
-        core.successParry = false;
+        core.isBlock = false;
     }
 }
