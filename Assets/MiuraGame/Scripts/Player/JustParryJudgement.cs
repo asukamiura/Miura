@@ -19,7 +19,7 @@ public class JustParryJudgement : MonoBehaviour
 
     private void Start()
     {
-        mutantCore.OnParryTimingChanged += HandleParryTimingChanged;
+        
     }
 
     void HandleParryTimingChanged(ParryTiming timigNum)
@@ -30,7 +30,7 @@ public class JustParryJudgement : MonoBehaviour
 
     private void OnDestroy()
     {
-        mutantCore.OnParryTimingChanged -= HandleParryTimingChanged;
+        
     }
 
     public void ParryTimingChange(ParryTiming timing)

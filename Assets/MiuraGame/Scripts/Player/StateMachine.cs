@@ -12,7 +12,7 @@ public class StateMachine<TStateID>
     {
         Debug.Log(state.ToString());
         if (!states.ContainsKey(state.StateID))
-        {
+        { 
             states.Add(state.StateID, state);
         }
     }

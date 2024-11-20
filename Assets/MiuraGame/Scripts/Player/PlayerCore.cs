@@ -10,14 +10,13 @@ public class PlayerCore : MonoBehaviour
     public Rigidbody rb;
     public Animator animator;
     public new Collider collider;
-    public Collider attackCollider;
+    public Collider swordCollider;
     [SerializeField] GameObject playerCM;
     [SerializeField] GameObject justGuardCM;
     [SerializeField] private TextMeshProUGUI timingText;
     private HealthManager healthManager;
     private JustParryJudgement justParryJudgement;
-    private PlayerStateID state => PlayerStateID.Idle;
-    private StateMachine<PlayerStateID> stateMachine;
+    public StateMachine<PlayerStateID> stateMachine;
     public bool successParry = false;
     InputReciver input => InputReciver.Instance;
 
@@ -36,6 +35,7 @@ public class PlayerCore : MonoBehaviour
         stateMachine.RegisterState(new PlayerAttackNormal3(this, stateMachine));
         stateMachine.RegisterState(new PlayerAttackSpecial2(this, stateMachine));
         stateMachine.RegisterState(new PlayerDamage(this, stateMachine));
+        stateMachine.RegisterState(new PlayerDead(this, stateMachine));
     }
 
     private void Start()
@@ -52,10 +52,10 @@ public class PlayerCore : MonoBehaviour
         
         animator.SetFloat("Speed", rb.velocity.magnitude, 0.1f, Time.deltaTime);
 
-        //if (healthManager.isDead)
-        //{
-        //    stateMachine.ChangeState(PlayerStateID.Dead);
-        //}
+        if (healthManager.isDead && stateMachine.StateID != PlayerStateID.Dead )
+        {
+            stateMachine.ChangeState(PlayerStateID.Dead);
+        }
 
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         if(input.Parry && stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Damage)
@@ -66,23 +66,27 @@ public class PlayerCore : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (stateMachine.StateID == PlayerStateID.Guard)
+        if (other.CompareTag("EnemyAttack"))
         {
-            successParry = true;
-            return;
+            if (stateMachine.StateID == PlayerStateID.Dead) { return; }
+            if (stateMachine.StateID == PlayerStateID.Guard)
+            {
+                successParry = true;
+                return;
+            }
+            // 攻撃を受けたらダメージステートへ遷移
+            stateMachine.ChangeState(PlayerStateID.Damage);
         }
-        // 攻撃を受けたらダメージステートへ遷移
-        stateMachine.ChangeState(PlayerStateID.Damage);
     }
 
     public void AttackStart()
     {
-        attackCollider.enabled = true;
+        swordCollider.enabled = true;
     }
 
     public void AttackEnd()
     {
-        attackCollider.enabled = false;
+        swordCollider.enabled = false;
     }
 
     //public void ChangeCamera(bool restore)

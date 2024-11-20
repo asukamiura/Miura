@@ -19,7 +19,7 @@ public class PlayerAttackNormal1 : IState<PlayerStateID>
 
     public void Enter()
     {
-        anim.applyRootMotion = true;
+        //anim.applyRootMotion = true;
         anim.CrossFade("AttackNormal1",0.1f,0,0);
     }
 

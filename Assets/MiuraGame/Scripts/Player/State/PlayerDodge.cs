@@ -18,7 +18,15 @@ public class PlayerDodge : IState<PlayerStateID>
     public void Enter()
     {
         anim.applyRootMotion = true;
-        anim.CrossFade("Dodge",0,0,0);
+        // 移動の入力がなかった場合、バックステップ
+        if(input.Move == Vector2.zero)
+        {
+            anim.CrossFade("BackStep",0,0,0);
+        }
+        else
+        {
+            anim.CrossFade("Dodge",0,0,0);
+        }
     }
 
     public void Execute()

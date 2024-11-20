@@ -4,13 +4,9 @@ using UnityEngine;
 
 public class UltimateManager : MonoBehaviour
 {
-    [SerializeField] private float ultVal;  
-    private float maxUltVal;  
+    private float ultVal = 0;
+    [HideInInspector] public int maxUltVal = 100;  
 
-    private void Start()
-    {
-        maxUltVal = ultVal;
-    }
 
     public float ULTVal
     {

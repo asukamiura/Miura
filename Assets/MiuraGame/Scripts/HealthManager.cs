@@ -5,7 +5,7 @@ using UnityEngine;
 public class HealthManager : MonoBehaviour
 {
     [SerializeField] private float hp;  // HP
-    private float maxHP;  // HPè„å¿
+    [HideInInspector] public float maxHP;  // HPè„å¿
     public bool isDead { get { return hp <= 0; } }  // éÄñSÉtÉâÉO
 
     private void Start()
