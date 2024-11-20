@@ -7,7 +7,6 @@ public class MutantCore : MonoBehaviour
 {
     public Rigidbody rb;
     public Animator animator;
-    public new Collider collider;
     public Collider attackCollider;
     public HealthManager healthManager;
     private StateMachine<MutantStateID> stateMachine;

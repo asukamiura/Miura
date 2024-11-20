@@ -6,6 +6,6 @@ public class EnemyCoreBase : MonoBehaviour
 {
     public Rigidbody rb;
     public Animator animator;
-    public new Collider collider;
+    public Collider collider;
     public HealthManager healthManager;
 }
