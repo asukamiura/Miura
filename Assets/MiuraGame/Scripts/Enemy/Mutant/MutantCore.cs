@@ -11,7 +11,6 @@ public class MutantCore : MonoBehaviour
     public Collider attackCollider;
     public HealthManager healthManager;
     private StateMachine<MutantStateID> stateMachine;
-    public event Action<ParryTiming> OnParryTimingChanged;
 
     private void Awake()
     {
@@ -19,6 +18,8 @@ public class MutantCore : MonoBehaviour
         stateMachine.RegisterState(new MutantIdle(this,stateMachine));
         stateMachine.RegisterState(new MutantAttack1(this,stateMachine));
         stateMachine.RegisterState(new MutantAttack2(this,stateMachine));
+        stateMachine.RegisterState(new MutantDamage(this,stateMachine));
+        stateMachine.RegisterState(new MutantDead(this,stateMachine));
     }
 
     private void Start()
@@ -31,6 +32,11 @@ public class MutantCore : MonoBehaviour
     private void Update()
     {
         stateMachine.Update();
+
+        if (healthManager.isDead && stateMachine.StateID != MutantStateID.Dead)
+        {
+            stateMachine.ChangeState(MutantStateID.Dead);
+        }
     }
 
     public void AttackStart()
@@ -41,10 +47,5 @@ public class MutantCore : MonoBehaviour
     public void AttackEnd()
     {
         attackCollider.enabled = false;
-    }
-
-    public void ParryTimgChange(ParryTiming timingNum)
-    {
-        OnParryTimingChanged?.Invoke(timingNum);
     }
 }

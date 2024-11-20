@@ -18,6 +18,7 @@ public class PlayerDamage : IState<PlayerStateID>
 
     public void Enter()
     {
+        core.AttackEnd();
         anim.applyRootMotion = true;
         anim.CrossFade("Damage", 0, 0, 0);
         //rb.AddForce(new Vector3(0,0,-50), ForceMode.Impulse);
