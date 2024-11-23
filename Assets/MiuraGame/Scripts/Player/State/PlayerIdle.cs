@@ -2,23 +2,20 @@ using UnityEngine;
 
 public class PlayerIdle : IState<PlayerStateID>
 {
-    private StateMachine<PlayerStateID> stateMachine;
     public PlayerStateID StateID => PlayerStateID.Idle;
-    InputReciver input => InputReciver.Instance;
+    private InputReciver input => InputReciver.Instance;
     private PlayerCore core;
-    private Animator anim => core.animator;
 
-    public PlayerIdle(PlayerCore core, StateMachine<PlayerStateID> stateMachine)
+    public PlayerIdle(PlayerCore core)
     {
-        this.stateMachine = stateMachine;
-        this.core = core;  
+        this.core = core;
     }
 
     public void Enter()
     {
         //Debug.Log("Enter Idle");
-        anim.applyRootMotion = false;
-        anim.CrossFade("Locomotion",0.2f,0,0);
+        core.animator.applyRootMotion = false;
+        core.animator.CrossFade("Locomotion", 0.2f, 0, 0);
     }
 
     public void Execute()
@@ -26,26 +23,21 @@ public class PlayerIdle : IState<PlayerStateID>
 
         if (input.Dodge)
         {
-            stateMachine.ChangeState(PlayerStateID.Dodge);
+            core.stateMachine.ChangeState(PlayerStateID.Dodge);
         }
-
-        //if (input.Parry)
-        //{
-        //    stateMachine.ChangeState(PlayerStateID.Parry);
-        //}
 
         if (input.AttackNormal)
         {
-            stateMachine.ChangeState(PlayerStateID.AttackNormal1);
+            core.stateMachine.ChangeState(PlayerStateID.AttackNormal1);
         }
 
         if (input.Move != Vector2.zero)
         {
-            stateMachine.ChangeState(PlayerStateID.Move);
+            core.stateMachine.ChangeState(PlayerStateID.Move);
         }
     }
 
-    public void Exit() 
+    public void Exit()
     {
 
     }

@@ -1,41 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HealthManager : MonoBehaviour
 {
     [SerializeField] private float hp;  // HP
-    [HideInInspector] public float maxHP;  // HP上限
-    public bool isDead { get { return hp <= 0; } }  // 死亡フラグ
 
-    private void Start()
+    public float HP => hp;
+    public float maxHP { get; private set; }  // HP上限
+    public float minHP { get; private set; } = 0;
+    public bool isDead => 0 >= hp;  // 死亡フラグ
+
+    private void Awake()
     {
         maxHP = hp;
     }
 
-    public float HP
+    public void Heal(float healVal)
     {
-        get { return hp; }
-        set
-        {
-            hp = Mathf.Clamp(hp, 0, maxHP);
-        }
+        hp = Mathf.Clamp(hp + healVal, minHP, maxHP);
     }
 
-    public void Heal(int healVal)
+    public void Damage(float damageVal)
     {
-        if (hp < maxHP )
-        {
-            hp += healVal;
-        }
-    }
-
-    public void Damage(int damageVal)
-    {
-        if (hp > 0)
-        {
-            hp -= damageVal;
-        }
+        hp = Mathf.Clamp(hp - damageVal, minHP, maxHP);
     }
 
 }

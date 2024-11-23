@@ -5,8 +5,6 @@ public enum PlayerStateID
     Dodge,
     Guard,
     Block,
-    Parry,
-    ParrySuccess,
     AttackNormal1,
     AttackNormal2,
     AttackNormal3,

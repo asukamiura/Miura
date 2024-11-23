@@ -14,6 +14,8 @@ public class InputReciver : MonoBehaviour
     public bool Guard { get { return gameInput.Player.Parry.triggered; } }
     public bool AttackNormal { get { return gameInput.Player.AttackNormal.WasPressedThisFrame(); } }
     public bool AttackCharge { get { return gameInput.Player.AttackCharge.WasPerformedThisFrame(); } }
+    public bool Heal { get { return gameInput.Player.Heal.WasPressedThisFrame(); } }
+    public bool PowerUp { get { return gameInput.Player.PowerUp.WasPressedThisFrame(); } }
 
 
     private void Awake()

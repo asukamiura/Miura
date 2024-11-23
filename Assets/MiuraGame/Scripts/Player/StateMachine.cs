@@ -42,9 +42,6 @@ public class StateMachine<TStateID>
 
     public void Update()
     {
-        if (currentState != null)
-        {
-            currentState.Execute();
-        }
+        currentState?.Execute();
     }
 }

@@ -1,49 +1,44 @@
-using System.Xml.Schema;
 using UnityEngine;
 
 public class PlayerGuard : IState<PlayerStateID>
 {
-    private StateMachine<PlayerStateID> stateMachine;
     public PlayerStateID StateID => PlayerStateID.Guard;
-    InputReciver input => InputReciver.Instance;
+    private InputReciver input => InputReciver.Instance;
     private PlayerCore core;
-    private Animator anim => core.animator;
-    private Rigidbody rb => core.rb;
-    private Transform transform => core.transform;
-    private bool isBlock => core.isBlock;
+    private const int getJustPoints = 1;    // ジャスト回避成功時に得るジャストポイント量
 
-    public PlayerGuard(PlayerCore core, StateMachine<PlayerStateID> stateMachine)
+    public PlayerGuard(PlayerCore core)
     {
-        this.stateMachine = stateMachine;
         this.core = core;
     }
 
     public void Enter()
     {
         //anim.applyRootMotion = true;
-        anim.CrossFade("Guard", 0, 0, 0);
+        core.animator.CrossFade("Guard", 0, 0, 0);
     }
 
     public void Execute()
     {
-        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        float currentFrame = stateInfo.normalizedTime;
+        AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
+        float currentTime = stateInfo.normalizedTime;
         if (stateInfo.normalizedTime >= 1f)
         {
-            stateMachine.ChangeState(PlayerStateID.Idle);
+            core.stateMachine.ChangeState(PlayerStateID.Idle);
         }
-        if (isBlock)
+        if (core.isJustGuard)
         {
-            stateMachine.ChangeState(PlayerStateID.Block);
-            if (currentFrame > 0 && currentFrame < 0.2f)
+            core.stateMachine.ChangeState(PlayerStateID.Block);
+            if (currentTime > 0 && currentTime < 0.2f)
             {
                 core.TimingUIShow("Slow");
             }
-            else if (currentFrame >= 0.2f && currentFrame < 0.8f)
+            else if (currentTime >= 0.2f && currentTime < 0.8f)
             {
                 core.TimingUIShow("Just");
+                core.justPointManager.AddJustPoints(getJustPoints);
             }
-            else if (currentFrame >= 0.8f && currentFrame < 1)
+            else if (currentTime >= 0.8f && currentTime < 1)
             {
                 core.TimingUIShow("Fast");
             }
@@ -52,6 +47,6 @@ public class PlayerGuard : IState<PlayerStateID>
 
     public void Exit()
     {
-        core.isBlock = false;
+        core.isJustGuard = false;
     }
 }

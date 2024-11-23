@@ -1,78 +1,114 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Windows;
 
 public class PlayerCore : MonoBehaviour
 {
-    public Rigidbody rb;
-    public Animator animator;
-    public Collider swordCollider;
+    [SerializeField] private Collider swordCollider;
+    [SerializeField] private int healVal = 20;  // 回復量
     [SerializeField] GameObject playerCM;
     [SerializeField] GameObject justGuardCM;
     [SerializeField] private TextMeshProUGUI timingText;
+
     private HealthManager healthManager;
-    private JustParryJudgement justParryJudgement;
+    private InputReciver input => InputReciver.Instance;
+    private const int chargeAttackCost = 1;  // チャージ攻撃に必要なジャストポイント数
+    private const int healCost = 2;          // 回復に必要なジャストポイント数
+    private const int powerUpCost = 3;       // パワーアップに必要なジャストポイント数
+
     public StateMachine<PlayerStateID> stateMachine;
-    public bool isBlock = false;
-    InputReciver input => InputReciver.Instance;
+    public JustPointManager justPointManager;
+    public PowerUpManager powerUpManager;
+    public Collider judgeDodgeCollider;
+    public float moveSpeed = 5f;
+    public Rigidbody rb { get; private set; }
+    public Animator animator { get; private set; }
+    public bool isJustGuard = false;
+    public bool isJustDodge = false;
+    public bool CanChargeAttack => justPointManager.JustPoints >= chargeAttackCost;
+    public bool CanHeal => justPointManager.JustPoints >= healCost;
+    public bool CanPowerUp => justPointManager.JustPoints >= powerUpCost;
 
     private void Awake()
     {
         stateMachine = new StateMachine<PlayerStateID>();
-        stateMachine.RegisterState(new PlayerIdle(this, stateMachine));
-        stateMachine.RegisterState(new PlayerMove(this, stateMachine));
-        stateMachine.RegisterState(new PlayerDodge(this, stateMachine));
-        stateMachine.RegisterState(new PlayerGuard(this, stateMachine));
-        stateMachine.RegisterState(new PlayerBlock(this, stateMachine));
-        //stateMachine.RegisterState(new PlayerParry(this, stateMachine));
-        //stateMachine.RegisterState(new PlayerParrySuccess(this, stateMachine));
-        stateMachine.RegisterState(new PlayerAttackNormal1(this, stateMachine));
-        stateMachine.RegisterState(new PlayerAttackNormal2(this, stateMachine));
-        stateMachine.RegisterState(new PlayerAttackNormal3(this, stateMachine));
-        stateMachine.RegisterState(new PlayerAttackSpecial2(this, stateMachine));
-        stateMachine.RegisterState(new PlayerDamage(this, stateMachine));
-        stateMachine.RegisterState(new PlayerDead(this, stateMachine));
+        stateMachine.RegisterState(new PlayerIdle(this));
+        stateMachine.RegisterState(new PlayerMove(this));
+        stateMachine.RegisterState(new PlayerDodge(this));
+        stateMachine.RegisterState(new PlayerGuard(this));
+        stateMachine.RegisterState(new PlayerBlock(this));
+        stateMachine.RegisterState(new PlayerAttackNormal1(this));
+        stateMachine.RegisterState(new PlayerAttackNormal2(this));
+        stateMachine.RegisterState(new PlayerAttackNormal3(this));
+        stateMachine.RegisterState(new PlayerAttackSpecial1(this));
+        stateMachine.RegisterState(new PlayerAttackSpecial2(this));
+        stateMachine.RegisterState(new PlayerDamage(this));
+        stateMachine.RegisterState(new PlayerDead(this));
+        rb = GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
+        healthManager = GetComponent<HealthManager>();
+        justPointManager = GetComponent<JustPointManager>();
     }
 
     private void Start()
     {
         stateMachine.Initialize(PlayerStateID.Idle);
-        healthManager = GetComponent<HealthManager>();
-        justParryJudgement = GetComponent<JustParryJudgement>();
         timingText.enabled = false;
     }
 
     private void Update()
     {
         stateMachine.Update();
-        
+
+        // アイドル状態と移動状態のアニメーション更新
         animator.SetFloat("Speed", rb.velocity.magnitude, 0.1f, Time.deltaTime);
 
-        if (healthManager.isDead && stateMachine.StateID != PlayerStateID.Dead )
+        // 死亡ステートに遷移
+        if (healthManager.isDead && stateMachine.StateID != PlayerStateID.Dead)
         {
             stateMachine.ChangeState(PlayerStateID.Dead);
         }
 
-        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
-        if(input.Guard && stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Damage)
+        // ガードステートに遷移
+        if (input.Guard && stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Damage)
         {
             stateMachine.ChangeState(PlayerStateID.Guard);
+        }
+
+        // 回復処理を実行
+        if (input.Heal && CanHeal && healthManager.HP < healthManager.maxHP)
+        {
+            justPointManager.UseJustPoints(healCost);
+            healthManager.Heal(healVal);
+        }
+
+        // パワーアップ処理を実行
+        if (input.PowerUp && CanPowerUp && !powerUpManager.inPowerUp)
+        {
+            justPointManager.UseJustPoints(powerUpCost);
+            powerUpManager.ActionPowerUp();
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("EnemyAttack"))
+        if (stateMachine.StateID == PlayerStateID.Dead || isJustDodge) { return; }
+
+        if (other.CompareTag("EnemyAttackCanGuard"))
         {
-            if (stateMachine.StateID == PlayerStateID.Dead) { return; }
             if (stateMachine.StateID == PlayerStateID.Guard)
             {
-                isBlock = true;
-                return;
+                isJustGuard = true;
             }
+            else
+            {
+                // 攻撃を受けたらダメージステートへ遷移
+                stateMachine.ChangeState(PlayerStateID.Damage);
+            }
+        }
+
+        if (other.CompareTag("EnemyAttackCanDodge") && !judgeDodgeCollider.enabled)
+        {
             // 攻撃を受けたらダメージステートへ遷移
             stateMachine.ChangeState(PlayerStateID.Damage);
         }
@@ -80,19 +116,19 @@ public class PlayerCore : MonoBehaviour
 
     public void AttackStart()
     {
-        swordCollider.enabled = true;
+        if (swordCollider != null)
+        {
+            swordCollider.enabled = true;
+        }
     }
 
     public void AttackEnd()
     {
-        swordCollider.enabled = false;
+        if (swordCollider != null)
+        {
+            swordCollider.enabled = false;
+        }
     }
-
-    //public void ChangeCamera(bool restore)
-    //{
-    //    justGuardCM.SetActive(!restore);
-    //    playerCM.SetActive(restore);
-    //}
 
     public void TimingUIShow(string timing)
     {
