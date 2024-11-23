@@ -2,44 +2,54 @@ using UnityEngine;
 
 public class PlayerDodge : IState<PlayerStateID>
 {
-    private StateMachine<PlayerStateID> stateMachine;
     public PlayerStateID StateID => PlayerStateID.Dodge;
-    InputReciver input => InputReciver.Instance;
+    private InputReciver input => InputReciver.Instance;
     private PlayerCore core;
-    private Animator anim => core.animator;
-    private Rigidbody rb => core.rb;
+    private bool isNextAttack = false;
 
-    public PlayerDodge(PlayerCore core, StateMachine<PlayerStateID> stateMachine)
+    public PlayerDodge(PlayerCore core)
     {
-        this.stateMachine = stateMachine;
         this.core = core;
     }
 
     public void Enter()
     {
-        anim.applyRootMotion = true;
+        core.judgeDodgeCollider.enabled = true;
+        core.animator.applyRootMotion = true;
         // 移動の入力がなかった場合、バックステップ
         if(input.Move == Vector2.zero)
         {
-            anim.CrossFade("BackStep",0,0,0);
+            core.animator.CrossFade("BackStep",0,0,0);
         }
         else
         {
-            anim.CrossFade("Dodge",0,0,0);
+            core.animator.CrossFade("Dodge",0,0,0);
         }
     }
 
     public void Execute()
     {
-        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.normalizedTime >= 0.7f)
+        AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
+        float currentTime = stateInfo.normalizedTime;
+
+        if (input.AttackNormal && core.isJustDodge)
         {
-            stateMachine.ChangeState(PlayerStateID.Idle);
+            isNextAttack = true;
         }
+
+        if (isNextAttack && stateInfo.normalizedTime >= 0.7f)
+        {
+            core.stateMachine.ChangeState(PlayerStateID.AttackSpecial1);
+        }
+        else if (stateInfo.normalizedTime >= 0.8f)
+        {
+            core.stateMachine.ChangeState(PlayerStateID.Idle);
+        }
+
     }
 
     public void Exit()
     {
-
+        isNextAttack = false;
     }
 }

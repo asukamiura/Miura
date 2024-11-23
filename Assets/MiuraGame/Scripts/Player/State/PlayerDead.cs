@@ -3,24 +3,20 @@ using UnityEngine;
 
 public class PlayerDead : IState<PlayerStateID>
 {
-    private StateMachine<PlayerStateID> stateMachine;
     public PlayerStateID StateID => PlayerStateID.Dead;
-    InputReciver input => InputReciver.Instance;
+    private InputReciver input => InputReciver.Instance;
     private PlayerCore core;
-    private Animator anim => core.animator;
-    private Rigidbody rb => core.rb;
 
-    public PlayerDead(PlayerCore core, StateMachine<PlayerStateID> stateMachine)
+    public PlayerDead(PlayerCore core)
     {
-        this.stateMachine = stateMachine;
         this.core = core;
     }
 
     public void Enter()
     {
         core.AttackEnd();
-        anim.applyRootMotion = true;
-        anim.CrossFade("Death", 0, 0, 0);
+        core.animator.applyRootMotion = true;
+        core.animator.CrossFade("Death", 0, 0, 0);
     }
 
     public void Execute()

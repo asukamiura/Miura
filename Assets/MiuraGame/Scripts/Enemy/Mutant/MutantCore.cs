@@ -1,31 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class MutantCore : MonoBehaviour
 {
     public Rigidbody rb;
     public Animator animator;
-    public Collider attackCollider;
+    public Collider attack1Collider;
+    public Collider attack2Collider;
     public HealthManager healthManager;
-    private StateMachine<MutantStateID> stateMachine;
+    public StateMachine<MutantStateID> stateMachine;
 
     private void Awake()
     {
         stateMachine = new StateMachine<MutantStateID>();
-        stateMachine.RegisterState(new MutantIdle(this,stateMachine));
-        stateMachine.RegisterState(new MutantAttack1(this,stateMachine));
-        stateMachine.RegisterState(new MutantAttack2(this,stateMachine));
-        stateMachine.RegisterState(new MutantDamage(this,stateMachine));
-        stateMachine.RegisterState(new MutantDead(this,stateMachine));
+        stateMachine.RegisterState(new MutantIdle(this));
+        stateMachine.RegisterState(new MutantAttack1(this));
+        stateMachine.RegisterState(new MutantAttack2(this));
+        stateMachine.RegisterState(new MutantDamage(this));
+        stateMachine.RegisterState(new MutantDead(this));
     }
 
     private void Start()
     {
         stateMachine.Initialize(MutantStateID.Idle);
-        attackCollider.enabled = false;
-        //healthManager = GetComponent<HealthManager>();
+        attack1Collider.enabled = false;
     }
 
     private void Update()
@@ -40,11 +37,27 @@ public class MutantCore : MonoBehaviour
 
     public void AttackStart()
     {
-        attackCollider.enabled = true;
+        switch (stateMachine.StateID)
+        {
+            case MutantStateID.Attack1:
+                attack1Collider.enabled = true;
+                break;
+            case MutantStateID.Attack2:
+                attack2Collider.enabled = true;
+                break;
+        }
     }
 
     public void AttackEnd()
     {
-        attackCollider.enabled = false;
+        switch (stateMachine.StateID)
+        {
+            case MutantStateID.Attack1:
+                attack1Collider.enabled = false;
+                break;
+            case MutantStateID.Attack2:
+                attack2Collider.enabled = false;
+                break;
+        }
     }
 }

@@ -1,20 +1,22 @@
 using UnityEngine;
 
-public class PlayerAttackNormal3 : IState<PlayerStateID>
+public class PlayerAttackSpecial1 : IState<PlayerStateID>
 {
-    public PlayerStateID StateID => PlayerStateID.AttackNormal3;
+    public PlayerStateID StateID => PlayerStateID.AttackSpecial1;
     private PlayerCore core;
     private InputReciver input => InputReciver.Instance;
 
-    public PlayerAttackNormal3(PlayerCore core)
+    public PlayerAttackSpecial1(PlayerCore core)
     {
         this.core = core;
     }
 
     public void Enter()
     {
+        core.animator.applyRootMotion = true;
+        core.animator.speed = 1;
         // アニメーションの遷移
-        core.animator.CrossFade("AttackNormal3", 0.1f, 0, 0.1f);
+        core.animator.CrossFade("AttackSpecial1", 0.1f, 0, 0);
     }
 
     public void Execute()

@@ -6,6 +6,8 @@ public class PlayerAttackHit : MonoBehaviour
 {
     [SerializeField] private PlayerCore playerCore;
     [SerializeField] private UltimateManager ultimateManager;
+    [SerializeField] private PowerUpManager powerUpManager;
+
     private void OnTriggerEnter(Collider other)
     {
         HealthManager healthManager = other.GetComponent<HealthManager>();
@@ -13,21 +15,22 @@ public class PlayerAttackHit : MonoBehaviour
         switch(playerCore.stateMachine.StateID)
         {
             case PlayerStateID.AttackNormal1:
-                healthManager.Damage(2);
+                healthManager.Damage(powerUpManager.AttackPower("Normal1"));
                 ultimateManager.IncreaseGauge(1);
                 break;
             case PlayerStateID.AttackNormal2: 
-                healthManager.Damage(4);
+                healthManager.Damage(powerUpManager.AttackPower("Normal2"));
                 ultimateManager.IncreaseGauge(2);
                 break;
             case PlayerStateID.AttackNormal3:
-                healthManager.Damage(6);
+                healthManager.Damage(powerUpManager.AttackPower("Normal3"));
                 ultimateManager.IncreaseGauge(3);
                 break;
             case PlayerStateID.AttackSpecial2:
-                healthManager.Damage(18);
+                healthManager.Damage(powerUpManager.AttackPower("Special"));
                 ultimateManager.IncreaseGauge(10);
                 break;
         }
+        Debug.Log(healthManager.HP);
     }
 }

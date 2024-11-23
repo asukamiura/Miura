@@ -5,20 +5,17 @@ using UnityEngine;
 public class MutantDead : IState<MutantStateID>
 {
     public MutantStateID StateID => MutantStateID.Dead;
-    private StateMachine<MutantStateID> stateMachine;
-    private MutantCore MutantCore;
-    private Animator anim => MutantCore.animator;
+    private MutantCore core;
 
-    public MutantDead(MutantCore mutantCore, StateMachine<MutantStateID> stateMachine)
+    public MutantDead(MutantCore core)
     {
-        this.stateMachine = stateMachine;
-        this.MutantCore = mutantCore;
+        this.core = core;
     }
 
     public void Enter()
     {
-        anim.applyRootMotion = true;
-        anim.CrossFade("Death", 0.1f, 0, 0);
+        core.animator.applyRootMotion = true;
+        core.animator.CrossFade("Death", 0.1f, 0, 0);
     }
 
     public void Execute()

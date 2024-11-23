@@ -6,30 +6,28 @@ public class MutantAttack2 : IState<MutantStateID>
 {
     public MutantStateID StateID => MutantStateID.Attack2;
     private StateMachine<MutantStateID> stateMachine;
-    private MutantCore MutantCore;
-    private Animator anim => MutantCore.animator;
+    private MutantCore core;
 
-    public MutantAttack2(MutantCore mutantCore,StateMachine<MutantStateID> stateMachine)
+    public MutantAttack2(MutantCore core)
     {
-        this.stateMachine = stateMachine;
-        this.MutantCore = mutantCore;   
+        this.core = core;   
     }
 
     public void Enter()
     {
-        anim.applyRootMotion = true;
-        anim.CrossFade("Attack2", 0.1f, 0, 0);
+        core.animator.applyRootMotion = true;
+        core.animator.CrossFade("Attack2", 0.1f, 0, 0);
     }
 
     public void Execute()
     {
-        AnimatorStateInfo stateInfo = anim.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
         // アニメーションが終わったらIdleStateに遷移
         if (stateInfo.IsName("Attack2"))
         {
             if (stateInfo.normalizedTime >= 1)
             {
-                stateMachine.ChangeState(MutantStateID.Idle);
+                core.stateMachine.ChangeState(MutantStateID.Idle);
             }
         }
     }
