@@ -15,12 +15,13 @@ public class PlayerCore : MonoBehaviour
     private const int chargeAttackCost = 1;  // チャージ攻撃に必要なジャストポイント数
     private const int healCost = 2;          // 回復に必要なジャストポイント数
     private const int powerUpCost = 3;       // パワーアップに必要なジャストポイント数
+    private int pushingTime = 0;    
 
     public StateMachine<PlayerStateID> stateMachine;
     public JustPointManager justPointManager;
     public PowerUpManager powerUpManager;
     public Collider judgeDodgeCollider;
-    public float moveSpeed = 5f;
+    public float moveSpeed => powerUpManager.moveSpeed;
     public Rigidbody rb { get; private set; }
     public Animator animator { get; private set; }
     public bool isJustGuard = false;
@@ -42,6 +43,7 @@ public class PlayerCore : MonoBehaviour
         stateMachine.RegisterState(new PlayerAttackNormal3(this));
         stateMachine.RegisterState(new PlayerAttackSpecial1(this));
         stateMachine.RegisterState(new PlayerAttackSpecial2(this));
+        stateMachine.RegisterState(new PlayerAttackCharge(this));        
         stateMachine.RegisterState(new PlayerDamage(this));
         stateMachine.RegisterState(new PlayerDead(this));
         rb = GetComponent<Rigidbody>();

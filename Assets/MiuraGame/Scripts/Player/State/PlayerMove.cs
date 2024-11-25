@@ -47,9 +47,16 @@ public class PlayerMove : IState<PlayerStateID>
             core.stateMachine.ChangeState(PlayerStateID.Dodge);
         }
 
-        if (input.AttackNormal)
+        if (input.AttackCharge)
+        {
+            core.justPointManager.UseJustPoints(1);
+            core.stateMachine.ChangeState(PlayerStateID.AttackCharge);
+            input.countTime = 0;
+        }
+        else if (input.AttackNormal)
         {
             core.stateMachine.ChangeState(PlayerStateID.AttackNormal1);
+            input.countTime = 0;
         }
     }
 

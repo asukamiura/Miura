@@ -19,11 +19,11 @@ public class PlayerDodge : IState<PlayerStateID>
         // 移動の入力がなかった場合、バックステップ
         if(input.Move == Vector2.zero)
         {
-            core.animator.CrossFade("BackStep",0,0,0);
+            core.animator.CrossFade("BackDodge",0,0,0);
         }
         else
         {
-            core.animator.CrossFade("Dodge",0,0,0);
+            core.animator.CrossFade("FrontDodge",0,0,0);
         }
     }
 
@@ -41,7 +41,7 @@ public class PlayerDodge : IState<PlayerStateID>
         {
             core.stateMachine.ChangeState(PlayerStateID.AttackSpecial1);
         }
-        else if (stateInfo.normalizedTime >= 0.8f)
+        else if (stateInfo.normalizedTime >= 0.7f)
         {
             core.stateMachine.ChangeState(PlayerStateID.Idle);
         }

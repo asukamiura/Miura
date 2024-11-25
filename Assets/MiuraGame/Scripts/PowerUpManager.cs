@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class PowerUpManager : MonoBehaviour
 {
-    [SerializeField] private float powerUpMultiplier = 1.5f;
+    [SerializeField] private float defaultMoveSpeed = 5;
+    [SerializeField] private float speedUpMultiplier = 1.3f;
+    [SerializeField] private float attackPowerUpMultiplier = 1.5f;
     [SerializeField] private float powerUpDuration = 15;
 
+    public float moveSpeed { get; private set; }
     public bool inPowerUp { get; private set; } = false;
 
     private readonly Dictionary<string, float> baseAttackPower = new Dictionary<string, float>
@@ -24,6 +27,7 @@ public class PowerUpManager : MonoBehaviour
     private void Start()
     {
         ResetAttackPower();
+        moveSpeed = defaultMoveSpeed;
     }
 
     /// <summary>
@@ -46,7 +50,7 @@ public class PowerUpManager : MonoBehaviour
     public void ActionPowerUp()
     {
         inPowerUp = true;
-        StartCoroutine(ApplyPowerUp(powerUpDuration, powerUpMultiplier));
+        StartCoroutine(ApplyPowerUp(powerUpDuration, attackPowerUpMultiplier, speedUpMultiplier));
         Debug.Log("パワーアップ");
     }
 
@@ -54,13 +58,16 @@ public class PowerUpManager : MonoBehaviour
     /// パワーアップ処理
     /// </summary>
     /// <param name="duration">パワーアップの継続時間</param>
-    /// <param name="multiplier">パワーアップ倍率</param>
-    private IEnumerator ApplyPowerUp(float duration, float multiplier)
+    /// <param name="attackPowerUpMultiplier">攻撃力アップ倍率</param>
+    /// <param name="speedUpMultiplier">移動スピード倍率</param>
+    private IEnumerator ApplyPowerUp(float duration, float attackPowerUpMultiplier, float speedUpMultiplier)
     {
         foreach (string key in baseAttackPower.Keys)
         {
-            currentAttackPower[key] = baseAttackPower[key] * multiplier;
+            currentAttackPower[key] = baseAttackPower[key] * attackPowerUpMultiplier;
         }
+
+        moveSpeed = defaultMoveSpeed * speedUpMultiplier;
 
         yield return new WaitForSeconds(duration);
 
@@ -77,5 +84,9 @@ public class PowerUpManager : MonoBehaviour
         {
             currentAttackPower[key] = baseAttackPower[key];
         }
+
+        moveSpeed = defaultMoveSpeed;
+
+        Debug.Log("パワーダウン");
     }
 }

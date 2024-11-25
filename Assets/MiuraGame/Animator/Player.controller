@@ -98,7 +98,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 932a23924401be2408bc67bd87b3857f, type: 2}
+  m_Motion: {fileID: 7400000, guid: bf16eff2772f68a41b805f55f58efc0d, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -111,7 +111,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dodge
+  m_Name: FrontDodge
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -298,6 +298,32 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!1102 &2490298787553687362
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: AttackCharge
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 685c4fc44d08d3c4ebbe89d882ed7ab4, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!1107 &2773281271465127360
 AnimatorStateMachine:
   serializedVersion: 6
@@ -312,7 +338,7 @@ AnimatorStateMachine:
     m_Position: {x: 80, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -428419035062075258}
-    m_Position: {x: 360, y: 210, z: 0}
+    m_Position: {x: 360, y: 220, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1125060689721341417}
     m_Position: {x: 360, y: 270, z: 0}
@@ -343,6 +369,9 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 6697276241398671833}
     m_Position: {x: 360, y: 150, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 2490298787553687362}
+    m_Position: {x: 360, y: 340, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -386,7 +415,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BackStep
+  m_Name: BackDodge
   m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions: []
@@ -399,7 +428,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 3f56481cb0a172d40be8b05a21fab06e, type: 2}
+  m_Motion: {fileID: 7400000, guid: 7f907fd342ade5c4e9e7eb5bfe10cb7b, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 

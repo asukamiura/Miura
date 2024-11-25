@@ -8,11 +8,14 @@ public class MutantCore : MonoBehaviour
     public Collider attack2Collider;
     public HealthManager healthManager;
     public StateMachine<MutantStateID> stateMachine;
+    public GameObject player;
 
     private void Awake()
     {
         stateMachine = new StateMachine<MutantStateID>();
+
         stateMachine.RegisterState(new MutantIdle(this));
+        stateMachine.RegisterState(new MutantMove(this));
         stateMachine.RegisterState(new MutantAttack1(this));
         stateMachine.RegisterState(new MutantAttack2(this));
         stateMachine.RegisterState(new MutantDamage(this));
