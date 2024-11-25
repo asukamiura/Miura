@@ -29,7 +29,7 @@ public class MutantIdle : IState<MutantStateID>
         timer += Time.deltaTime;
         if (timer > 3f)
         {
-            core.stateMachine.ChangeState(MutantStateID.Attack1);
+            core.stateMachine.ChangeState(MutantStateID.Move);
         }
         
     }

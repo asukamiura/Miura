@@ -26,8 +26,16 @@ public class PlayerAttackHit : MonoBehaviour
                 healthManager.Damage(powerUpManager.AttackPower("Normal3"));
                 ultimateManager.IncreaseGauge(3);
                 break;
+            case PlayerStateID.AttackSpecial1:
+                healthManager.Damage(powerUpManager.AttackPower("Special"));
+                ultimateManager.IncreaseGauge(9);
+                break;
             case PlayerStateID.AttackSpecial2:
                 healthManager.Damage(powerUpManager.AttackPower("Special"));
+                ultimateManager.IncreaseGauge(9);
+                break;
+            case PlayerStateID.AttackCharge:
+                healthManager.Damage(powerUpManager.AttackPower("Charge"));
                 ultimateManager.IncreaseGauge(10);
                 break;
         }

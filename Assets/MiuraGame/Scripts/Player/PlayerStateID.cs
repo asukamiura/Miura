@@ -12,6 +12,7 @@ public enum PlayerStateID
     AttackSpecial2,
     AttackSpecial3,
     AttackUltimate,
+    AttackCharge,
     Damage,
     Dead,
 }
