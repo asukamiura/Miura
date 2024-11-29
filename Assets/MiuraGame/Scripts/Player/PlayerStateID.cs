@@ -1,4 +1,4 @@
-public enum PlayerStateID
+﻿public enum PlayerStateID
 {
     Idle,
     Move,

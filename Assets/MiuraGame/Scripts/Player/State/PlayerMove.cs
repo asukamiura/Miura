@@ -1,67 +1,68 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
-public class PlayerMove : IState<PlayerStateID>
+namespace Player
 {
-    public PlayerStateID StateID => PlayerStateID.Move;
-    private PlayerCore core;
-    InputReciver input => InputReciver.Instance;
-    Quaternion targetRotation;
-
-    public PlayerMove(PlayerCore core)
+    public class PlayerMove : IState<PlayerStateID>
     {
-        this.core = core;
-    }
+        public PlayerStateID StateID => PlayerStateID.Move;
+        private PlayerCore core;
+        InputReciver Input => InputReciver.Instance;
 
-    void Awake()
-    {
-        targetRotation = core.transform.rotation;
-    }
-
-    public void Enter()
-    {
-        core.animator.applyRootMotion = false;
-        core.animator.CrossFade("Locomotion", 0.2f, 0, 0);
-    }
-
-    public void Execute()
-    {
-        // ƒJƒƒ‰‚ÌŠp“x‚É‰ˆ‚Á‚ÄˆÚ“®
-        Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
-        Vector3 moveDirection = cameraRotation * new Vector3(input.Move.x, 0, input.Move.y).normalized;
-
-        if (moveDirection.magnitude > 0.1f)
+        public PlayerMove(PlayerCore core)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-            core.transform.rotation = Quaternion.Slerp(core.transform.rotation, targetRotation, 10 * Time.deltaTime);
+            this.core = core;
         }
 
-        core.rb.velocity = moveDirection * core.moveSpeed;
-
-        if (input.Move == Vector2.zero)
+        public void Enter()
         {
-            core.stateMachine.ChangeState(PlayerStateID.Idle);
+            core.Animator.applyRootMotion = false;
+            core.Animator.CrossFade("Locomotion", 0.2f, 0, 0);
         }
 
-        if (input.Dodge)
+        public void Update()
         {
-            core.stateMachine.ChangeState(PlayerStateID.Dodge);
+            if (Input.Move == Vector2.zero)
+            {
+                core.stateMachine.ChangeState(PlayerStateID.Idle);
+            }
+
+            if (Input.Dodge)
+            {
+                core.stateMachine.ChangeState(PlayerStateID.Dodge);
+            }
+
+            if (Input.AttackCharge)
+            {
+                core.justPointManager.UseJustPoints(1);
+                core.stateMachine.ChangeState(PlayerStateID.AttackCharge);
+                Input.ResetInputCountTime();
+            }
+            else if (Input.AttackNormal)
+            {
+                core.stateMachine.ChangeState(PlayerStateID.AttackNormal1);
+                Input.ResetInputCountTime();
+            }
         }
 
-        if (input.AttackCharge)
+        public void FixedUpdate()
         {
-            core.justPointManager.UseJustPoints(1);
-            core.stateMachine.ChangeState(PlayerStateID.AttackCharge);
-            input.countTime = 0;
-        }
-        else if (input.AttackNormal)
-        {
-            core.stateMachine.ChangeState(PlayerStateID.AttackNormal1);
-            input.countTime = 0;
-        }
-    }
+            // ã‚«ãƒ¡ãƒ©ã®è§’åº¦ã«æ²¿ã£ã¦ç§»å‹•
+            Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
+            Vector3 moveDirection = cameraRotation * new Vector3(Input.Move.x, 0, Input.Move.y).normalized;
 
-    public void Exit()
-    {
-        core.rb.velocity = Vector3.zero;
+            if (moveDirection.magnitude > 0.1f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+                core.transform.rotation = Quaternion.Slerp(core.transform.rotation, targetRotation, 10 * Time.deltaTime);
+            }
+
+            core.Rb.velocity = moveDirection * core.MoveSpeed;
+        }
+
+        public void Exit()
+        {
+            core.Rb.velocity = Vector3.zero;
+        }
     }
 }
+

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,7 +24,7 @@ public class MutantMove : IState<MutantStateID>
 
     }
 
-    public void Execute()
+    public void Update()
     {
         Vector3 direction = core.player.transform.position - core.transform.position;
         Quaternion lookAtRotation = Quaternion.LookRotation(direction, Vector3.up);
@@ -50,6 +50,8 @@ public class MutantMove : IState<MutantStateID>
             }
         }
     }
+
+    public void FixedUpdate() { }
 
     public void Exit()
     {

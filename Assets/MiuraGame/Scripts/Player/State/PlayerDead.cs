@@ -1,31 +1,36 @@
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
-public class PlayerDead : IState<PlayerStateID>
+namespace Player
 {
-    public PlayerStateID StateID => PlayerStateID.Dead;
-    private InputReciver input => InputReciver.Instance;
-    private PlayerCore core;
-
-    public PlayerDead(PlayerCore core)
+    public class PlayerDead : IState<PlayerStateID>
     {
-        this.core = core;
-    }
+        public PlayerStateID StateID => PlayerStateID.Dead;
+        private InputReciver input => InputReciver.Instance;
+        private PlayerCore core;
 
-    public void Enter()
-    {
-        core.AttackEnd();
-        core.animator.applyRootMotion = true;
-        core.animator.CrossFade("Death", 0, 0, 0);
-    }
+        public PlayerDead(PlayerCore core)
+        {
+            this.core = core;
+        }
 
-    public void Execute()
-    {
-       
-    }
+        public void Enter()
+        {
+            core.AttackEnd();
+            core.Animator.applyRootMotion = true;
+            core.Animator.CrossFade("Death", 0, 0, 0);
+        }
 
-    public void Exit()
-    {
+        public void Update()
+        {
 
+        }
+
+        public void FixedUpdate() { }
+
+        public void Exit()
+        {
+
+        }
     }
 }

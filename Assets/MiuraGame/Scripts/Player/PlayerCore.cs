@@ -1,147 +1,167 @@
-using System.Collections;
+ï»¿using System.Collections;
 using TMPro;
 using UnityEngine;
-
-public class PlayerCore : MonoBehaviour
+namespace Player
 {
-    [SerializeField] private Collider swordCollider;
-    [SerializeField] private int healVal = 20;  // ‰ñ•œ—Ê
-    [SerializeField] GameObject playerCM;
-    [SerializeField] GameObject justGuardCM;
-    [SerializeField] private TextMeshProUGUI timingText;
-
-    private HealthManager healthManager;
-    private InputReciver input => InputReciver.Instance;
-    private const int chargeAttackCost = 1;  // ƒ`ƒƒ[ƒWUŒ‚‚É•K—v‚ÈƒWƒƒƒXƒgƒ|ƒCƒ“ƒg”
-    private const int healCost = 2;          // ‰ñ•œ‚É•K—v‚ÈƒWƒƒƒXƒgƒ|ƒCƒ“ƒg”
-    private const int powerUpCost = 3;       // ƒpƒ[ƒAƒbƒv‚É•K—v‚ÈƒWƒƒƒXƒgƒ|ƒCƒ“ƒg”
-    private int pushingTime = 0;    
-
-    public StateMachine<PlayerStateID> stateMachine;
-    public JustPointManager justPointManager;
-    public PowerUpManager powerUpManager;
-    public Collider judgeDodgeCollider;
-    public float moveSpeed => powerUpManager.moveSpeed;
-    public Rigidbody rb { get; private set; }
-    public Animator animator { get; private set; }
-    public bool isJustGuard = false;
-    public bool isJustDodge = false;
-    public bool CanChargeAttack => justPointManager.JustPoints >= chargeAttackCost;
-    public bool CanHeal => justPointManager.JustPoints >= healCost;
-    public bool CanPowerUp => justPointManager.JustPoints >= powerUpCost;
-
-    private void Awake()
+    public class PlayerCore : MonoBehaviour
     {
-        stateMachine = new StateMachine<PlayerStateID>();
-        stateMachine.RegisterState(new PlayerIdle(this));
-        stateMachine.RegisterState(new PlayerMove(this));
-        stateMachine.RegisterState(new PlayerDodge(this));
-        stateMachine.RegisterState(new PlayerGuard(this));
-        stateMachine.RegisterState(new PlayerBlock(this));
-        stateMachine.RegisterState(new PlayerAttackNormal1(this));
-        stateMachine.RegisterState(new PlayerAttackNormal2(this));
-        stateMachine.RegisterState(new PlayerAttackNormal3(this));
-        stateMachine.RegisterState(new PlayerAttackSpecial1(this));
-        stateMachine.RegisterState(new PlayerAttackSpecial2(this));
-        stateMachine.RegisterState(new PlayerAttackCharge(this));        
-        stateMachine.RegisterState(new PlayerDamage(this));
-        stateMachine.RegisterState(new PlayerDead(this));
-        rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
-        healthManager = GetComponent<HealthManager>();
-        justPointManager = GetComponent<JustPointManager>();
-    }
+        [SerializeField] private Collider swordCollider;
+        [SerializeField] private int healVal = 20;  // å›å¾©é‡
+        [SerializeField] GameObject playerCM;
+        [SerializeField] GameObject justGuardCM;
+        [SerializeField] private TextMeshProUGUI timingText;
 
-    private void Start()
-    {
-        stateMachine.Initialize(PlayerStateID.Idle);
-        timingText.enabled = false;
-    }
+        private HealthManager healthManager;
+        private InputReciver input => InputReciver.Instance;
+        private const int chargeAttackCost = 1;  // ãƒãƒ£ãƒ¼ã‚¸æ”»æ’ƒã«å¿…è¦ãªã‚¸ãƒ£ã‚¹ãƒˆãƒã‚¤ãƒ³ãƒˆæ•°
+        private const int healCost = 2;          // å›å¾©ã«å¿…è¦ãªã‚¸ãƒ£ã‚¹ãƒˆãƒã‚¤ãƒ³ãƒˆæ•°
+        private const int powerUpCost = 3;       // ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒƒãƒ—ã«å¿…è¦ãªã‚¸ãƒ£ã‚¹ãƒˆãƒã‚¤ãƒ³ãƒˆæ•°
 
-    private void Update()
-    {
-        stateMachine.Update();
+        public StateMachine<PlayerStateID> stateMachine;
+        public JustPointManager justPointManager;
+        public PowerUpManager powerUpManager;
+        public Collider judgeDodgeCollider;
+        public float MoveSpeed => powerUpManager.MoveSpeed;
+        public Rigidbody Rb { get; private set; }
+        public Animator Animator { get; private set; }
+        public bool isJustGuard = false;
+        public bool isJustDodge = false;
+        public bool CanChargeAttack => justPointManager.JustPoints >= chargeAttackCost;
+        public bool CanHeal => justPointManager.JustPoints >= healCost;
+        public bool CanPowerUp => justPointManager.JustPoints >= powerUpCost;
 
-        // ƒAƒCƒhƒ‹ó‘Ô‚ÆˆÚ“®ó‘Ô‚ÌƒAƒjƒ[ƒVƒ‡ƒ“XV
-        animator.SetFloat("Speed", rb.velocity.magnitude, 0.1f, Time.deltaTime);
-
-        // €–SƒXƒe[ƒg‚É‘JˆÚ
-        if (healthManager.isDead && stateMachine.StateID != PlayerStateID.Dead)
+        private void Awake()
         {
-            stateMachine.ChangeState(PlayerStateID.Dead);
+            stateMachine = new StateMachine<PlayerStateID>();
+            stateMachine.RegisterState(new PlayerIdle(this));
+            stateMachine.RegisterState(new PlayerMove(this));
+            stateMachine.RegisterState(new PlayerDodge(this));
+            stateMachine.RegisterState(new PlayerGuard(this));
+            stateMachine.RegisterState(new PlayerBlock(this));
+            stateMachine.RegisterState(new PlayerAttackNormal1(this));
+            stateMachine.RegisterState(new PlayerAttackNormal2(this));
+            stateMachine.RegisterState(new PlayerAttackNormal3(this));
+            stateMachine.RegisterState(new PlayerAttackSpecial1(this));
+            stateMachine.RegisterState(new PlayerAttackSpecial2(this));
+            stateMachine.RegisterState(new PlayerAttackCharge(this));
+            stateMachine.RegisterState(new PlayerDamage(this));
+            stateMachine.RegisterState(new PlayerDead(this));
+            Rb = GetComponent<Rigidbody>();
+            Animator = GetComponent<Animator>();
+            healthManager = GetComponent<HealthManager>();
+            justPointManager = GetComponent<JustPointManager>();
         }
 
-        // ƒK[ƒhƒXƒe[ƒg‚É‘JˆÚ
-        if (input.Guard && stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Damage)
+        private void Start()
         {
-            stateMachine.ChangeState(PlayerStateID.Guard);
+            stateMachine.Initialize(PlayerStateID.Idle);
+            timingText.enabled = false;
         }
 
-        // ‰ñ•œˆ—‚ğÀs
-        if (input.Heal && CanHeal && healthManager.HP < healthManager.maxHP)
+        private void Update()
         {
-            justPointManager.UseJustPoints(healCost);
-            healthManager.Heal(healVal);
-        }
+            stateMachine.Update();
 
-        // ƒpƒ[ƒAƒbƒvˆ—‚ğÀs
-        if (input.PowerUp && CanPowerUp && !powerUpManager.inPowerUp)
-        {
-            justPointManager.UseJustPoints(powerUpCost);
-            powerUpManager.ActionPowerUp();
-        }
-    }
+            // ã‚¢ã‚¤ãƒ‰ãƒ«çŠ¶æ…‹ã¨ç§»å‹•çŠ¶æ…‹ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ›´æ–°
+            Animator.SetFloat("Speed", Rb.velocity.magnitude, 0.1f, Time.deltaTime);
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (stateMachine.StateID == PlayerStateID.Dead || isJustDodge) { return; }
+            // æ­»äº¡ã—ã¦ã„ãŸå ´åˆã€ä»¥é™ã®å‡¦ç†ã‚’å®Ÿè¡Œã—ãªã„ã€‚
+            if (stateMachine.StateID == PlayerStateID.Dead) { return; }
 
-        if (other.CompareTag("EnemyAttackCanGuard"))
-        {
-            if (stateMachine.StateID == PlayerStateID.Guard)
+            // æ­»äº¡ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
+            if (healthManager.isDead && stateMachine.StateID != PlayerStateID.Dead)
             {
-                isJustGuard = true;
+                stateMachine.ChangeState(PlayerStateID.Dead);
             }
-            else
+
+            if (stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Dodge && stateMachine.StateID != PlayerStateID.Damage)
             {
-                // UŒ‚‚ğó‚¯‚½‚çƒ_ƒ[ƒWƒXƒe[ƒg‚Ö‘JˆÚ
+                // ã‚¬ãƒ¼ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
+                if (input.Guard)
+                {
+                    stateMachine.ChangeState(PlayerStateID.Guard);
+                }
+
+                // å›é¿ã‚¹ãƒ†ãƒ¼ãƒˆã«é·ç§»
+                if (input.Dodge)
+                {
+                    stateMachine.ChangeState(PlayerStateID.Dodge);
+                }
+            }
+
+
+            // å›å¾©å‡¦ç†ã‚’å®Ÿè¡Œ
+            if (input.Heal && CanHeal && healthManager.HP < healthManager.maxHP)
+            {
+                justPointManager.UseJustPoints(healCost);
+                healthManager.Heal(healVal);
+            }
+
+            // ãƒ‘ãƒ¯ãƒ¼ã‚¢ãƒƒãƒ—å‡¦ç†ã‚’å®Ÿè¡Œ
+            if (input.PowerUp && CanPowerUp && !powerUpManager.InPowerUp)
+            {
+                justPointManager.UseJustPoints(powerUpCost);
+                powerUpManager.ActionPowerUp();
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            stateMachine?.FixedUpdate();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (stateMachine.StateID == PlayerStateID.Dead || isJustDodge) { return; }
+
+            if (other.CompareTag("EnemyAttackCanGuard"))
+            {
+                if (stateMachine.StateID == PlayerStateID.Guard)
+                {
+                    isJustGuard = true;
+                }
+                else
+                {
+                    // æ”»æ’ƒã‚’å—ã‘ãŸã‚‰ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚¹ãƒ†ãƒ¼ãƒˆã¸é·ç§»
+                    stateMachine.ChangeState(PlayerStateID.Damage);
+                }
+            }
+
+            if (other.CompareTag("EnemyAttackCanDodge") && !judgeDodgeCollider.enabled)
+            {
+                // æ”»æ’ƒã‚’å—ã‘ãŸã‚‰ãƒ€ãƒ¡ãƒ¼ã‚¸ã‚¹ãƒ†ãƒ¼ãƒˆã¸é·ç§»
                 stateMachine.ChangeState(PlayerStateID.Damage);
             }
         }
 
-        if (other.CompareTag("EnemyAttackCanDodge") && !judgeDodgeCollider.enabled)
+        public void AttackStart()
         {
-            // UŒ‚‚ğó‚¯‚½‚çƒ_ƒ[ƒWƒXƒe[ƒg‚Ö‘JˆÚ
-            stateMachine.ChangeState(PlayerStateID.Damage);
+            if (swordCollider != null)
+            {
+                swordCollider.enabled = true;
+            }
         }
-    }
 
-    public void AttackStart()
-    {
-        if (swordCollider != null)
+        public void AttackEnd()
         {
-            swordCollider.enabled = true;
+            if (swordCollider != null)
+            {
+                swordCollider.enabled = false;
+            }
         }
-    }
 
-    public void AttackEnd()
-    {
-        if (swordCollider != null)
+        public void TimingUIShow(string timing)
         {
-            swordCollider.enabled = false;
+            StartCoroutine(TimingUIChange(timing));
         }
-    }
 
-    public void TimingUIShow(string timing)
-    {
-        StartCoroutine(TimingUIChange(timing));
-    }
+        IEnumerator TimingUIChange(string timing)
+        {
+            timingText.text = timing;
+            timingText.enabled = true;
+            yield return new WaitForSeconds(1);
+            timingText.enabled = false;
+        }
 
-    IEnumerator TimingUIChange(string timing)
-    {
-        timingText.text = timing;
-        timingText.enabled = true;
-        yield return new WaitForSeconds(1);
-        timingText.enabled = false;
     }
 }

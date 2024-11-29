@@ -1,13 +1,13 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
 public class HealthManager : MonoBehaviour
 {
     [SerializeField] private float hp;  // HP
 
     public float HP => hp;
-    public float maxHP { get; private set; }  // HPãŒÀ
+    public float maxHP { get; private set; }  // HPä¸Šé™
     public float minHP { get; private set; } = 0;
-    public bool isDead => 0 >= hp;  // Ž€–Sƒtƒ‰ƒO
+    public bool isDead => 0 >= hp;  // æ­»äº¡ãƒ•ãƒ©ã‚°
 
     private void Awake()
     {

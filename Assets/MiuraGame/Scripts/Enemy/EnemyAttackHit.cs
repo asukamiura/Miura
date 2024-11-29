@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using Player;
 using UnityEngine;
 
 public class EnemyAttackHit : MonoBehaviour
@@ -32,7 +31,7 @@ public class EnemyAttackHit : MonoBehaviour
                     if (playerCore.judgeDodgeCollider.enabled == true || playerCore.isJustDodge) { return; }
                     break;
             }
-            
+
             healthManager.Damage(damageVal);
         }
     }
