@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,9 +7,8 @@ public class InputReciver : MonoBehaviour
 {
     public static InputReciver Instance { get; private set; }
     GameInput gameInput;
-    float val;
-    private bool countStart = false;   
-    public float countTime = 0;    
+    private bool countStart = false;    // 通常攻撃ボタンの入力時間の計測開始フラグ   
+    private float countTime = 0;    // 通常攻撃ボタンの入力時間 
 
     public Vector2 Move { get { return gameInput.Player.Move.ReadValue<Vector2>(); } }
     public bool Dodge { get { return gameInput.Player.Dodge.triggered; } }
@@ -19,6 +18,9 @@ public class InputReciver : MonoBehaviour
     public bool Heal { get { return gameInput.Player.Heal.WasPressedThisFrame(); } }
     public bool PowerUp { get { return gameInput.Player.PowerUp.WasPressedThisFrame(); } }
 
+    void OnEnable() => gameInput.Enable();
+    void OnDisable() => gameInput.Disable();
+    void OnDestroy() => gameInput.Dispose();
 
     private void Awake()
     {
@@ -50,7 +52,8 @@ public class InputReciver : MonoBehaviour
         }
     }
 
-    void OnEnable() => gameInput.Enable();
-    void OnDisable() => gameInput.Disable();
-    void OnDestroy() => gameInput.Dispose();
+    public void ResetInputCountTime()
+    {
+        countTime = 0;
+    }
 }

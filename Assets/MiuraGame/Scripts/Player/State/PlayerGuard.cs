@@ -1,52 +1,57 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
-public class PlayerGuard : IState<PlayerStateID>
+namespace Player
 {
-    public PlayerStateID StateID => PlayerStateID.Guard;
-    private InputReciver input => InputReciver.Instance;
-    private PlayerCore core;
-    private const int getJustPoints = 1;    // ƒWƒƒƒXƒg‰ñ”ğ¬Œ÷‚É“¾‚éƒWƒƒƒXƒgƒ|ƒCƒ“ƒg—Ê
-
-    public PlayerGuard(PlayerCore core)
+    public class PlayerGuard : IState<PlayerStateID>
     {
-        this.core = core;
-    }
+        public PlayerStateID StateID => PlayerStateID.Guard;
+        private InputReciver input => InputReciver.Instance;
+        private PlayerCore core;
+        private const int getJustPoints = 1;    // ã‚¸ãƒ£ã‚¹ãƒˆå›é¿æˆåŠŸæ™‚ã«å¾—ã‚‹ã‚¸ãƒ£ã‚¹ãƒˆãƒã‚¤ãƒ³ãƒˆé‡
 
-    public void Enter()
-    {
-        //anim.applyRootMotion = true;
-        core.animator.CrossFade("Guard", 0, 0, 0);
-    }
-
-    public void Execute()
-    {
-        AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
-        float currentTime = stateInfo.normalizedTime;
-        if (stateInfo.normalizedTime >= 1f)
+        public PlayerGuard(PlayerCore core)
         {
-            core.stateMachine.ChangeState(PlayerStateID.Idle);
+            this.core = core;
         }
-        if (core.isJustGuard)
-        {
-            core.stateMachine.ChangeState(PlayerStateID.Block);
-            if (currentTime > 0 && currentTime < 0.2f)
-            {
-                core.TimingUIShow("Slow");
-            }
-            else if (currentTime >= 0.2f && currentTime < 0.8f)
-            {
-                core.TimingUIShow("Just");
-                core.justPointManager.AddJustPoints(getJustPoints);
-            }
-            else if (currentTime >= 0.8f && currentTime < 1)
-            {
-                core.TimingUIShow("Fast");
-            }
-        }
-    }
 
-    public void Exit()
-    {
-        core.isJustGuard = false;
+        public void Enter()
+        {
+            //anim.applyRootMotion = true;
+            core.Animator.CrossFade("Guard", 0, 0, 0);
+        }
+
+        public void Update()
+        {
+            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
+            float currentTime = stateInfo.normalizedTime;
+            if (stateInfo.normalizedTime >= 1f)
+            {
+                core.stateMachine.ChangeState(PlayerStateID.Idle);
+            }
+            if (core.isJustGuard)
+            {
+                core.stateMachine.ChangeState(PlayerStateID.Block);
+                if (currentTime > 0 && currentTime < 0.2f)
+                {
+                    core.TimingUIShow("Slow");
+                }
+                else if (currentTime >= 0.2f && currentTime < 0.8f)
+                {
+                    core.TimingUIShow("Just");
+                    core.justPointManager.AddJustPoints(getJustPoints);
+                }
+                else if (currentTime >= 0.8f && currentTime < 1)
+                {
+                    core.TimingUIShow("Fast");
+                }
+            }
+        }
+
+        public void FixedUpdate() { }
+
+        public void Exit()
+        {
+            core.isJustGuard = false;
+        }
     }
 }

@@ -1,38 +1,40 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerDamage : IState<PlayerStateID>
+namespace Player
 {
-    public PlayerStateID StateID => PlayerStateID.Damage;
-    private InputReciver input => InputReciver.Instance;
-    private PlayerCore core;
-
-    public PlayerDamage(PlayerCore core)
+    public class PlayerDamage : IState<PlayerStateID>
     {
-        this.core = core;
-    }
+        public PlayerStateID StateID => PlayerStateID.Damage;
+        private InputReciver input => InputReciver.Instance;
+        private PlayerCore core;
 
-    public void Enter()
-    {
-        core.AttackEnd();
-        core.animator.applyRootMotion = true;
-        core.animator.CrossFade("Damage", 0, 0, 0);
-        //rb.AddForce(new Vector3(0,0,-50), ForceMode.Impulse);
-    }
-
-    public void Execute()
-    {
-        AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("Damage"))
+        public PlayerDamage(PlayerCore core)
         {
-            if (stateInfo.normalizedTime >= 1)
+            this.core = core;
+        }
+
+        public void Enter()
+        {
+            core.AttackEnd();
+            core.Animator.applyRootMotion = true;
+            core.Animator.CrossFade("Damage", 0, 0, 0);
+            //rb.AddForce(new Vector3(0,0,-50), ForceMode.Impulse);
+        }
+
+        public void Update()
+        {
+            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("Damage"))
             {
-                core.stateMachine.ChangeState(PlayerStateID.Idle);
+                if (stateInfo.normalizedTime >= 1)
+                {
+                    core.stateMachine.ChangeState(PlayerStateID.Idle);
+                }
             }
         }
-    }
 
-    public void Exit()
-    {
+        public void FixedUpdate() { }
 
+        public void Exit() { }
     }
 }

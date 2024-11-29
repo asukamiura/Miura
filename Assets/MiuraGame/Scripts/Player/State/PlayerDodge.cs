@@ -1,55 +1,60 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
-public class PlayerDodge : IState<PlayerStateID>
+namespace Player
 {
-    public PlayerStateID StateID => PlayerStateID.Dodge;
-    private InputReciver input => InputReciver.Instance;
-    private PlayerCore core;
-    private bool isNextAttack = false;
-
-    public PlayerDodge(PlayerCore core)
+    public class PlayerDodge : IState<PlayerStateID>
     {
-        this.core = core;
-    }
+        public PlayerStateID StateID => PlayerStateID.Dodge;
+        private InputReciver input => InputReciver.Instance;
+        private PlayerCore core;
+        private bool isNextAttack = false;
 
-    public void Enter()
-    {
-        core.judgeDodgeCollider.enabled = true;
-        core.animator.applyRootMotion = true;
-        // ˆÚ“®‚Ì“ü—Í‚ª‚È‚©‚Á‚½ê‡AƒoƒbƒNƒXƒeƒbƒv
-        if(input.Move == Vector2.zero)
+        public PlayerDodge(PlayerCore core)
         {
-            core.animator.CrossFade("BackDodge",0,0,0);
-        }
-        else
-        {
-            core.animator.CrossFade("FrontDodge",0,0,0);
-        }
-    }
-
-    public void Execute()
-    {
-        AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
-        float currentTime = stateInfo.normalizedTime;
-
-        if (input.AttackNormal && core.isJustDodge)
-        {
-            isNextAttack = true;
+            this.core = core;
         }
 
-        if (isNextAttack && stateInfo.normalizedTime >= 0.7f)
+        public void Enter()
         {
-            core.stateMachine.ChangeState(PlayerStateID.AttackSpecial1);
-        }
-        else if (stateInfo.normalizedTime >= 0.7f)
-        {
-            core.stateMachine.ChangeState(PlayerStateID.Idle);
+            core.judgeDodgeCollider.enabled = true;
+            core.Animator.applyRootMotion = true;
+            // ç§»å‹•ã®å…¥åŠ›ãŒãªã‹ã£ãŸå ´åˆã€ãƒãƒƒã‚¯ã‚¹ãƒ†ãƒƒãƒ—
+            if (input.Move == Vector2.zero)
+            {
+                core.Animator.CrossFade("BackDodge", 0, 0, 0);
+            }
+            else
+            {
+                core.Animator.CrossFade("FrontDodge", 0, 0, 0);
+            }
         }
 
-    }
+        public void Update()
+        {
+            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
+            float currentTime = stateInfo.normalizedTime;
 
-    public void Exit()
-    {
-        isNextAttack = false;
+            if (input.AttackNormal && core.isJustDodge)
+            {
+                isNextAttack = true;
+            }
+
+            if (isNextAttack && stateInfo.normalizedTime >= 0.7f)
+            {
+                core.stateMachine.ChangeState(PlayerStateID.AttackSpecial1);
+            }
+            else if (stateInfo.normalizedTime >= 0.7f)
+            {
+                core.stateMachine.ChangeState(PlayerStateID.Idle);
+            }
+        }
+
+        public void FixedUpdate() { }
+
+        public void Exit()
+        {
+            isNextAttack = false;
+        }
     }
 }
+

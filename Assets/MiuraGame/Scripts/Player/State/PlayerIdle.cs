@@ -1,51 +1,56 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class PlayerIdle : IState<PlayerStateID>
+namespace Player
 {
-    public PlayerStateID StateID => PlayerStateID.Idle;
-    private InputReciver input => InputReciver.Instance;
-    private PlayerCore core;
-
-    public PlayerIdle(PlayerCore core)
+    public class PlayerIdle : IState<PlayerStateID>
     {
-        this.core = core;
-    }
+        public PlayerStateID StateID => PlayerStateID.Idle;
+        private InputReciver Input => InputReciver.Instance;
+        private PlayerCore core;
 
-    public void Enter()
-    {
-        //Debug.Log("Enter Idle");
-        core.animator.applyRootMotion = false;
-        core.animator.CrossFade("Locomotion", 0.2f, 0, 0);
-    }
-
-    public void Execute()
-    {
-
-        if (input.Dodge)
+        public PlayerIdle(PlayerCore core)
         {
-            core.stateMachine.ChangeState(PlayerStateID.Dodge);
+            this.core = core;
         }
 
-        if (input.AttackCharge)
+        public void Enter()
         {
-            core.justPointManager.UseJustPoints(1);
-            core.stateMachine.ChangeState(PlayerStateID.AttackCharge);
-            input.countTime = 0;
-        }
-        else if (input.AttackNormal)
-        {
-            core.stateMachine.ChangeState(PlayerStateID.AttackNormal1);
-            input.countTime = 0;
+            //Debug.Log("Enter Idle");
+            core.Animator.applyRootMotion = false;
+            core.Animator.CrossFade("Locomotion", 0.2f, 0, 0);
         }
 
-        if (input.Move != Vector2.zero)
+        public void Update()
         {
-            core.stateMachine.ChangeState(PlayerStateID.Move);
+
+            if (Input.Dodge)
+            {
+                core.stateMachine.ChangeState(PlayerStateID.Dodge);
+            }
+
+            if (Input.AttackCharge)
+            {
+                core.justPointManager.UseJustPoints(1);
+                core.stateMachine.ChangeState(PlayerStateID.AttackCharge);
+                Input.ResetInputCountTime();
+            }
+            else if (Input.AttackNormal)
+            {
+                core.stateMachine.ChangeState(PlayerStateID.AttackNormal1);
+                Input.ResetInputCountTime();
+            }
+
+            if (Input.Move != Vector2.zero)
+            {
+                core.stateMachine.ChangeState(PlayerStateID.Move);
+            }
         }
-    }
 
-    public void Exit()
-    {
+        public void FixedUpdate() { }
 
+        public void Exit()
+        {
+
+        }
     }
 }

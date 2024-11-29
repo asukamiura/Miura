@@ -1,4 +1,4 @@
-public enum MutantStateID
+﻿public enum MutantStateID
 {
     Idle,
     Move,

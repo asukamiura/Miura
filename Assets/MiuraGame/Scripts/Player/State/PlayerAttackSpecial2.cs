@@ -1,35 +1,40 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
-public class PlayerAttackSpecial2 : IState<PlayerStateID>
+namespace Player
 {
-    public PlayerStateID StateID => PlayerStateID.AttackSpecial2;
-    private PlayerCore core;
-    private InputReciver input => InputReciver.Instance;
-
-    public PlayerAttackSpecial2(PlayerCore core)
+    public class PlayerAttackSpecial2 : IState<PlayerStateID>
     {
-        this.core = core;
-    }
+        public PlayerStateID StateID => PlayerStateID.AttackSpecial2;
+        private PlayerCore core;
+        private InputReciver input => InputReciver.Instance;
 
-    public void Enter()
-    {
-        core.animator.applyRootMotion = true;
-        // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‘JˆÚ
-        core.animator.CrossFade("AttackSpecial2", 0.1f, 0, 0.1f);
-    }
-
-    public void Execute()
-    {
-        AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
-        // ƒAƒjƒ[ƒVƒ‡ƒ“‚ªI‚í‚Á‚½‚çIdleState‚É‘JˆÚ
-        if (stateInfo.normalizedTime >= 1)
+        public PlayerAttackSpecial2(PlayerCore core)
         {
-            core.stateMachine.ChangeState(PlayerStateID.Idle);
+            this.core = core;
         }
-    }
 
-    public void Exit()
-    {
+        public void Enter()
+        {
+            core.Animator.applyRootMotion = true;
+            // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®é·ç§»
+            core.Animator.CrossFade("AttackSpecial2", 0.1f, 0, 0.1f);
+        }
 
+        public void Update()
+        {
+            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
+            // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒçµ‚ã‚ã£ãŸã‚‰IdleStateã«é·ç§»
+            if (stateInfo.normalizedTime >= 1)
+            {
+                core.stateMachine.ChangeState(PlayerStateID.Idle);
+            }
+        }
+
+        public void FixedUpdate() { }
+
+        public void Exit()
+        {
+
+        }
     }
 }

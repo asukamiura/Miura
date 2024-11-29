@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,10 +18,12 @@ public class MutantDead : IState<MutantStateID>
         core.animator.CrossFade("Death", 0.1f, 0, 0);
     }
 
-    public void Execute()
+    public void Update()
     {
         
     }
+
+    public void FixedUpdate() { }
 
     public void Exit()
     {

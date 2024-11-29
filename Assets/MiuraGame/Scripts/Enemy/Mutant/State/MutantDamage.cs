@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,10 +19,10 @@ public class MutantDamage : IState<MutantStateID>
         core.animator.CrossFade("Damage", 0.1f, 0, 0);
     }
 
-    public void Execute()
+    public void Update()
     {
         AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
-        // ƒAƒjƒ[ƒVƒ‡ƒ“‚ªI‚í‚Á‚½‚çIdleState‚É‘JˆÚ
+        // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒçµ‚ã‚ã£ãŸã‚‰IdleStateã«é·ç§»
         if (stateInfo.IsName("Attack1"))
         {
             if (stateInfo.normalizedTime >= 1)
@@ -31,6 +31,8 @@ public class MutantDamage : IState<MutantStateID>
             }
         }
     }
+
+    public void FixedUpdate() { }
 
     public void Exit()
     {

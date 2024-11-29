@@ -1,46 +1,52 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 
-public class PlayerAttackNormal2 : IState<PlayerStateID>
+namespace Player
 {
-    public PlayerStateID StateID => PlayerStateID.AttackNormal2;
-    private PlayerCore core;
-    private InputReciver input => InputReciver.Instance;
-    private bool isNextAttack = false;  // ƒRƒ“ƒ{UŒ‚‚ğŒp‘±ƒtƒ‰ƒO
-
-    public PlayerAttackNormal2(PlayerCore core)
+    public class PlayerAttackNormal2 : IState<PlayerStateID>
     {
-        this.core = core;
-    }
+        public PlayerStateID StateID => PlayerStateID.AttackNormal2;
+        private PlayerCore core;
+        private InputReciver input => InputReciver.Instance;
+        private bool isNextAttack = false;  // ã‚³ãƒ³ãƒœæ”»æ’ƒã‚’ç¶™ç¶šãƒ•ãƒ©ã‚°
 
-    public void Enter()
-    {
-        // ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì‘JˆÚ
-        core.animator.CrossFade("AttackNormal2", 0.1f, 0, 0);
-    }
-
-    public void Execute()
-    {
-        AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
-        if (stateInfo.IsName("AttackNormal2"))
+        public PlayerAttackNormal2(PlayerCore core)
         {
-            if (input.AttackNormal)
-            {
-                isNextAttack = true;
-            }
+            this.core = core;
+        }
 
-            if (isNextAttack && stateInfo.normalizedTime >= 0.6f)
+        public void Enter()
+        {
+            // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®é·ç§»
+            core.Animator.CrossFade("AttackNormal2", 0.1f, 0, 0);
+        }
+
+        public void Update()
+        {
+            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("AttackNormal2"))
             {
-                core.stateMachine.ChangeState(PlayerStateID.AttackNormal3);
-            }
-            else if (stateInfo.normalizedTime >= 1)
-            {
-                core.stateMachine.ChangeState(PlayerStateID.Idle);
+                if (input.AttackNormal)
+                {
+                    isNextAttack = true;
+                }
+
+                if (isNextAttack && stateInfo.normalizedTime >= 0.6f)
+                {
+                    core.stateMachine.ChangeState(PlayerStateID.AttackNormal3);
+                }
+                else if (stateInfo.normalizedTime >= 1)
+                {
+                    core.stateMachine.ChangeState(PlayerStateID.Idle);
+                }
             }
         }
-    }
 
-    public void Exit()
-    {
-        isNextAttack = false;
+        public void FixedUpdate() { }
+
+        public void Exit()
+        {
+            isNextAttack = false;
+        }
     }
 }
+
