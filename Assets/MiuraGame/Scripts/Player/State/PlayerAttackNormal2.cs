@@ -6,7 +6,7 @@ namespace Player
     {
         public PlayerStateID StateID => PlayerStateID.AttackNormal2;
         private PlayerCore core;
-        private InputReciver input => InputReciver.Instance;
+        private InputReciver Input => InputReciver.Instance;
         private bool isNextAttack = false;  // コンボ攻撃を継続フラグ
 
         public PlayerAttackNormal2(PlayerCore core)
@@ -18,6 +18,11 @@ namespace Player
         {
             // アニメーションの遷移
             core.Animator.CrossFade("AttackNormal2", 0.1f, 0, 0);
+
+            // カメラの角度に沿って移動
+            Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
+            Vector3 moveDirection = cameraRotation * new Vector3(Input.Move.x, 0, Input.Move.y).normalized;
+            core.transform.rotation = Quaternion.LookRotation(moveDirection, Vector3.up);
         }
 
         public void Update()
@@ -25,7 +30,7 @@ namespace Player
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("AttackNormal2"))
             {
-                if (input.AttackNormal)
+                if (Input.AttackNormal)
                 {
                     isNextAttack = true;
                 }

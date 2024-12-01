@@ -6,7 +6,7 @@ namespace Player
     {
         public PlayerStateID StateID => PlayerStateID.AttackNormal1;
         private PlayerCore core;
-        private InputReciver input => InputReciver.Instance;
+        private InputReciver Input => InputReciver.Instance;
         private bool isNextAttack = false;
 
         public PlayerAttackNormal1(PlayerCore core)
@@ -18,6 +18,11 @@ namespace Player
         {
             //anim.applyRootMotion = true;
             core.Animator.CrossFade("AttackNormal1", 0.1f, 0, 0);
+
+            // カメラの角度に沿って移動
+            Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
+            Vector3 moveDirection = cameraRotation * new Vector3(Input.Move.x, 0, Input.Move.y).normalized;
+            core.transform.rotation = Quaternion.LookRotation(moveDirection, Vector3.up);
         }
 
         public void Update()
@@ -25,7 +30,7 @@ namespace Player
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("AttackNormal1"))
             {
-                if (input.AttackNormal)
+                if (Input.AttackNormal)
                 {
                     isNextAttack = true;
                 }
