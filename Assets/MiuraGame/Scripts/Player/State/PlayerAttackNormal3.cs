@@ -6,7 +6,7 @@ namespace Player
     {
         public PlayerStateID StateID => PlayerStateID.AttackNormal3;
         private PlayerCore core;
-        private InputReciver input => InputReciver.Instance;
+        private InputReciver Input => InputReciver.Instance;
 
         public PlayerAttackNormal3(PlayerCore core)
         {
