@@ -2179,6 +2179,7 @@ GameObject:
   - component: {fileID: 2040450886317394426}
   - component: {fileID: 6197171121382576669}
   - component: {fileID: 3815827016429225003}
+  - component: {fileID: 7986156752986998189}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -2297,9 +2298,11 @@ MonoBehaviour:
   timingText: {fileID: 0}
   justPointManager: {fileID: 3815827016429225003}
   powerUpManager: {fileID: 6197171121382576669}
+  ultimateManager: {fileID: 2040450886317394426}
   judgeDodgeCollider: {fileID: 7705356484400463173}
   isJustGuard: 0
   isJustDodge: 0
+  isInvincible: 0
 --- !u!114 &164457326328978551
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2355,6 +2358,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   justPoints: 5
+--- !u!114 &7986156752986998189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6362977667450912052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2546c4636a35fa443bf9637f466fcbf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6494781611989878678
 GameObject:
   m_ObjectHideFlags: 0

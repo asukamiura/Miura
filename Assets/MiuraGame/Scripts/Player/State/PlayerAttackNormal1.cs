@@ -17,12 +17,7 @@ namespace Player
         public void Enter()
         {
             //anim.applyRootMotion = true;
-            core.Animator.CrossFade("AttackNormal1", 0.1f, 0, 0);
-
-            // カメラの角度に沿って移動
-            Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
-            Vector3 moveDirection = cameraRotation * new Vector3(Input.Move.x, 0, Input.Move.y).normalized;
-            core.transform.rotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+            core.Animator.CrossFade("AttackNormal1", 0.1f, 0, 0);        
         }
 
         public void Update()

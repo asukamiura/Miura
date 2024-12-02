@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
+﻿using UnityEngine;
 
 public class InputReciver : MonoBehaviour
 {
@@ -11,10 +8,11 @@ public class InputReciver : MonoBehaviour
     private float countTime = 0;    // 通常攻撃ボタンの入力時間 
 
     public Vector2 Move { get { return gameInput.Player.Move.ReadValue<Vector2>(); } }
-    public bool Dodge { get { return gameInput.Player.Dodge.triggered; } }
-    public bool Guard { get { return gameInput.Player.Parry.triggered; } }
+    public bool Dodge { get { return gameInput.Player.Dodge.WasPressedThisFrame(); } }
+    public bool Guard { get { return gameInput.Player.Parry.WasPressedThisFrame(); } }
     public bool AttackNormal { get { return gameInput.Player.AttackNormal.WasReleasedThisFrame() && countTime < 2; } }
     public bool AttackCharge { get { return gameInput.Player.AttackNormal.WasReleasedThisFrame() && countTime >= 2; } }
+    public bool AttackUltimate { get { return gameInput.Player.AttackUltimate.WasPressedThisFrame(); } }
     public bool Heal { get { return gameInput.Player.Heal.WasPressedThisFrame(); } }
     public bool PowerUp { get { return gameInput.Player.PowerUp.WasPressedThisFrame(); } }
 

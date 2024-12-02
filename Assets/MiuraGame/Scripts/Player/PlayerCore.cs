@@ -12,14 +12,17 @@ namespace Player
         [SerializeField] private TextMeshProUGUI timingText;
 
         private HealthManager healthManager;
-        private InputReciver input => InputReciver.Instance;
+        private InputReciver Input => InputReciver.Instance;
         private const int chargeAttackCost = 1;  // チャージ攻撃に必要なジャストポイント数
         private const int healCost = 2;          // 回復に必要なジャストポイント数
         private const int powerUpCost = 3;       // パワーアップに必要なジャストポイント数
+        private const int ultCost = 100;         // 必殺技に必要なゲージ量
 
         public StateMachine<PlayerStateID> stateMachine;
         public JustPointManager justPointManager;
         public PowerUpManager powerUpManager;
+        public UltimateManager ultimateManager;
+        public AttackCorrectionManager attackCorrectionManager;
         public Collider judgeDodgeCollider;
         public float MoveSpeed => powerUpManager.MoveSpeed;
         public Rigidbody Rb { get; private set; }
@@ -29,6 +32,8 @@ namespace Player
         public bool CanChargeAttack => justPointManager.JustPoints >= chargeAttackCost;
         public bool CanHeal => justPointManager.JustPoints >= healCost;
         public bool CanPowerUp => justPointManager.JustPoints >= powerUpCost;
+        public bool CanUlt => ultimateManager.ULTVal >= ultCost;
+        public bool isInvincible = false;   // 無敵状態フラグ
 
         private void Awake()
         {
@@ -44,6 +49,7 @@ namespace Player
             stateMachine.RegisterState(new PlayerAttackSpecial1(this));
             stateMachine.RegisterState(new PlayerAttackSpecial2(this));
             stateMachine.RegisterState(new PlayerAttackCharge(this));
+            stateMachine.RegisterState(new PlayerAttackUltimate(this));
             stateMachine.RegisterState(new PlayerDamage(this));
             stateMachine.RegisterState(new PlayerDead(this));
             Rb = GetComponent<Rigidbody>();
@@ -77,31 +83,37 @@ namespace Player
             if (stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Dodge && stateMachine.StateID != PlayerStateID.Damage)
             {
                 // ガードステートに遷移
-                if (input.Guard)
+                if (Input.Guard)
                 {
                     stateMachine.ChangeState(PlayerStateID.Guard);
                 }
 
                 // 回避ステートに遷移
-                if (input.Dodge)
+                if (Input.Dodge)
                 {
                     stateMachine.ChangeState(PlayerStateID.Dodge);
                 }
             }
 
-
             // 回復処理を実行
-            if (input.Heal && CanHeal && healthManager.HP < healthManager.maxHP)
+            if (Input.Heal && CanHeal && healthManager.HP < healthManager.maxHP)
             {
                 justPointManager.UseJustPoints(healCost);
                 healthManager.Heal(healVal);
             }
 
             // パワーアップ処理を実行
-            if (input.PowerUp && CanPowerUp && !powerUpManager.InPowerUp)
+            if (Input.PowerUp && CanPowerUp && !powerUpManager.InPowerUp)
             {
                 justPointManager.UseJustPoints(powerUpCost);
                 powerUpManager.ActionPowerUp();
+            }
+
+            // 必殺技を実行
+            if (Input.AttackUltimate && CanUlt)
+            {
+                stateMachine.ChangeState(PlayerStateID.AttackUltimate);
+                ultimateManager.DecreaseGauge(ultCost);
             }
         }
 
@@ -112,7 +124,7 @@ namespace Player
 
         private void OnTriggerEnter(Collider other)
         {
-            if (stateMachine.StateID == PlayerStateID.Dead || isJustDodge) { return; }
+            if (stateMachine.StateID == PlayerStateID.Dead || isJustDodge || isInvincible) { return; }
 
             if (other.CompareTag("EnemyAttackCanGuard"))
             {

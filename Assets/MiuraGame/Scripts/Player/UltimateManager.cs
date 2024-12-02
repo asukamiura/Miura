@@ -1,12 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class UltimateManager : MonoBehaviour
 {
     private float ultVal = 0;
-    [HideInInspector] public int maxUltVal = 100;  
-
+    public int maxUltVal = 100;
 
     public float ULTVal
     {

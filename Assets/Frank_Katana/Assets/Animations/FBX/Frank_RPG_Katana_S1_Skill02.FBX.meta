@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: f4c56fc5623fc41408cbe9aaaa4c789c
 ModelImporter:
-  serializedVersion: 21202
+  serializedVersion: 22200
   internalIDToNameTable:
   - first:
       1: 100000
@@ -489,15 +489,24 @@ ModelImporter:
     resampleCurves: 1
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
-    motionNodeName: root
+    motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
       copied configuration does not match position in animation file:\n\t'thigh_l'
-      : position error = 3.262807 mm\n\t'thigh_r' : position error = 3.141149 mm\n\t'calf_r'
-      : position error = 1.412210 mm\n\t'hand_l' : position error = 5.674263 mm\n\t'middle_02_l'
-      : position error = 1.205587 mm\n\t'ring_02_l' : position error = 1.315607 mm\n\t'lowerarm_r'
-      : position error = 1.196227 mm\n\t'hand_r' : position error = 5.539859 mm\n\t'middle_02_r'
-      : position error = 1.204115 mm\n\t'ring_02_r' : position error = 1.314683 mm\n"
+      : position error = 4.000278 mm\n\t'calf_l' : position error = 6.766018 mm\n\t'foot_l'
+      : position error = 5.353580 mm\n\t'ball_l' : position error = 2.134764 mm\n\t'thigh_r'
+      : position error = 2.258407 mm\n\t'calf_r' : position error = 6.744092 mm\n\t'foot_r'
+      : position error = 6.196836 mm\n\t'ball_r' : position error = 3.243932 mm\n\t'spine_01'
+      : position error = 1.523872 mm\n\t'spine_02' : position error = 2.274443 mm\n\t'spine_03'
+      : position error = 1.826205 mm\n\t'clavicle_l' : position error = 1.734475
+      mm\n\t'upperarm_l' : position error = 1.120353 mm\n\t'hand_l' : position error
+      = 10.372169 mm\n\t'middle_02_l' : position error = 1.288338 mm\n\t'ring_02_l'
+      : position error = 43.391460 mm\n\t'pinky_01_l' : position error = 1.115019
+      mm\n\t'pinky_02_l' : position error = 49.640369 mm\n\t'clavicle_r' : position
+      error = 2.160617 mm\n\t'lowerarm_r' : position error = 1.598607 mm\n\t'hand_r'
+      : position error = 5.939655 mm\n\t'middle_02_r' : position error = 1.181962
+      mm\n\t'ring_02_r' : position error = 1.315510 mm\n\t'neck_01' : position error
+      = 2.382593 mm\n\t'head' : position error = 1.220930 mm\n"
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
       might lower retargeting quality:\nNote: Activate translation DOF on avatar
@@ -542,12 +551,12 @@ ModelImporter:
       hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
@@ -737,6 +746,7 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
@@ -764,8 +774,9 @@ ModelImporter:
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 30
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
@@ -1201,38 +1212,38 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Frank_Mesh_Unity
       parentName: Frank_RPG_Katana_Unity_Y_top(Clone)
-      position: {x: -0.00000029563904, y: 0, z: 0}
-      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+      position: {x: -0.00000029563904, y: 0, z: 0.010561532}
+      rotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
     - name: FX_Slash_R
       parentName: Frank_RPG_Katana_Unity_Y_top(Clone)
-      position: {x: -1.707427, y: 0, z: 0}
+      position: {x: -1.707427, y: 0.924519, z: -0.011629587}
       rotation: {x: 0.05855422, y: 0.70467824, z: 0.70467824, w: -0.05855422}
       scale: {x: 1.075403, y: 1.075403, z: 1.075403}
     - name: Mesh_Pants
       parentName: Frank_RPG_Katana_Unity_Y_top(Clone)
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+      position: {x: -0, y: -0.004610939, z: -0.09060816}
+      rotation: {x: -0.7071068, y: 0.056672484, z: -0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
     - name: Quick_Slash
       parentName: Frank_RPG_Katana_Unity_Y_top(Clone)
-      position: {x: 0.13816819, y: 0, z: 1.0099176}
-      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+      position: {x: 0.13816819, y: -0.00068847655, z: 1.0099176}
+      rotation: {x: -0.7071068, y: 0.0019217726, z: -0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Shash_FX
       parentName: Frank_RPG_Katana_Unity_Y_top(Clone)
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+      position: {x: -0, y: 0.00010570526, z: 0.000015468597}
+      rotation: {x: -0.7071068, y: 0.052775566, z: -0, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
     - name: root
       parentName: Frank_RPG_Katana_Unity_Y_top(Clone)
-      position: {x: -0.0000000050931943, y: 0.030555747, z: 0}
-      rotation: {x: 0.000000021855694, y: 0, z: -0, w: 1}
+      position: {x: -0.0000000050931943, y: 0.030555747, z: 0.0007979011}
+      rotation: {x: 0.000000021855694, y: -0.07808891, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: ik_foot_root
       parentName: root
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
+      position: {x: -0, y: -0.00014781952, z: -0.000015125274}
+      rotation: {x: -0.015009601, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: ik_foot_l
       parentName: ik_foot_root
@@ -1246,8 +1257,8 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1.000001}
     - name: ik_hand_root
       parentName: root
-      position: {x: -0, y: 0, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
+      position: {x: -0, y: 0.0013442993, z: -0.0001644516}
+      rotation: {x: -0.052679982, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: ik_hand_gun
       parentName: ik_hand_root
@@ -1261,9 +1272,8 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: ik_hand_r
       parentName: ik_hand_gun
-      position: {x: -0, y: 0, z: -0.000000019073486}
-      rotation: {x: 0.000000014901159, y: -0.000000022351744, z: 0.000000014901163,
-        w: 1}
+      position: {x: -0, y: 0.0006938553, z: -0.000000019073486}
+      rotation: {x: 0.000000014901159, y: -0.000000022351744, z: 0.000000014901163, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Hand_Weapon
       parentName: ik_hand_r
@@ -1277,7 +1287,7 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Weapon_Blade
       parentName: Weapon_Sword
-      position: {x: -0.0800535, y: 0, z: -0.000000038146972}
+      position: {x: -0.0800535, y: 0.038066898, z: -0.000000038146972}
       rotation: {x: 0.00000020861633, y: 3.1086249e-15, z: 0.000000014901158, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: R_Slash_FX_Bone
@@ -1302,7 +1312,7 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: Weapon_Sword_Dummy
       parentName: Sword_Case
-      position: {x: 0.08071083, y: 0, z: 0.00009872436}
+      position: {x: 0.08071083, y: 0.0003915596, z: 0.00009872436}
       rotation: {x: 0.000000007450581, y: 0.000000014901161, z: -1.110223e-16, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: spine_01
@@ -1343,12 +1353,11 @@ ModelImporter:
     - name: lowerarm_twist_01_l
       parentName: lowerarm_l
       position: {x: -0.14000021, y: 0.000000019073486, z: 0.00000015258789}
-      rotation: {x: 0.000000014901161, y: -0.000000014901161, z: 0.000000014901161,
-        w: 1}
+      rotation: {x: 0.000000014901161, y: -0.000000014901161, z: 0.000000014901161, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: hand_l
       parentName: lowerarm_l
-      position: {x: -0.2697514, y: -0.00000022888183, z: 0}
+      position: {x: -0.2697514, y: -0.00000022888183, z: 0.0058104703}
       rotation: {x: -0.617895, y: -0.019372031, z: -0.010653158, w: 0.7859497}
       scale: {x: 1, y: 1, z: 1}
     - name: L_Hand_Weapon
@@ -1378,12 +1387,12 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: pinky_02_l
       parentName: pinky_01_l
-      position: {x: -0.035709687, y: 0, z: 0}
+      position: {x: -0.035709687, y: 0.022948913, z: 0.046560746}
       rotation: {x: 0.010402117, y: 0.004139735, z: -0.038470075, w: 0.9991971}
       scale: {x: 1.000001, y: 1, z: 0.999999}
     - name: pinky_03_l
       parentName: pinky_02_l
-      position: {x: -0.029856376, y: 0, z: 0.000000019073486}
+      position: {x: -0.029856376, y: 0.0002885246, z: 0.000000019073486}
       rotation: {x: 0.0035808305, y: -0.03379642, z: -0.008930291, w: 0.99938244}
       scale: {x: 1, y: 1, z: 1.000001}
     - name: ring_01_l
@@ -1393,7 +1402,7 @@ ModelImporter:
       scale: {x: 1, y: 1, z: 1}
     - name: ring_02_l
       parentName: ring_01_l
-      position: {x: -0.04430168, y: 0, z: 0.000000057220458}
+      position: {x: -0.04430168, y: 0.046609964, z: 0.000000057220458}
       rotation: {x: 0.004328048, y: 0.0045783645, z: -0.03746958, w: 0.9992779}
       scale: {x: 1, y: 1, z: 1}
     - name: ring_03_l
@@ -1638,13 +1647,14 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: c544be3651b5d0442a6ed780add0aa36,
-    type: 3}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: c544be3651b5d0442a6ed780add0aa36, type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
   avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

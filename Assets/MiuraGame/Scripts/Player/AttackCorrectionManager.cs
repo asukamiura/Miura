@@ -11,7 +11,7 @@ namespace Player
         private bool isCorrectRotation = false;
         private const float mixActiveDistance = 1.5f;   // 攻撃補正を有効にする最小距離
         private const float maxActiveDistance = 5;      // 攻撃補正を有効にする最大距離
-        private float correctionSpeed = 30;
+        private float correctionSpeed = 10;
         private PlayerCore playerCore;
         private Rigidbody rb;
         private InputReciver Input => InputReciver.Instance;
@@ -45,8 +45,6 @@ namespace Player
                 isCorrectPosition = false;
                 isCorrectRotation = false;
             }
-
-            //Debug.Log(isCorrectPosition);
         }
 
         private void FixedUpdate()
@@ -62,5 +60,17 @@ namespace Player
                 transform.rotation = Quaternion.LookRotation(direction);
             }
         }
+
+        //public void AttackCorrectionStart()
+        //{
+        //    isCorrectPosition = true;
+        //    isCorrectRotation = true;
+        //}
+
+        //public void AttackCorrectionEnd()
+        //{
+        //    isCorrectPosition = false;
+        //    isCorrectRotation = false;
+        //}
     }
 }

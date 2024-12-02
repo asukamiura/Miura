@@ -17,7 +17,7 @@ public class EnemyAttackHit : MonoBehaviour
         {
             PlayerCore playerCore = other.GetComponent<PlayerCore>();
             HealthManager healthManager = other.GetComponent<HealthManager>();
-            if (playerCore == null || healthManager == null)
+            if (playerCore == null || healthManager == null || playerCore.isInvincible)
             {
                 return;
             }
