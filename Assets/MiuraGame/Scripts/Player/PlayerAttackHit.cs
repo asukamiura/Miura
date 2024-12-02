@@ -16,7 +16,7 @@ namespace Player
             {
                 case PlayerStateID.AttackNormal1:
                     healthManager.Damage(powerUpManager.AttackPower("Normal1"));
-                    ultimateManager.IncreaseGauge(1);
+                    ultimateManager.IncreaseGauge(100);
                     break;
                 case PlayerStateID.AttackNormal2:
                     healthManager.Damage(powerUpManager.AttackPower("Normal2"));
@@ -37,6 +37,9 @@ namespace Player
                 case PlayerStateID.AttackCharge:
                     healthManager.Damage(powerUpManager.AttackPower("Charge"));
                     ultimateManager.IncreaseGauge(10);
+                    break;
+                case PlayerStateID.AttackUltimate:
+                    healthManager.Damage(powerUpManager.AttackPower("Ultimate"));
                     break;
             }
         }
