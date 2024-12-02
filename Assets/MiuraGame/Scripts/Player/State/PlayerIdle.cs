@@ -22,7 +22,6 @@ namespace Player
 
         public void Update()
         {
-
             if (Input.Dodge)
             {
                 core.stateMachine.ChangeState(PlayerStateID.Dodge);
