@@ -25,8 +25,11 @@ namespace Player
 
         private void Update()
         {
-            distance = Vector3.Distance(transform.position, new Vector3(enemy.transform.position.x, transform.position.y, enemy.transform.position.z));
-            direction = enemy.transform.position - transform.position;
+            if(enemy != null)
+            {
+                distance = Vector3.Distance(transform.position, new Vector3(enemy.transform.position.x, transform.position.y, enemy.transform.position.z));
+                direction = enemy.transform.position - transform.position;
+            }
 
             if (distance >= mixActiveDistance && distance <= maxActiveDistance)
             {

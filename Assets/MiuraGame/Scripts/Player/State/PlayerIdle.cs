@@ -22,6 +22,8 @@ namespace Player
 
         public void Update()
         {
+            core.Rb.velocity = Vector3.zero;
+
             if (Input.Dodge)
             {
                 core.stateMachine.ChangeState(PlayerStateID.Dodge);

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Player
 {
@@ -10,8 +11,14 @@ namespace Player
 
         private void OnTriggerEnter(Collider other)
         {
-            HealthManager healthManager = other.GetComponent<HealthManager>();
+            HealthManager healthManager = other.GetComponentInParent<HealthManager>();
+            
+            GameObject enemy = other.transform.root.gameObject; 
+
             if (healthManager == null) { return; }
+
+            if (playerCore.hitEnemies.Contains(enemy)) { return; }
+
             switch (playerCore.stateMachine.StateID)
             {
                 case PlayerStateID.AttackNormal1:
@@ -42,7 +49,10 @@ namespace Player
                     healthManager.Damage(powerUpManager.AttackPower("Ultimate"));
                     break;
             }
+            playerCore.hitEnemies.Add(enemy);
+            Debug.Log(healthManager.HP);
         }
     }
+
 
 }

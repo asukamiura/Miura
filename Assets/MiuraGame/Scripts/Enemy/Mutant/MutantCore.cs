@@ -19,7 +19,7 @@ public class MutantCore : MonoBehaviour
         stateMachine.RegisterState(new MutantAttack1(this));
         stateMachine.RegisterState(new MutantAttack2(this));
         stateMachine.RegisterState(new MutantDamage(this));
-        stateMachine.RegisterState(new MutantDead(this));
+        stateMachine.RegisterState(new MutantDie(this));
     }
 
     private void Start()

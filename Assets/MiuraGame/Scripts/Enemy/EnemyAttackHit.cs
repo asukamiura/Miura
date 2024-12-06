@@ -3,20 +3,20 @@ using UnityEngine;
 
 public class EnemyAttackHit : MonoBehaviour
 {
-    [SerializeField] int damageVal = 0;
     private enum AttackType
     {
         CanGuard,
         CanDodge,
     }
-    [SerializeField] AttackType attackType;
+    [SerializeField] private int damageVal = 0;
+    [SerializeField] private AttackType attackType;
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            PlayerCore playerCore = other.GetComponent<PlayerCore>();
-            HealthManager healthManager = other.GetComponent<HealthManager>();
+            PlayerCore playerCore = other.GetComponentInParent<PlayerCore>();
+            HealthManager healthManager = other.GetComponentInParent<HealthManager>();
             if (playerCore == null || healthManager == null || playerCore.isInvincible)
             {
                 return;
