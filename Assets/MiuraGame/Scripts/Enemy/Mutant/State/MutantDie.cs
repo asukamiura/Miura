@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MutantDead : IState<MutantStateID>
+public class MutantDie : IState<MutantStateID>
 {
     public MutantStateID StateID => MutantStateID.Dead;
     private MutantCore core;
 
-    public MutantDead(MutantCore core)
+    public MutantDie(MutantCore core)
     {
         this.core = core;
     }

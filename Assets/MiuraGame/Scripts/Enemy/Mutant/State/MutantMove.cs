@@ -6,7 +6,6 @@ public class MutantMove : IState<MutantStateID>
 {
     public MutantStateID StateID => MutantStateID.Move;
     private MutantCore core;
-    private float timer = 0f;
     private float moveSpeed = 1;
     private float rotationSpeed = 3f;
     private float attackDistance = 3;
@@ -55,7 +54,7 @@ public class MutantMove : IState<MutantStateID>
 
     public void Exit()
     {
-        timer = 0f;
+        
     }
 
 }

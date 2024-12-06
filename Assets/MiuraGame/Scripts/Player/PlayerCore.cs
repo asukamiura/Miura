@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 namespace Player
@@ -34,6 +35,7 @@ namespace Player
         public bool CanPowerUp => justPointManager.JustPoints >= powerUpCost;
         public bool CanUlt => ultimateManager.ULTVal >= ultCost;
         public bool isInvincible = false;   // 無敵状態フラグ
+        public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
 
         private void Awake()
         {
@@ -159,6 +161,7 @@ namespace Player
             if (swordCollider != null)
             {
                 swordCollider.enabled = false;
+                hitEnemies.Clear();
             }
         }
 
