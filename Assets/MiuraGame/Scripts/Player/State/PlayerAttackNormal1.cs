@@ -46,6 +46,7 @@ namespace Player
         public void Exit()
         {
             isNextAttack = false;
+            core.AttackEnd();
         }
     }
 }

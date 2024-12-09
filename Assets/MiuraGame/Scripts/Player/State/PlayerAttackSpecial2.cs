@@ -34,7 +34,7 @@ namespace Player
 
         public void Exit()
         {
-
+            core.AttackEnd();
         }
     }
 }

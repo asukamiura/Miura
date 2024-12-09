@@ -26,14 +26,17 @@ namespace Enemy
             {
                 if (stateInfo.normalizedTime >= 1)
                 {
-                    core.stateMachine.ChangeState(DragonUsurperStateID.Idle);
+                    core.stateMachine.ChangeState(DragonUsurperStateID.TakeWarning);
                 }
             }            
         }
 
         public void FixedUpdate() { }
 
-        public void Exit() { }    
+        public void Exit() 
+        {
+            core.isFlying = false;
+        }    
     }
 }
 

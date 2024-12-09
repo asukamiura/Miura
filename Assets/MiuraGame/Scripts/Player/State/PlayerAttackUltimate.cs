@@ -37,6 +37,7 @@ namespace Player
         {
             core.Animator.applyRootMotion = false;
             core.isInvincible = false;
+            core.AttackEnd();
         }
     }
 }

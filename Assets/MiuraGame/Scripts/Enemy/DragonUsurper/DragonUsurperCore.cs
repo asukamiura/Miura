@@ -5,7 +5,7 @@ namespace Enemy
     public class DragonUsurperCore : EnemyCoreBase
     {
         private const int fov = 10;     // 視野角
-        private const int minSightDistance = 2;
+        private const int minSightDistance = 2;       
 
         public Transform playerTransform;
         public StateMachine<DragonUsurperStateID> stateMachine;
@@ -13,14 +13,15 @@ namespace Enemy
         public float DistanceToPlayer { get; private set; }
         public Vector3 CrossProduct { get; private set; }
         public bool IsPlayerInSight => AngleToPlayer <= fov && DistanceToPlayer >= minSightDistance;
-        public float rotationSpeed = 10;
-        public float rotationAngle = 10;
+        public float rotationSpeed = 1;
+        public float rotationAngle = 1;
         public int Attack1Count { get; private set; } = 0;    // 連続攻撃1をした数
         public int Attack2Count { get; private set; } = 0;    // 連続攻撃2をした数
         public int Attack3Count { get; private set; } = 0;    // 連続攻撃3をした数
         public GameObject attack1Collider;
         public GameObject attack2Collider;
         public GameObject attack3Collider;
+        public bool isFlying = false;
 
         private void Awake()
         {
@@ -31,16 +32,17 @@ namespace Enemy
             stateMachine.RegisterState(new DragonUsurperApproach(this));
             stateMachine.RegisterState(new DragonUsurperTakeOff(this));
             stateMachine.RegisterState(new DragonUsurperLand(this));
-            stateMachine.RegisterState(new DragonUsurperRetreat(this));
+            stateMachine.RegisterState(new DragonUsurperLeave(this));
             stateMachine.RegisterState(new DragonUsurperAttack1(this));
             stateMachine.RegisterState(new DragonUsurperAttack2(this));
             stateMachine.RegisterState(new DragonUsurperAttack3(this));
+            stateMachine.RegisterState(new DragonUsurperFlyAttack(this));
             stateMachine.RegisterState(new DragonUsurperDie(this));
         }
 
         private void Start()
         {
-            stateMachine.Initialize(DragonUsurperStateID.TakeOff);
+            stateMachine.Initialize(DragonUsurperStateID.TakeWarning);
 
             attack1Collider.SetActive(false);
             attack2Collider.SetActive(false);
