@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using JetBrains.Annotations;
+using UnityEngine;
 
 namespace Enemy
 {
@@ -6,10 +7,11 @@ namespace Enemy
     {
         public DragonUsurperStateID StateID => DragonUsurperStateID.TakeWarning;
         private DragonUsurperCore core;
-        private float currentTime = 0;
-        private const float restTime = 3;
         private int moveDirection;
-        private float moveSpeed = 1;
+        private float moveSpeed = 2.5f;
+        private float targetDistance = 5;
+        private float rotationSpeed = 1;
+        private Vector3 moveTargetPos;
 
         public DragonUsurperTakeWarning(DragonUsurperCore core)
         {
@@ -18,56 +20,30 @@ namespace Enemy
 
         public void Enter()
         {
-            moveDirection = Random.Range(0, 3);
-            switch (moveDirection)
-            {
-                case 0:
-                    core.animator.CrossFade("WalkBack", 0.1f);
-                    break;
-                case 1:
-                    core.animator.CrossFade("WalkRight", 0.1f);
-                    break;
-                case 2:
-                    core.animator.CrossFade("WalkLeft", 0.1f);
-                    break;
-            }
+            core.animator.CrossFade("WalkFront", 0.1f);
+            moveTargetPos = core.playerTransform.position - core.transform.right * targetDistance;
         }
 
         public void Update() { }
         
         public void FixedUpdate() 
-        {
-            currentTime += Time.deltaTime;
-
-            if (currentTime >= restTime)
+        {          
+            if (core.transform.position == moveTargetPos)
             {
                 core.stateMachine.ChangeState(DragonUsurperStateID.Search);
             }
             else
             {
-                Vector3 direction = (core.playerTransform.position - core.transform.position).normalized;
+                // 移動方向を向く
+                Vector3 direction = (moveTargetPos - core.transform.position).normalized;
                 Quaternion lookAtRotation = Quaternion.LookRotation(direction, Vector3.up);
-                core.transform.rotation = Quaternion.Slerp(core.transform.rotation, lookAtRotation, core.rotationSpeed * Time.deltaTime);
+                core.transform.rotation = Quaternion.Slerp(core.transform.rotation, lookAtRotation, rotationSpeed * Time.deltaTime);
 
-                switch (moveDirection)
-                {
-                    case 0:
-                        core.transform.position -= core.transform.forward * moveSpeed * Time.deltaTime;
-                        break;
-                    case 1:
-                        core.transform.position += core.transform.right * moveSpeed * Time.deltaTime;
-                        break;
-                    case 2:
-                        core.transform.position -= core.transform.right * moveSpeed * Time.deltaTime;
-                        break;
-                }
+                core.transform.position = Vector3.MoveTowards(core.transform.position, moveTargetPos, moveSpeed * Time.deltaTime);
             }
         }
 
-        public void Exit()
-        {
-            currentTime = 0;
-        }
+        public void Exit() { }       
     }
 }
 

@@ -6,6 +6,7 @@ namespace Enemy
     {
         public DragonUsurperStateID StateID => DragonUsurperStateID.Search;
         private DragonUsurperCore core;
+        private const int attackSpecialHealth = 250;
 
         public DragonUsurperSearch(DragonUsurperCore core)
         {
@@ -27,9 +28,13 @@ namespace Enemy
             }
             else
             {
-                if (core.Attack1Count >= 2)
+                if (core.healthManager.HP <= attackSpecialHealth)
                 {
-                    core.stateMachine.ChangeState(DragonUsurperStateID.Retreat);
+                    core.stateMachine.ChangeState(DragonUsurperStateID.TakeOff);
+                }
+                else if (core.DistanceToPlayer <= 5)
+                {
+                    core.stateMachine.ChangeState(DragonUsurperStateID.Leave);
                 }
                 else
                 {

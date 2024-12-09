@@ -9,7 +9,7 @@ namespace Enemy
         private DragonNightmareCore core;
         private Vector3 playerPos;
         private float targetDistance = 3;
-        private float moveSpeed = 30;
+        private float moveSpeed = 20;
 
         public DragonNightmareApproach(DragonNightmareCore core)
         {

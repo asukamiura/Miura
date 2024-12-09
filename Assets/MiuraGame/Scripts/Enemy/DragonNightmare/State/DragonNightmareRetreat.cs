@@ -7,10 +7,14 @@ namespace Enemy
     {
         public DragonNightmareStateID StateID => DragonNightmareStateID.Retreat;
         private DragonNightmareCore core;
+        private float animationLength;
+        private float retreatSpeed;
+        private float distance;
+        private Vector3 retreatPointPos;
+        private float distanceToPlayer = 10;
 
         private const string retreatAnimationName = "Jump";
         private const float animationTransitionTime = 1;
-        private const float retreatSpeed = 10f;
         private const float retreatStartTime = 0.4f;
         private const float retreatEndTime = 0.9f;
 
@@ -24,6 +28,16 @@ namespace Enemy
             core.ResetAttackCount();
 
             core.animator.CrossFade(retreatAnimationName, 0);
+
+            retreatPointPos = core.transform.position - core.transform.forward * distanceToPlayer;
+
+            AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
+            animationLength = stateInfo.length - (retreatEndTime - retreatStartTime);
+
+            distance = Vector3.Distance(core.transform.position, retreatPointPos);
+
+            // 移動スピードを計算
+            retreatSpeed = distance / animationLength;
         }
 
         public void Update()
@@ -42,9 +56,16 @@ namespace Enemy
                 }
                 else if (stateInfo.normalizedTime >= retreatStartTime && stateInfo.normalizedTime <= retreatEndTime)
                 {
-                    core.transform.position -= core.transform.forward * retreatSpeed * Time.deltaTime;
+                    if (core.transform.position != retreatPointPos)
+                    {
+                        Vector3 direction = (core.playerTransform.position - core.transform.position).normalized;
+                        Quaternion lookAtRotation = Quaternion.LookRotation(direction, Vector3.up);
+                        core.transform.rotation = Quaternion.Slerp(core.transform.rotation, lookAtRotation, core.rotationSpeed * Time.deltaTime);
+
+                        core.transform.position = Vector3.MoveTowards(core.transform.position, retreatPointPos, retreatSpeed * Time.deltaTime);
+                    }
                 }
-            }
+            }            
         }
 
         public void Exit()

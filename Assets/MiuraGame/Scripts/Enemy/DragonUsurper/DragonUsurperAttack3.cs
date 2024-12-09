@@ -6,7 +6,6 @@ namespace Enemy
     {
         public DragonUsurperStateID StateID => DragonUsurperStateID.Attack3;
         private DragonUsurperCore core;
-        private Vector3 playerPos;
 
         public DragonUsurperAttack3(DragonUsurperCore core)
         {
@@ -15,8 +14,15 @@ namespace Enemy
 
         public void Enter()
         {
-            core.animator.CrossFade("Attack3", 0);
-            playerPos = core.playerTransform.position;
+            if (core.isFlying)
+            {
+                core.animator.CrossFade("FlyAttack", 0);
+            }
+            else
+            {
+                core.animator.CrossFade("Attack3", 0);
+            }
+
             core.IncreaseAttackCount(3);
         }
 
@@ -28,6 +34,13 @@ namespace Enemy
                 if (stateInfo.normalizedTime >= 1)
                 {
                     core.stateMachine.ChangeState(DragonUsurperStateID.Idle);
+                }
+            }
+            if (stateInfo.IsName("FlyAttack"))
+            {
+                if (stateInfo.normalizedTime >= 1)
+                {
+                    core.stateMachine.ChangeState(DragonUsurperStateID.Land);
                 }
             }
         }

@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Enemy
 {
@@ -16,6 +15,7 @@ namespace Enemy
         public void Enter()
         {
             core.animator.CrossFade("TakeOff", 0.1f);
+            core.isFlying = true;
         }
 
         public void Update()
@@ -26,14 +26,14 @@ namespace Enemy
             {
                 if (stateInfo.normalizedTime >= 1)
                 {
-                    core.stateMachine.ChangeState(DragonUsurperStateID.Land);
+                    core.stateMachine.ChangeState(DragonUsurperStateID.FlyAttack);
                 }
             }
         }
 
         public void FixedUpdate() { }
 
-        public void Exit() { }    
+        public void Exit() { }
     }
 }
 

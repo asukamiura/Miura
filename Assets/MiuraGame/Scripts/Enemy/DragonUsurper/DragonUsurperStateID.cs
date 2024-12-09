@@ -6,10 +6,11 @@
     Approach,
     TakeOff,
     Land,
-    Retreat,
+    Leave,
     Attack1,
     Attack2,
     Attack3,
+    FlyAttack,
     Damage,
     Die,
 }
