@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿using Enemy;
+using System.Collections;
+using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Player
@@ -6,12 +9,19 @@ namespace Player
     public class JudgeJustDodge : MonoBehaviour
     {
         private PlayerCore core;
+        private GameObject enemy;
+        private Animator enemyAnimator;
+        private DragonUsurperCore dragonUsurperCore;
+        [SerializeField] private List<GameObject> slowObjs = new List<GameObject>();
         private float currentTime = 0;
         private const int getJustPoints = 1;    // ジャスト回避成功時に得るジャストポイント量
 
         private void Start()
         {
             core = GetComponentInParent<PlayerCore>();
+            enemy = GameObject.FindGameObjectWithTag("Enemy");
+            enemyAnimator = enemy.GetComponent<Animator>();
+            dragonUsurperCore = enemy.GetComponent<DragonUsurperCore>();
         }
 
         private void Update()
@@ -29,6 +39,26 @@ namespace Player
             {
                 core.judgeDodgeCollider.enabled = false;
             }
+
+            //if (core.isJustDodge)
+            //{
+            //    foreach (var ball in dragonUsurperCore.energyBalls)
+            //    {
+            //        if (slowObjs.Contains(ball)) { return; }
+            //        ball.GetComponent<Rigidbody>().velocity *= 0.3f;
+            //        slowObjs.Add(ball);
+            //    }
+            //}
+            //else
+            //{
+            //    for (int i = slowObjs.Count -1; i >= 0; i--)
+            //    {
+            //        var ball = slowObjs[i]; 
+            //        ball.GetComponent<Rigidbody>().velocity *= 2;
+            //        slowObjs.RemoveAt(i);
+            //    }
+            //}
+
         }
 
         private void OnTriggerEnter(Collider other)
@@ -53,9 +83,11 @@ namespace Player
                 }
 
                 core.isJustDodge = true;
-                Animator enemyAnimator = other.GetComponentInParent<Animator>();
-                enemyAnimator.speed = 0.1f;
+                core.isInvincible = true;
+               
                 core.Animator.speed = 0.3f;
+                enemyAnimator.speed = 0.3f;
+              
                 StartCoroutine(SlowTime(2, enemyAnimator));
             }
         }
@@ -66,8 +98,21 @@ namespace Player
             core.Animator.speed = 1;
             yield return new WaitForSeconds(time);
             enemyAnimator.speed = 1;
+
             core.judgeDodgeCollider.enabled = false;
             core.isJustDodge = false;
+            core.isInvincible = false;
+        }
+
+        IEnumerator SlowTimeEnergyBall(float time, Rigidbody enemyRigidbody)
+        {
+            yield return new WaitForSeconds(1);
+            core.Animator.speed = 1;
+            yield return new WaitForSeconds(time);
+            enemyRigidbody.velocity *= 2f;
+            core.judgeDodgeCollider.enabled = false;
+            core.isJustDodge = false;
+            core.isInvincible = false;
         }
     }
 }

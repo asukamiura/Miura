@@ -18,10 +18,13 @@ namespace Enemy
             core.animator.CrossFade("WalkFront", 0.1f);
         }
 
-        public void Update()
+        public void Update() { }
+       
+        public void FixedUpdate() 
         {
             if (!core.IsPlayerInSight)
             {
+                // 視野にプレイヤーが入るまで回転
                 Vector3 direction = (core.playerTransform.position - core.transform.position).normalized;
                 Quaternion lookAtRotation = Quaternion.LookRotation(direction, Vector3.up);
                 core.transform.rotation = Quaternion.Slerp(core.transform.rotation, lookAtRotation, core.rotationSpeed * Time.deltaTime);
@@ -40,16 +43,10 @@ namespace Enemy
                 {
                     core.stateMachine.ChangeState(DragonUsurperStateID.Approach);
                 }
-
             }
         }
 
-        public void FixedUpdate() { }
-
-        public void Exit()
-        {
-
-        }
+        public void Exit() { }
     }
 }
 

@@ -13,16 +13,8 @@ namespace Enemy
         }
 
         public void Enter()
-        {
-            if (core.isFlying)
-            {
-                core.animator.CrossFade("FlyAttack", 0);
-            }
-            else
-            {
-                core.animator.CrossFade("Attack3", 0);
-            }
-
+        {            
+            core.animator.CrossFade("Attack3", 0);
             core.IncreaseAttackCount(3);
         }
 
@@ -34,14 +26,7 @@ namespace Enemy
                 if (stateInfo.normalizedTime >= 1)
                 {
                     core.stateMachine.ChangeState(DragonUsurperStateID.Idle);
-                }
-            }
-            if (stateInfo.IsName("FlyAttack"))
-            {
-                if (stateInfo.normalizedTime >= 1)
-                {
-                    core.stateMachine.ChangeState(DragonUsurperStateID.Land);
-                }
+                }                  
             }
         }
 

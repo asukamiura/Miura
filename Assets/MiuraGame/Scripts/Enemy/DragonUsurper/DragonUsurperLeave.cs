@@ -37,13 +37,12 @@ namespace Enemy
                     targetDistance = 10;
                     break;
             }
+
+            // 移動目標地点を設定
             attackTargetPos = core.playerTransform.position - core.transform.forward * targetDistance;
         }
 
-        public void Update()
-        {
-            
-        }
+        public void Update() { }
 
         public void FixedUpdate() 
         {
