@@ -1,9 +1,17 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Pool;
 
 namespace Enemy
 {
     public class DragonUsurperCore : EnemyCoreBase
     {
+        [SerializeField] private Transform breathPoint;
+        [SerializeField] private GameObject energyBall;
+
+        [SerializeField] public List<GameObject> energyBalls = new List<GameObject>();
+
         private const int fov = 10;     // 視野角
         private const int minSightDistance = 2;       
 
@@ -20,8 +28,8 @@ namespace Enemy
         public int Attack3Count { get; private set; } = 0;    // 連続攻撃3をした数
         public GameObject attack1Collider;
         public GameObject attack2Collider;
-        public GameObject attack3Collider;
         public bool isFlying = false;
+
 
         private void Awake()
         {
@@ -46,7 +54,6 @@ namespace Enemy
 
             attack1Collider.SetActive(false);
             attack2Collider.SetActive(false);
-            attack3Collider.SetActive(false);
         }
 
         private void Update()
@@ -114,7 +121,6 @@ namespace Enemy
                     attack2Collider.SetActive(true);
                     break;
                 case DragonUsurperStateID.Attack3:
-                    attack3Collider.SetActive(true);
                     break;
             }
         }
@@ -130,9 +136,30 @@ namespace Enemy
                     attack2Collider.SetActive(false);
                     break;
                 case DragonUsurperStateID.Attack3:
-                    attack3Collider.SetActive(false);
                     break;
             }
+        }
+
+        public void GenerateEnergyBall()
+        {
+            Debug.Log("Genarate");
+            GameObject breathObj = Instantiate(energyBall, breathPoint.transform.position, Quaternion.identity);
+            breathObj.GetComponent<Rigidbody>().velocity = transform.forward * 10;
+            energyBalls.Add(breathObj);
+            StartCoroutine(DestroyEnergyBall(12, breathObj));
+        }
+
+        IEnumerator DestroyEnergyBall(float delay, GameObject breathObj)
+        {
+            yield return new WaitForSeconds(delay);
+
+            energyBalls.Remove(breathObj);
+            Destroy(breathObj);
+        }
+
+        public void ClearEnergyBallsList()
+        {
+            energyBalls.Clear(); 
         }
     } 
 }

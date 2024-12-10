@@ -21,6 +21,8 @@ namespace Enemy
         public void Enter()
         {
             core.animator.CrossFade("WalkFront", 0.1f);
+
+            // 目標地点を設定
             moveTargetPos = core.playerTransform.position - core.transform.right * targetDistance;
         }
 
