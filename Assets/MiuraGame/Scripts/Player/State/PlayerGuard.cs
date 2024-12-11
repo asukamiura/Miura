@@ -23,27 +23,30 @@ namespace Player
         public void Update()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
-            float currentTime = stateInfo.normalizedTime;
             if (stateInfo.normalizedTime >= 1f)
             {
                 core.stateMachine.ChangeState(PlayerStateID.Idle);
             }
             if (core.isJustGuard)
             {
-                core.stateMachine.ChangeState(PlayerStateID.Block);
-                if (currentTime > 0 && currentTime < 0.2f)
+                if (stateInfo.normalizedTime > 0 && stateInfo.normalizedTime < 0.2f)
                 {
-                    core.TimingUIShow("Slow");
+                    core.timing = PlayerCore.Timing.Late;
+                    core.TimingUIShow("Late");
                 }
-                else if (currentTime >= 0.2f && currentTime < 0.8f)
+                else if (stateInfo.normalizedTime >= 0.2f && stateInfo.normalizedTime < 0.8f)
                 {
+                    core.justGaurdCount++;
+                    core.timing = PlayerCore.Timing.Just;
                     core.TimingUIShow("Just");
                     core.justPointManager.AddJustPoints(getJustPoints);
                 }
-                else if (currentTime >= 0.8f && currentTime < 1)
+                else if (stateInfo.normalizedTime >= 0.8f && stateInfo.normalizedTime < 1)
                 {
+                    core.timing = PlayerCore.Timing.Fast;
                     core.TimingUIShow("Fast");
                 }
+                core.stateMachine.ChangeState(PlayerStateID.Block);
             }
         }
 

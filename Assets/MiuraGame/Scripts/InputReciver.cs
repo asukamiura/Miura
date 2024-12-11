@@ -15,6 +15,7 @@ public class InputReciver : MonoBehaviour
     public bool AttackUltimate { get { return gameInput.Player.AttackUltimate.WasPressedThisFrame(); } }
     public bool Heal { get { return gameInput.Player.Heal.WasPressedThisFrame(); } }
     public bool PowerUp { get { return gameInput.Player.PowerUp.WasPressedThisFrame(); } }
+    public bool Decision { get { return gameInput.UI.Decision.WasReleasedThisFrame(); } }
 
     void OnEnable() => gameInput.Enable();
     void OnDisable() => gameInput.Disable();

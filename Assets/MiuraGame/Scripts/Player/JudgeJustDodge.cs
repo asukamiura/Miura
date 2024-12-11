@@ -21,7 +21,6 @@ namespace Player
             core = GetComponentInParent<PlayerCore>();
             enemy = GameObject.FindGameObjectWithTag("Enemy");
             enemyAnimator = enemy.GetComponent<Animator>();
-            dragonUsurperCore = enemy.GetComponent<DragonUsurperCore>();
         }
 
         private void Update()
@@ -40,25 +39,6 @@ namespace Player
                 core.judgeDodgeCollider.enabled = false;
             }
 
-            //if (core.isJustDodge)
-            //{
-            //    foreach (var ball in dragonUsurperCore.energyBalls)
-            //    {
-            //        if (slowObjs.Contains(ball)) { return; }
-            //        ball.GetComponent<Rigidbody>().velocity *= 0.3f;
-            //        slowObjs.Add(ball);
-            //    }
-            //}
-            //else
-            //{
-            //    for (int i = slowObjs.Count -1; i >= 0; i--)
-            //    {
-            //        var ball = slowObjs[i]; 
-            //        ball.GetComponent<Rigidbody>().velocity *= 2;
-            //        slowObjs.RemoveAt(i);
-            //    }
-            //}
-
         }
 
         private void OnTriggerEnter(Collider other)
@@ -73,6 +53,7 @@ namespace Player
                 else if (currentTime >= 0.1f && currentTime < 0.4)
                 {
                     Debug.Log("Just");
+                    core.justDodgeCount++;
                     core.TimingUIShow("Just");
                     core.justPointManager.AddJustPoints(getJustPoints);
                 }
