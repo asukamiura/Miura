@@ -24,7 +24,7 @@ public class StateMachine<TStateID>
         {
             currentState?.Exit();
             currentState = startState;
-            currentState.Enter();
+            currentState?.Enter();
         }
     }
 
@@ -34,7 +34,7 @@ public class StateMachine<TStateID>
         {
             currentState?.Exit();
             currentState = newState;
-            currentState.Enter();
+            currentState?.Enter();
             StateID = stateID;
             Debug.Log(currentState.ToString());
         }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 namespace Player
-{
+{  
     public class PlayerCore : MonoBehaviour
-    {
+    {       
         [SerializeField] private Collider swordCollider;
         [SerializeField] private int healVal = 20;  // 回復量
         [SerializeField] GameObject playerCM;
@@ -30,12 +30,22 @@ namespace Player
         public Animator Animator { get; private set; }
         public bool isJustGuard = false;
         public bool isJustDodge = false;
+        public bool isInvincible = false;   // 無敵状態フラグ
         public bool CanChargeAttack => justPointManager.JustPoints >= chargeAttackCost;
         public bool CanHeal => justPointManager.JustPoints >= healCost;
         public bool CanPowerUp => justPointManager.JustPoints >= powerUpCost;
         public bool CanUlt => ultimateManager.ULTVal >= ultCost;
-        public bool isInvincible = false;   // 無敵状態フラグ
         public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
+        public enum Timing
+        {
+            Late,
+            Just,
+            Fast,
+            None,
+        }
+        public Timing timing  = Timing.None;
+        public int justGaurdCount = 0;
+        public int justDodgeCount = 0;
 
         private void Awake()
         {
@@ -68,6 +78,7 @@ namespace Player
 
         private void Update()
         {
+            Debug.Log(justGaurdCount);
             stateMachine.Update();
 
             // アイドル状態と移動状態のアニメーション更新

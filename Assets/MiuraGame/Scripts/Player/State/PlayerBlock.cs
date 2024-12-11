@@ -11,6 +11,9 @@ namespace Player
         private Vector3 moveTargetPos;
         private float targetDistance = 4;
         private float moveSpeed = 10;
+        private float decelerationRate = 0.99f;
+
+        private const float defaultMoveSpeed = 10;
 
         public PlayerBlock(PlayerCore core)
         {
@@ -19,16 +22,14 @@ namespace Player
 
         public void Enter()
         {
-            //anim.applyRootMotion = true;
             core.isInvincible = true;
             core.Animator.CrossFade("Block", 0, 0, 0);
-            //core.Rb.AddForce(-core.transform.forward * 20, ForceMode.Impulse);
             moveTargetPos = core.transform.position - core.transform.forward * targetDistance;
         }
 
         public void Update()
         {
-            moveSpeed *= 0.99f;
+            moveSpeed *= decelerationRate;
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.normalizedTime >= 1f)
             {
@@ -50,7 +51,8 @@ namespace Player
             core.Rb.velocity = Vector3.zero;
             core.isJustGuard = false;
             core.isInvincible = false;
-            moveSpeed = 10;
+            moveSpeed = defaultMoveSpeed;
+            core.timing = PlayerCore.Timing.None;
         }
     }
 }
