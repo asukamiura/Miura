@@ -71,7 +71,6 @@ namespace Player
 
         private void Update()
         {
-            Debug.Log(justGaurdCount);
             stateMachine.Update();
 
             // アイドル状態と移動状態のアニメーション更新
