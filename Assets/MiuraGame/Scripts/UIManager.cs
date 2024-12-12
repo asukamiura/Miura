@@ -12,7 +12,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] Image playerHPGauge;
     [SerializeField] Image enemyHPGauge;
     [SerializeField] Image UltimateGauge;
-    [SerializeField] Image[] justPointsUI;
+    [SerializeField] Image[] justPointUI;
 
     private int previousJustPoints;
 
@@ -37,50 +37,16 @@ public class UIManager : MonoBehaviour
 
     private void UpdateJustPointsUI()
     {
-        switch (justPointManager.JustPoints)
+        for (int i = 0; i < justPointUI.Length; i++)
         {
-            case 0:
-                justPointsUI[0].enabled = false;
-                justPointsUI[1].enabled = false;
-                justPointsUI[2].enabled = false;
-                justPointsUI[3].enabled = false;
-                justPointsUI[4].enabled = false;
-                break;
-            case 1:
-                justPointsUI[0].enabled = true;
-                justPointsUI[1].enabled = false;
-                justPointsUI[2].enabled = false;
-                justPointsUI[3].enabled = false;
-                justPointsUI[4].enabled = false;
-                break;
-            case 2:
-                justPointsUI[0].enabled = true;
-                justPointsUI[1].enabled = true;
-                justPointsUI[2].enabled = false;
-                justPointsUI[3].enabled = false;
-                justPointsUI[4].enabled = false;
-                break;
-            case 3:
-                justPointsUI[0].enabled = true;
-                justPointsUI[1].enabled = true;
-                justPointsUI[2].enabled = true;
-                justPointsUI[3].enabled = false;
-                justPointsUI[4].enabled = false;
-                break;
-            case 4:
-                justPointsUI[0].enabled = true;
-                justPointsUI[1].enabled = true;
-                justPointsUI[2].enabled = true;
-                justPointsUI[3].enabled = true;
-                justPointsUI[4].enabled = false;
-                break;
-            case 5:
-                justPointsUI[0].enabled = true;
-                justPointsUI[1].enabled = true;
-                justPointsUI[2].enabled = true;
-                justPointsUI[3].enabled = true;
-                justPointsUI[4].enabled = true;
-                break;
+            if (i < justPointManager.JustPoints)
+            {
+                justPointUI[i].enabled = true;
+            }
+            else
+            {
+                justPointUI[i].enabled = false;
+            }
         }
         previousJustPoints = justPointManager.JustPoints;
     }

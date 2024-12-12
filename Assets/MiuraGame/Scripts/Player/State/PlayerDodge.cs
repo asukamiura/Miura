@@ -54,7 +54,6 @@ namespace Player
         public void Exit()
         {
             isNextAttack = false;
-            core.timing = PlayerCore.Timing.None;
         }
     }
 }

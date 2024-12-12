@@ -31,19 +31,16 @@ namespace Player
             {
                 if (stateInfo.normalizedTime > 0 && stateInfo.normalizedTime < 0.2f)
                 {
-                    core.timing = PlayerCore.Timing.Late;
                     core.TimingUIShow("Late");
                 }
                 else if (stateInfo.normalizedTime >= 0.2f && stateInfo.normalizedTime < 0.8f)
                 {
                     core.justGaurdCount++;
-                    core.timing = PlayerCore.Timing.Just;
                     core.TimingUIShow("Just");
                     core.justPointManager.AddJustPoints(getJustPoints);
                 }
                 else if (stateInfo.normalizedTime >= 0.8f && stateInfo.normalizedTime < 1)
                 {
-                    core.timing = PlayerCore.Timing.Fast;
                     core.TimingUIShow("Fast");
                 }
                 core.stateMachine.ChangeState(PlayerStateID.Block);

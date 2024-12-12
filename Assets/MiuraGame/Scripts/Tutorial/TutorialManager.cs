@@ -36,12 +36,12 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI attackUltimateCountText;
 
     [Header("成功UI")]
-    [SerializeField] private GameObject successUI;
+    [SerializeField] private GameObject completeUI;
 
     public InputReciver Input => InputReciver.Instance;
     private List<ITutorialTask> tutorialTask; // タスクリスト
     private bool taskExecuted = false;
-    private float successUIDisplayLatency = 1;
+    private float completeUIDisplayLatency = 1;
     private bool inTutorial = true;
     private float transitionTime = 2;
 
@@ -126,10 +126,10 @@ public class TutorialManager : MonoBehaviour
     {
         if (currentTask.ShowSuccessUI)
         {
-            yield return new WaitForSeconds(successUIDisplayLatency);
-            successUI.SetActive(true);
-            yield return new WaitForSeconds(successUIDisplayLatency);
-            successUI.SetActive(false);
+            yield return new WaitForSeconds(completeUIDisplayLatency);
+            completeUI.SetActive(true);
+            yield return new WaitForSeconds(completeUIDisplayLatency);
+            completeUI.SetActive(false);
         }
 
         currentTask.Exit();

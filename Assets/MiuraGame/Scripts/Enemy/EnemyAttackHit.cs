@@ -9,7 +9,7 @@ public class EnemyAttackHit : MonoBehaviour
         CanGuard,
         CanDodge,
     }
-    [SerializeField] private int damageVal = 0;
+    public int damageVal = 0;
     [SerializeField] private AttackType attackType;
 
     private HashSet<GameObject> hitObjs = new HashSet<GameObject>(); 

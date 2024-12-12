@@ -28,6 +28,7 @@ namespace Enemy
             stateMachine.RegisterState(new DragonNightmareIdle(this));
             stateMachine.RegisterState(new DragonNightmareTakeWarning(this));
             stateMachine.RegisterState(new DragonNightmareSearch(this));
+            stateMachine.RegisterState(new DragonNightmareLeave(this));
             stateMachine.RegisterState(new DragonNightmareApproach(this));
             stateMachine.RegisterState(new DragonNightmareRetreat(this));
             stateMachine.RegisterState(new DragonNightmareAttack1(this));

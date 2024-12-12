@@ -1532,7 +1532,7 @@ GameObject:
   - component: {fileID: 378854153}
   - component: {fileID: 378854152}
   m_Layer: 5
-  m_Name: SuccessUI
+  m_Name: CompleteUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1551,7 +1551,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.97603637, g: 1, b: 0.7075472, a: 1}
+  m_Color: {r: 1, g: 0.3281012, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -2931,9 +2931,9 @@ RectTransform:
   - {fileID: 16283694}
   - {fileID: 2141257251}
   - {fileID: 951895832}
-  - {fileID: 378854154}
   - {fileID: 497604302}
   - {fileID: 1903912455}
+  - {fileID: 378854154}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3020,14 +3020,6 @@ PrefabInstance:
       propertyPath: justGuardCM
       value: 
       objectReference: {fileID: 1035014124}
-    - target: {fileID: 438048278375530293, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
-      propertyPath: attackCorrectionManager
-      value: 
-      objectReference: {fileID: 825784368}
-    - target: {fileID: 734859064835529011, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2395332098619381053, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3069,16 +3061,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3009786823367496607, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
-      propertyPath: m_Name
-      value: SwordCollider
-      objectReference: {fileID: 0}
-    - target: {fileID: 3009786823367496607, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
       propertyPath: m_TagString
       value: Sword
-      objectReference: {fileID: 0}
-    - target: {fileID: 3867217853502712542, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
-      propertyPath: m_Name
-      value: Paladin_J_Nordstrom_Helmet
       objectReference: {fileID: 0}
     - target: {fileID: 4781131168552676040, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
       propertyPath: m_Size.x
@@ -3092,29 +3076,9 @@ PrefabInstance:
       propertyPath: m_Size.z
       value: 1.14
       objectReference: {fileID: 0}
-    - target: {fileID: 4781131168552676040, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
-      propertyPath: m_Center.z
-      value: 0.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 5923603331828961246, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
-      propertyPath: m_AngularDrag
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6202469235704301477, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
-      propertyPath: m_Name
-      value: Paladin_J_Nordstrom_Body
-      objectReference: {fileID: 0}
     - target: {fileID: 6362977667450912052, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7856441910606169189, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
-      propertyPath: m_TagString
-      value: Untagged
-      objectReference: {fileID: 0}
-    - target: {fileID: 8181736686518869686, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3135,17 +3099,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 10de845808772584993bf0b6e8456b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &825784368 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7986156752986998189, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
-  m_PrefabInstance: {fileID: 825784364}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2546c4636a35fa443bf9637f466fcbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &825784369 stripped
@@ -4502,7 +4455,7 @@ GameObject:
   - component: {fileID: 1187045834}
   - component: {fileID: 1187045833}
   m_Layer: 5
-  m_Name: SuccessText
+  m_Name: CompleteText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4525,7 +4478,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 50}
+  m_SizeDelta: {x: 600, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1187045833
 MonoBehaviour:
@@ -4547,7 +4500,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Success
+  m_text: Complete!!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5731,7 +5684,7 @@ MonoBehaviour:
   justGaurdCountText: {fileID: 1219418715}
   attackSpecial2CountText: {fileID: 2125322783}
   attackUltimateCountText: {fileID: 1994802906}
-  successUI: {fileID: 378854151}
+  completeUI: {fileID: 378854151}
 --- !u!4 &1424511993
 Transform:
   m_ObjectHideFlags: 0

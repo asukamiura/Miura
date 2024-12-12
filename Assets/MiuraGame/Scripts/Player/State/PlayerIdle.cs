@@ -15,7 +15,6 @@ namespace Player
 
         public void Enter()
         {
-            core.timing = PlayerCore.Timing.None;
             core.Animator.applyRootMotion = false;
             core.Animator.CrossFade("Locomotion", 0.2f, 0, 0);
         }
