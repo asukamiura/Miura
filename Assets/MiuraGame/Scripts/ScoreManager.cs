@@ -76,6 +76,10 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// スコア減算処理
+    /// </summary>
+    /// <param name="value">減算量</param>
     public void SubtractScore(int value)
     {
         totalScore -= value;
