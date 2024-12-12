@@ -52,7 +52,6 @@ namespace Player
             core.isJustGuard = false;
             core.isInvincible = false;
             moveSpeed = defaultMoveSpeed;
-            core.timing = PlayerCore.Timing.None;
         }
     }
 }

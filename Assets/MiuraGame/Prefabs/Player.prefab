@@ -758,7 +758,7 @@ GameObject:
   - component: {fileID: 9074109519041026212}
   m_Layer: 7
   m_Name: SwordCollider
-  m_TagString: Untagged
+  m_TagString: Sword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -797,7 +797,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 0.22, y: 0.09, z: 0.97}
+  m_Size: {x: 0.36, y: 0.21, z: 1.14}
   m_Center: {x: 0, y: 0, z: 0.51}
 --- !u!114 &9074109519041026212
 MonoBehaviour:
@@ -2127,6 +2127,9 @@ MonoBehaviour:
   isJustGuard: 0
   isJustDodge: 0
   isInvincible: 0
+  timing: 3
+  justGaurdCount: 0
+  justDodgeCount: 0
 --- !u!114 &164457326328978551
 MonoBehaviour:
   m_ObjectHideFlags: 0

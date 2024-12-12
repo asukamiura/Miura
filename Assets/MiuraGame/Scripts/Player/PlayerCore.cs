@@ -23,6 +23,7 @@ namespace Player
         public JustPointManager justPointManager;
         public PowerUpManager powerUpManager;
         public UltimateManager ultimateManager;
+        public ScoreManager scoreManager;
         public AttackCorrectionManager attackCorrectionManager;
         public Collider judgeDodgeCollider;
         public float MoveSpeed => powerUpManager.MoveSpeed;
@@ -35,15 +36,7 @@ namespace Player
         public bool CanHeal => justPointManager.JustPoints >= healCost;
         public bool CanPowerUp => justPointManager.JustPoints >= powerUpCost;
         public bool CanUlt => ultimateManager.ULTVal >= ultCost;
-        public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
-        public enum Timing
-        {
-            Late,
-            Just,
-            Fast,
-            None,
-        }
-        public Timing timing  = Timing.None;
+        public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();       
         public int justGaurdCount = 0;
         public int justDodgeCount = 0;
 
@@ -139,6 +132,8 @@ namespace Player
         {
             if (stateMachine.StateID == PlayerStateID.Dead || isJustDodge || isInvincible) { return; }
 
+            var enemyAttackHit = other.GetComponent<EnemyAttackHit>();
+
             if (other.CompareTag("EnemyAttackCanGuard"))
             {
                 if (stateMachine.StateID == PlayerStateID.Guard)
@@ -149,6 +144,7 @@ namespace Player
                 {
                     // 攻撃を受けたらダメージステートへ遷移
                     stateMachine.ChangeState(PlayerStateID.Damage);
+                    scoreManager.SubtractScore((int)enemyAttackHit.damageVal);
                 }
             }
 
@@ -156,6 +152,7 @@ namespace Player
             {
                 // 攻撃を受けたらダメージステートへ遷移
                 stateMachine.ChangeState(PlayerStateID.Damage);
+                scoreManager.SubtractScore((int)enemyAttackHit.damageVal);
             }
         }
 

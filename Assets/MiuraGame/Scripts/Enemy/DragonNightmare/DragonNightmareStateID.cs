@@ -4,6 +4,7 @@
     TakeWarning,
     Search,
     Approach,
+    Leave,
     Retreat,
     Attack1,
     Attack2,
