@@ -6,7 +6,6 @@ namespace Enemy
     {
         public DragonNightmareStateID StateID => DragonNightmareStateID.Search;
         private DragonNightmareCore core;
-        private const int attackSpecialHealth = 250;
 
         public DragonNightmareSearch(DragonNightmareCore core)
         {

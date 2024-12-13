@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Enemy
 {
@@ -24,9 +23,9 @@ namespace Enemy
             attackTargetPos = core.playerTransform.position - core.transform.forward * targetDistance;
         }
 
-        public void Update() { }     
+        public void Update() { }
 
-        public void FixedUpdate() 
+        public void FixedUpdate()
         {
             if (core.transform.position == attackTargetPos)
             {

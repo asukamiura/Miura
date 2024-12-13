@@ -15,7 +15,6 @@ namespace Enemy
         public void Enter()
         {
             core.animator.CrossFade("Attack1", 0);
-            core.IncreaseAttackCount(1);
         }
 
         public void Update()

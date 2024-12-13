@@ -9,8 +9,8 @@ namespace Player
         private Vector3 direction;
         private bool isCorrectPosition = false;
         private bool isCorrectRotation = false;
-        private const float mixActiveDistance = 1.5f;   // 攻撃補正を有効にする最小距離
-        private const float maxActiveDistance = 5;      // 攻撃補正を有効にする最大距離
+        private const float MixActiveDistance = 1.5f;   // 攻撃補正を有効にする最小距離
+        private const float MaxActiveDistance = 5;      // 攻撃補正を有効にする最大距離
         private float correctionSpeed = 10;
         private PlayerCore playerCore;
         private Rigidbody rb;
@@ -31,7 +31,7 @@ namespace Player
                 direction = enemy.transform.position - transform.position;
             }
 
-            if (distance >= mixActiveDistance && distance <= maxActiveDistance)
+            if (distance >= MixActiveDistance && distance <= MaxActiveDistance)
             {
                 if (Input.AttackNormal || Input.AttackCharge)
                 {

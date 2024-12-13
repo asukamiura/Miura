@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Pool;
 
 namespace Enemy
 {
@@ -12,20 +11,17 @@ namespace Enemy
 
         [SerializeField] public List<GameObject> energyBalls = new List<GameObject>();
 
-        private const int fov = 10;     // 視野角
-        private const int minSightDistance = 2;       
+        private const int Fov = 10;     // 視野角
+        private const int MinSightDistance = 2;
 
         public Transform playerTransform;
         public StateMachine<DragonUsurperStateID> stateMachine;
         public float AngleToPlayer { get; private set; }
         public float DistanceToPlayer { get; private set; }
         public Vector3 CrossProduct { get; private set; }
-        public bool IsPlayerInSight => AngleToPlayer <= fov && DistanceToPlayer >= minSightDistance;
+        public bool IsPlayerInSight => AngleToPlayer <= Fov && DistanceToPlayer >= MinSightDistance;
         public float rotationSpeed = 1;
         public float rotationAngle = 1;
-        public int Attack1Count { get; private set; } = 0;    // 連続攻撃1をした数
-        public int Attack2Count { get; private set; } = 0;    // 連続攻撃2をした数
-        public int Attack3Count { get; private set; } = 0;    // 連続攻撃3をした数
         public GameObject attack1Collider;
         public GameObject attack2Collider;
         public bool isFlying = false;
@@ -50,7 +46,7 @@ namespace Enemy
 
         private void Start()
         {
-            stateMachine.Initialize(DragonUsurperStateID.TakeWarning);
+            stateMachine.Initialize(DragonUsurperStateID.Idle);
 
             attack1Collider.SetActive(false);
             attack2Collider.SetActive(false);
@@ -79,35 +75,6 @@ namespace Enemy
         private void FixedUpdate()
         {
             stateMachine.FixedUpdate();
-        }
-
-        public void IncreaseAttackCount(int attackType)
-        {
-            switch (attackType)
-            {
-                case 1:
-                    Attack1Count++;
-                    Attack2Count = 0;
-                    Attack3Count = 0;
-                    break;
-                case 2:
-                    Attack1Count = 0;
-                    Attack2Count++;
-                    Attack3Count = 0;
-                    break;
-                case 3:
-                    Attack1Count = 0;
-                    Attack2Count = 0;
-                    Attack3Count++;
-                    break;
-            }
-        }
-
-        public void ResetAttackCount()
-        {
-            Attack1Count = 0;
-            Attack2Count = 0;
-            Attack3Count = 0;
         }
 
         public void AttackStart()
@@ -159,8 +126,8 @@ namespace Enemy
 
         public void ClearEnergyBallsList()
         {
-            energyBalls.Clear(); 
+            energyBalls.Clear();
         }
-    } 
+    }
 }
 

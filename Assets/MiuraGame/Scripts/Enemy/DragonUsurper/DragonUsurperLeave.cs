@@ -8,10 +8,8 @@ namespace Enemy
         private DragonUsurperCore core;
         private float targetDistance = 3;
         private int attackType;
+        private float leaveSpeed = 5;
         private Vector3 attackTargetPos;
-
-        private const string leaveAnimationName = "RunBack";
-        private const float leaveSpeed = 5;
 
         public DragonUsurperLeave(DragonUsurperCore core)
         {
@@ -20,21 +18,22 @@ namespace Enemy
 
         public void Enter()
         {
-            core.ResetAttackCount();
+            core.animator.CrossFade("RunBack", 0);
 
-            core.animator.CrossFade(leaveAnimationName, 0);
-
-            attackType = Random.Range(1, 4);
+            attackType = Random.Range((int)DragonUsurperStateID.Attack1, (int)DragonUsurperStateID.Attack3 + 1);
             switch (attackType)
             {
-                case 1:
+                case (int)DragonUsurperStateID.Attack1:
                     targetDistance = 5;
                     break;
-                case 2:
+                case (int)DragonUsurperStateID.Attack2:
                     targetDistance = 8;
                     break;
-                case 3:
+                case (int)DragonUsurperStateID.Attack3:
                     targetDistance = 10;
+                    break;
+                default:
+                    Debug.Log("EEEEEEEE");
                     break;
             }
 
@@ -50,13 +49,13 @@ namespace Enemy
             {
                 switch (attackType)
                 {
-                    case 1:
+                    case (int)DragonUsurperStateID.Attack1:
                         core.stateMachine.ChangeState(DragonUsurperStateID.Attack1);
                         break;
-                    case 2:
+                    case (int)DragonUsurperStateID.Attack2:
                         core.stateMachine.ChangeState(DragonUsurperStateID.Attack2);
                         break;
-                    case 3:
+                    case (int)DragonUsurperStateID.Attack3:
                         core.stateMachine.ChangeState(DragonUsurperStateID.Attack3);
                         break;
                 }

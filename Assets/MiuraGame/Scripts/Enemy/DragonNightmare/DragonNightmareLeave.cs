@@ -9,9 +9,7 @@ namespace Enemy
         private float targetDistance = 3;
         private int attackType;
         private Vector3 attackTargetPos;
-
-        private const string leaveAnimationName = "WalkBack";
-        private const float leaveSpeed = 2;
+        private float leaveSpeed = 2;
 
         public DragonNightmareLeave(DragonNightmareCore core)
         {
@@ -22,7 +20,7 @@ namespace Enemy
         {
             core.ResetAttackCount();
 
-            core.animator.CrossFade(leaveAnimationName, 0);
+            core.animator.CrossFade("WalkBack", 0);
 
             attackType = Random.Range(1, 4);
             switch (attackType)

@@ -1,12 +1,11 @@
-﻿using Player;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AttackNormalTask : ITutorialTask
 {
     private TutorialManager tutorialManager;
     private PlayerStateID previousState;
 
-    private const int needAttackNormalCount = 3;    // タスク達成に必要な通常攻撃の回数
+    private const int NeedAttackNormalCount = 3;    // タスク達成に必要な通常攻撃の回数
 
     public GameObject ExplanationPanel => tutorialManager.attackNormalPanel;
     public GameObject TaskUI => tutorialManager.attackNormalTaskUI;
@@ -52,9 +51,8 @@ public class AttackNormalTask : ITutorialTask
 
     public bool CheckTask()
     {
-        if (tutorialManager.attackNormalCount >= needAttackNormalCount)
+        if (tutorialManager.attackNormalCount >= NeedAttackNormalCount)
         {
-            Debug.Log("Success");
             return true;
         }
         return false;
