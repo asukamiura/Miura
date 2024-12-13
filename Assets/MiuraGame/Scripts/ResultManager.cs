@@ -1,12 +1,14 @@
-﻿using TMPro;
+﻿using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SelectManager : MonoBehaviour
+public class ResultManager : MonoBehaviour
 {
     InputReciver Input => InputReciver.Instance;
-    private enum SelectPanelState { Tutorial = 0, Stage1, Stage2, Stage3, ReturnTitle }
-    private SelectPanelState selectState = SelectPanelState.Tutorial;
+    private enum TitlePanelState { ReturnSelect = 0, ReturnTitle}
+    private TitlePanelState selectState = TitlePanelState.ReturnSelect;
     [SerializeField] private TextMeshProUGUI[] texts;
 
     private void Start()
@@ -17,12 +19,12 @@ public class SelectManager : MonoBehaviour
     private void Update()
     {
         // 選択中のボタンを変更
-        if (Input.SelectMoveUp && selectState != SelectPanelState.Tutorial)
+        if (Input.SelectMoveUp && selectState != TitlePanelState.ReturnSelect)
         {
             selectState--;
             ChangeTextColor();
         }
-        else if (Input.SelectMoveDown && selectState != SelectPanelState.ReturnTitle)
+        else if (Input.SelectMoveDown && selectState != TitlePanelState.ReturnTitle)
         {
             selectState++;
             ChangeTextColor();
@@ -32,21 +34,12 @@ public class SelectManager : MonoBehaviour
         {
             switch (selectState)
             {
-                case SelectPanelState.Tutorial:
-                    SceneManager.LoadScene("TutorialScene");
+                case TitlePanelState.ReturnSelect:
+                    SceneManager.LoadScene("SelectScene");
                     break;
-                case SelectPanelState.Stage1:
-                    SceneManager.LoadScene("Stage1Scene");
-                    break;
-                case SelectPanelState.Stage2:
-                    SceneManager.LoadScene("Stage2Scene");
-                    break;
-                case SelectPanelState.Stage3:
-                    break;
-                case SelectPanelState.ReturnTitle:
+                case TitlePanelState.ReturnTitle:
                     SceneManager.LoadScene("TitleScene");
-                    break;
-
+                    break;              
             }
         }
     }

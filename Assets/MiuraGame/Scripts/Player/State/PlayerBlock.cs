@@ -1,5 +1,4 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Player
 {
@@ -13,7 +12,7 @@ namespace Player
         private float moveSpeed = 10;
         private float decelerationRate = 0.99f;
 
-        private const float defaultMoveSpeed = 10;
+        private const float DefaultMoveSpeed = 10;
 
         public PlayerBlock(PlayerCore core)
         {
@@ -23,7 +22,9 @@ namespace Player
         public void Enter()
         {
             core.isInvincible = true;
-            core.Animator.CrossFade("Block", 0, 0, 0);
+            core.Animator.CrossFade("Block", 0);
+
+            // ノックバックする位置を設定
             moveTargetPos = core.transform.position - core.transform.forward * targetDistance;
         }
 
@@ -41,7 +42,7 @@ namespace Player
             }
         }
 
-        public void FixedUpdate() 
+        public void FixedUpdate()
         {
             core.transform.position = Vector3.MoveTowards(core.transform.position, moveTargetPos, moveSpeed * Time.deltaTime);
         }
@@ -51,7 +52,7 @@ namespace Player
             core.Rb.velocity = Vector3.zero;
             core.isJustGuard = false;
             core.isInvincible = false;
-            moveSpeed = defaultMoveSpeed;
+            moveSpeed = DefaultMoveSpeed;
         }
     }
 }

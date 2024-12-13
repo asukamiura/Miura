@@ -1,15 +1,22 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
+using Player;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
-public enum GameState { Playing, Paused, GameOver}
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
-    public GameState CurrentState {  get; private set; } = GameState.Playing;
     [SerializeField] private GameObject savePrefab;
+    [SerializeField] private HealthManager playerHealthManager;
+    [SerializeField] private HealthManager enemyHealthManager;
+
     private GameObject saveObj;
     private SaveManager saveManager;
-    InputReciver Input => InputReciver.Instance;
+    private InputReciver Input => InputReciver.Instance;
+    private float delayTime = 3;    // シーン遷移が起こるまでの待機時間
+
+    public static GameManager Instance { get; private set; }
+    public enum GameState { Playing, Paused, GameOver }     // ゲームの状態
+    public GameState CurrentState { get; private set; } = GameState.Playing;    // 現在の状態
 
     void Awake()
     {
@@ -23,7 +30,7 @@ public class GameManager : MonoBehaviour
         }
 
         saveObj = Instantiate(savePrefab);
-        saveObj.name = "SaveManager";       
+        saveObj.name = "SaveManager";
         saveManager = saveObj.GetComponent<SaveManager>();
     }
 
@@ -35,9 +42,21 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.Pause)
+        //if (Input.Pause)
+        //{
+        //    ChangeState(GameState.Paused);
+        //}
+
+        // プレイヤーが死んだらゲームオーバーステートに遷移
+        if (playerHealthManager.isDead)
         {
-            ChangeState(GameState.Paused);
+            ChangeState(GameState.GameOver);            
+        }
+
+        // 敵が死んだらリザルトシーンに遷移
+        if (enemyHealthManager.isDead)
+        {
+            StartCoroutine(ChangeScene(delayTime));
         }
     }
 
@@ -53,5 +72,11 @@ public class GameManager : MonoBehaviour
             case GameState.GameOver:
                 break;
         }
+    }
+
+    private IEnumerator ChangeScene(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene("ResultScene");
     }
 }

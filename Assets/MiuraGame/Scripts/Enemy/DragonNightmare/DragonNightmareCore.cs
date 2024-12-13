@@ -4,15 +4,15 @@ namespace Enemy
 {
     public class DragonNightmareCore : EnemyCoreBase
     {
-        private const int fov = 10;     // 視野角
-        private const int minSightDistance = 2;
+        private const int Fov = 10;     // 視野角
+        private const int MinSightDistance = 2;
 
         public Transform playerTransform;
         public StateMachine<DragonNightmareStateID> stateMachine;
-        public float AngleToPlayer { get; private set; }
-        public float DistanceToPlayer { get; private set; }
+        public float AngleToPlayer { get; private set; }    // プレイヤーのいる角度
+        public float DistanceToPlayer { get; private set; } // プレイヤーとの距離
         public Vector3 CrossProduct { get; private set; }
-        public bool IsPlayerInSight => AngleToPlayer <= fov && DistanceToPlayer >= minSightDistance;
+        public bool IsPlayerInSight => AngleToPlayer <= Fov && DistanceToPlayer >= MinSightDistance;
         public float rotationSpeed = 10;
         public float rotationAngle = 10;
         public int Attack1Count { get; private set; } = 0;    // 連続攻撃1をした数

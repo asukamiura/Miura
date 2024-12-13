@@ -1,18 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class StateMachine<TStateID>
 {
     private IState<TStateID> currentState;
     public TStateID StateID;
-    private Dictionary<TStateID,IState<TStateID>> states = new Dictionary<TStateID,IState<TStateID>>();
+    private Dictionary<TStateID, IState<TStateID>> states = new Dictionary<TStateID, IState<TStateID>>();
 
     public void RegisterState(IState<TStateID> state)
     {
         Debug.Log(state.ToString());
         if (!states.ContainsKey(state.StateID))
-        { 
+        {
             states.Add(state.StateID, state);
         }
     }
@@ -36,7 +35,6 @@ public class StateMachine<TStateID>
             currentState = newState;
             currentState?.Enter();
             StateID = stateID;
-            Debug.Log(currentState.ToString());
         }
     }
 

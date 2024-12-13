@@ -26,7 +26,6 @@ namespace Enemy
                 core.animator.CrossFade("FlyAttack", 0);
             }
 
-            core.IncreaseAttackCount(3);
             playerPos = core.playerTransform.position;
             attackPoint1Pos = playerPos - (core.transform.right + core.transform.forward).normalized * distanceToPlayer;
             attackPoint2Pos = playerPos + core.transform.forward * distanceToPlayer;

@@ -19,7 +19,7 @@ public class InputReciver : MonoBehaviour
     public bool Pause { get { return gameInput.Player.Pause.WasReleasedThisFrame(); } } 
 
     // UI操作用
-    public bool Decision { get { return gameInput.UI.Decision.WasReleasedThisFrame(); } }
+    public bool Decision { get { return gameInput.UI.Decision.WasPressedThisFrame(); } }
     public bool SelectMoveUp { get { return gameInput.UI.SelectMoveUp.WasPressedThisFrame(); } }
     public bool SelectMoveDown { get { return gameInput.UI.SelectMoveDown.WasPressedThisFrame(); } }
     public bool SelectMoveLeft { get { return gameInput.UI.SelectMoveLeft.WasPressedThisFrame(); } }

@@ -6,7 +6,8 @@ namespace Enemy
     {
         public DragonUsurperStateID StateID => DragonUsurperStateID.Search;
         private DragonUsurperCore core;
-        private const int attackSpecialHealth = 250;
+        private const int JujgeDistance = 5;    //接近するか、後退するかのボーダー距離
+        private const int AttackSpecialHealth = 250;    // 特殊攻撃を発動条件
 
         public DragonUsurperSearch(DragonUsurperCore core)
         {
@@ -31,11 +32,12 @@ namespace Enemy
             }
             else
             {
-                if (core.healthManager.HP <= attackSpecialHealth)
-                {
-                    core.stateMachine.ChangeState(DragonUsurperStateID.TakeOff);
-                }
-                else if (core.DistanceToPlayer <= 5)
+                //if (core.healthManager.HP <= AttackSpecialHealth)
+                //{
+                //    core.stateMachine.ChangeState(DragonUsurperStateID.TakeOff);
+                //}
+
+                if (core.DistanceToPlayer <= 5)
                 {
                     core.stateMachine.ChangeState(DragonUsurperStateID.Leave);
                 }

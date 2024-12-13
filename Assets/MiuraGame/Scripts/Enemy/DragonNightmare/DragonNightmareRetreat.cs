@@ -13,10 +13,9 @@ namespace Enemy
         private Vector3 retreatPointPos;
         private float distanceToPlayer = 10;
 
-        private const string retreatAnimationName = "Jump";
-        private const float animationTransitionTime = 1;
-        private const float retreatStartTime = 0.4f;
-        private const float retreatEndTime = 0.9f;
+        private const float animationTransitionTime = 1;    // アニメーションが一回行われたときの時間
+        private const float retreatStartTime = 0.4f;        // 動き始める時間
+        private const float retreatEndTime = 0.9f;          // 動き終わる時間    
 
         public DragonNightmareRetreat(DragonNightmareCore core)
         {
@@ -27,7 +26,7 @@ namespace Enemy
         {
             core.ResetAttackCount();
 
-            core.animator.CrossFade(retreatAnimationName, 0);
+            core.animator.CrossFade("Jump", 0);
 
             retreatPointPos = core.transform.position - core.transform.forward * distanceToPlayer;
 
@@ -48,7 +47,7 @@ namespace Enemy
         public void FixedUpdate() 
         {
             AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName(retreatAnimationName))
+            if (stateInfo.IsName("Jump"))
             {
                 if (stateInfo.normalizedTime >= animationTransitionTime)
                 {

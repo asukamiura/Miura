@@ -24,7 +24,7 @@ namespace Player
             {
                 case PlayerStateID.AttackNormal1:
                     healthManager.Damage(powerUpManager.AttackPower("Normal1"));
-                    ultimateManager.IncreaseGauge(100);
+                    ultimateManager.IncreaseGauge(1);
                     scoreManager.AddScore("AttackNormal1");
                     break;
                 case PlayerStateID.AttackNormal2:
@@ -58,7 +58,6 @@ namespace Player
                     break;
             }
             playerCore.hitEnemies.Add(enemy);
-            Debug.Log(healthManager.HP);
         }
     }
 

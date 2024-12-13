@@ -47,8 +47,8 @@ namespace Player
             {
                 if (currentTime > 0 && currentTime < 0.1f)
                 {
-                    Debug.Log("Slow");
-                    core.TimingUIShow("Slow");
+                    Debug.Log("Late");
+                    core.TimingUIShow("Late");
                 }
                 else if (currentTime >= 0.1f && currentTime < 0.4)
                 {

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -103,6 +104,7 @@ public class TutorialManager : MonoBehaviour
         else
         {
             // セレクトシーンに遷移
+            SceneManager.LoadScene("SelectScene");
         }
     }
 

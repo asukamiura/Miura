@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Enemy
 {
@@ -27,9 +26,9 @@ namespace Enemy
         }
 
         public void Update() { }
-        
-        public void FixedUpdate() 
-        {          
+
+        public void FixedUpdate()
+        {
             if (core.transform.position == moveTargetPos)
             {
                 core.stateMachine.ChangeState(DragonUsurperStateID.Search);
@@ -45,7 +44,7 @@ namespace Enemy
             }
         }
 
-        public void Exit() { }       
+        public void Exit() { }
     }
 }
 

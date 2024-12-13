@@ -14,10 +14,10 @@ namespace Player
 
         private HealthManager healthManager;
         private InputReciver Input => InputReciver.Instance;
-        private const int chargeAttackCost = 1;  // チャージ攻撃に必要なジャストポイント数
-        private const int healCost = 2;          // 回復に必要なジャストポイント数
-        private const int powerUpCost = 3;       // パワーアップに必要なジャストポイント数
-        private const int ultCost = 100;         // 必殺技に必要なゲージ量
+        private const int ChargeAttackCost = 1;  // チャージ攻撃に必要なジャストポイント数
+        private const int HealCost = 2;          // 回復に必要なジャストポイント数
+        private const int PowerUpCost = 3;       // パワーアップに必要なジャストポイント数
+        private const int UltCost = 100;         // 必殺技に必要なゲージ量
 
         public StateMachine<PlayerStateID> stateMachine;
         public JustPointManager justPointManager;
@@ -32,10 +32,10 @@ namespace Player
         public bool isJustGuard = false;
         public bool isJustDodge = false;
         public bool isInvincible = false;   // 無敵状態フラグ
-        public bool CanChargeAttack => justPointManager.JustPoints >= chargeAttackCost;
-        public bool CanHeal => justPointManager.JustPoints >= healCost;
-        public bool CanPowerUp => justPointManager.JustPoints >= powerUpCost;
-        public bool CanUlt => ultimateManager.ULTVal >= ultCost;
+        public bool CanChargeAttack => justPointManager.JustPoints >= ChargeAttackCost;
+        public bool CanHeal => justPointManager.JustPoints >= HealCost;
+        public bool CanPowerUp => justPointManager.JustPoints >= PowerUpCost;
+        public bool CanUlt => ultimateManager.ULTVal >= UltCost;
         public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();       
         public int justGaurdCount = 0;
         public int justDodgeCount = 0;
@@ -103,14 +103,14 @@ namespace Player
             // 回復処理を実行
             if (Input.Heal && CanHeal && healthManager.HP < healthManager.maxHP)
             {
-                justPointManager.UseJustPoints(healCost);
+                justPointManager.UseJustPoints(HealCost);
                 healthManager.Heal(healVal);
             }
 
             // パワーアップ処理を実行
             if (Input.PowerUp && CanPowerUp && !powerUpManager.InPowerUp)
             {
-                justPointManager.UseJustPoints(powerUpCost);
+                justPointManager.UseJustPoints(PowerUpCost);
                 powerUpManager.ActionPowerUp();
             }
 
@@ -118,7 +118,7 @@ namespace Player
             if (Input.AttackUltimate && CanUlt)
             {
                 stateMachine.ChangeState(PlayerStateID.AttackUltimate);
-                ultimateManager.DecreaseGauge(ultCost);
+                ultimateManager.DecreaseGauge(UltCost);
             }
         }
 
