@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class TitleManager : MonoBehaviour
 {
     InputReciver Input => InputReciver.Instance;
-    private enum TitlSelectlState { Start = 0, Option, Quit }
-    private TitlSelectlState selectState = TitlSelectlState.Start;
+    private enum TitlePanelState { Start = 0, Option, Quit }
+    private TitlePanelState selectState = TitlePanelState.Start;
     [SerializeField] private TextMeshProUGUI[] texts;
 
     private void Start()
@@ -19,12 +17,12 @@ public class TitleManager : MonoBehaviour
     private void Update()
     {
         // 選択中のボタンを変更
-        if (Input.SelectMoveUp && selectState != TitlSelectlState.Start)
+        if (Input.SelectMoveUp && selectState != TitlePanelState.Start)
         {
             selectState--;
             ChangeTextColor();
         }
-        else if (Input.SelectMoveDown && selectState != TitlSelectlState.Quit)
+        else if (Input.SelectMoveDown && selectState != TitlePanelState.Quit)
         {
             selectState++;
             ChangeTextColor();
@@ -34,12 +32,12 @@ public class TitleManager : MonoBehaviour
         {
             switch (selectState)
             {
-                case TitlSelectlState.Start:
-                    SceneManager.LoadScene("MainScene");
+                case TitlePanelState.Start:
+                    SceneManager.LoadScene("SelectScene");
                     break;
-                case TitlSelectlState.Option:
+                case TitlePanelState.Option:
                     break;
-                case TitlSelectlState.Quit:
+                case TitlePanelState.Quit:
                     QuitGame();
                     break;
             }
