@@ -35,7 +35,6 @@ public class StateMachine<TStateID>
             currentState = newState;
             currentState?.Enter();
             StateID = stateID;
-            Debug.Log(currentState.ToString());
         }
     }
 

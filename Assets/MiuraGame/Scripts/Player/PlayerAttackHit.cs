@@ -58,7 +58,6 @@ namespace Player
                     break;
             }
             playerCore.hitEnemies.Add(enemy);
-            Debug.Log(healthManager.HP);
         }
     }
 
