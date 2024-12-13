@@ -38,6 +38,8 @@ public class PauseManager : MonoBehaviour
     {
         if (Input.Pause)
         {
+            ChangePauseTextsColor();
+            ChangeVolumeTextsColor();
             playerCore.enabled = false;
             blackCurtain.SetActive(true);
             pausePanel.SetActive(true);
