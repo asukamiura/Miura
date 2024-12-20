@@ -33,7 +33,6 @@ namespace Enemy
                     targetDistance = 10;
                     break;
                 default:
-                    Debug.Log("EEEEEEEE");
                     break;
             }
 

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Player;
+using UnityEngine;
 
 namespace Enemy
 {
@@ -34,6 +35,7 @@ namespace Enemy
             stateMachine.RegisterState(new DragonNightmareAttack1(this));
             stateMachine.RegisterState(new DragonNightmareAttack2(this));
             stateMachine.RegisterState(new DragonNightmareAttack3(this));
+            stateMachine.RegisterState(new DragonNightmareDamage(this));
             stateMachine.RegisterState(new DragonNightmareDie(this));
         }
 
@@ -69,6 +71,19 @@ namespace Enemy
         private void FixedUpdate()
         {
             stateMachine.FixedUpdate();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Sword"))
+            {
+                var playerCore = other.GetComponentInParent<PlayerCore>();
+
+                if (playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2)
+                {
+                    stateMachine.ChangeState(DragonNightmareStateID.Damage);
+                }
+            }
         }
 
         public void IncreaseAttackCount(int attackType)
@@ -131,6 +146,6 @@ namespace Enemy
                     break;
             }
         }
-    } 
+    }
 }
 

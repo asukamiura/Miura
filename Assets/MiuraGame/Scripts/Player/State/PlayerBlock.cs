@@ -21,11 +21,9 @@ namespace Player
 
         public void Enter()
         {
+            core.JustGaurd.ActionJustGaurd();
             core.isInvincible = true;
             core.Animator.CrossFade("Block", 0);
-
-            // ノックバックする位置を設定
-            moveTargetPos = core.transform.position - core.transform.forward * targetDistance;
         }
 
         public void Update()
@@ -35,7 +33,7 @@ namespace Player
             if (stateInfo.normalizedTime >= 1f)
             {
                 core.stateMachine.ChangeState(PlayerStateID.Idle);
-            }
+            }            
             if (input.AttackNormal)
             {
                 core.stateMachine.ChangeState(PlayerStateID.AttackSpecial2);
@@ -44,7 +42,7 @@ namespace Player
 
         public void FixedUpdate()
         {
-            core.transform.position = Vector3.MoveTowards(core.transform.position, moveTargetPos, moveSpeed * Time.deltaTime);
+
         }
 
         public void Exit()
