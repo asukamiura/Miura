@@ -8,6 +8,8 @@ namespace Player
         private InputReciver input => InputReciver.Instance;
         private PlayerCore core;
 
+        private const float knockBackPower = 5;
+
         public PlayerDamage(PlayerCore core)
         {
             this.core = core;
@@ -16,9 +18,9 @@ namespace Player
         public void Enter()
         {
             core.AttackEnd();
-            core.Animator.applyRootMotion = true;
+            //core.Animator.applyRootMotion = true;
             core.Animator.CrossFade("Damage", 0, 0, 0);
-            //rb.AddForce(new Vector3(0,0,-50), ForceMode.Impulse);
+            core.Rb.AddForce(-core.transform.forward * knockBackPower, ForceMode.Impulse);
         }
 
         public void Update()

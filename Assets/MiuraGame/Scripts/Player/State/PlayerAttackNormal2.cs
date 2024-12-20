@@ -16,6 +16,8 @@ namespace Player
 
         public void Enter()
         {
+            core.Animator.applyRootMotion = true;
+            core.attackCorrectionManager.CorrectionAttack();
             // アニメーションの遷移
             core.Animator.CrossFade("AttackNormal2", 0.1f, 0, 0);      
         }
@@ -45,6 +47,7 @@ namespace Player
 
         public void Exit()
         {
+            core.Animator.applyRootMotion = false;
             isNextAttack = false;
             core.AttackStart();
         }

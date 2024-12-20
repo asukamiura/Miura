@@ -7,11 +7,11 @@ namespace Player
         private GameObject enemy;
         private float distance;
         private Vector3 direction;
-        private bool isCorrectPosition = false;
+        public bool isCorrectPosition = false;
         private bool isCorrectRotation = false;
-        private const float MixActiveDistance = 1.5f;   // 攻撃補正を有効にする最小距離
-        private const float MaxActiveDistance = 5;      // 攻撃補正を有効にする最大距離
-        private float correctionSpeed = 10;
+        private const float MaxActiveDistance = 10;      // 攻撃補正を有効にする最大距離
+        private const float MinActiveDistance = 2;      // 攻撃補正を有効にする最大距離
+        private float correctionSpeed = 30;
         private PlayerCore playerCore;
         private Rigidbody rb;
         private InputReciver Input => InputReciver.Instance;
@@ -27,53 +27,37 @@ namespace Player
         {
             if(enemy != null)
             {
-                distance = Vector3.Distance(transform.position, new Vector3(enemy.transform.position.x, transform.position.y, enemy.transform.position.z));
-                direction = enemy.transform.position - transform.position;
-            }
+                // プレイヤーと敵の距離の計算
+                distance = Vector3.Distance(transform.position, enemy.transform.position);
 
-            if (distance >= MixActiveDistance && distance <= MaxActiveDistance)
-            {
-                if (Input.AttackNormal || Input.AttackCharge)
-                {
-                    isCorrectRotation = true;
-
-                    if (playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1
-                        || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2) { return; }
-
-                    isCorrectPosition = true;
-                }
-            }
-            else
-            {
-                isCorrectPosition = false;
-                isCorrectRotation = false;
+                // 敵の方向計算
+                direction = (enemy.transform.position - transform.position).normalized;
             }
         }
 
         private void FixedUpdate()
         {
-            if (isCorrectPosition)
+            if (distance <= MaxActiveDistance && distance >= MinActiveDistance && isCorrectPosition)
             {
-                Vector3 targetPosition = Vector3.MoveTowards(transform.position, enemy.transform.position, correctionSpeed * Time.deltaTime);
-                rb.MovePosition(targetPosition);
-            }
+                if (playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1
+                    || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2) { return; }
 
-            if (isCorrectRotation)
-            {
-                transform.rotation = Quaternion.LookRotation(direction);
+                transform.position = Vector3.MoveTowards(transform.position, enemy.transform.position, correctionSpeed * Time.deltaTime);
             }
         }
 
-        //public void AttackCorrectionStart()
-        //{
-        //    isCorrectPosition = true;
-        //    isCorrectRotation = true;
-        //}
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag("Enemy"))
+            {
+                isCorrectPosition = false;
+                rb.velocity = Vector3.zero;
+            }
+        }
 
-        //public void AttackCorrectionEnd()
-        //{
-        //    isCorrectPosition = false;
-        //    isCorrectRotation = false;
-        //}
+        public void CorrectionAttack()
+        {
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
     }
 }

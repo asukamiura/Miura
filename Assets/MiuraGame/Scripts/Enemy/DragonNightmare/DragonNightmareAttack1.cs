@@ -34,6 +34,7 @@ namespace Enemy
 
         public void Exit()
         {
+            core.AttackEnd();
         }
     }
 }

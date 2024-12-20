@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+
 namespace Player
 {  
     public class PlayerCore : MonoBehaviour
@@ -25,6 +27,7 @@ namespace Player
         public UltimateManager ultimateManager;
         public ScoreManager scoreManager;
         public AttackCorrectionManager attackCorrectionManager;
+        public JustGaurd JustGaurd;
         public Collider judgeDodgeCollider;
         public float MoveSpeed => powerUpManager.MoveSpeed;
         public Rigidbody Rb { get; private set; }
@@ -119,7 +122,7 @@ namespace Player
             {
                 stateMachine.ChangeState(PlayerStateID.AttackUltimate);
                 ultimateManager.DecreaseGauge(UltCost);
-            }
+            }            
         }
 
         private void FixedUpdate()
@@ -138,6 +141,7 @@ namespace Player
                 if (stateMachine.StateID == PlayerStateID.Guard)
                 {
                     isJustGuard = true;
+                    stateMachine.ChangeState(PlayerStateID.Block);
                 }
                 else
                 {

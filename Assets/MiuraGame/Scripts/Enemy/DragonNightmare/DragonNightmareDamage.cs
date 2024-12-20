@@ -2,28 +2,26 @@
 
 namespace Enemy
 {
-    public class DragonNightmareAttack3 : IState<DragonNightmareStateID>
+    public class DragonNightmareDamage : IState<DragonNightmareStateID>
     {
-        public DragonNightmareStateID StateID => DragonNightmareStateID.Attack3;
+        public DragonNightmareStateID StateID => DragonNightmareStateID.Damage;
         private DragonNightmareCore core;
-        private Vector3 playerPos;
 
-        public DragonNightmareAttack3(DragonNightmareCore core)
+        public DragonNightmareDamage(DragonNightmareCore core)
         {
             this.core = core;
         }
 
         public void Enter()
         {
-            core.animator.CrossFade("Attack3", 0);
-            playerPos = core.playerTransform.position;
+            core.animator.CrossFade("Damage", 0);
             core.IncreaseAttackCount(3);
         }
 
         public void Update()
         {        
             AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("Attack3"))
+            if (stateInfo.IsName("Damage"))
             {
                 if (stateInfo.normalizedTime >= 1)
                 {
@@ -36,7 +34,6 @@ namespace Enemy
        
         public void Exit() 
         {
-            core.AttackEnd();
         }
     }
 }

@@ -15,6 +15,8 @@ namespace Player
 
         public void Enter()
         {
+            core.isInvincible = true;
+            core.attackCorrectionManager.CorrectionAttack();
             core.Animator.applyRootMotion = true;
             // アニメーションの遷移
             core.Animator.CrossFade("AttackSpecial2", 0.1f, 0, 0.1f);
@@ -34,6 +36,7 @@ namespace Player
 
         public void Exit()
         {
+            core.isInvincible = false;
             core.AttackEnd();
         }
     }
