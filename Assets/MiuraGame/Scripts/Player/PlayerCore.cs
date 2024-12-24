@@ -27,7 +27,7 @@ namespace Player
         public UltimateManager ultimateManager;
         public ScoreManager scoreManager;
         public AttackCorrectionManager attackCorrectionManager;
-        public JustGaurd JustGaurd;
+        public JustGuard JustGuard;
         public Collider judgeDodgeCollider;
         public float MoveSpeed => powerUpManager.MoveSpeed;
         public Rigidbody Rb { get; private set; }
@@ -40,7 +40,7 @@ namespace Player
         public bool CanPowerUp => justPointManager.JustPoints >= PowerUpCost;
         public bool CanUlt => ultimateManager.ULTVal >= UltCost;
         public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();       
-        public int justGaurdCount = 0;
+        public int justGuardCount = 0;
         public int justDodgeCount = 0;
 
         private void Awake()

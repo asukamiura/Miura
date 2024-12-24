@@ -35,7 +35,7 @@ namespace Player
                 }
                 else if (stateInfo.normalizedTime >= 0.2f && stateInfo.normalizedTime < 0.8f)
                 {
-                    core.justGaurdCount++;
+                    core.justGuardCount++;
                     core.TimingUIShow("Just");
                     core.justPointManager.AddJustPoints(getJustPoints);
                 }
