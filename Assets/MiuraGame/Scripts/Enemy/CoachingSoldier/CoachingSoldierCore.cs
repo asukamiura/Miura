@@ -26,7 +26,7 @@ namespace Enemy
         public GameObject attack1Collider;
         public GameObject attack2Collider;
         public int hitCount = 0;    // 連続で攻撃を受けた回数
-        public bool CanAttack1 => tutorialManager.currentTask is JustGaurdTask; 
+        public bool CanAttack1 => tutorialManager.currentTask is JustGuardTask; 
         public bool CanAttack2 => tutorialManager.currentTask is JustDodgeTask; 
 
         private void Awake()

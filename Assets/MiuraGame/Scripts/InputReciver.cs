@@ -8,6 +8,7 @@ public class InputReciver : MonoBehaviour
     private float countTime = 0;    // 通常攻撃ボタンの入力時間 
 
     // プレイヤー操作用
+    public Vector2 Look { get { return gameInput.Player.Look.ReadValue<Vector2>(); } }
     public Vector2 Move { get { return gameInput.Player.Move.ReadValue<Vector2>(); } }
     public bool Dodge { get { return gameInput.Player.Dodge.WasPressedThisFrame(); } }
     public bool Guard { get { return gameInput.Player.Parry.WasPressedThisFrame(); } }

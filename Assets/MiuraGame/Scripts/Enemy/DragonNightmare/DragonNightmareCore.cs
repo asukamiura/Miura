@@ -79,7 +79,8 @@ namespace Enemy
             {
                 var playerCore = other.GetComponentInParent<PlayerCore>();
 
-                if (playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2)
+                if (playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2
+                    || playerCore.stateMachine.StateID == PlayerStateID.AttackUltimate)
                 {
                     stateMachine.ChangeState(DragonNightmareStateID.Damage);
                 }

@@ -1,21 +1,21 @@
 ﻿using UnityEngine;
 using Player;
 
-public class JustGaurdTask : ITutorialTask
+public class JustGuardTask : ITutorialTask
 {
     private TutorialManager tutorialManager;
     private PlayerStateID previousState;
 
-    private const int needJustGaurdCount = 3;               // タスク達成に必要なブロックの回数
+    private const int needJustGuardCount = 3;               // タスク達成に必要なブロックの回数
     private const int needAttackSpecial2Count = 3;      // タスク達成に必要な特殊攻撃2の回数
 
-    public GameObject ExplanationPanel => tutorialManager.justGaurdPanel;
-    public GameObject TaskUI => tutorialManager.justGaurdTaskUI;
+    public GameObject ExplanationPanel => tutorialManager.justGuardPanel;
+    public GameObject TaskUI => tutorialManager.justGuardTaskUI;
     public bool ShowExplanationPanel => true;
     public bool ShowTaskUI => true;
     public bool ShowSuccessUI => true;
 
-    public JustGaurdTask(TutorialManager tutorialManager)
+    public JustGuardTask(TutorialManager tutorialManager)
     {
         this.tutorialManager = tutorialManager;
     }
@@ -53,7 +53,7 @@ public class JustGaurdTask : ITutorialTask
 
     public bool CheckTask()
     {
-        if (tutorialManager.playerCore.justGaurdCount >= needJustGaurdCount && tutorialManager.attackSpecial2Count >= needAttackSpecial2Count)
+        if (tutorialManager.playerCore.justGuardCount >= needJustGuardCount && tutorialManager.attackSpecial2Count >= needAttackSpecial2Count)
         {
             Debug.Log("Success");
             return true;

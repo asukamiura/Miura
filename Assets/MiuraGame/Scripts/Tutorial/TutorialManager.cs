@@ -18,21 +18,21 @@ public class TutorialManager : MonoBehaviour
     [Header("説明画面")]
     public GameObject attackNormalPanel;
     public GameObject justDodgePanel;
-    public GameObject justGaurdPanel;
+    public GameObject justGuardPanel;
     public GameObject justPointPanel;
     public GameObject attackUltimatePanel;
 
     [Header("タスクUI")]
     public GameObject attackNormalTaskUI;
     public GameObject justDodgeTaskUI;
-    public GameObject justGaurdTaskUI;
+    public GameObject justGuardTaskUI;
     public GameObject attackUltimateTaskUI;
 
     [Header("進捗カウントテキスト")]
     [SerializeField] private TextMeshProUGUI attackNormalCountText;
     [SerializeField] private TextMeshProUGUI justDodgeCountText;
     [SerializeField] private TextMeshProUGUI attackSpecial1CountText;
-    [SerializeField] private TextMeshProUGUI justGaurdCountText;
+    [SerializeField] private TextMeshProUGUI justGuardCountText;
     [SerializeField] private TextMeshProUGUI attackSpecial2CountText;
     [SerializeField] private TextMeshProUGUI attackUltimateCountText;
 
@@ -52,7 +52,7 @@ public class TutorialManager : MonoBehaviour
         {
             new AttackNormalTask(this),
             new JustDodgeTask(this),
-            new JustGaurdTask(this),
+            new JustGuardTask(this),
             new JustPointTask(this),
             new AttackUltimateTask(this),
         };
@@ -62,13 +62,13 @@ public class TutorialManager : MonoBehaviour
     {
         attackNormalPanel.SetActive(false);
         justDodgePanel.SetActive(false);
-        justGaurdPanel.SetActive(false);
+        justGuardPanel.SetActive(false);
         justPointPanel.SetActive(false);
         attackUltimatePanel.SetActive(false);
 
         attackNormalTaskUI.SetActive(false);
         justDodgeTaskUI.SetActive(false);
-        justGaurdTaskUI.SetActive(false);
+        justGuardTaskUI.SetActive(false);
         attackUltimateTaskUI.SetActive(false);
 
         SetFirstTask(tutorialTask.First());
@@ -97,7 +97,7 @@ public class TutorialManager : MonoBehaviour
             attackNormalCountText.text = attackNormalCount.ToString();
             justDodgeCountText.text = playerCore.justDodgeCount.ToString();
             attackSpecial1CountText.text = attackSpecial1Count.ToString();
-            justGaurdCountText.text = playerCore.justGaurdCount.ToString();
+            justGuardCountText.text = playerCore.justGuardCount.ToString();
             attackSpecial2CountText.text = attackSpecial2Count.ToString();
             attackUltimateCountText.text = attackUltimateCount.ToString();
         }

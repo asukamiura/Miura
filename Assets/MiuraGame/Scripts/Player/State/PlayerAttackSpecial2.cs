@@ -6,7 +6,7 @@ namespace Player
     {
         public PlayerStateID StateID => PlayerStateID.AttackSpecial2;
         private PlayerCore core;
-        private InputReciver input => InputReciver.Instance;
+        private InputReciver Input => InputReciver.Instance;
 
         public PlayerAttackSpecial2(PlayerCore core)
         {
@@ -26,7 +26,7 @@ namespace Player
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             // アニメーションが終わったらIdleStateに遷移
-            if (stateInfo.normalizedTime >= 1)
+            if (stateInfo.normalizedTime >= 0.7)
             {
                 core.stateMachine.ChangeState(PlayerStateID.Idle);
             }

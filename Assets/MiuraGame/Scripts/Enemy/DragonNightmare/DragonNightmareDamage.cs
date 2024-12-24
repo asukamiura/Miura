@@ -14,7 +14,7 @@ namespace Enemy
 
         public void Enter()
         {
-            core.animator.CrossFade("Damage", 0);
+            core.animator.CrossFade("Damage", 0.1f);
             core.IncreaseAttackCount(3);
         }
 
