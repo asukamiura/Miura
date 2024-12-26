@@ -1,20 +1,26 @@
 ﻿using Enemy;
+using SoundSystem;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Player
 {
     public class JudgeJustDodge : MonoBehaviour
     {
+        [SerializeField] private List<GameObject> slowObjs = new List<GameObject>();
+
         private PlayerCore core;
         private GameObject enemy;
         private Animator enemyAnimator;
         private DragonUsurperCore dragonUsurperCore;
-        [SerializeField] private List<GameObject> slowObjs = new List<GameObject>();
         private float currentTime = 0;
-        private const int getJustPoints = 1;    // ジャスト回避成功時に得るジャストポイント量
+
+        private const int GetJustPoints = 1;    // ジャスト回避成功時に得るジャストポイント量
+        private const float PlayerSlowTime = 1;
+        private const float EnemySlowTime = 3;
+        private const float DefaultAnimationSpeed = 1;
+        private const float SlowAnimationSpeed = 0.3f;
 
         private void Start()
         {
@@ -55,7 +61,7 @@ namespace Player
                     Debug.Log("Just");
                     core.justDodgeCount++;
                     core.TimingUIShow("Just");
-                    core.justPointManager.AddJustPoints(getJustPoints);
+                    core.justPointManager.AddJustPoints(GetJustPoints);
                 }
                 else if (currentTime >= 0.4f && currentTime < 0.5f)
                 {
@@ -63,22 +69,27 @@ namespace Player
                     core.TimingUIShow("Fast");
                 }
 
-                core.isJustDodge = true;
-                core.isInvincible = true;
-               
-                core.Animator.speed = 0.3f;
-                enemyAnimator.speed = 0.3f;
-              
-                StartCoroutine(SlowTime(2, enemyAnimator));
+                StartCoroutine(SlowTime(enemyAnimator));
             }
         }
 
-        IEnumerator SlowTime(float time, Animator enemyAnimator)
+        IEnumerator SlowTime(Animator enemyAnimator)
         {
-            yield return new WaitForSeconds(1);
-            core.Animator.speed = 1;
-            yield return new WaitForSeconds(time);
-            enemyAnimator.speed = 1;
+            core.isJustDodge = true;
+            core.isInvincible = true;
+
+            SoundManager.Instance.PlaySe("SlowTime");
+
+            core.Animator.speed = SlowAnimationSpeed;
+            enemyAnimator.speed = SlowAnimationSpeed;
+
+            yield return new WaitForSeconds(PlayerSlowTime);
+           
+            core.Animator.speed = DefaultAnimationSpeed;
+
+            yield return new WaitForSeconds(EnemySlowTime);
+
+            enemyAnimator.speed = DefaultAnimationSpeed;
 
             core.judgeDodgeCollider.enabled = false;
             core.isJustDodge = false;

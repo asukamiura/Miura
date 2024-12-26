@@ -5,89 +5,48 @@ using UnityEngine;
 public class PlayerCameraController : MonoBehaviour
 {
     [SerializeField] private CinemachineBrain cinemachineBrain;
-    [SerializeField] private CinemachineFreeLook playerCamera;
-    [SerializeField] private CinemachineVirtualCamera playerCamera2;
-    [SerializeField] private CinemachineVirtualCamera justGuardCamera;
+    [SerializeField] private CinemachineVirtualCamera playerCamera;
+    [SerializeField] private CinemachineImpulseSource impulseSource;
 
-    private Transform defaultPlayerCameraTransform;
-    private float xAxisSpeed = 300;
-    private float yAxisSpeed = 1.5f;
+    private CinemachinePOV pov;
+    private float horizontalSpeed = 2;
+    private float verticalSpeed = 1;
+    private float sensitivity = 50;
     private bool isInput = true;
-
-    private const float effectTime = 0.5f;
-    private const int enabledPriority = 20;
-    private const int disabledPriority = 10;
-    private const float justGuardBlendTime = 0.1f;
-    private const float returnBlendTime = 0.5f;
-
-
+    private Vector3 defaultCameraPos;
+    private bool isSpread = false;
+    private bool isNarrow = false;
+    private float spreadSpeed = 1;
+    private float narrowSpeed = 1;
+    private float targetFOV = 50;
 
     private InputReciver Input => InputReciver.Instance;
 
-    private void Awake()
-    {
-        defaultPlayerCameraTransform = playerCamera.transform;        
-    }
-
     private void Start()
     {
-        playerCamera.m_XAxis.m_InputAxisName = "";
-        playerCamera.m_YAxis.m_InputAxisName = "";
-        SetCameraSensitivity(xAxisSpeed, yAxisSpeed);        
+        pov = playerCamera.GetCinemachineComponent<CinemachinePOV>();
+
+        defaultCameraPos = playerCamera.transform.position;
     }
 
     private void Update()
     {
         if (isInput)
         {
-            playerCamera.m_XAxis.Value += Input.Look.x * playerCamera.m_XAxis.m_MaxSpeed * Time.deltaTime;
-            playerCamera.m_YAxis.Value += Input.Look.y * playerCamera.m_YAxis.m_MaxSpeed * Time.deltaTime;
+            pov.m_HorizontalAxis.Value += Input.Look.x * horizontalSpeed * sensitivity * Time.deltaTime;
+            pov.m_VerticalAxis.Value += Input.Look.y * verticalSpeed * sensitivity * Time.deltaTime;
         }
-    }
 
-    private void SetCameraSensitivity(float xAxisSpeed, float yAxisSpeed)
-    {
-        playerCamera.m_XAxis.m_MaxSpeed = xAxisSpeed;
-        playerCamera.m_YAxis.m_MaxSpeed = yAxisSpeed;
-    }
+        if (isSpread)
+        {
+            playerCamera.m_Lens.FieldOfView = Mathf.Lerp(playerCamera.m_Lens.FieldOfView, targetFOV, spreadSpeed * Time.deltaTime);
+        }
 
-    public void ChangeCameraPriority()
-    {
-        isInput = false;
+        if (isNarrow)
+        {
+            playerCamera.m_Lens.FieldOfView = Mathf.Lerp(playerCamera.m_Lens.FieldOfView, targetFOV, narrowSpeed * Time.deltaTime);
+        }
 
-        cinemachineBrain.m_DefaultBlend.m_Time = justGuardBlendTime;
-
-        playerCamera.Priority = disabledPriority;
-
-        justGuardCamera.Priority = enabledPriority;
-
-        Transform justGuardCameraTransform = justGuardCamera.transform;
-        // FreeLookカメラの軸を設定
-        playerCamera.m_XAxis.Value = GetXAxis(justGuardCameraTransform.rotation.eulerAngles.y);
-        playerCamera.m_XAxis.Value = GetYAxis(justGuardCameraTransform.position);
-    }
-
-    public void ResetCameraPriority()
-    {
-        cinemachineBrain.m_DefaultBlend.m_Time = returnBlendTime;
-
-        playerCamera.Priority = enabledPriority;
-
-        justGuardCamera.Priority = disabledPriority;
-
-        StartCoroutine(ActiveInput(effectTime));    
-    }
-
-    private float GetXAxis(float yRotation)
-    {
-        return Mathf.Repeat(yRotation, 360);
-    }
-
-    private float GetYAxis(Vector3 position)
-    {
-        float height = position.y - playerCamera.Follow.position.y;
-        float totalHeight = playerCamera.m_Orbits[2].m_Height - playerCamera.m_Orbits[0].m_Height;
-        return Mathf.Clamp01((height - playerCamera.m_Orbits[0].m_Height) / totalHeight);
     }
 
     private IEnumerator ActiveInput(float delay)
@@ -95,5 +54,46 @@ public class PlayerCameraController : MonoBehaviour
         yield return new WaitForSeconds(delay);
 
         isInput = true;
+    }
+
+    /// <summary>
+    /// 視野角を広げる
+    /// </summary>
+    /// <param name="targetFOV">目標視野角</param>
+    /// <param name="spreadSpeed">広げる速度</param>
+    private void SpreadFOV(float targetFOV, float spreadSpeed)
+    {      
+        playerCamera.m_Lens.FieldOfView = Mathf.Lerp(playerCamera.m_Lens.FieldOfView, targetFOV, spreadSpeed * Time.deltaTime);
+    }
+
+    /// <summary>
+    /// 視野角を狭める
+    /// </summary>
+    /// <param name="targetFOV">目標視野角</param>
+    /// <param name="narrowSpeed">狭める速度</param>
+    private void NarrowFOV(float targetFOV, float narrowSpeed)
+    {        
+        playerCamera.m_Lens.FieldOfView = Mathf.Lerp(playerCamera.m_Lens.FieldOfView, targetFOV, narrowSpeed * Time.deltaTime);
+    }
+
+    public void StartSpreadFOV(float newTargetFOV, float newSpreadSpeed)
+    {
+        isNarrow = false;
+        isSpread = true;
+        targetFOV = newTargetFOV;
+        spreadSpeed = newSpreadSpeed;
+    }
+
+    public void StartNarrowFOV(float newTargetFOV, float newNarrowSpeed)
+    {
+        isSpread = false;
+        isNarrow = true;
+        targetFOV = newTargetFOV;
+        narrowSpeed = newNarrowSpeed;
+    }
+
+    public void ApplyImpulse()
+    {
+        impulseSource.GenerateImpulse();
     }
 }

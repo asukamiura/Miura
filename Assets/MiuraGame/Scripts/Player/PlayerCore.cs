@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using SoundSystem;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
@@ -28,6 +29,7 @@ namespace Player
         public ScoreManager scoreManager;
         public AttackCorrectionManager attackCorrectionManager;
         public JustGuard JustGuard;
+        public GameSePlayer gameSePlayer;
         public Collider judgeDodgeCollider;
         public float MoveSpeed => powerUpManager.MoveSpeed;
         public Rigidbody Rb { get; private set; }
@@ -188,6 +190,5 @@ namespace Player
             yield return new WaitForSeconds(1);
             timingText.enabled = false;
         }
-
     }
 }
