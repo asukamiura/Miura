@@ -201,7 +201,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""id"": ""c80c7fe2-805d-44c6-ba59-0428be34a8d6"",
                     ""path"": ""<Pointer>/delta"",
                     ""interactions"": """",
-                    ""processors"": ""ScaleVector2(x=0.03,y=0.03),InvertVector2(invertX=false)"",
+                    ""processors"": ""ScaleVector2(x=0.03,y=0.03)"",
                     ""groups"": ""KeyboardMouse"",
                     ""action"": ""Look"",
                     ""isComposite"": false,
