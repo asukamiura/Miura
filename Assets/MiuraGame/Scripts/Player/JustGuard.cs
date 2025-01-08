@@ -7,13 +7,15 @@ public class JustGuard : MonoBehaviour
     [SerializeField] private PlayerCameraController playerCameraController;
     private Animator enemyAnimator;
     private Animator playerAnimator;
-    private bool isSpread = false;
-    private bool isNarrow = false;
 
     private const float DefaultFOV = 70;
     private const float TargetFOV = 50;
     private const float SpreadSpeed = 2;
     private const float NarrowSpeed = 20;
+    private const float TargetDutch = 5;
+    private const float DefaultDutch = 0;
+    private const float ChangeDutchSpeed1 = 20;
+    private const float ChangeDutchSpeed2 = 5;
 
     private void Start()
     {
@@ -28,7 +30,9 @@ public class JustGuard : MonoBehaviour
 
     private IEnumerator ApplyJustGuard(float delay)
     {
-        playerCameraController.StartNarrowFOV(TargetFOV, NarrowSpeed);
+        playerCameraController.RecenteringEnabled();
+        playerCameraController.StartChangeDutch(TargetDutch, ChangeDutchSpeed1);
+        playerCameraController.StartChangeFOV(TargetFOV, NarrowSpeed);
         playerCameraController.ApplyImpulse();
 
         enemyAnimator.speed = 0;
@@ -37,8 +41,10 @@ public class JustGuard : MonoBehaviour
 
         yield return new WaitForSeconds(delay);
 
-        playerCameraController.StartSpreadFOV(DefaultFOV, SpreadSpeed);
-
+        //playerCameraController.ChangeDutch(DefaultDutchAngle);
+        playerCameraController.StartChangeFOV(DefaultFOV, SpreadSpeed);
+        playerCameraController.StartChangeDutch(DefaultDutch, ChangeDutchSpeed2);
+        playerCameraController.RecenteringDisabled();
         enemyAnimator.speed = 1;
         playerAnimator.speed = 1;
         Debug.Log("End");

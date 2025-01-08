@@ -17,6 +17,7 @@ namespace Player
         public void Enter()
         {
             //anim.applyRootMotion = true;
+            core.attackCorrectionManager.CorrectionAttack();
             core.Animator.CrossFade("Guard", 0, 0, 0);
         }
 

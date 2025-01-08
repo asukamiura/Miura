@@ -2,21 +2,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SocialPlatforms.Impl;
 
 namespace Player
-{  
-    public class PlayerCore : MonoBehaviour
-    {       
+{
+    public class PlayerCore : MonoBehaviour, IMatchTarget
+    {
         [SerializeField] private Collider swordCollider;
         [SerializeField] private int healVal = 20;  // 回復量
-        [SerializeField] GameObject playerCM;
-        [SerializeField] GameObject justGuardCM;
         [SerializeField] private TextMeshProUGUI timingText;
+        [SerializeField] private Transform justGuardEffectTransform;
+        [SerializeField] private GameObject target;
+        [SerializeField] private Collider[] targetColliders;
 
         private HealthManager healthManager;
         private InputReciver Input => InputReciver.Instance;
+        private Collider targetCollider;
+
         private const int ChargeAttackCost = 1;  // チャージ攻撃に必要なジャストポイント数
         private const int HealCost = 2;          // 回復に必要なジャストポイント数
         private const int PowerUpCost = 3;       // パワーアップに必要なジャストポイント数
@@ -41,9 +44,10 @@ namespace Player
         public bool CanHeal => justPointManager.JustPoints >= HealCost;
         public bool CanPowerUp => justPointManager.JustPoints >= PowerUpCost;
         public bool CanUlt => ultimateManager.ULTVal >= UltCost;
-        public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();       
+        public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
         public int justGuardCount = 0;
         public int justDodgeCount = 0;
+        public Transform slashEffectTransform;
 
         private void Awake()
         {
@@ -66,6 +70,14 @@ namespace Player
             Animator = GetComponent<Animator>();
             healthManager = GetComponent<HealthManager>();
             justPointManager = GetComponent<JustPointManager>();
+
+            targetColliders = target.GetComponentsInChildren<Collider>(false);
+            Animator.keepAnimatorStateOnDisable = true;
+                    
+            foreach (var smb in Animator.GetBehaviours<MatchPositionSMB>())
+            {
+                smb.target = this;
+            }
         }
 
         private void Start()
@@ -124,7 +136,9 @@ namespace Player
             {
                 stateMachine.ChangeState(PlayerStateID.AttackUltimate);
                 ultimateManager.DecreaseGauge(UltCost);
-            }            
+            }
+
+            UpdateClosestTarget();
         }
 
         private void FixedUpdate()
@@ -190,5 +204,27 @@ namespace Player
             yield return new WaitForSeconds(1);
             timingText.enabled = false;
         }
+
+        // 攻撃アシストのターゲット更新
+        public void UpdateClosestTarget()
+        {
+            float closestDistance = float.MaxValue;
+            Collider closestCollider = null;
+
+            foreach (var collider in targetColliders)
+            {
+                float distance = Vector3.Distance(transform.position, collider.transform.position);
+
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    closestCollider = collider;
+                }
+            }
+
+            targetCollider = closestCollider;
+        }
+
+        public Vector3 TargetPosition => targetCollider.ClosestPoint(transform.position);
     }
 }
