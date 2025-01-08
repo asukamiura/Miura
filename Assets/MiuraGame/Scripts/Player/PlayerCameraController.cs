@@ -1,11 +1,11 @@
 ﻿using Cinemachine;
-using System.Collections;
 using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
 {
     [SerializeField] private CinemachineBrain cinemachineBrain;
     [SerializeField] private CinemachineVirtualCamera playerCamera;
+    [SerializeField] private CinemachineVirtualCamera justGuardCamera;
     [SerializeField] private CinemachineImpulseSource impulseSource;
 
     private CinemachinePOV pov;
@@ -13,20 +13,18 @@ public class PlayerCameraController : MonoBehaviour
     private float verticalSpeed = 1;
     private float sensitivity = 50;
     private bool isInput = true;
-    private Vector3 defaultCameraPos;
-    private bool isSpread = false;
-    private bool isNarrow = false;
-    private float spreadSpeed = 1;
-    private float narrowSpeed = 1;
+    private bool isChangeFOV = false;
+    private bool isChangeDutch = false;
+    private float changeFOVSpeed = 1;
     private float targetFOV = 50;
+    private float changeDutchSpeed = 1;
+    private float targetDutch = 1;
 
     private InputReciver Input => InputReciver.Instance;
 
     private void Start()
     {
         pov = playerCamera.GetCinemachineComponent<CinemachinePOV>();
-
-        defaultCameraPos = playerCamera.transform.position;
     }
 
     private void Update()
@@ -37,63 +35,72 @@ public class PlayerCameraController : MonoBehaviour
             pov.m_VerticalAxis.Value += Input.Look.y * verticalSpeed * sensitivity * Time.deltaTime;
         }
 
-        if (isSpread)
+        if (isChangeFOV)
         {
-            playerCamera.m_Lens.FieldOfView = Mathf.Lerp(playerCamera.m_Lens.FieldOfView, targetFOV, spreadSpeed * Time.deltaTime);
+            playerCamera.m_Lens.FieldOfView = Mathf.Lerp(playerCamera.m_Lens.FieldOfView, targetFOV, changeFOVSpeed * Time.deltaTime);
+
+            if (Mathf.Abs(targetFOV - playerCamera.m_Lens.FieldOfView) < 0.1f)
+            {
+                playerCamera.m_Lens.FieldOfView = targetFOV;
+                isChangeFOV = false;
+            }
         }
 
-        if (isNarrow)
+        if (isChangeDutch)
         {
-            playerCamera.m_Lens.FieldOfView = Mathf.Lerp(playerCamera.m_Lens.FieldOfView, targetFOV, narrowSpeed * Time.deltaTime);
+            playerCamera.m_Lens.Dutch = Mathf.Lerp(playerCamera.m_Lens.Dutch, targetDutch, changeDutchSpeed * Time.deltaTime);
+
+            if (Mathf.Abs(targetDutch - playerCamera.m_Lens.Dutch) < 0.1f)
+            {
+                playerCamera.m_Lens.Dutch = targetDutch;
+                isChangeDutch = false;
+            }
         }
 
-    }
-
-    private IEnumerator ActiveInput(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-
-        isInput = true;
     }
 
     /// <summary>
-    /// 視野角を広げる
+    /// 目標視野角、広げる速度を設定、視野角を広げ始める
     /// </summary>
-    /// <param name="targetFOV">目標視野角</param>
-    /// <param name="spreadSpeed">広げる速度</param>
-    private void SpreadFOV(float targetFOV, float spreadSpeed)
-    {      
-        playerCamera.m_Lens.FieldOfView = Mathf.Lerp(playerCamera.m_Lens.FieldOfView, targetFOV, spreadSpeed * Time.deltaTime);
+    /// <param name="newTargetFOV">目標視野角</param>
+    /// <param name="newSpreadSpeed">広げる速度</param>
+    public void StartChangeFOV(float newTargetFOV, float newSpreadSpeed)
+    {
+        targetFOV = newTargetFOV;
+        changeFOVSpeed = newSpreadSpeed;
+        isChangeFOV = true;
+    }
+
+    public void StartChangeDutch(float newTargetDutch, float newChangeDutchSpeed)
+    {
+        targetDutch = newTargetDutch;
+        changeDutchSpeed = newChangeDutchSpeed;
+        isChangeDutch = true;
     }
 
     /// <summary>
-    /// 視野角を狭める
+    /// カメラを揺らす
     /// </summary>
-    /// <param name="targetFOV">目標視野角</param>
-    /// <param name="narrowSpeed">狭める速度</param>
-    private void NarrowFOV(float targetFOV, float narrowSpeed)
-    {        
-        playerCamera.m_Lens.FieldOfView = Mathf.Lerp(playerCamera.m_Lens.FieldOfView, targetFOV, narrowSpeed * Time.deltaTime);
-    }
-
-    public void StartSpreadFOV(float newTargetFOV, float newSpreadSpeed)
-    {
-        isNarrow = false;
-        isSpread = true;
-        targetFOV = newTargetFOV;
-        spreadSpeed = newSpreadSpeed;
-    }
-
-    public void StartNarrowFOV(float newTargetFOV, float newNarrowSpeed)
-    {
-        isSpread = false;
-        isNarrow = true;
-        targetFOV = newTargetFOV;
-        narrowSpeed = newNarrowSpeed;
-    }
-
     public void ApplyImpulse()
     {
         impulseSource.GenerateImpulse();
+    }
+
+    public void ChangeDutch(float dutchVal)
+    {
+        playerCamera.m_Lens.Dutch = dutchVal;
+    }
+
+
+    public void RecenteringEnabled()
+    {
+        pov.m_VerticalRecentering.m_enabled = true;
+        pov.m_HorizontalRecentering.m_enabled = true;
+    }
+
+    public void RecenteringDisabled()
+    {
+        pov.m_VerticalRecentering.m_enabled = false;
+        pov.m_HorizontalRecentering.m_enabled = false;
     }
 }
