@@ -21,20 +21,6 @@ namespace Enemy
         {
             core.animator.CrossFade("Run", 0.1f);
 
-            attackType = Random.Range(1, 4);
-            switch (attackType)
-            {
-                case 1:
-                    targetDistance = 2;
-                    break;
-                case 2:
-                    targetDistance = 3;
-                    break;
-                case 3:
-                    targetDistance = 2;
-                    break;
-            }
-
             // 攻撃開始地点を設定
             attackTargetPos = core.playerTransform.position - core.transform.forward * targetDistance;
         }
@@ -45,18 +31,7 @@ namespace Enemy
         {
             if (core.transform.position == attackTargetPos)
             {
-                switch (attackType)
-                {
-                    case 1:
-                        core.stateMachine.ChangeState(DragonNightmareStateID.Attack1);
-                        break;
-                    case 2:
-                        core.stateMachine.ChangeState(DragonNightmareStateID.Attack2);
-                        break;
-                    case 3:
-                        core.stateMachine.ChangeState(DragonNightmareStateID.Attack3);
-                        break;
-                }
+                core.stateMachine.ChangeState(DragonNightmareStateID.Attack);
             }
             else
             {

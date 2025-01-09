@@ -6,6 +6,7 @@
     Approach,
     Leave,
     Retreat,
+    Attack,
     Attack1,
     Attack2,
     Attack3,

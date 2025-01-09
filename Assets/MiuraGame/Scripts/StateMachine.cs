@@ -29,6 +29,7 @@ public class StateMachine<TStateID>
 
     public void ChangeState(TStateID stateID)
     {
+        Debug.Log(stateID.ToString());
         if (states.TryGetValue(stateID, out IState<TStateID> newState))
         {
             currentState?.Exit();
