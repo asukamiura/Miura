@@ -1,10 +1,14 @@
 ﻿using Player;
+using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace Enemy
 {
     public class DragonNightmareCore : EnemyCoreBase
     {
+        [SerializeField] private List<GameObject> attackColliders = new List<GameObject>();
+
         private const int Fov = 10;     // 視野角
         private const int MinSightDistance = 2;
 
@@ -19,9 +23,6 @@ namespace Enemy
         public int Attack1Count { get; private set; } = 0;    // 連続攻撃1をした数
         public int Attack2Count { get; private set; } = 0;    // 連続攻撃2をした数
         public int Attack3Count { get; private set; } = 0;    // 連続攻撃3をした数
-        public GameObject attack1Collider;
-        public GameObject attack2Collider;
-        public GameObject attack3Collider;
 
         private void Awake()
         {
@@ -32,9 +33,7 @@ namespace Enemy
             stateMachine.RegisterState(new DragonNightmareLeave(this));
             stateMachine.RegisterState(new DragonNightmareApproach(this));
             stateMachine.RegisterState(new DragonNightmareRetreat(this));
-            stateMachine.RegisterState(new DragonNightmareAttack1(this));
-            stateMachine.RegisterState(new DragonNightmareAttack2(this));
-            stateMachine.RegisterState(new DragonNightmareAttack3(this));
+            stateMachine.RegisterState(new DragonNightmareAttack(this));            
             stateMachine.RegisterState(new DragonNightmareDamage(this));
             stateMachine.RegisterState(new DragonNightmareDie(this));
         }
@@ -43,9 +42,7 @@ namespace Enemy
         {
             stateMachine.Initialize(DragonNightmareStateID.Idle);
 
-            attack1Collider.SetActive(false);
-            attack2Collider.SetActive(false);
-            attack3Collider.SetActive(false);
+            ResetAttackCollider();
         }
 
         private void Update()
@@ -116,35 +113,29 @@ namespace Enemy
             Attack3Count = 0;
         }
 
-        public void AttackStart()
+        public void AttackStart(string attackColliderName)
         {
-            switch (stateMachine.StateID)
-            {
-                case DragonNightmareStateID.Attack1:
-                    attack1Collider.SetActive(true);
-                    break;
-                case DragonNightmareStateID.Attack2:
-                    attack2Collider.SetActive(true);
-                    break;
-                case DragonNightmareStateID.Attack3:
-                    attack3Collider.SetActive(true);
-                    break;
-            }
+            var attackCollider = attackColliders.FirstOrDefault(attackCollider => attackCollider.name == attackColliderName);
+
+            if (attackCollider == null) { return; }
+
+            attackCollider.SetActive(true);
         }
 
-        public void AttackEnd()
+        public void AttackEnd(string attackColliderName)
         {
-            switch (stateMachine.StateID)
+            var attackCollider = attackColliders.FirstOrDefault(attackCollider => attackCollider.name == attackColliderName);
+
+            if (attackCollider == null) { return; }
+
+            attackCollider.SetActive(false);
+        }
+
+        public void ResetAttackCollider()
+        {
+            foreach (var attackCollider in attackColliders)
             {
-                case DragonNightmareStateID.Attack1:
-                    attack1Collider.SetActive(false);
-                    break;
-                case DragonNightmareStateID.Attack2:
-                    attack2Collider.SetActive(false);
-                    break;
-                case DragonNightmareStateID.Attack3:
-                    attack3Collider.SetActive(false);
-                    break;
+                attackCollider.SetActive(false);
             }
         }
     }
