@@ -48,10 +48,7 @@ namespace Enemy
             }
             else
             {
-                // プレイヤ－の方向を向く
-                Vector3 direction = (core.playerTransform.position - core.transform.position).normalized;
-                Quaternion lookAtRotation = Quaternion.LookRotation(direction, Vector3.up);
-                core.transform.rotation = Quaternion.Slerp(core.transform.rotation, lookAtRotation, core.rotationSpeed * Time.deltaTime);
+                core.LookAtPlayer();
 
                 switch (moveDirection)
                 {

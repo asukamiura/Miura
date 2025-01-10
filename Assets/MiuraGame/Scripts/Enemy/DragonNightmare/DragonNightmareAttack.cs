@@ -42,7 +42,7 @@ namespace Enemy
             AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("Attack1") || stateInfo.IsName("Attack2") || stateInfo.IsName("Attack3"))
             {
-                if (stateInfo.normalizedTime >= 1 && core.DistanceToPlayer <= AttackRange)
+                if (stateInfo.normalizedTime >= 1 && core.DistanceToPlayer <= AttackRange && core.IsPlayerInSight)
                 {
                     core.stateMachine.ChangeState(DragonNightmareStateID.Attack);
                 }

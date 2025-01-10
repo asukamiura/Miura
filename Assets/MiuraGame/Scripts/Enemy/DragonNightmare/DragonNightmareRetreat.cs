@@ -13,9 +13,9 @@ namespace Enemy
         private Vector3 retreatPointPos;
         private float distanceToPlayer = 10;
 
-        private const float animationTransitionTime = 1;    // アニメーションが一回行われたときの時間
-        private const float retreatStartTime = 0.4f;        // 動き始める時間
-        private const float retreatEndTime = 0.9f;          // 動き終わる時間    
+        private const float AnimationTransitionTime = 1;    // アニメーションが一回行われたときの時間
+        private const float RetreatStartTime = 0.4f;        // 動き始める時間
+        private const float RetreatEndTime = 0.9f;          // 動き終わる時間    
 
         public DragonNightmareRetreat(DragonNightmareCore core)
         {
@@ -24,14 +24,13 @@ namespace Enemy
 
         public void Enter()
         {
-            core.ResetAttackCount();
 
             core.animator.CrossFade("Jump", 0);
 
             retreatPointPos = core.transform.position - core.transform.forward * distanceToPlayer;
 
             AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
-            animationLength = stateInfo.length - (retreatEndTime - retreatStartTime);
+            animationLength = stateInfo.length - (RetreatEndTime - RetreatStartTime);
 
             distance = Vector3.Distance(core.transform.position, retreatPointPos);
 
@@ -49,11 +48,11 @@ namespace Enemy
             AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("Jump"))
             {
-                if (stateInfo.normalizedTime >= animationTransitionTime)
+                if (stateInfo.normalizedTime >= AnimationTransitionTime)
                 {
                     core.stateMachine.ChangeState(DragonNightmareStateID.Approach);
                 }
-                else if (stateInfo.normalizedTime >= retreatStartTime && stateInfo.normalizedTime <= retreatEndTime)
+                else if (stateInfo.normalizedTime >= RetreatStartTime && stateInfo.normalizedTime <= RetreatEndTime)
                 {
                     if (core.transform.position != retreatPointPos)
                     {

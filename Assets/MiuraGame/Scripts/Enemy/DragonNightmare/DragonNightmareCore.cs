@@ -2,27 +2,29 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SocialPlatforms.Impl;
 
 namespace Enemy
 {
     public class DragonNightmareCore : EnemyCoreBase
     {
         [SerializeField] private List<GameObject> attackColliders = new List<GameObject>();
+        [SerializeField] private Transform eyeTransform;
+
+        private Vector3 eyePosition;
+        private Vector3 playerPosition;
 
         private const int Fov = 10;     // 視野角
-        private const int MinSightDistance = 2;
 
         public Transform playerTransform;
         public StateMachine<DragonNightmareStateID> stateMachine;
         public float AngleToPlayer { get; private set; }    // プレイヤーのいる角度
         public float DistanceToPlayer { get; private set; } // プレイヤーとの距離
         public Vector3 CrossProduct { get; private set; }
-        public bool IsPlayerInSight => AngleToPlayer <= Fov && DistanceToPlayer >= MinSightDistance;
+        public bool IsPlayerInSight => Mathf.Abs(AngleToPlayer) <= Fov && DistanceToPlayer >= minDistance;    // プレイヤーが視野内にいるかのフラグ
+        public float minDistance;
         public float rotationSpeed = 10;
         public float rotationAngle = 10;
-        public int Attack1Count { get; private set; } = 0;    // 連続攻撃1をした数
-        public int Attack2Count { get; private set; } = 0;    // 連続攻撃2をした数
-        public int Attack3Count { get; private set; } = 0;    // 連続攻撃3をした数
 
         private void Awake()
         {
@@ -33,6 +35,7 @@ namespace Enemy
             stateMachine.RegisterState(new DragonNightmareLeave(this));
             stateMachine.RegisterState(new DragonNightmareApproach(this));
             stateMachine.RegisterState(new DragonNightmareRetreat(this));
+            stateMachine.RegisterState(new DragonNightmareMove(this));            
             stateMachine.RegisterState(new DragonNightmareAttack(this));            
             stateMachine.RegisterState(new DragonNightmareDamage(this));
             stateMachine.RegisterState(new DragonNightmareDie(this));
@@ -43,6 +46,9 @@ namespace Enemy
             stateMachine.Initialize(DragonNightmareStateID.Idle);
 
             ResetAttackCollider();
+
+            eyePosition = new Vector3(eyeTransform.position.x, transform.position.y, eyeTransform.position.z);
+            minDistance = Vector3.Distance(transform.position, eyePosition);
         }
 
         private void Update()
@@ -52,17 +58,18 @@ namespace Enemy
                 stateMachine.ChangeState(DragonNightmareStateID.Die);
             }
 
-            stateMachine.Update();
+            stateMachine?.Update();
+
+            // プレイヤーとの距離を計算
+            playerPosition = new Vector3(playerTransform.position.x, transform.position.y, playerTransform.position.z);
+            DistanceToPlayer = Vector3.Distance(transform.position, playerPosition);
 
             // プレイヤー方向の角度を計算
             Vector3 direction = (playerTransform.position - transform.position).normalized;
-            AngleToPlayer = Vector3.Angle(transform.forward, direction);
+            AngleToPlayer = Vector3.SignedAngle(transform.forward, direction, Vector3.up);
 
             // 外積
-            CrossProduct = Vector3.Cross(transform.forward, direction);
-
-            // プレイヤーとの距離を計算
-            DistanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+            //CrossProduct = Vector3.Cross(eyeTransform.forward, direction);
         }
 
         private void FixedUpdate()
@@ -82,35 +89,6 @@ namespace Enemy
                     stateMachine.ChangeState(DragonNightmareStateID.Damage);
                 }
             }
-        }
-
-        public void IncreaseAttackCount(int attackType)
-        {
-            switch (attackType)
-            {
-                case 1:
-                    Attack1Count++;
-                    Attack2Count = 0;
-                    Attack3Count = 0;
-                    break;
-                case 2:
-                    Attack1Count = 0;
-                    Attack2Count++;
-                    Attack3Count = 0;
-                    break;
-                case 3:
-                    Attack1Count = 0;
-                    Attack2Count = 0;
-                    Attack3Count++;
-                    break;
-            }
-        }
-
-        public void ResetAttackCount()
-        {
-            Attack1Count = 0;
-            Attack2Count = 0;
-            Attack3Count = 0;
         }
 
         public void AttackStart(string attackColliderName)
@@ -137,6 +115,17 @@ namespace Enemy
             {
                 attackCollider.SetActive(false);
             }
+        }
+
+        /// <summary>
+        /// プレイヤーの方向を向く
+        /// </summary>
+        public void LookAtPlayer()
+        {
+            // プレイヤ－の方向を向く
+            Vector3 direction = (playerTransform.position - transform.position).normalized;
+            Quaternion lookAtRotation = Quaternion.LookRotation(direction, Vector3.up);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookAtRotation, rotationSpeed * Time.deltaTime);
         }
     }
 }

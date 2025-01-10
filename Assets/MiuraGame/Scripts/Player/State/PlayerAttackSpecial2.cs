@@ -50,11 +50,13 @@ namespace Player
             {
                 if (stateInfo.normalizedTime >= 0.54 && stateInfo.normalizedTime <= 0.6)
                 {
-                    core.Animator.speed = 0.3f;
+                    core.animationController.ChangeAllAnimationSpeed(0.3f);
                 }
                 else
                 {
-                    core.Animator.speed = 1.3f;
+                    //core.Animator.speed = 1.3f;
+                    core.animationController.ChangeAnimationSpeed("Player", 1f);
+                    core.animationController.ChangeAnimationSpeed("DragonNightmare", 1f);
                 }
 
                 if (stateInfo.normalizedTime >= 1)
