@@ -1,8 +1,7 @@
 ﻿using Player;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
-using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine;
 
 namespace Enemy
 {
@@ -35,8 +34,8 @@ namespace Enemy
             stateMachine.RegisterState(new DragonNightmareLeave(this));
             stateMachine.RegisterState(new DragonNightmareApproach(this));
             stateMachine.RegisterState(new DragonNightmareRetreat(this));
-            stateMachine.RegisterState(new DragonNightmareMove(this));            
-            stateMachine.RegisterState(new DragonNightmareAttack(this));            
+            stateMachine.RegisterState(new DragonNightmareMove(this));
+            stateMachine.RegisterState(new DragonNightmareAttack(this));
             stateMachine.RegisterState(new DragonNightmareDamage(this));
             stateMachine.RegisterState(new DragonNightmareDie(this));
         }
