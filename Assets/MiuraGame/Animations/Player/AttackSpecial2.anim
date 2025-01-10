@@ -93010,20 +93010,13 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 1.1666666
-    functionName: PlaySe
-    data: AttackNormal1
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.1666666
     functionName: AttackStart
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.2
+  - time: 1.1666666
     functionName: GenerateEffect
     data: AttackSpecial2Effect1
     objectReferenceParameter: {fileID: 0}
