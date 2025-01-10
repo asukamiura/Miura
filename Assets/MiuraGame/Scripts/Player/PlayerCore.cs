@@ -31,6 +31,7 @@ namespace Player
         public UltimateManager ultimateManager;
         public ScoreManager scoreManager;
         public AttackCorrectionManager attackCorrectionManager;
+        public AnimationController animationController;
         public JustGuard JustGuard;
         public GameSePlayer gameSePlayer;
         public Collider judgeDodgeCollider;
@@ -47,7 +48,6 @@ namespace Player
         public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
         public int justGuardCount = 0;
         public int justDodgeCount = 0;
-        public Transform slashEffectTransform;
 
         private void Awake()
         {

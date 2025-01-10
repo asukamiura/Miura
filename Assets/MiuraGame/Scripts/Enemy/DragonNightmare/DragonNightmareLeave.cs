@@ -18,8 +18,6 @@ namespace Enemy
 
         public void Enter()
         {
-            core.ResetAttackCount();
-
             core.animator.CrossFade("WalkBack", 0);
 
             attackType = Random.Range(1, 4);
@@ -49,13 +47,10 @@ namespace Enemy
                 switch (attackType)
                 {
                     case 1:
-                        core.stateMachine.ChangeState(DragonNightmareStateID.Attack1);
                         break;
                     case 2:
-                        core.stateMachine.ChangeState(DragonNightmareStateID.Attack2);
                         break;
                     case 3:
-                        core.stateMachine.ChangeState(DragonNightmareStateID.Attack3);
                         break;
                 }
             }

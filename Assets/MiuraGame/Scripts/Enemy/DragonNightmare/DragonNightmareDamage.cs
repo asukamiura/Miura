@@ -14,8 +14,7 @@ namespace Enemy
 
         public void Enter()
         {
-            core.animator.CrossFade("Damage", 0.1f);
-            core.IncreaseAttackCount(3);
+            core.animator.CrossFade("Damage", 0.1f, 0, 0);
         }
 
         public void Update()
@@ -25,7 +24,7 @@ namespace Enemy
             {
                 if (stateInfo.normalizedTime >= 1)
                 {
-                    core.stateMachine.ChangeState(DragonNightmareStateID.Idle);
+                    core.stateMachine.ChangeState(DragonNightmareStateID.TakeWarning);
                 }
             }
         }

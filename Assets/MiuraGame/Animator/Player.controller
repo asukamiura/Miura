@@ -295,7 +295,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBodyPart: 5
   effectiveRange: {x: 0.5, y: 0.7}
-  assistPower: 0.2
+  assistPower: 1
   assistDistance: 10
 --- !u!1102 &2461169692437306705
 AnimatorState:
@@ -482,7 +482,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBodyPart: 5
   effectiveRange: {x: 0.15, y: 0.38}
-  assistPower: 0.2
+  assistPower: 1
   assistDistance: 10
 --- !u!1102 &6697276241398671833
 AnimatorState:

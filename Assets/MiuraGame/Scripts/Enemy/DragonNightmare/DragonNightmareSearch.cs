@@ -6,6 +6,7 @@ namespace Enemy
     {
         public DragonNightmareStateID StateID => DragonNightmareStateID.Search;
         private DragonNightmareCore core;
+        private const float attackRange = 5;
 
         public DragonNightmareSearch(DragonNightmareCore core)
         {
@@ -23,26 +24,19 @@ namespace Enemy
         {
             if (!core.IsPlayerInSight)
             {
-                // 視野にプレイヤーが入るまで回転
-                Vector3 direction = (core.playerTransform.position - core.transform.position).normalized;
-                Quaternion lookAtRotation = Quaternion.LookRotation(direction, Vector3.up);
-                core.transform.rotation = Quaternion.Slerp(core.transform.rotation, lookAtRotation, core.rotationSpeed * Time.deltaTime);
+                core.LookAtPlayer();
             }
             else
-            {    
-                if(core.Attack1Count >= 2 || core.Attack2Count >= 2 || core.Attack3Count >= 2)
+            {
+                if (core.DistanceToPlayer <= attackRange)
                 {
-                    core.stateMachine.ChangeState(DragonNightmareStateID.Retreat);
-                    core.ResetAttackCount();
+                    core.stateMachine.ChangeState(DragonNightmareStateID.Attack);
                 }
-                else if (core.DistanceToPlayer <= 2)
+                else
                 {
-                    core.stateMachine.ChangeState(DragonNightmareStateID.Leave);
+                    core.stateMachine.ChangeState(DragonNightmareStateID.Move);
                 }
-                else if (core.DistanceToPlayer > 2)
-                {
-                    core.stateMachine.ChangeState(DragonNightmareStateID.Approach);
-                }
+
             }
         }
 
