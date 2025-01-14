@@ -1,16 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 
 public class MatchPositionSMB : StateMachineBehaviour
 {
     [SerializeField] private AvatarTarget targetBodyPart = AvatarTarget.Root;
-    [SerializeField, MinMax(0,1)] private Vector2 effectiveRange;
+    [SerializeField, MinMax(0, 1)] private Vector2 effectiveRange;
 
     [SerializeField, Range(0, 1)] private float assistPower = 1;
     [SerializeField, Range(0, 10)] private float assistDistance = 1;
-       
+
     public IMatchTarget target;
 
     private MatchTargetWeightMask weightMask;

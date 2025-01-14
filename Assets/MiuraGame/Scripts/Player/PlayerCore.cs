@@ -3,18 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
 
 namespace Player
 {
-    public class PlayerCore : MonoBehaviour, IMatchTarget
+    public class PlayerCore : MonoBehaviour
     {
         [SerializeField] private Collider swordCollider;
         [SerializeField] private int healVal = 20;  // 回復量
         [SerializeField] private TextMeshProUGUI timingText;
         [SerializeField] private Transform justGuardEffectTransform;
-        [SerializeField] private GameObject target;
-        [SerializeField] private Collider[] targetColliders;
 
         private HealthManager healthManager;
         private InputReciver Input => InputReciver.Instance;
@@ -30,7 +27,7 @@ namespace Player
         public PowerUpManager powerUpManager;
         public UltimateManager ultimateManager;
         public ScoreManager scoreManager;
-        public AttackCorrectionManager attackCorrectionManager;
+        public AttackAssist attackCorrectionManager;
         public AnimationController animationController;
         public JustGuard JustGuard;
         public GameSePlayer gameSePlayer;
@@ -70,14 +67,6 @@ namespace Player
             Animator = GetComponent<Animator>();
             healthManager = GetComponent<HealthManager>();
             justPointManager = GetComponent<JustPointManager>();
-
-            targetColliders = target.GetComponentsInChildren<Collider>(false);
-            Animator.keepAnimatorStateOnDisable = true;
-                    
-            foreach (var smb in Animator.GetBehaviours<MatchPositionSMB>())
-            {
-                smb.target = this;
-            }
         }
 
         private void Start()
@@ -137,8 +126,6 @@ namespace Player
                 stateMachine.ChangeState(PlayerStateID.AttackUltimate);
                 ultimateManager.DecreaseGauge(UltCost);
             }
-
-            UpdateClosestTarget();
         }
 
         private void FixedUpdate()
@@ -204,27 +191,5 @@ namespace Player
             yield return new WaitForSeconds(1);
             timingText.enabled = false;
         }
-
-        // 攻撃アシストのターゲット更新
-        public void UpdateClosestTarget()
-        {
-            float closestDistance = float.MaxValue;
-            Collider closestCollider = null;
-
-            foreach (var collider in targetColliders)
-            {
-                float distance = Vector3.Distance(transform.position, collider.transform.position);
-
-                if (distance < closestDistance)
-                {
-                    closestDistance = distance;
-                    closestCollider = collider;
-                }
-            }
-
-            targetCollider = closestCollider;
-        }
-
-        public Vector3 TargetPosition => targetCollider.ClosestPoint(transform.position);
     }
 }

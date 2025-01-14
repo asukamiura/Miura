@@ -50,7 +50,6 @@ namespace SoundSystem
             set { audioMixer.SetVolumeByLinear(BGMVolumeParamName, value); }
         }
 
-
         private void Awake()
         {
             if (Instance == null)

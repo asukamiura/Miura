@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 
@@ -12,6 +13,15 @@ public class EffectGenerator : MonoBehaviour
 
         if (effect == null) { return; }
 
-        Instantiate(effect, playPos, playRotation);
+        GameObject obj = Instantiate(effect, playPos, playRotation);
+
+        StartCoroutine(DestroyEffect(obj));
+    }
+
+    IEnumerator DestroyEffect(GameObject effect)
+    {
+        yield return new WaitForSeconds(0.3f);
+
+        Destroy(effect);
     }
 }
