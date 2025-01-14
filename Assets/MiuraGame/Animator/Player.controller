@@ -143,9 +143,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f7401e389f6fff4ebb9209eff46ca9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetBodyPart: 0
+  targetBodyPart: 5
   effectiveRange: {x: 0.27, y: 0.4}
-  assistPower: 0.2
+  assistPower: 0.5
   assistDistance: 5
 --- !u!1102 &-428419035062075258
 AnimatorState:
@@ -181,7 +181,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AttackNormal1
-  m_Speed: 1.3
+  m_Speed: 1.2
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours:
@@ -262,7 +262,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AttackNormal3
-  m_Speed: 1.3
+  m_Speed: 1.2
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours:
@@ -518,7 +518,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AttackNormal2
-  m_Speed: 1.3
+  m_Speed: 1.2
   m_CycleOffset: 0
   m_Transitions: []
   m_StateMachineBehaviours:
@@ -590,7 +590,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBodyPart: 5
   effectiveRange: {x: 0.06, y: 0.36}
-  assistPower: 0.2
+  assistPower: 0.5
   assistDistance: 5
 --- !u!1102 &9089622449732348613
 AnimatorState:
@@ -633,5 +633,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetBodyPart: 5
   effectiveRange: {x: 0.01, y: 0.34}
-  assistPower: 0.2
+  assistPower: 0.5
   assistDistance: 5

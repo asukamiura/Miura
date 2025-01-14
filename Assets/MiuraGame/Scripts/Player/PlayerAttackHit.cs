@@ -11,6 +11,7 @@ namespace Player
         [SerializeField] private PowerUpManager powerUpManager;
         [SerializeField] private ScoreManager scoreManager;
         [SerializeField] private GameSePlayer gameSePlayer;
+        [SerializeField] private EffectGenerator effectGenerator;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -21,6 +22,8 @@ namespace Player
             if (healthManager == null) { return; }
 
             if (playerCore.hitEnemies.Contains(enemy)) { return; }
+
+            effectGenerator.PlayEffect("HitEffect", transform.position, Quaternion.identity);
 
             switch (playerCore.stateMachine.StateID)
             {
