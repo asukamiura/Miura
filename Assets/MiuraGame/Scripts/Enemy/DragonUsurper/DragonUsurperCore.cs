@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 namespace Enemy
 {
     public class DragonUsurperCore : EnemyCoreBase
     {
+        [SerializeField] private List<GameObject> attackColliders = new List<GameObject>();
         [SerializeField] private Transform breathPoint;
         [SerializeField] private GameObject energyBall;
 
@@ -37,9 +39,7 @@ namespace Enemy
             stateMachine.RegisterState(new DragonUsurperTakeOff(this));
             stateMachine.RegisterState(new DragonUsurperLand(this));
             stateMachine.RegisterState(new DragonUsurperLeave(this));
-            stateMachine.RegisterState(new DragonUsurperAttack1(this));
-            stateMachine.RegisterState(new DragonUsurperAttack2(this));
-            stateMachine.RegisterState(new DragonUsurperAttack3(this));
+            stateMachine.RegisterState(new DragonUsurperAttack(this));
             stateMachine.RegisterState(new DragonUsurperFlyAttack(this));
             stateMachine.RegisterState(new DragonUsurperDie(this));
         }
@@ -77,34 +77,22 @@ namespace Enemy
             stateMachine.FixedUpdate();
         }
 
-        public void AttackStart()
+        public void AttackStart(string attackColliderName)
         {
-            switch (stateMachine.StateID)
-            {
-                case DragonUsurperStateID.Attack1:
-                    attack1Collider.SetActive(true);
-                    break;
-                case DragonUsurperStateID.Attack2:
-                    attack2Collider.SetActive(true);
-                    break;
-                case DragonUsurperStateID.Attack3:
-                    break;
-            }
+            var attackCollider = attackColliders.FirstOrDefault(attackCollider => attackCollider.name == attackColliderName);
+
+            if (attackCollider == null) { return; }
+
+            attackCollider.SetActive(true);
         }
 
-        public void AttackEnd()
+        public void AttackEnd(string attackColliderName)
         {
-            switch (stateMachine.StateID)
-            {
-                case DragonUsurperStateID.Attack1:
-                    attack1Collider.SetActive(false);
-                    break;
-                case DragonUsurperStateID.Attack2:
-                    attack2Collider.SetActive(false);
-                    break;
-                case DragonUsurperStateID.Attack3:
-                    break;
-            }
+            var attackCollider = attackColliders.FirstOrDefault(attackCollider => attackCollider.name == attackColliderName);
+
+            if (attackCollider == null) { return; }
+
+            attackCollider.SetActive(false);
         }
 
         public void GenerateEnergyBall()

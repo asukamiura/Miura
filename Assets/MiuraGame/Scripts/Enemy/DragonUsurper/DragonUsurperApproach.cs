@@ -45,18 +45,18 @@ namespace Enemy
         {
             if (core.transform.position == attackTargetPos)
             {
-                switch (attackType)
-                {
-                    case 1:
-                        core.stateMachine.ChangeState(DragonUsurperStateID.Attack1);
-                        break;
-                    case 2:
-                        core.stateMachine.ChangeState(DragonUsurperStateID.Attack2);
-                        break;
-                    case 3:
-                        core.stateMachine.ChangeState(DragonUsurperStateID.Attack3);
-                        break;
-                }
+                //switch (attackType)
+                //{
+                //    case 1:
+                //        core.stateMachine.ChangeState(DragonUsurperStateID.Attack1);
+                //        break;
+                //    case 2:
+                //        core.stateMachine.ChangeState(DragonUsurperStateID.Attack2);
+                //        break;
+                //    case 3:
+                //        core.stateMachine.ChangeState(DragonUsurperStateID.Attack3);
+                //        break;
+                //}
             }
             else
             {

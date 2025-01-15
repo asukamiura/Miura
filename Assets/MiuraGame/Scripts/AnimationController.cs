@@ -6,9 +6,9 @@ public class AnimationController : MonoBehaviour
 {
     [SerializeField] private List<GameObject> gameObjects = new List<GameObject>(); 
 
-    public void ChangeAnimationSpeed(string gameObjectName, float animationSpeed)
+    public void ChangeAnimationSpeed(string tagName, float animationSpeed)
     {
-        var animator = gameObjects.FirstOrDefault(gameObject => gameObject.name == gameObjectName).GetComponent<Animator>();
+        var animator = gameObjects.FirstOrDefault(gameObject => gameObject.tag == tagName).GetComponent<Animator>();
 
         animator.speed  = animationSpeed;
     }

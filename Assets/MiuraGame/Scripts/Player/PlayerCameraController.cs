@@ -5,7 +5,6 @@ public class PlayerCameraController : MonoBehaviour
 {
     [SerializeField] private CinemachineBrain cinemachineBrain;
     [SerializeField] private CinemachineVirtualCamera playerCamera;
-    [SerializeField] private CinemachineVirtualCamera justGuardCamera;
     [SerializeField] private CinemachineImpulseSource impulseSource;
 
     private CinemachinePOV pov;
