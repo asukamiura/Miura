@@ -20,21 +20,21 @@ namespace Enemy
         {
             core.animator.CrossFade("RunBack", 0);
 
-            attackType = Random.Range((int)DragonUsurperStateID.Attack1, (int)DragonUsurperStateID.Attack3 + 1);
-            switch (attackType)
-            {
-                case (int)DragonUsurperStateID.Attack1:
-                    targetDistance = 5;
-                    break;
-                case (int)DragonUsurperStateID.Attack2:
-                    targetDistance = 8;
-                    break;
-                case (int)DragonUsurperStateID.Attack3:
-                    targetDistance = 10;
-                    break;
-                default:
-                    break;
-            }
+            //attackType = Random.Range((int)DragonUsurperStateID.Attack1, (int)DragonUsurperStateID.Attack3 + 1);
+            //switch (attackType)
+            //{
+            //    case (int)DragonUsurperStateID.Attack1:
+            //        targetDistance = 5;
+            //        break;
+            //    case (int)DragonUsurperStateID.Attack2:
+            //        targetDistance = 8;
+            //        break;
+            //    case (int)DragonUsurperStateID.Attack3:
+            //        targetDistance = 10;
+            //        break;
+            //    default:
+            //        break;
+            //}
 
             // 移動目標地点を設定
             attackTargetPos = core.playerTransform.position - core.transform.forward * targetDistance;
@@ -46,18 +46,18 @@ namespace Enemy
         {
             if (core.transform.position == attackTargetPos)
             {
-                switch (attackType)
-                {
-                    case (int)DragonUsurperStateID.Attack1:
-                        core.stateMachine.ChangeState(DragonUsurperStateID.Attack1);
-                        break;
-                    case (int)DragonUsurperStateID.Attack2:
-                        core.stateMachine.ChangeState(DragonUsurperStateID.Attack2);
-                        break;
-                    case (int)DragonUsurperStateID.Attack3:
-                        core.stateMachine.ChangeState(DragonUsurperStateID.Attack3);
-                        break;
-                }
+                //switch (attackType)
+                //{
+                //    case (int)DragonUsurperStateID.Attack1:
+                //        core.stateMachine.ChangeState(DragonUsurperStateID.Attack);
+                //        break;
+                //    case (int)DragonUsurperStateID.Attack2:
+                //        core.stateMachine.ChangeState(DragonUsurperStateID.Attack);
+                //        break;
+                //    case (int)DragonUsurperStateID.Attack3:
+                //        break;
+                //}
+                core.stateMachine.ChangeState(DragonUsurperStateID.Attack);
             }
             else
             {

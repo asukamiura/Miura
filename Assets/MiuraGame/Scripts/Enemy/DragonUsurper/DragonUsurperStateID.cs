@@ -1,16 +1,18 @@
-﻿public enum DragonUsurperStateID
+﻿
+namespace Enemy
 {
-    Idle,
-    TakeWarning,
-    Search,
-    Approach,
-    TakeOff,
-    Land,
-    Leave,
-    Attack1,
-    Attack2,
-    Attack3,
-    FlyAttack,
-    Damage,
-    Die,
+    public enum DragonUsurperStateID
+    {
+        Idle,
+        TakeWarning,
+        Search,
+        Approach,
+        TakeOff,
+        Land,
+        Leave,
+        Attack,
+        FlyAttack,
+        Damage,
+        Die,
+    }
 }
