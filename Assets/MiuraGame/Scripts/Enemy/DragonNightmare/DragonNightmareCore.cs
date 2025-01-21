@@ -11,19 +11,17 @@ namespace Enemy
         [SerializeField] private Transform eyeTransform;
 
         private Vector3 eyePosition;
-        private Vector3 playerPosition;
 
         private const int Fov = 10;     // 視野角
 
-        public Transform playerTransform;
         public StateMachine<DragonNightmareStateID> stateMachine;
         public float AngleToPlayer { get; private set; }    // プレイヤーのいる角度
         public float DistanceToPlayer { get; private set; } // プレイヤーとの距離
         public Vector3 CrossProduct { get; private set; }
         public bool IsPlayerInSight => Mathf.Abs(AngleToPlayer) <= Fov && DistanceToPlayer >= minDistance;    // プレイヤーが視野内にいるかのフラグ
         public float minDistance;
-        public float rotationSpeed = 10;
         public float rotationAngle = 10;
+        public bool isJustGuarded = false;
 
         private void Awake()
         {
@@ -44,6 +42,8 @@ namespace Enemy
         {
             stateMachine.Initialize(DragonNightmareStateID.Idle);
 
+            InitializeTotalWeight();
+
             ResetAttackCollider();
 
             eyePosition = new Vector3(eyeTransform.position.x, transform.position.y, eyeTransform.position.z);
@@ -60,7 +60,7 @@ namespace Enemy
             stateMachine?.Update();
 
             // プレイヤーとの距離を計算
-            playerPosition = new Vector3(playerTransform.position.x, transform.position.y, playerTransform.position.z);
+            Vector3 playerPosition = new Vector3(playerTransform.position.x, transform.position.y, playerTransform.position.z);
             DistanceToPlayer = Vector3.Distance(transform.position, playerPosition);
 
             // プレイヤー方向の角度を計算
@@ -69,6 +69,12 @@ namespace Enemy
 
             // 外積
             //CrossProduct = Vector3.Cross(eyeTransform.forward, direction);
+
+            if (playerCore.stateMachine.StateID == PlayerStateID.Block && stateMachine.StateID != DragonNightmareStateID.Damage
+                && stateMachine.StateID != DragonNightmareStateID.Die)
+            {
+                isJustGuarded = true;
+            }
         }
 
         private void FixedUpdate()
@@ -114,17 +120,6 @@ namespace Enemy
             {
                 attackCollider.SetActive(false);
             }
-        }
-
-        /// <summary>
-        /// プレイヤーの方向を向く
-        /// </summary>
-        public void LookAtPlayer()
-        {
-            // プレイヤ－の方向を向く
-            Vector3 direction = (playerTransform.position - transform.position).normalized;
-            Quaternion lookAtRotation = Quaternion.LookRotation(direction, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookAtRotation, rotationSpeed * Time.deltaTime);
         }
     }
 }

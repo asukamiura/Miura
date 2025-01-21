@@ -7,7 +7,7 @@ namespace Player
         public PlayerStateID StateID => PlayerStateID.Guard;
         private InputReciver input => InputReciver.Instance;
         private PlayerCore core;
-        private const int getJustPoints = 1;    // ジャスト回避成功時に得るジャストポイント量
+        private const int GetJustPoints = 1;    // ジャスト回避成功時に得るジャストポイント量
 
         public PlayerGuard(PlayerCore core)
         {
@@ -17,7 +17,7 @@ namespace Player
         public void Enter()
         {
             //anim.applyRootMotion = true;
-            core.attackCorrectionManager.CorrectionAttack();
+            core.attackAssist.CorrectionAttack();
             core.Animator.CrossFade("Guard", 0, 0, 0);
         }
 
@@ -38,7 +38,7 @@ namespace Player
                 {
                     core.justGuardCount++;
                     core.TimingUIShow("Just");
-                    core.justPointManager.AddJustPoints(getJustPoints);
+                    core.justPointManager.AddJustPoints(GetJustPoints);
                 }
                 else if (stateInfo.normalizedTime >= 0.8f && stateInfo.normalizedTime < 1)
                 {

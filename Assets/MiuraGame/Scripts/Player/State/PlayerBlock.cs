@@ -20,6 +20,7 @@ namespace Player
             core.JustGuard.ActionJustGuard();
             core.isInvincible = true;
             core.Animator.CrossFade("Block", 0);
+            core.Rb.velocity = Vector3.zero;
         }
 
         public void Update()
@@ -37,7 +38,7 @@ namespace Player
 
         public void FixedUpdate()
         {
-
+            core.Rb.velocity = Vector3.zero;
         }
 
         public void Exit()

@@ -7,7 +7,7 @@ namespace Player
         [SerializeField] GameObject target;
 
         private Animator animator;
-        private Collider[] targetColliders;
+        [SerializeField] private Collider[] targetColliders;
         private Collider targetCollider;
         private InputReciver Input => InputReciver.Instance;
         private Vector3 direction;

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 namespace Enemy
 {
@@ -6,11 +7,10 @@ namespace Enemy
     {
         public DragonUsurperStateID StateID => DragonUsurperStateID.TakeWarning;
         private DragonUsurperCore core;
-        private int moveDirection;
-        private float moveSpeed = 2.5f;
         private float targetDistance = 5;
-        private float rotationSpeed = 1;
-        private Vector3 moveTargetPos;
+        private Vector3 targetPos;
+
+        private const float MoveSpeed = 2.5f;
 
         public DragonUsurperTakeWarning(DragonUsurperCore core)
         {
@@ -22,26 +22,34 @@ namespace Enemy
             core.animator.CrossFade("WalkFront", 0.1f);
 
             // 目標地点を設定
-            moveTargetPos = core.playerTransform.position - core.transform.right * targetDistance;
+            targetPos = core.playerTransform.position - core.transform.right * targetDistance;
+
+            core.navMeshAgent.speed = MoveSpeed;
+            core.navMeshAgent.acceleration = MoveSpeed * 2;
         }
 
-        public void Update() { }
-
-        public void FixedUpdate()
+        public void Update() 
         {
-            if (core.transform.position == moveTargetPos)
+            if (core.transform.position != targetPos)
             {
-                core.stateMachine.ChangeState(DragonUsurperStateID.Search);
+                //core.LookAtPlayer();
+
+                core.navMeshAgent.SetDestination(targetPos);
             }
             else
             {
-                // 移動方向を向く
-                Vector3 direction = (moveTargetPos - core.transform.position).normalized;
-                Quaternion lookAtRotation = Quaternion.LookRotation(direction, Vector3.up);
-                core.transform.rotation = Quaternion.Slerp(core.transform.rotation, lookAtRotation, rotationSpeed * Time.deltaTime);
-
-                core.transform.position = Vector3.MoveTowards(core.transform.position, moveTargetPos, moveSpeed * Time.deltaTime);
+                core.stateMachine.ChangeState(DragonUsurperStateID.Move);
             }
+
+            if (!NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 1, NavMesh.AllAreas))
+            {
+                core.navMeshAgent.ResetPath();
+                core.stateMachine.ChangeState(DragonUsurperStateID.Move);
+            }
+        }
+
+        public void FixedUpdate()
+        {           
         }
 
         public void Exit() { }

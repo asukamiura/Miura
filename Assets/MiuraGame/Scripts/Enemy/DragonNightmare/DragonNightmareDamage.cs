@@ -24,7 +24,7 @@ namespace Enemy
             {
                 if (stateInfo.normalizedTime >= 1)
                 {
-                    core.stateMachine.ChangeState(DragonNightmareStateID.TakeWarning);
+                    core.stateMachine.ChangeState(DragonNightmareStateID.Idle);
                 }
             }
         }

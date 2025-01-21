@@ -1,12 +1,12 @@
-﻿using Cinemachine;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class JustGuard : MonoBehaviour
 {
     [SerializeField] private PlayerCameraController playerCameraController;
-    private Animator enemyAnimator;
-    private Animator playerAnimator;
+    [SerializeField] private AnimationController animationController;
+    [SerializeField] private NavMeshAgent enemyNavMeshAgent;
 
     private const float DefaultFOV = 70;
     private const float TargetFOV = 50;
@@ -17,10 +17,11 @@ public class JustGuard : MonoBehaviour
     private const float ChangeDutchSpeed1 = 20;
     private const float ChangeDutchSpeed2 = 5;
 
+    public bool isJustGuard = false;
+
     private void Start()
     {
-        playerAnimator = GetComponent<Animator>();
-        enemyAnimator = GameObject.FindGameObjectWithTag("Enemy").GetComponent<Animator>();
+        
     }
 
     public void ActionJustGuard()
@@ -30,13 +31,14 @@ public class JustGuard : MonoBehaviour
 
     private IEnumerator ApplyJustGuard(float delay)
     {
+        isJustGuard = true;
+
         playerCameraController.RecenteringEnabled();
         playerCameraController.StartChangeDutch(TargetDutch, ChangeDutchSpeed1);
         playerCameraController.StartChangeFOV(TargetFOV, NarrowSpeed);
         playerCameraController.ApplyImpulse();
 
-        enemyAnimator.speed = 0;
-        playerAnimator.speed = 0f;
+        animationController.ChangeAllAnimationSpeed(0);
         Debug.Log("Start");
 
         yield return new WaitForSeconds(delay);
@@ -44,9 +46,10 @@ public class JustGuard : MonoBehaviour
         //playerCameraController.ChangeDutch(DefaultDutchAngle);
         playerCameraController.StartChangeFOV(DefaultFOV, SpreadSpeed);
         playerCameraController.StartChangeDutch(DefaultDutch, ChangeDutchSpeed2);
-        playerCameraController.RecenteringDisabled();
-        enemyAnimator.speed = 1;
-        playerAnimator.speed = 1;
+        playerCameraController.RecenteringDisabled();        
+        animationController.ChangeAllAnimationSpeed(1);
+
+        isJustGuard = false;
         Debug.Log("End");
     }
 }

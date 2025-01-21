@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerUpManager : MonoBehaviour
+public class PowerManager : MonoBehaviour
 {
     [SerializeField] private float defaultMoveSpeed = 5;
     [SerializeField] private float speedUpMultiplier = 1.3f;

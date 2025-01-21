@@ -11,11 +11,11 @@ namespace Player
         [SerializeField] private Collider swordCollider;
         [SerializeField] private int healVal = 20;  // 回復量
         [SerializeField] private TextMeshProUGUI timingText;
-        [SerializeField] private Transform justGuardEffectTransform;
+        [SerializeField] private Transform attackTransform;
+        [SerializeField] private EffectGenerator effectGenerator;
 
         private HealthManager healthManager;
         private InputReciver Input => InputReciver.Instance;
-        private Collider targetCollider;
 
         private const int ChargeAttackCost = 1;  // チャージ攻撃に必要なジャストポイント数
         private const int HealCost = 2;          // 回復に必要なジャストポイント数
@@ -24,10 +24,10 @@ namespace Player
 
         public StateMachine<PlayerStateID> stateMachine;
         public JustPointManager justPointManager;
-        public PowerUpManager powerUpManager;
+        public PowerManager powerUpManager;
         public UltimateManager ultimateManager;
         public ScoreManager scoreManager;
-        public AttackAssist attackCorrectionManager;
+        public AttackAssist attackAssist;
         public AnimationController animationController;
         public JustGuard JustGuard;
         public GameSePlayer gameSePlayer;
@@ -190,6 +190,6 @@ namespace Player
             timingText.enabled = true;
             yield return new WaitForSeconds(1);
             timingText.enabled = false;
-        }
+        }  
     }
 }
