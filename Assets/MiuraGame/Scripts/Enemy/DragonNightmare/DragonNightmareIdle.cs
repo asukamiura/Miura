@@ -28,7 +28,7 @@ namespace Enemy
 
             if (currentTime >= restTime)
             {
-                core.stateMachine.ChangeState(DragonNightmareStateID.TakeWarning);
+                core.stateMachine.ChangeState(DragonNightmareStateID.Move);
             }
         }
 

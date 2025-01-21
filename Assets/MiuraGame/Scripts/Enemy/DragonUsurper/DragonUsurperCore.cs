@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Player;
 
 namespace Enemy
 {
@@ -10,24 +11,23 @@ namespace Enemy
         [SerializeField] private List<GameObject> attackColliders = new List<GameObject>();
         [SerializeField] private Transform breathPoint;
         [SerializeField] private GameObject energyBall;
+        [SerializeField] private Transform eyeTransform;
 
-        [SerializeField] public List<GameObject> energyBalls = new List<GameObject>();
+        private Vector3 eyePosition;
 
         private const int Fov = 10;     // 視野角
-        private const int MinSightDistance = 2;
 
-        public Transform playerTransform;
+        public List<GameObject> energyBalls = new List<GameObject>();
         public StateMachine<DragonUsurperStateID> stateMachine;
         public float AngleToPlayer { get; private set; }
         public float DistanceToPlayer { get; private set; }
         public Vector3 CrossProduct { get; private set; }
-        public bool IsPlayerInSight => AngleToPlayer <= Fov && DistanceToPlayer >= MinSightDistance;
-        public float rotationSpeed = 1;
+        public bool IsPlayerInSight => Mathf.Abs(AngleToPlayer) <= Fov && DistanceToPlayer >= minDistance;    // プレイヤーが視野内にいるかのフラグ
         public float rotationAngle = 1;
-        public GameObject attack1Collider;
-        public GameObject attack2Collider;
+        public float minDistance;   // 中心から目までの距離
         public bool isFlying = false;
-
+        public bool isJustGuarded = false;
+        public JustGuard justGuard;
 
         private void Awake()
         {
@@ -39,7 +39,9 @@ namespace Enemy
             stateMachine.RegisterState(new DragonUsurperTakeOff(this));
             stateMachine.RegisterState(new DragonUsurperLand(this));
             stateMachine.RegisterState(new DragonUsurperLeave(this));
+            stateMachine.RegisterState(new DragonUsurperMove(this));
             stateMachine.RegisterState(new DragonUsurperAttack(this));
+            stateMachine.RegisterState(new DragonUsurperDamage(this));
             stateMachine.RegisterState(new DragonUsurperFlyAttack(this));
             stateMachine.RegisterState(new DragonUsurperDie(this));
         }
@@ -48,8 +50,12 @@ namespace Enemy
         {
             stateMachine.Initialize(DragonUsurperStateID.Idle);
 
-            attack1Collider.SetActive(false);
-            attack2Collider.SetActive(false);
+            InitializeTotalWeight();
+
+            ResetAttackCollider();
+
+            eyePosition = new Vector3(eyeTransform.position.x, transform.position.y, eyeTransform.position.z);
+            minDistance = Vector3.Distance(transform.position, eyePosition);
         }
 
         private void Update()
@@ -61,20 +67,39 @@ namespace Enemy
 
             stateMachine.Update();
 
+            // プレイヤーとの距離を計算
+            Vector3 playerPosition = new Vector3(playerTransform.position.x, transform.position.y, playerTransform.position.z);
+            DistanceToPlayer = Vector3.Distance(transform.position, playerPosition);
+
             // プレイヤー方向の角度を計算
             Vector3 direction = (playerTransform.position - transform.position).normalized;
-            AngleToPlayer = Vector3.Angle(transform.forward, direction);
+            AngleToPlayer = Vector3.SignedAngle(transform.forward, direction, Vector3.up);
 
             // 外積
             CrossProduct = Vector3.Cross(transform.forward, direction);
 
-            // プレイヤーとの距離を計算
-            DistanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+            if (playerCore.stateMachine.StateID == PlayerStateID.Block && stateMachine.StateID != DragonUsurperStateID.Damage
+                && stateMachine.StateID != DragonUsurperStateID.Die)
+            {
+                isJustGuarded = true;
+            }
         }
 
         private void FixedUpdate()
         {
             stateMachine.FixedUpdate();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("Sword"))
+            {
+                if (playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2
+                    || playerCore.stateMachine.StateID == PlayerStateID.AttackUltimate)
+                {
+                    stateMachine.ChangeState(DragonUsurperStateID.Damage);
+                }
+            }
         }
 
         public void AttackStart(string attackColliderName)
@@ -93,6 +118,14 @@ namespace Enemy
             if (attackCollider == null) { return; }
 
             attackCollider.SetActive(false);
+        }
+
+        public void ResetAttackCollider()
+        {
+            foreach (var attackCollider in attackColliders)
+            {
+                attackCollider.SetActive(false);
+            }
         }
 
         public void GenerateEnergyBall()

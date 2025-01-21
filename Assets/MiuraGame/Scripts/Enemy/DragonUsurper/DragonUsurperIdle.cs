@@ -8,7 +8,7 @@ namespace Enemy
         public DragonUsurperStateID StateID => DragonUsurperStateID.Idle;
         private DragonUsurperCore core;
         private float currentTime = 0;
-        private const float restTime = 1.5f;
+        private const float restTime = 2f;
 
         public DragonUsurperIdle(DragonUsurperCore core)
         {
@@ -16,7 +16,7 @@ namespace Enemy
         }
 
         public void Enter()
-        {
+        {           
             core.animator.CrossFade("Idle", 0.1f);
         }
 
@@ -26,7 +26,7 @@ namespace Enemy
 
             if (currentTime >= restTime)
             {
-                core.stateMachine.ChangeState(DragonUsurperStateID.TakeWarning);
+                core.stateMachine.ChangeState(DragonUsurperStateID.Move);
             }
         }
 

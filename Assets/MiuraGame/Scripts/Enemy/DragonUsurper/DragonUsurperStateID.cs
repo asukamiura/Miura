@@ -10,6 +10,7 @@ namespace Enemy
         TakeOff,
         Land,
         Leave,
+        Move,
         Attack,
         FlyAttack,
         Damage,

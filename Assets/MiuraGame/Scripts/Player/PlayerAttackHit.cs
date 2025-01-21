@@ -8,7 +8,7 @@ namespace Player
     {
         [SerializeField] private PlayerCore playerCore;
         [SerializeField] private UltimateManager ultimateManager;
-        [SerializeField] private PowerUpManager powerUpManager;
+        [SerializeField] private PowerManager powerUpManager;
         [SerializeField] private ScoreManager scoreManager;
         [SerializeField] private GameSePlayer gameSePlayer;
         [SerializeField] private EffectGenerator effectGenerator;
@@ -16,8 +16,8 @@ namespace Player
         private void OnTriggerEnter(Collider other)
         {
             HealthManager healthManager = other.GetComponentInParent<HealthManager>();
-            
-            GameObject enemy = other.transform.root.gameObject; 
+
+            GameObject enemy = other.transform.root.gameObject;
 
             if (healthManager == null) { return; }
 

@@ -36,15 +36,16 @@ namespace Enemy
                 //{
                 //    core.stateMachine.ChangeState(DragonUsurperStateID.TakeOff);
                 //}
+                core.stateMachine.ChangeState(DragonUsurperStateID.Attack);
 
-                if (core.DistanceToPlayer <= 5)
-                {
-                    core.stateMachine.ChangeState(DragonUsurperStateID.Leave);
-                }
-                else
-                {
-                    core.stateMachine.ChangeState(DragonUsurperStateID.Approach);
-                }
+                //if (core.DistanceToPlayer <= 5)
+                //{
+                //    core.stateMachine.ChangeState(DragonUsurperStateID.Leave);
+                //}
+                //else
+                //{
+                //    core.stateMachine.ChangeState(DragonUsurperStateID.Approach);
+                //}
             }
         }
 

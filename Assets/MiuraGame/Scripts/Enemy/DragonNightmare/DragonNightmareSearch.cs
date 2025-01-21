@@ -18,9 +18,7 @@ namespace Enemy
             core.animator.CrossFade("WalkFront", 0.1f);
         }
 
-        public void Update() { }
-
-        public void FixedUpdate()
+        public void Update() 
         {
             if (!core.IsPlayerInSight)
             {
@@ -36,8 +34,11 @@ namespace Enemy
                 {
                     core.stateMachine.ChangeState(DragonNightmareStateID.Move);
                 }
-
             }
+        }
+
+        public void FixedUpdate()
+        {
         }
 
         public void Exit() { }

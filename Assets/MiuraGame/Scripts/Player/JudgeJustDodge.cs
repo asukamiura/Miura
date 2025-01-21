@@ -1,5 +1,4 @@
-﻿using Enemy;
-using SoundSystem;
+﻿using SoundSystem;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,12 +7,10 @@ namespace Player
 {
     public class JudgeJustDodge : MonoBehaviour
     {
+        [SerializeField] private AnimationController animationController;
         [SerializeField] private List<GameObject> slowObjs = new List<GameObject>();
 
         private PlayerCore core;
-        private GameObject enemy;
-        private Animator enemyAnimator;
-        private DragonUsurperCore dragonUsurperCore;
         private float currentTime = 0;
 
         private const int GetJustPoints = 1;    // ジャスト回避成功時に得るジャストポイント量
@@ -25,8 +22,6 @@ namespace Player
         private void Start()
         {
             core = GetComponentInParent<PlayerCore>();
-            enemy = GameObject.FindGameObjectWithTag("Enemy");
-            enemyAnimator = enemy.GetComponent<Animator>();
         }
 
         private void Update()
@@ -69,27 +64,27 @@ namespace Player
                     core.TimingUIShow("Fast");
                 }
 
-                StartCoroutine(SlowTime(enemyAnimator));
+                StartCoroutine(SlowTime());
             }
         }
 
-        IEnumerator SlowTime(Animator enemyAnimator)
+        IEnumerator SlowTime()
         {
             core.isJustDodge = true;
             core.isInvincible = true;
 
             SoundManager.Instance.PlaySe("SlowTime");
 
-            core.Animator.speed = SlowAnimationSpeed;
-            enemyAnimator.speed = SlowAnimationSpeed;
+            animationController.ChangeAllAnimationSpeed(SlowAnimationSpeed);
 
             yield return new WaitForSeconds(PlayerSlowTime);
-           
+
             core.Animator.speed = DefaultAnimationSpeed;
+            animationController.ChangeAnimationSpeed("Player", DefaultAnimationSpeed);
 
             yield return new WaitForSeconds(EnemySlowTime);
 
-            enemyAnimator.speed = DefaultAnimationSpeed;
+            animationController.ChangeAnimationSpeed("Enemy", DefaultAnimationSpeed);
 
             core.judgeDodgeCollider.enabled = false;
             core.isJustDodge = false;

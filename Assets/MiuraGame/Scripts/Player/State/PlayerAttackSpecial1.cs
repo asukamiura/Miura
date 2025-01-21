@@ -15,7 +15,7 @@ namespace Player
 
         public void Enter()
         {
-            core.attackCorrectionManager.CorrectionAttack();
+            core.attackAssist.CorrectionAttack();
             core.Animator.applyRootMotion = true;
             core.Animator.speed = 1;
             // アニメーションの遷移

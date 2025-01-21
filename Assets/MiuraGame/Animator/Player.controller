@@ -372,7 +372,7 @@ AnimatorStateMachine:
     m_Position: {x: 610, y: 270, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8653816438052134263}
-    m_Position: {x: 70, y: 460, z: 0}
+    m_Position: {x: 80, y: 450, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4728962219599666503}
     m_Position: {x: 850, y: 210, z: 0}
@@ -481,7 +481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetBodyPart: 5
-  effectiveRange: {x: 0.15, y: 0.38}
+  effectiveRange: {x: 0, y: 0.38}
   assistPower: 1
   assistDistance: 10
 --- !u!1102 &6697276241398671833
