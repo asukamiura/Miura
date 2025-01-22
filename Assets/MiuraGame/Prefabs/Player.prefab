@@ -98712,6 +98712,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be5895bb3b40c34479fc1284ca981dbf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animationController: {fileID: 0}
   slowObjs: []
 --- !u!136 &7705356484400463173
 CapsuleCollider:
@@ -133248,8 +133249,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 0
   serializedVersion: 3
-  m_Size: {x: 0.22, y: 0.21, z: 0.97}
-  m_Center: {x: 0, y: 0, z: 0.51}
+  m_Size: {x: 0.48, y: 0.42, z: 1.17}
+  m_Center: {x: 0, y: 0, z: 0.6}
 --- !u!114 &9074109519041026212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133267,6 +133268,7 @@ MonoBehaviour:
   powerUpManager: {fileID: 6197171121382576669}
   scoreManager: {fileID: 0}
   gameSePlayer: {fileID: 1833797099937653853}
+  effectGenerator: {fileID: 0}
 --- !u!82 &7831238265638362056
 AudioSource:
   m_ObjectHideFlags: 0
@@ -237674,14 +237676,13 @@ MonoBehaviour:
   swordCollider: {fileID: 4781131168552676040}
   healVal: 50
   timingText: {fileID: 0}
-  justGuardEffectTransform: {fileID: 4941678810826562687}
-  target: {fileID: 0}
-  targetColliders: []
+  attackTransform: {fileID: 0}
+  effectGenerator: {fileID: 0}
   justPointManager: {fileID: 3815827016429225003}
   powerUpManager: {fileID: 6197171121382576669}
   ultimateManager: {fileID: 2040450886317394426}
   scoreManager: {fileID: 0}
-  attackCorrectionManager: {fileID: 7986156752986998189}
+  attackAssist: {fileID: 7986156752986998189}
   animationController: {fileID: 0}
   JustGuard: {fileID: 8385906280321703668}
   gameSePlayer: {fileID: 7933049654471198555}
@@ -237758,6 +237759,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2546c4636a35fa443bf9637f466fcbf8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  target: {fileID: 0}
+  targetColliders: []
 --- !u!195 &5583118294646647826
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -237793,6 +237796,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCameraController: {fileID: 3186865133531067671}
+  animationController: {fileID: 0}
+  enemyNavMeshAgent: {fileID: 0}
+  isJustGuard: 0
 --- !u!114 &3186865133531067671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237807,7 +237813,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cinemachineBrain: {fileID: 0}
   playerCamera: {fileID: 0}
-  justGuardCamera: {fileID: 0}
   impulseSource: {fileID: 2302380198657431302}
 --- !u!82 &3920892258498124795
 AudioSource:
@@ -237924,6 +237929,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a2e0f828afc224245ba098a6d2b3cffe, type: 3}
   - {fileID: 8300000, guid: ad46837e634554c40ac70b5c9e64f7fa, type: 3}
   - {fileID: 8300000, guid: 7bc8d793fff3f0946a2336f69d4de322, type: 3}
+  - {fileID: 8300000, guid: d4d4ed8d6cce1e74c85125c2d3922e04, type: 3}
 --- !u!114 &4809181809222085357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237967,11 +237973,11 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
     m_ImpulseDuration: 0.2
-    m_ImpulseType: 0
+    m_ImpulseType: 3
     m_DissipationRate: 0.25
-    m_RawSignal: {fileID: 0}
-    m_AmplitudeGain: 1
-    m_FrequencyGain: 1
+    m_RawSignal: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+    m_AmplitudeGain: 5
+    m_FrequencyGain: 3
     m_RepeatMode: 0
     m_Randomize: 1
     m_TimeEnvelope:
@@ -237989,7 +237995,7 @@ MonoBehaviour:
         m_RotationOrder: 4
       m_AttackTime: 0
       m_SustainTime: 0.2
-      m_DecayTime: 0.7
+      m_DecayTime: 0.2
       m_ScaleWithImpact: 1
       m_HoldForever: 0
     m_ImpactRadius: 100
