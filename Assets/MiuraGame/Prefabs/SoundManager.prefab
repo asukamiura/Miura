@@ -45,7 +45,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bgmAudioClipList: []
-  seAudioClipList: []
+  seAudioClipList:
+  - {fileID: 8300000, guid: d4d4ed8d6cce1e74c85125c2d3922e04, type: 3}
+  - {fileID: 8300000, guid: 9b7384266ec9070469838529dc38a65a, type: 3}
+  - {fileID: 8300000, guid: df7d8cb9144af63489d3d57ad5aa72fd, type: 3}
+  - {fileID: 8300000, guid: a2e0f828afc224245ba098a6d2b3cffe, type: 3}
+  - {fileID: 8300000, guid: ad46837e634554c40ac70b5c9e64f7fa, type: 3}
+  - {fileID: 8300000, guid: 7bc8d793fff3f0946a2336f69d4de322, type: 3}
+  - {fileID: 8300000, guid: 1259a8612062c5647999589179211116, type: 3}
+  - {fileID: 8300000, guid: 967525a08ca69f24fa13bac604886beb, type: 3}
+  - {fileID: 8300000, guid: 60ec76054a4d58a4581bfc9c45142e8f, type: 3}
+  - {fileID: 8300000, guid: 154307511402a4a4c8224f4f7983d878, type: 3}
   audioMixer: {fileID: 24100000, guid: 8c2da3a5b7afc164cbfacc3e110ff067, type: 2}
   bgmAMG: {fileID: 8238972866745964914, guid: 8c2da3a5b7afc164cbfacc3e110ff067, type: 2}
   seAMG: {fileID: -8038124937916597669, guid: 8c2da3a5b7afc164cbfacc3e110ff067, type: 2}

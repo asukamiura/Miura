@@ -22,13 +22,13 @@ namespace Player
             core.isInvincible = true;
             core.Animator.applyRootMotion = true;
             // アニメーションの遷移
-            core.Animator.CrossFade("AttackSpecial2", 0.1f, 0, 0.1f);
+            core.Animator.CrossFade("AttackSpecial2_1", 0.1f, 0, 0.1f);
         }
 
         public void Update()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("AttackSpecial2"))
+            if (stateInfo.IsName("AttackSpecial2_1"))
             {
                 if (stateInfo.normalizedTime >= 0.24 && stateInfo.normalizedTime <= 0.31)
                 {
@@ -43,12 +43,26 @@ namespace Player
                 {
                     isNextAttack = true;
                     // 次のアニメーションに遷移
-                    core.Animator.CrossFade("AttackSpecial2_2", 0.1f, 0, 0.17f);
+                    core.Animator.CrossFade("AttackSpecial2_2", 0.1f, 0, 0.5f);
                 }
             }
             else if (stateInfo.IsName("AttackSpecial2_2"))
             {
-                if (stateInfo.normalizedTime >= 0.54 && stateInfo.normalizedTime <= 0.6)
+                if (stateInfo.normalizedTime >= 1)
+                {
+                    core.Animator.CrossFade("AttackSpecial2_3", 0);
+                }             
+            }
+            else if (stateInfo.IsName("AttackSpecial2_3"))
+            {
+                if (stateInfo.normalizedTime >= 1)
+                {
+                    core.Animator.CrossFade("AttackSpecial2_4", 0);
+                }
+            }
+            else if (stateInfo.IsName("AttackSpecial2_4"))
+            {
+                if (stateInfo.normalizedTime >= 0.26 && stateInfo.normalizedTime <= 0.33)
                 {
                     core.animationController.ChangeAllAnimationSpeed(0.3f);
                 }
