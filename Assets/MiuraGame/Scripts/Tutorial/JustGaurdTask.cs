@@ -3,11 +3,11 @@ using Player;
 
 public class JustGuardTask : ITutorialTask
 {
-    private TutorialManager tutorialManager;
-    private PlayerStateID previousState;
+    TutorialManager tutorialManager;
+    PlayerStateID previousState;
 
-    private const int needJustGuardCount = 3;               // タスク達成に必要なブロックの回数
-    private const int needAttackSpecial2Count = 3;      // タスク達成に必要な特殊攻撃2の回数
+    const int needJustGuardCount = 3;               // タスク達成に必要なブロックの回数
+    const int needAttackSpecial2Count = 3;      // タスク達成に必要な特殊攻撃2の回数
 
     public GameObject ExplanationPanel => tutorialManager.justGuardPanel;
     public GameObject TaskUI => tutorialManager.justGuardTaskUI;
@@ -61,10 +61,10 @@ public class JustGuardTask : ITutorialTask
         return false;
     }
 
-    private void HandleStateChange(PlayerStateID currentState)
+    void HandleStateChange(PlayerStateID currentState)
     {
         switch (currentState)
-        {           
+        {
             case PlayerStateID.AttackSpecial2:
                 tutorialManager.attackSpecial2Count++;
                 break;

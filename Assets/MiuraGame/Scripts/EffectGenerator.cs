@@ -5,22 +5,36 @@ using UnityEngine;
 
 public class EffectGenerator : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> effectList = new List<GameObject>();
+    public static EffectGenerator Instance { get; set; }
+    [SerializeField] List<GameObject> effectList = new List<GameObject>();
 
-    public void PlayEffect(string effectName, Vector3 playPos, Quaternion playRotation)
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+            return;
+        }
+    }
+
+    public void PlayEffect(string effectName, Vector3 effectPos, Quaternion effectRotation, float showingTime)
     {
         var effect = effectList.FirstOrDefault(effect => effect.name == effectName);
 
         if (effect == null) { return; }
 
-        GameObject obj = Instantiate(effect, playPos, playRotation);
+        GameObject obj = Instantiate(effect, effectPos, effectRotation);
 
-        StartCoroutine(DestroyEffect(obj));
+        StartCoroutine(DestroyEffect(obj, showingTime));
     }
 
-    IEnumerator DestroyEffect(GameObject effect)
+    IEnumerator DestroyEffect(GameObject effect, float showingTime)
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(showingTime);
 
         Destroy(effect);
     }

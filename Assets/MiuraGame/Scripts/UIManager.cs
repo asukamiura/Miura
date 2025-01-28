@@ -14,16 +14,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] Image UltimateGauge;
     [SerializeField] Image[] justPointUI;
 
-    private int previousJustPoints;
+    int previousJustPoints;
 
-    private void Start()
+    void Start()
     {
         previousJustPoints = justPointManager.JustPoints;
 
         UpdateJustPointsUI();
     }
 
-    private void Update()
+    void Update()
     {
         playerHPGauge.fillAmount = playerHealthManager.HP / playerHealthManager.maxHP;
         enemyHPGauge.fillAmount = enemyHealthManager.HP / enemyHealthManager.maxHP;
@@ -35,7 +35,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void UpdateJustPointsUI()
+    void UpdateJustPointsUI()
     {
         for (int i = 0; i < justPointUI.Length; i++)
         {

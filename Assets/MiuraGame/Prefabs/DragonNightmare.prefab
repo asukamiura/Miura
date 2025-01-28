@@ -1432,8 +1432,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3546412819592188957}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 9.61}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1441,7 +1441,7 @@ Transform:
   - {fileID: 1938623106515523849}
   - {fileID: 4708955540280871778}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &6180691071375491217
 Animator:
   serializedVersion: 5
@@ -1516,6 +1516,7 @@ MonoBehaviour:
   - {fileID: 8565711232835718091}
   - {fileID: 3860417888381556750}
   eyeTransform: {fileID: 1259211029530619618}
+  effectPlayer: {fileID: 0}
   minDistance: 0
   rotationAngle: 10
   isJustGuarded: 0

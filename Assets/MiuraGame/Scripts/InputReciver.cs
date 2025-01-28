@@ -2,10 +2,10 @@
 
 public class InputReciver : MonoBehaviour
 {
-    public static InputReciver Instance { get; private set; }
+    public static InputReciver Instance { get; set; }
     GameInput gameInput;
-    private bool countStart = false;    // 通常攻撃ボタンの入力時間の計測開始フラグ   
-    private float countTime = 0;    // 通常攻撃ボタンの入力時間 
+    bool countStart = false;    // 通常攻撃ボタンの入力時間の計測開始フラグ   
+    float countTime = 0;    // 通常攻撃ボタンの入力時間 
 
     // プレイヤー操作用
     public Vector2 Look { get { return gameInput.Player.Look.ReadValue<Vector2>(); } }
@@ -17,7 +17,7 @@ public class InputReciver : MonoBehaviour
     public bool AttackUltimate { get { return gameInput.Player.AttackUltimate.WasPressedThisFrame(); } }
     public bool Heal { get { return gameInput.Player.Heal.WasPressedThisFrame(); } }
     public bool PowerUp { get { return gameInput.Player.PowerUp.WasPressedThisFrame(); } }
-    public bool Pause { get { return gameInput.Player.Pause.WasReleasedThisFrame(); } } 
+    public bool Pause { get { return gameInput.Player.Pause.WasReleasedThisFrame(); } }
 
     // UI操作用
     public bool Decision { get { return gameInput.UI.Decision.WasPressedThisFrame(); } }
@@ -30,7 +30,7 @@ public class InputReciver : MonoBehaviour
     void OnDisable() => gameInput.Disable();
     void OnDestroy() => gameInput.Dispose();
 
-    private void Awake()
+    void Awake()
     {
         if (Instance == null)
         {
@@ -43,7 +43,7 @@ public class InputReciver : MonoBehaviour
         }
     }
 
-    private void Update()
+    void Update()
     {
         if (gameInput.Player.AttackNormal.WasPressedThisFrame())
         {

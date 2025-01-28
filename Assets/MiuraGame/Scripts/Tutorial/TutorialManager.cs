@@ -29,24 +29,24 @@ public class TutorialManager : MonoBehaviour
     public GameObject attackUltimateTaskUI;
 
     [Header("進捗カウントテキスト")]
-    [SerializeField] private TextMeshProUGUI attackNormalCountText;
-    [SerializeField] private TextMeshProUGUI justDodgeCountText;
-    [SerializeField] private TextMeshProUGUI attackSpecial1CountText;
-    [SerializeField] private TextMeshProUGUI justGuardCountText;
-    [SerializeField] private TextMeshProUGUI attackSpecial2CountText;
-    [SerializeField] private TextMeshProUGUI attackUltimateCountText;
+    [SerializeField] TextMeshProUGUI attackNormalCountText;
+    [SerializeField] TextMeshProUGUI justDodgeCountText;
+    [SerializeField] TextMeshProUGUI attackSpecial1CountText;
+    [SerializeField] TextMeshProUGUI justGuardCountText;
+    [SerializeField] TextMeshProUGUI attackSpecial2CountText;
+    [SerializeField] TextMeshProUGUI attackUltimateCountText;
 
     [Header("成功UI")]
-    [SerializeField] private GameObject completeUI;
+    [SerializeField] GameObject completeUI;
 
     public InputReciver Input => InputReciver.Instance;
-    private List<ITutorialTask> tutorialTask; // タスクリスト
-    private bool taskExecuted = false;
-    private float completeUIDisplayLatency = 1;
-    private bool inTutorial = true;
-    private float transitionTime = 2;
+    List<ITutorialTask> tutorialTask; // タスクリスト
+    bool taskExecuted = false;
+    float completeUIDisplayLatency = 1;
+    bool inTutorial = true;
+    float transitionTime = 2;
 
-    private void Awake()
+    void Awake()
     {
         tutorialTask = new List<ITutorialTask>()
         {
@@ -58,7 +58,7 @@ public class TutorialManager : MonoBehaviour
         };
     }
 
-    private void Start()
+    void Start()
     {
         attackNormalPanel.SetActive(false);
         justDodgePanel.SetActive(false);
@@ -74,7 +74,7 @@ public class TutorialManager : MonoBehaviour
         SetFirstTask(tutorialTask.First());
     }
 
-    private void Update()
+    void Update()
     {
         if (inTutorial)
         {
@@ -112,7 +112,7 @@ public class TutorialManager : MonoBehaviour
     /// 最初のタスクを設定
     /// </summary>
     /// <param name="task">最初のタスク</param>
-    private void SetFirstTask(ITutorialTask task)
+    void SetFirstTask(ITutorialTask task)
     {
         currentTask = task;
         currentTask.Enter();
@@ -124,7 +124,7 @@ public class TutorialManager : MonoBehaviour
     /// <param name="task">次のタスク</param>
     /// <param name="waitTime">次のタスクを設定するまでの待機時間</param>
     /// <returns></returns>
-    private IEnumerator SetNextTask(ITutorialTask task, float waitTime)
+    IEnumerator SetNextTask(ITutorialTask task, float waitTime)
     {
         if (currentTask.ShowSuccessUI)
         {

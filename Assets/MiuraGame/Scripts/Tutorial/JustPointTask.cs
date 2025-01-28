@@ -1,12 +1,11 @@
-﻿using Player;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class JustPointTask : ITutorialTask
 {
-    private TutorialManager tutorialManager;
-    private PlayerStateID previousState;
+    TutorialManager tutorialManager;
+    PlayerStateID previousState;
 
-    private const int needAttackNormalCount = 3;    // タスク達成に必要な通常攻撃の回数
+    const int needAttackNormalCount = 3;    // タスク達成に必要な通常攻撃の回数
 
     public GameObject ExplanationPanel => tutorialManager.justPointPanel;
     public GameObject TaskUI => null;
@@ -28,12 +27,12 @@ public class JustPointTask : ITutorialTask
 
     public void Update()
     {
-     
+
     }
 
     public void Exit()
     {
-        
+
     }
 
     public bool CheckTask()

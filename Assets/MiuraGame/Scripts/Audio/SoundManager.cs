@@ -8,7 +8,7 @@ namespace SoundSystem
 {
     public class SoundManager : MonoBehaviour
     {
-        public static SoundManager Instance { get; private set; }
+        public static SoundManager Instance { get; set; }
 
         // BGM・SEのAudioClipリスト
         public List<AudioClip> bgmAudioClipList = new List<AudioClip>();
@@ -32,7 +32,7 @@ namespace SoundSystem
         const int SEAudioSourceNum = 10;
 
         // 一時停止中か
-        public bool IsPaused { get; private set; }
+        public bool IsPaused { get; set; }
 
         public float MasterVolume
         {
@@ -50,7 +50,7 @@ namespace SoundSystem
             set { audioMixer.SetVolumeByLinear(BGMVolumeParamName, value); }
         }
 
-        private void Awake()
+        void Awake()
         {
             if (Instance == null)
             {
@@ -99,8 +99,8 @@ namespace SoundSystem
             bgmAudioSourceList.ForEach(bas => bas.UnPause());
         }
 
-        private List<AudioSource> InitializeAudioSources(GameObject parentGameObject, bool isLoop = false,
-            AudioMixerGroup amg = null, int count = 1)
+        List<AudioSource> InitializeAudioSources(GameObject parentGameObject, bool isLoop = false,
+           AudioMixerGroup amg = null, int count = 1)
         {
             List<AudioSource> audioSources = new List<AudioSource>();
 
@@ -113,8 +113,8 @@ namespace SoundSystem
             return audioSources;
         }
 
-        private AudioSource InitializeAudioSource(GameObject parentGameObject, bool isLoop = false,
-            AudioMixerGroup amg = null)
+        AudioSource InitializeAudioSource(GameObject parentGameObject, bool isLoop = false,
+           AudioMixerGroup amg = null)
         {
             var audioSource = parentGameObject.AddComponent<AudioSource>();
 
