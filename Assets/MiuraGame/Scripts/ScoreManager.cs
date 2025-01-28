@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-    private readonly Dictionary<string, int> scoreDic = new Dictionary<string, int>
+    readonly Dictionary<string, int> scoreDic = new Dictionary<string, int>
     {
         { "AttackNormal1", 10 },
         { "AttackNormal2", 20 },
@@ -25,9 +25,9 @@ public class ScoreManager : MonoBehaviour
         { "Damage", -50 },
     };
 
-    private int totalScore = 0;     // 合計スコア
-    private float currentTime = 0;  // 経過時間
-    private enum Rank
+    int totalScore = 0;     // 合計スコア
+    float currentTime = 0;  // 経過時間
+    enum Rank
     {
         D,
         C,
@@ -36,12 +36,12 @@ public class ScoreManager : MonoBehaviour
         S,
     }
 
-    private Rank rank = Rank.D;
+    Rank rank = Rank.D;
 
-    private void Update()
+    void Update()
     {
-        currentTime += Time.deltaTime; 
-        
+        currentTime += Time.deltaTime;
+
         if (totalScore >= 5000)
         {
             rank = Rank.S;

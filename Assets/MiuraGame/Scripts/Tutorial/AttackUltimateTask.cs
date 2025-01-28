@@ -1,12 +1,11 @@
-﻿using Player;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AttackUltimateTask : ITutorialTask
 {
-    private TutorialManager tutorialManager;
-    private PlayerStateID previousState;
+    TutorialManager tutorialManager;
+    PlayerStateID previousState;
 
-    private const int needAttackUltimateCount = 1;    // タスク達成に必要な通常攻撃の回数
+    const int needAttackUltimateCount = 1;    // タスク達成に必要な通常攻撃の回数
 
     public GameObject ExplanationPanel => tutorialManager.attackUltimatePanel;
     public GameObject TaskUI => tutorialManager.attackUltimateTaskUI;
@@ -60,7 +59,7 @@ public class AttackUltimateTask : ITutorialTask
         return false;
     }
 
-    private void HandleStateChange(PlayerStateID currentState)
+    void HandleStateChange(PlayerStateID currentState)
     {
         switch (currentState)
         {

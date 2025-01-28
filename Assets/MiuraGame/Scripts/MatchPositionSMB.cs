@@ -3,17 +3,17 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class MatchPositionSMB : StateMachineBehaviour
 {
-    [SerializeField] private AvatarTarget targetBodyPart = AvatarTarget.Root;
-    [SerializeField, MinMax(0, 1)] private Vector2 effectiveRange;
+    [SerializeField] AvatarTarget targetBodyPart = AvatarTarget.Root;
+    [SerializeField, MinMax(0, 1)] Vector2 effectiveRange;
 
-    [SerializeField, Range(0, 1)] private float assistPower = 1;
-    [SerializeField, Range(0, 10)] private float assistDistance = 1;
+    [SerializeField, Range(0, 1)] float assistPower = 1;
+    [SerializeField, Range(0, 10)] float assistDistance = 1;
 
     public IMatchTarget target;
 
-    private MatchTargetWeightMask weightMask;
-    private bool isSkip = false;
-    private bool isInitialized = false;
+    MatchTargetWeightMask weightMask;
+    bool isSkip = false;
+    bool isInitialized = false;
 
     public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {

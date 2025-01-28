@@ -42,7 +42,7 @@ namespace SoundSystem
             }
         }
 
-        public void PlaySePitchRandomize(string audioClipName, float range = 0.5f)
+        public void PlaySePitchRandomize(string audioClipName)
         {
             if (IsPaused) { return; }
 
@@ -50,7 +50,7 @@ namespace SoundSystem
 
             if (audioClip != null)
             {
-                audioSource.pitch = Random.Range(1f - range, 1f + range);
+                audioSource.pitch = Random.Range(1f - 0.5f, 1f + 0.5f);
                 audioSource.Play(audioClip);
             }
         }

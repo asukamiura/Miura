@@ -20,7 +20,7 @@ public class VolumeConfigUI : MonoBehaviour
         bgmSlider.value = bgmVolume;
     }
 
-    public void SetSEVolume(float seVolume) 
+    public void SetSEVolume(float seVolume)
     {
         seSlider.value = seVolume;
     }

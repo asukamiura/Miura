@@ -2,14 +2,14 @@
 
 public class HealthManager : MonoBehaviour
 {
-    [SerializeField] private float hp;  // HP
+    [SerializeField] float hp;  // HP
 
     public float HP => hp;
-    public float maxHP { get; private set; }  // HP上限
-    public float minHP { get; private set; } = 0;
+    public float maxHP { get; set; }  // HP上限
+    public float minHP { get; set; } = 0;
     public bool isDead => 0 >= hp;  // 死亡フラグ
 
-    private void Awake()
+    void Awake()
     {
         maxHP = hp;
     }

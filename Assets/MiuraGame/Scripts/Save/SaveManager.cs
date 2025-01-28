@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SaveManager : MonoBehaviour
 {
-    public static SaveManager Instance { get; private set; }
+    public static SaveManager Instance { get; set; }
     // セーブファイル名
     const string FileName = "/savedata.data";
     // セーブデータのデフォルト値
@@ -13,12 +13,12 @@ public class SaveManager : MonoBehaviour
     const float DefaultVolumeSe = 0.5f;
     const int DefaultClearStageNum = 0;
     const int DefaultHighScore = 0;
-    
+
     FileStream file;
     BinaryFormatter bf;
     string filePath;
 
-    private void Awake()
+    void Awake()
     {
         filePath = Application.dataPath + FileName;
         if (Instance != null)
@@ -73,7 +73,7 @@ public class SaveManager : MonoBehaviour
             {
                 data.highScore[i] = DefaultHighScore;
             }
-            
+
             bf.Serialize(file, data);
         }
         catch (IOException)
@@ -90,7 +90,7 @@ public class SaveManager : MonoBehaviour
     {
         try
         {
-            int csn = LoadClearStageNum();          
+            int csn = LoadClearStageNum();
 
             InitFileSave();
 
@@ -99,7 +99,7 @@ public class SaveManager : MonoBehaviour
             data.volBgm = vb;
             data.volSe = vs;
             data.clearStageNum = csn;
-            
+
             bf.Serialize(file, data);
         }
         catch (IOException)
@@ -140,7 +140,7 @@ public class SaveManager : MonoBehaviour
             float vm = 0.5f;
             float vb = 0.5f;
             float vs = 0.5f;
-            LoadAudio(ref vm, ref vb, ref vs);         
+            LoadAudio(ref vm, ref vb, ref vs);
 
             InitFileSave();
 
@@ -148,8 +148,8 @@ public class SaveManager : MonoBehaviour
             data.volMaster = vm;
             data.volBgm = vb;
             data.volSe = vs;
-            data.clearStageNum = csn;    
-            
+            data.clearStageNum = csn;
+
             bf.Serialize(file, data);
         }
         catch (IOException)

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SlashEffectGenerator : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> effectList = new List<GameObject>();
+    [SerializeField] List<GameObject> effectList = new List<GameObject>();
 
     public void GenerateEffect(string effectName)
     {
@@ -18,7 +18,7 @@ public class SlashEffectGenerator : MonoBehaviour
         StartCoroutine(DestryEffect(effect));
     }
 
-    private IEnumerator DestryEffect(GameObject effect)
+    IEnumerator DestryEffect(GameObject effect)
     {
         yield return new WaitForSeconds(0.45f);
 

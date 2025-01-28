@@ -2,10 +2,10 @@
 
 public class AttackNormalTask : ITutorialTask
 {
-    private TutorialManager tutorialManager;
-    private PlayerStateID previousState;
+    TutorialManager tutorialManager;
+    PlayerStateID previousState;
 
-    private const int NeedAttackNormalCount = 3;    // タスク達成に必要な通常攻撃の回数
+    const int NeedAttackNormalCount = 3;    // タスク達成に必要な通常攻撃の回数
 
     public GameObject ExplanationPanel => tutorialManager.attackNormalPanel;
     public GameObject TaskUI => tutorialManager.attackNormalTaskUI;
@@ -58,7 +58,7 @@ public class AttackNormalTask : ITutorialTask
         return false;
     }
 
-    private void HandleStateChange(PlayerStateID currentState)
+    void HandleStateChange(PlayerStateID currentState)
     {
         switch (currentState)
         {
