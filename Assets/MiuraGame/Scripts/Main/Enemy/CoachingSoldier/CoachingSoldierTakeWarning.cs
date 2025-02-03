@@ -47,7 +47,7 @@ namespace Enemy
                 }
                 else
                 {
-                    core.stateMachine.ChangeState(CoachingSoldierStateID.Approach);
+                    core.stateMachine.ChangeState(CoachingSoldierStateID.Move);
                 }
             }
             else

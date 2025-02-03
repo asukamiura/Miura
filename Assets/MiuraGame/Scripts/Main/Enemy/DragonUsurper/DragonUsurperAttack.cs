@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Enemy
 {
@@ -16,6 +15,7 @@ namespace Enemy
         const int Attack2Num = 1;
         const int Attack3Num = 2;
         const float AttackRange = 2;    //攻撃開始範囲
+        const float Attack2Acceleration = 100;
         const float MoveTime = 0.13f;
         const float MoveStartNormalizedTime = 0.4f;     // 移動を始める標準時間
         const float MoveEndNormalizedTime = 0.54f;      // 移動を終える標準時間
@@ -37,7 +37,7 @@ namespace Enemy
                     break;
                 case Attack2Num:
                     playerPos = core.playerTransform.position - core.transform.forward * AttackRange;
-                    core.navMeshAgent.acceleration = 100;
+                    core.navMeshAgent.acceleration = Attack2Acceleration;
                     core.navMeshAgent.speed = Vector3.Distance(core.playerTransform.position, core.transform.position) / MoveTime;
                     core.animator.CrossFade("Attack2", 0);
                     break;
@@ -54,10 +54,9 @@ namespace Enemy
             AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("Attack1") || stateInfo.IsName("Attack2") || stateInfo.IsName("Attack3"))
             {
-
                 if (stateInfo.IsName("Attack2"))
                 {
-                    if (stateInfo.normalizedTime >= MoveStartNormalizedTime && stateInfo.normalizedTime <= MoveEndNormalizedTime && !core.justGuard.isJustGuard)
+                    if (stateInfo.normalizedTime >= MoveStartNormalizedTime && stateInfo.normalizedTime <= MoveEndNormalizedTime)
                     {
                         core.navMeshAgent.SetDestination(playerPos);
                     }

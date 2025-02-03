@@ -35,7 +35,7 @@ public class EnemyAttackHit : MonoBehaviour
                     if (playerCore.stateMachine.StateID == PlayerStateID.Guard) { return; }
                     break;
                 case AttackType.CanDodge:
-                    if (playerCore.judgeDodgeCollider.enabled == true || playerCore.isJustDodge) { return; }
+                    if (playerCore.stateMachine.StateID == PlayerStateID.Dash) { return; }
                     break;
             }
 

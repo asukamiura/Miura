@@ -5,8 +5,6 @@ public class JustPointTask : ITutorialTask
     TutorialManager tutorialManager;
     PlayerStateID previousState;
 
-    const int needAttackNormalCount = 3;    // タスク達成に必要な通常攻撃の回数
-
     public GameObject ExplanationPanel => tutorialManager.justPointPanel;
     public GameObject TaskUI => null;
     public bool ShowExplanationPanel => true;
@@ -37,7 +35,7 @@ public class JustPointTask : ITutorialTask
 
     public bool CheckTask()
     {
-        if (tutorialManager.Input.Decision)
+        if (tutorialManager.Input.Decision && ExplanationPanel.activeSelf)
         {
             ExplanationPanel.SetActive(false);
             tutorialManager.playerCore.enabled = true;
@@ -46,4 +44,6 @@ public class JustPointTask : ITutorialTask
         }
         return false;
     }
+
+    public float TransitionTime() => 2f;
 }

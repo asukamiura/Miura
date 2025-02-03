@@ -25,14 +25,13 @@ Transform:
   m_GameObject: {fileID: 11376106722189157}
   serializedVersion: 2
   m_LocalRotation: {x: -0.07379321, y: -0.29676196, z: -0.038882773, w: -0.95130175}
-  m_LocalPosition: {x: 0.01592958, y: 0.7520399, z: -0.005045414}
+  m_LocalPosition: {x: 0.01592961, y: 0.7520399, z: -0.0050455425}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5107643656812543275}
   - {fileID: 306384065828728019}
   - {fileID: 3844227380268972989}
-  - {fileID: 180766770899292428}
   - {fileID: 8082076908355051125}
   m_Father: {fileID: 2395332098619381053}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -98667,76 +98666,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!1 &2231763531717781859
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 180766770899292428}
-  - component: {fileID: 5047967604397620441}
-  - component: {fileID: 7705356484400463173}
-  m_Layer: 0
-  m_Name: JudgeJustDodgeCol
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &180766770899292428
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2231763531717781859}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 16601226495242734}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5047967604397620441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2231763531717781859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be5895bb3b40c34479fc1284ca981dbf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animationController: {fileID: 0}
-  slowObjs: []
---- !u!136 &7705356484400463173
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2231763531717781859}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2.41
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &2308503093888893226
 GameObject:
   m_ObjectHideFlags: 0
@@ -133268,7 +133197,6 @@ MonoBehaviour:
   powerUpManager: {fileID: 6197171121382576669}
   scoreManager: {fileID: 0}
   gameSePlayer: {fileID: 1833797099937653853}
-  effectGenerator: {fileID: 0}
 --- !u!82 &7831238265638362056
 AudioSource:
   m_ObjectHideFlags: 0
@@ -237573,7 +237501,6 @@ GameObject:
   - component: {fileID: 3815827016429225003}
   - component: {fileID: 7986156752986998189}
   - component: {fileID: 5583118294646647826}
-  - component: {fileID: 8385906280321703668}
   - component: {fileID: 3186865133531067671}
   - component: {fileID: 3920892258498124795}
   - component: {fileID: 7933049654471198555}
@@ -237643,7 +237570,7 @@ Rigidbody:
   m_GameObject: {fileID: 6362977667450912052}
   serializedVersion: 4
   m_Mass: 100
-  m_Drag: 0.1
+  m_Drag: 0
   m_AngularDrag: 0
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
@@ -237676,17 +237603,14 @@ MonoBehaviour:
   swordCollider: {fileID: 4781131168552676040}
   healVal: 50
   timingText: {fileID: 0}
-  attackTransform: {fileID: 0}
-  effectGenerator: {fileID: 0}
   justPointManager: {fileID: 3815827016429225003}
-  powerUpManager: {fileID: 6197171121382576669}
+  powerManager: {fileID: 6197171121382576669}
   ultimateManager: {fileID: 2040450886317394426}
   scoreManager: {fileID: 0}
   attackAssist: {fileID: 7986156752986998189}
   animationController: {fileID: 0}
-  JustGuard: {fileID: 8385906280321703668}
   gameSePlayer: {fileID: 7933049654471198555}
-  judgeDodgeCollider: {fileID: 7705356484400463173}
+  playerCameraController: {fileID: 3186865133531067671}
   isJustGuard: 0
   isJustDodge: 0
   isInvincible: 0
@@ -237771,10 +237695,10 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
+  m_Speed: 0
+  m_Acceleration: 0
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 0
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -237783,22 +237707,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &8385906280321703668
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6362977667450912052}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3da2f95cc8569204ebe989d84c21e07a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCameraController: {fileID: 3186865133531067671}
-  animationController: {fileID: 0}
-  enemyNavMeshAgent: {fileID: 0}
-  isJustGuard: 0
 --- !u!114 &3186865133531067671
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -302328,8 +302236,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3
-  m_Height: 1.54
+  m_Radius: 0.49
+  m_Height: 1.67
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8349992901517321183

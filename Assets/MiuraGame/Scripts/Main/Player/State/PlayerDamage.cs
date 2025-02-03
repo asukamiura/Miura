@@ -5,10 +5,10 @@ namespace Player
     public class PlayerDamage : IState<PlayerStateID>
     {
         public PlayerStateID StateID => PlayerStateID.Damage;
-        InputReciver input => InputReciver.Instance;
+        InputReciver Input => InputReciver.Instance;
         PlayerCore core;
 
-        // const float knockBackPower = 5;
+        const float KnockBackPower = 5;
 
         public PlayerDamage(PlayerCore core)
         {
@@ -18,9 +18,8 @@ namespace Player
         public void Enter()
         {
             core.AttackEnd();
-            core.Animator.applyRootMotion = true;
             core.Animator.CrossFade("Damage", 0, 0, 0);
-            //core.Rb.AddForce(-core.transform.forward * knockBackPower, ForceMode.Impulse);
+            core.Rb.velocity = -core.transform.forward * KnockBackPower;
         }
 
         public void Update()
@@ -37,6 +36,8 @@ namespace Player
 
         public void FixedUpdate() { }
 
-        public void Exit() { }
+        public void Exit()
+        {
+        }
     }
 }

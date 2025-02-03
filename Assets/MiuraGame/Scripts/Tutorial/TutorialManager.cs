@@ -11,7 +11,9 @@ public class TutorialManager : MonoBehaviour
     public PlayerCore playerCore;
     public ITutorialTask currentTask; // 現在のタスク
     public int attackNormalCount = 0;      // 通常攻撃をした回数
+    public int justDodgeCount = 0;          // ジャスト回避回数          
     public int attackSpecial1Count = 0;    // 特殊攻撃1をした回数
+    public int justGuardCount = 0;          // ジャストガード回数
     public int attackSpecial2Count = 0;    // 特殊攻撃2をした回数
     public int attackUltimateCount = 0;
 
@@ -44,7 +46,6 @@ public class TutorialManager : MonoBehaviour
     bool taskExecuted = false;
     float completeUIDisplayLatency = 1;
     bool inTutorial = true;
-    float transitionTime = 2;
 
     void Awake()
     {
@@ -70,18 +71,25 @@ public class TutorialManager : MonoBehaviour
         justDodgeTaskUI.SetActive(false);
         justGuardTaskUI.SetActive(false);
         attackUltimateTaskUI.SetActive(false);
-
         SetFirstTask(tutorialTask.First());
+
+        PlayerEvents.OnJustGuardEvent += CountPlus;
+    }
+
+    void CountPlus()
+    {
+        Debug.Log("AAAAAA");
+        justGuardCount++;
     }
 
     void Update()
     {
         if (inTutorial)
         {
-            currentTask.Update();
-
             if (currentTask != null && !taskExecuted)
             {
+                currentTask.Update();
+
                 if (currentTask.CheckTask())
                 {
                     taskExecuted = true;
@@ -89,15 +97,15 @@ public class TutorialManager : MonoBehaviour
                     tutorialTask.RemoveAt(0);
 
                     var nextTask = tutorialTask.FirstOrDefault();
-                    StartCoroutine(SetNextTask(nextTask, transitionTime));
+                    StartCoroutine(SetNextTask(nextTask, currentTask.TransitionTime()));
                 }
             }
 
             // 進捗カウントの更新
             attackNormalCountText.text = attackNormalCount.ToString();
-            justDodgeCountText.text = playerCore.justDodgeCount.ToString();
+            justDodgeCountText.text = justDodgeCount.ToString();
             attackSpecial1CountText.text = attackSpecial1Count.ToString();
-            justGuardCountText.text = playerCore.justGuardCount.ToString();
+            justGuardCountText.text = justGuardCount.ToString();
             attackSpecial2CountText.text = attackSpecial2Count.ToString();
             attackUltimateCountText.text = attackUltimateCount.ToString();
         }
@@ -136,14 +144,14 @@ public class TutorialManager : MonoBehaviour
 
         currentTask.Exit();
 
+        yield return new WaitForSecondsRealtime(waitTime);
+
         // タスクがない場合、チュートリアル終了
         if (tutorialTask.Count <= 0)
         {
             inTutorial = false;
             yield break;
         }
-
-        yield return new WaitForSecondsRealtime(waitTime);
 
         currentTask = task;
         currentTask.Enter();

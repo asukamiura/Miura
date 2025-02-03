@@ -68,7 +68,6 @@ namespace Player
                 }
                 else
                 {
-                    //core.Animator.speed = 1.3f;
                     core.animationController.ChangeAnimationSpeed("Player", 1f);
                     core.animationController.ChangeAnimationSpeed("Enemy", 1f);
                 }

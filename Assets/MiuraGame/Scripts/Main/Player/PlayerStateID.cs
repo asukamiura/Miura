@@ -2,6 +2,7 @@
 {
     Idle,
     Move,
+    Dash,
     Dodge,
     Guard,
     Block,
@@ -10,7 +11,6 @@
     AttackNormal3,
     AttackSpecial1,
     AttackSpecial2,
-    AttackSpecial3,
     AttackUltimate,
     AttackCharge,
     Damage,

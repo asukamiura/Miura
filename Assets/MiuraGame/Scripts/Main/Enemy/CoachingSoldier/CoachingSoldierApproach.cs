@@ -39,11 +39,8 @@ namespace Enemy
                 }
             }
             else
-            {
-                // プレイヤーの方向を向く
-                Vector3 direction = (core.playerTransform.position - core.transform.position).normalized;
-                Quaternion lookAtRotation = Quaternion.LookRotation(direction, Vector3.up);
-                core.transform.rotation = Quaternion.Slerp(core.transform.rotation, lookAtRotation, core.rotationSpeed * Time.deltaTime);
+            {                
+                core.LookAtPlayer();
 
                 // 攻撃開始地点まで移動
                 core.transform.position = Vector3.MoveTowards(core.transform.position, attackTargetPos, moveSpeed * Time.deltaTime);

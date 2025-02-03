@@ -10,7 +10,7 @@ public class InputReciver : MonoBehaviour
     // プレイヤー操作用
     public Vector2 Look { get { return gameInput.Player.Look.ReadValue<Vector2>(); } }
     public Vector2 Move { get { return gameInput.Player.Move.ReadValue<Vector2>(); } }
-    public bool Dodge { get { return gameInput.Player.Dodge.WasPressedThisFrame(); } }
+    public bool Dash { get { return gameInput.Player.Dodge.WasPressedThisFrame(); } }
     public bool Guard { get { return gameInput.Player.Parry.WasPressedThisFrame(); } }
     public bool AttackNormal { get { return gameInput.Player.AttackNormal.WasReleasedThisFrame() && countTime < 2; } }
     public bool AttackCharge { get { return gameInput.Player.AttackNormal.WasReleasedThisFrame() && countTime >= 2; } }

@@ -5,7 +5,7 @@ public class AttackUltimateTask : ITutorialTask
     TutorialManager tutorialManager;
     PlayerStateID previousState;
 
-    const int needAttackUltimateCount = 1;    // タスク達成に必要な通常攻撃の回数
+    const int NeedAttackUltimateCount = 1;    // タスク達成に必要な通常攻撃の回数
 
     public GameObject ExplanationPanel => tutorialManager.attackUltimatePanel;
     public GameObject TaskUI => tutorialManager.attackUltimateTaskUI;
@@ -35,7 +35,7 @@ public class AttackUltimateTask : ITutorialTask
             previousState = tutorialManager.playerCore.stateMachine.StateID;
         }
 
-        if (tutorialManager.Input.Decision)
+        if (tutorialManager.Input.Decision && ExplanationPanel.activeSelf)
         {
             ExplanationPanel.SetActive(false);
             Time.timeScale = 1;
@@ -51,13 +51,15 @@ public class AttackUltimateTask : ITutorialTask
 
     public bool CheckTask()
     {
-        if (tutorialManager.attackUltimateCount >= needAttackUltimateCount)
+        if (tutorialManager.attackUltimateCount >= NeedAttackUltimateCount)
         {
             Debug.Log("Success");
             return true;
         }
         return false;
     }
+
+    public float TransitionTime() => 4;
 
     void HandleStateChange(PlayerStateID currentState)
     {

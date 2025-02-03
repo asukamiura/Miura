@@ -14,10 +14,12 @@ public class PlayerCameraController : MonoBehaviour
     bool isInput = true;
     bool isChangeFOV = false;
     bool isChangeDutch = false;
-    float changeFOVSpeed = 1;
-    float targetFOV = 50;
-    float changeDutchSpeed = 1;
-    float targetDutch = 1;
+    float changeFOVSpeed;
+    float targetFOV;
+    float changeDutchSpeed;
+    float targetDutch;
+
+    const float RecenteringTime = 0.1f;
 
     InputReciver Input => InputReciver.Instance;
 
@@ -95,6 +97,9 @@ public class PlayerCameraController : MonoBehaviour
     {
         pov.m_VerticalRecentering.m_enabled = true;
         pov.m_HorizontalRecentering.m_enabled = true;
+
+        pov.m_VerticalRecentering.m_RecenteringTime = RecenteringTime;
+        pov.m_HorizontalRecentering.m_RecenteringTime = RecenteringTime;
     }
 
     public void RecenteringDisabled()

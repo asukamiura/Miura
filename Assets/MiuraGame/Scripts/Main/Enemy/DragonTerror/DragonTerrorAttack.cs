@@ -7,8 +7,6 @@ namespace Enemy
     {
         public DragonTerrorStateID StateID => DragonTerrorStateID.Attack;
         DragonTerrorCore core;
-        int attackType;
-        Vector3 playerPos;
         bool isPlayEffect1 = false;
         bool isPlayEffect2 = false;
         Quaternion effectRotation = Quaternion.Euler(-90, 0, 0);
@@ -55,21 +53,18 @@ namespace Enemy
                     core.navMeshAgent.speed = 0;
                     core.navMeshAgent.acceleration = 0;
                     core.navMeshAgent.velocity = Vector3.zero;
-                    playerPos = core.transform.position;
                 }
 
                 if (stateInfo.IsName("Attack2")) 
                 {
                     if (stateInfo.normalizedTime >= PlayerEffect1NormalizedTime && !isPlayEffect1)
                     {
-                        //core.effectPlayer.PlayEffect("EarthPillarBlast1", EffectShowingTime);
                         EffectGenerator.Instance.PlayEffect("EarthBlast", core.attack2EffectTransform.position, effectRotation, EffectShowingTime);
                         isPlayEffect1 = true;
                     }
 
                     if (stateInfo.normalizedTime >= PlayerEffect2NormalizedTime && !isPlayEffect2)
                     {
-                        //core.effectPlayer.PlayEffect("EarthPillarBlast2", EffectShowingTime);
                         EffectGenerator.Instance.PlayEffect("EarthBlast", core.attack2EffectTransform.position, effectRotation, EffectShowingTime);
                         isPlayEffect2 = true;
                     }

@@ -5,9 +5,9 @@ namespace Player
     public class AttackAssist : MonoBehaviour, IMatchTarget
     {
         [SerializeField] GameObject target;
+        [SerializeField] Collider[] targetColliders;
 
         Animator animator;
-        [SerializeField] Collider[] targetColliders;
         Collider targetCollider;
         InputReciver Input => InputReciver.Instance;
         Vector3 direction;
@@ -15,7 +15,9 @@ namespace Player
         void Start()
         {
             animator = GetComponent<Animator>();
+            target = GameObject.FindWithTag("Enemy");
             targetColliders = target.GetComponentsInChildren<Collider>(false);
+     
             animator.keepAnimatorStateOnDisable = true;
 
             foreach (var smb in animator.GetBehaviours<MatchPositionSMB>())

@@ -26,7 +26,6 @@ namespace Enemy
         public float minDistance;   // 中心から目までの距離
         public bool isFlying = false;
         public bool isJustGuarded = false;
-        public JustGuard justGuard;
         public Transform attack2EffectTransform;
 
         void Awake()
