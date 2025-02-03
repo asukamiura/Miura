@@ -53,7 +53,6 @@ public class AttackUltimateTask : ITutorialTask
     {
         if (tutorialManager.attackUltimateCount >= NeedAttackUltimateCount)
         {
-            Debug.Log("Success");
             return true;
         }
         return false;
