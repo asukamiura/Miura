@@ -54,7 +54,6 @@ public class JustGuardTask : ITutorialTask
     {
         if (tutorialManager.justGuardCount >= NeedJustGuardCount && tutorialManager.attackSpecial2Count >= NeedAttackSpecial2Count)
         {
-            Debug.Log("Success");
             return true;
         }
         return false;

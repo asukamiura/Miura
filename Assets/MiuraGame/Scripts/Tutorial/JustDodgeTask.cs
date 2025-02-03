@@ -55,13 +55,12 @@ public class JustDodgeTask : ITutorialTask
     {
         if (tutorialManager.justDodgeCount >= NeedJustDodgeCount && tutorialManager.attackSpecial1Count >= NeedAttackSpecial1Count)
         {
-            Debug.Log("Success");
             return true;
         }
         return false;
     }
 
-    public float TransitionTime() => 5f;
+    public float TransitionTime() => 3f;
 
     void HandleStateChange(PlayerStateID currentState)
     {
