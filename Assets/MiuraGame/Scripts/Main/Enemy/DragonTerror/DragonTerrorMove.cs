@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.AI;
 
 namespace Enemy
 {
@@ -50,7 +49,7 @@ namespace Enemy
             if (stateInfo.IsName("WalkFront") && core.DistanceToPlayer > ChangeMoveDistance)
             {
                 core.navMeshAgent.speed = RunSpeed;
-                core.animator.CrossFade("RunFront", 0.1f); 
+                core.animator.CrossFade("RunFront", 0.1f);
             }
 
             core.LookAtPlayer();
@@ -73,23 +72,6 @@ namespace Enemy
             core.navMeshAgent.acceleration = 0;
             core.navMeshAgent.velocity = Vector3.zero;
         }
-
-        //public void Rotate(float targetAngle)
-        //{
-        //    if (!isRotate)
-        //    {
-        //        currentAngle = core.transform.rotation.eulerAngles.y;
-        //        targetRotation = Quaternion.Euler(0, currentAngle - targetAngle, 0);
-        //        isRotate = true;
-        //    }
-
-        //    core.transform.rotation = Quaternion.Lerp(core.transform.rotation, targetRotation, core.rotationSpeed * Time.deltaTime);
-
-        //    if (Mathf.Approximately(Quaternion.Angle(core.transform.rotation, targetRotation), 0))
-        //    {
-        //        core.transform.rotation = targetRotation;
-        //    }
-        //}
     }
 }
 

@@ -11,4 +11,5 @@ public interface ITutorialTask
     public void Update();
     public void Exit();
     public bool CheckTask();
+    public float TransitionTime();
 }

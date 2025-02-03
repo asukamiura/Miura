@@ -35,7 +35,7 @@ public class AttackNormalTask : ITutorialTask
             previousState = tutorialManager.playerCore.stateMachine.StateID;
         }
 
-        if (tutorialManager.Input.Decision)
+        if (tutorialManager.Input.Decision && ExplanationPanel.activeSelf)
         {
             ExplanationPanel.SetActive(false);
             Time.timeScale = 1;
@@ -57,6 +57,8 @@ public class AttackNormalTask : ITutorialTask
         }
         return false;
     }
+
+    public float TransitionTime() => 2f;
 
     void HandleStateChange(PlayerStateID currentState)
     {

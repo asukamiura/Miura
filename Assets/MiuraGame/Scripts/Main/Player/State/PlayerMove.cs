@@ -8,6 +8,8 @@ namespace Player
         PlayerCore core;
         InputReciver Input => InputReciver.Instance;
 
+        const float RotationSpeed = 10;
+
         public PlayerMove(PlayerCore core)
         {
             this.core = core;
@@ -26,9 +28,9 @@ namespace Player
                 core.stateMachine.ChangeState(PlayerStateID.Idle);
             }
 
-            if (Input.Dodge)
+            if (Input.Dash)
             {
-                core.stateMachine.ChangeState(PlayerStateID.Dodge);
+                core.stateMachine.ChangeState(PlayerStateID.Dash);
             }
 
             if (Input.AttackCharge)
@@ -61,7 +63,7 @@ namespace Player
 
         public void Exit()
         {
-            core.Rb.velocity = Vector3.zero;
+            //core.Rb.velocity = Vector3.zero;
         }
     }
 }

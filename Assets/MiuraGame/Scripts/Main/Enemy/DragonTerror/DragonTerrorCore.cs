@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
-using Player;
-using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine;
 
 namespace Enemy
 {
@@ -29,7 +27,6 @@ namespace Enemy
         public EffectPlayer effectPlayer;
         public bool isFlying = false;
         public bool isJustGuarded = false;
-        public JustGuard justGuard;
         public Transform attack2EffectTransform;
 
         void Awake()

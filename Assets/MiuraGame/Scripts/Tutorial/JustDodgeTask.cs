@@ -5,8 +5,8 @@ public class JustDodgeTask : ITutorialTask
     TutorialManager tutorialManager;
     PlayerStateID previousState;
 
-    const int needJustDodgeCount = 3;               // タスク達成に必要なブロックの回数
-    const int needAttackSpecial1Count = 3;      // タスク達成に必要な特殊攻撃2の回数
+    const int NeedJustDodgeCount = 3;               // タスク達成に必要なブロックの回数
+    const int NeedAttackSpecial1Count = 3;      // タスク達成に必要な特殊攻撃2の回数
 
     public GameObject ExplanationPanel => tutorialManager.justDodgePanel;
     public GameObject TaskUI => tutorialManager.justDodgeTaskUI;
@@ -36,12 +36,13 @@ public class JustDodgeTask : ITutorialTask
             previousState = tutorialManager.playerCore.stateMachine.StateID;
         }
 
-        if (tutorialManager.Input.Decision)
+        if (tutorialManager.Input.Decision && ExplanationPanel.activeSelf)
         {
             ExplanationPanel.SetActive(false);
             Time.timeScale = 1;
             tutorialManager.playerCore.enabled = true;
             TaskUI.SetActive(true);
+            Debug.Log("完了");
         }
     }
 
@@ -52,7 +53,7 @@ public class JustDodgeTask : ITutorialTask
 
     public bool CheckTask()
     {
-        if (tutorialManager.playerCore.justDodgeCount >= needJustDodgeCount && tutorialManager.attackSpecial1Count >= needAttackSpecial1Count)
+        if (tutorialManager.justDodgeCount >= NeedJustDodgeCount && tutorialManager.attackSpecial1Count >= NeedAttackSpecial1Count)
         {
             Debug.Log("Success");
             return true;
@@ -60,11 +61,18 @@ public class JustDodgeTask : ITutorialTask
         return false;
     }
 
+    public float TransitionTime() => 5f;
+
     void HandleStateChange(PlayerStateID currentState)
     {
         switch (currentState)
         {
+            case PlayerStateID.Dodge:
+                if (tutorialManager.justDodgeCount == NeedJustDodgeCount) { return; }
+                tutorialManager.justDodgeCount++;
+                break;
             case PlayerStateID.AttackSpecial1:
+                if (tutorialManager.attackSpecial1Count == NeedAttackSpecial1Count) { return; }
                 tutorialManager.attackSpecial1Count++;
                 break;
             default:

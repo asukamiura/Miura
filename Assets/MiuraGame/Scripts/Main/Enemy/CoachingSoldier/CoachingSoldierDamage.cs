@@ -20,26 +20,29 @@ namespace Enemy
 
         public void Enter()
         {
-            core.hitCount++;
-            switch (core.hitCount)
-            {
-                case 1:
-                    core.animator.CrossFade("Damage1", 0);
-                    break;
-                case 2:
-                    core.animator.CrossFade("Damage2", 0);
-                    break;
-                case 3:
-                    core.animator.CrossFade("Damage3", 0);
-                    break;
-            }
+            //core.hitCount++;
+            //switch (core.hitCount)
+            //{
+            //    case 1:
+            //        core.animator.CrossFade("Damage1", 0, 0, 0);
+            //        break;
+            //    case 2:
+            //        core.animator.CrossFade("Damage2", 0, 0, 0);
+            //        break;
+            //    case 3:
+            //        core.animator.CrossFade("Damage3", 0, 0, 0);
+            //        break;
+            //}
+
+            core.animator.CrossFade("Damage1", 0, 0, 0);
+
 
             moveTargetPos = core.transform.position - core.transform.forward * targetDistance;
         }
 
         public void Update()
         {
-            moveSpeed *= decelerationRate;
+            //moveSpeed *= decelerationRate;
             AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("Damage1") || stateInfo.IsName("Damage2") || stateInfo.IsName("Damage3"))
             {
@@ -52,7 +55,7 @@ namespace Enemy
 
         public void FixedUpdate()
         {
-            core.transform.position = Vector3.MoveTowards(core.transform.position, moveTargetPos, moveSpeed * Time.deltaTime);
+            //core.transform.position = Vector3.MoveTowards(core.transform.position, moveTargetPos, moveSpeed * Time.deltaTime);
         }
 
         public void Exit()

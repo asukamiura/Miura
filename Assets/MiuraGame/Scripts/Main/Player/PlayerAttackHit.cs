@@ -10,7 +10,6 @@ namespace Player
         [SerializeField] PowerManager powerUpManager;
         [SerializeField] ScoreManager scoreManager;
         [SerializeField] GameSePlayer gameSePlayer;
-        [SerializeField] EffectGenerator effectGenerator;
 
         void OnTriggerEnter(Collider other)
         {
@@ -22,7 +21,7 @@ namespace Player
 
             if (playerCore.hitEnemies.Contains(enemy)) { return; }
 
-            effectGenerator.PlayEffect("HitEffect", transform.position, Quaternion.identity, 1);
+            EffectGenerator.Instance.PlayEffect("HitEffect", transform.position, Quaternion.identity, 1);
 
             switch (playerCore.stateMachine.StateID)
             {

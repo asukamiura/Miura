@@ -23,9 +23,9 @@ namespace Player
         {
             core.Rb.velocity = Vector3.zero;
 
-            if (Input.Dodge)
+            if (Input.Dash)
             {
-                core.stateMachine.ChangeState(PlayerStateID.Dodge);
+                core.stateMachine.ChangeState(PlayerStateID.Dash);
             }
 
             if (Input.AttackCharge)

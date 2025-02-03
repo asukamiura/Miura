@@ -1,8 +1,10 @@
 ﻿using SoundSystem;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Player
 {
@@ -11,11 +13,10 @@ namespace Player
         [SerializeField] Collider swordCollider;
         [SerializeField] int healVal = 20;  // 回復量
         [SerializeField] TextMeshProUGUI timingText;
-        [SerializeField] Transform attackTransform;
-        [SerializeField] EffectGenerator effectGenerator;
 
         HealthManager healthManager;
         InputReciver Input => InputReciver.Instance;
+        PlayerEvents events;
 
         const int ChargeAttackCost = 1;  // チャージ攻撃に必要なジャストポイント数
         const int HealCost = 2;          // 回復に必要なジャストポイント数
@@ -24,15 +25,14 @@ namespace Player
 
         public StateMachine<PlayerStateID> stateMachine;
         public JustPointManager justPointManager;
-        public PowerManager powerUpManager;
+        public PowerManager powerManager;
         public UltimateManager ultimateManager;
         public ScoreManager scoreManager;
         public AttackAssist attackAssist;
         public AnimationController animationController;
-        public JustGuard JustGuard;
         public GameSePlayer gameSePlayer;
-        public Collider judgeDodgeCollider;
-        public float MoveSpeed => powerUpManager.MoveSpeed;
+        public PlayerCameraController playerCameraController;
+        public float MoveSpeed => powerManager.MoveSpeed;
         public Rigidbody Rb { get; set; }
         public Animator Animator { get; set; }
         public bool isJustGuard = false;
@@ -51,6 +51,7 @@ namespace Player
             stateMachine = new StateMachine<PlayerStateID>();
             stateMachine.RegisterState(new PlayerIdle(this));
             stateMachine.RegisterState(new PlayerMove(this));
+            stateMachine.RegisterState(new PlayerDash(this));
             stateMachine.RegisterState(new PlayerDodge(this));
             stateMachine.RegisterState(new PlayerGuard(this));
             stateMachine.RegisterState(new PlayerBlock(this));
@@ -80,7 +81,7 @@ namespace Player
             stateMachine.Update();
 
             // アイドル状態と移動状態のアニメーション更新
-            Animator.SetFloat("Speed", Rb.velocity.magnitude, 0.1f, Time.deltaTime);
+            Animator.SetFloat("Speed", Mathf.Clamp(Rb.velocity.magnitude, 0, 7.5f), 0.1f, Time.deltaTime);
 
             // 死亡していた場合、以降の処理を実行しない。
             if (stateMachine.StateID == PlayerStateID.Dead) { return; }
@@ -91,7 +92,10 @@ namespace Player
                 stateMachine.ChangeState(PlayerStateID.Dead);
             }
 
-            if (stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Dodge && stateMachine.StateID != PlayerStateID.Damage)
+            // ガード、ブロック、回避、ダメージ状態でなければ実行可能
+            if (stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Block 
+                && stateMachine.StateID != PlayerStateID.Dash && stateMachine.StateID != PlayerStateID.Dodge 
+                && stateMachine.StateID != PlayerStateID.Damage)
             {
                 // ガードステートに遷移
                 if (Input.Guard)
@@ -100,9 +104,9 @@ namespace Player
                 }
 
                 // 回避ステートに遷移
-                if (Input.Dodge)
+                if (Input.Dash)
                 {
-                    stateMachine.ChangeState(PlayerStateID.Dodge);
+                    stateMachine.ChangeState(PlayerStateID.Dash);
                 }
             }
 
@@ -114,10 +118,10 @@ namespace Player
             }
 
             // パワーアップ処理を実行
-            if (Input.PowerUp && CanPowerUp && !powerUpManager.InPowerUp)
+            if (Input.PowerUp && CanPowerUp && !powerManager.InPowerUp)
             {
                 justPointManager.UseJustPoints(PowerUpCost);
-                powerUpManager.ActionPowerUp();
+                powerManager.ActionPowerUp();
             }
 
             // 必殺技を実行
@@ -139,11 +143,15 @@ namespace Player
 
             var enemyAttackHit = other.GetComponent<EnemyAttackHit>();
 
-            if (other.CompareTag("EnemyAttackCanGuard"))
+            if (other.CompareTag("EnemyAttackCanGuard") || other.CompareTag("EnemyAttackCanDodge"))
             {
-                if (stateMachine.StateID == PlayerStateID.Guard)
+                if (other.CompareTag("EnemyAttackCanGuard") && stateMachine.StateID == PlayerStateID.Guard)
                 {
                     isJustGuard = true;
+                }
+                else if (other.CompareTag("EnemyAttackCanDodge") && stateMachine.StateID == PlayerStateID.Dash)
+                {
+                    isJustDodge = true;
                 }
                 else
                 {
@@ -151,13 +159,6 @@ namespace Player
                     stateMachine.ChangeState(PlayerStateID.Damage);
                     scoreManager.SubtractScore((int)enemyAttackHit.damageVal);
                 }
-            }
-
-            if (other.CompareTag("EnemyAttackCanDodge") && !judgeDodgeCollider.enabled)
-            {
-                // 攻撃を受けたらダメージステートへ遷移
-                stateMachine.ChangeState(PlayerStateID.Damage);
-                scoreManager.SubtractScore((int)enemyAttackHit.damageVal);
             }
         }
 

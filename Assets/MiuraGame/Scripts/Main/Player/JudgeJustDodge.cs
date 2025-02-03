@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Player
 {
@@ -12,10 +13,11 @@ namespace Player
 
         PlayerCore core;
         float currentTime = 0;
+        Collider judgeDodgeCollider;
 
         const int GetJustPoints = 1;    // ジャスト回避成功時に得るジャストポイント量
-        const float PlayerSlowTime = 1;
-        const float EnemySlowTime = 3;
+        const float PlayerSlowTime = 0.5f;
+        const float EnemySlowTime = 0.5f;
         const float DefaultAnimationSpeed = 1;
         const float SlowAnimationSpeed = 0.3f;
 
@@ -26,7 +28,7 @@ namespace Player
 
         void Update()
         {
-            if (core.judgeDodgeCollider.enabled == true)
+            if (judgeDodgeCollider.enabled == true)
             {
                 currentTime += Time.deltaTime;
             }
@@ -37,9 +39,8 @@ namespace Player
 
             if (currentTime >= 0.5f)
             {
-                core.judgeDodgeCollider.enabled = false;
-            }
-
+                judgeDodgeCollider.enabled = false;
+            }            
         }
 
         void OnTriggerEnter(Collider other)
@@ -86,7 +87,7 @@ namespace Player
 
             animationController.ChangeAnimationSpeed("Enemy", DefaultAnimationSpeed);
 
-            core.judgeDodgeCollider.enabled = false;
+            judgeDodgeCollider.enabled = false;
             core.isJustDodge = false;
             core.isInvincible = false;
         }
@@ -97,7 +98,7 @@ namespace Player
             core.Animator.speed = 1;
             yield return new WaitForSeconds(time);
             enemyRigidbody.velocity *= 2f;
-            core.judgeDodgeCollider.enabled = false;
+            judgeDodgeCollider.enabled = false;
             core.isJustDodge = false;
             core.isInvincible = false;
         }

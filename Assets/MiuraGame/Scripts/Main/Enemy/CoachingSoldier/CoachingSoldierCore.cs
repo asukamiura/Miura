@@ -1,42 +1,37 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace Enemy
 {
     public class CoachingSoldierCore : EnemyCoreBase
     {
+        [SerializeField] List<GameObject> attackColliders = new List<GameObject>();
+
         float previousHP;
 
-        const int fov = 10;     // 視野角
-        const int minSightDistance = 2;
-        const int minHitCount = 0;
-        const int maxHitCount = 3;
+        const int Fov = 10;     // 視野角
+        const int MinSightDistance = 2;
+        const int MinHitCount = 0;
+        const int MaxHitCount = 3;
 
-        public Transform playerTransform;
         public TutorialManager tutorialManager;
         public StateMachine<CoachingSoldierStateID> stateMachine;
         public float AngleToPlayer { get; set; }
         public float DistanceToPlayer { get; set; }
         public Vector3 CrossProduct { get; set; }
-        public bool IsPlayerInSight => AngleToPlayer <= fov && DistanceToPlayer >= minSightDistance;
-        public float rotationSpeed = 10;
-        public float rotationAngle = 10;
-        public int Attack1Count { get; set; } = 0;    // 連続攻撃1をした数
-        public int Attack2Count { get; set; } = 0;    // 連続攻撃2をした数
-        public int Attack3Count { get; set; } = 0;    // 連続攻撃3をした数
-        public GameObject attack1Collider;
-        public GameObject attack2Collider;
+        public bool IsPlayerInSight => AngleToPlayer <= Fov && DistanceToPlayer >= MinSightDistance;
         public int hitCount = 0;    // 連続で攻撃を受けた回数
-        public bool CanAttack1 => tutorialManager.currentTask is JustGuardTask;
-        public bool CanAttack2 => tutorialManager.currentTask is JustDodgeTask;
+        public bool CanAttack1 => tutorialManager.currentTask is JustGuardTask && !tutorialManager.currentTask.CheckTask();
+        public bool CanAttack2 => tutorialManager.currentTask is JustDodgeTask && !tutorialManager.currentTask.CheckTask();
 
         void Awake()
         {
             stateMachine = new StateMachine<CoachingSoldierStateID>();
             stateMachine.RegisterState(new CoachingSoldierIdle(this));
-            stateMachine.RegisterState(new CoachingSoldierApproach(this));
             stateMachine.RegisterState(new CoachingSoldierTakeWarning(this));
-            stateMachine.RegisterState(new CoachingSoldierAttack1(this));
-            stateMachine.RegisterState(new CoachingSoldierAttack2(this));
+            stateMachine.RegisterState(new CoachingSoldierMove(this));
+            stateMachine.RegisterState(new CoachingSoldierAttack(this));
             stateMachine.RegisterState(new CoachingSoldierDamage(this));
         }
 
@@ -44,8 +39,7 @@ namespace Enemy
         {
             stateMachine.Initialize(CoachingSoldierStateID.Idle);
 
-            attack1Collider.SetActive(false);
-            attack2Collider.SetActive(false);
+            ResetAttackCollider();
         }
 
         void Update()
@@ -73,7 +67,7 @@ namespace Enemy
                 previousHP = healthManager.HP;
             }
 
-            hitCount = Mathf.Clamp(hitCount, minHitCount, maxHitCount);
+            hitCount = Mathf.Clamp(hitCount, MinHitCount, MaxHitCount);
         }
 
         void FixedUpdate()
@@ -90,62 +84,29 @@ namespace Enemy
             }
         }
 
-        public void IncreaseAttackCount(int attackType)
+        public void AttackStart(string attackColliderName)
         {
-            switch (attackType)
-            {
-                case 1:
-                    Attack1Count++;
-                    Attack2Count = 0;
-                    Attack3Count = 0;
-                    break;
-                case 2:
-                    Attack1Count = 0;
-                    Attack2Count++;
-                    Attack3Count = 0;
-                    break;
-                case 3:
-                    Attack1Count = 0;
-                    Attack2Count = 0;
-                    Attack3Count++;
-                    break;
-            }
+            var attackCollider = attackColliders.FirstOrDefault(attackCollider => attackCollider.name == attackColliderName);
+
+            if (attackCollider == null) { return; }
+
+            attackCollider.SetActive(true);
         }
 
-        public void ResetAttackCount()
+        public void AttackEnd(string attackColliderName)
         {
-            Attack1Count = 0;
-            Attack2Count = 0;
-            Attack3Count = 0;
+            var attackCollider = attackColliders.FirstOrDefault(attackCollider => attackCollider.name == attackColliderName);
+
+            if (attackCollider == null) { return; }
+
+            attackCollider.SetActive(false);
         }
 
-        public void AttackStart()
+        public void ResetAttackCollider()
         {
-            switch (stateMachine.StateID)
+            foreach (var attackCollider in attackColliders)
             {
-                case CoachingSoldierStateID.Attack1:
-                    attack1Collider.SetActive(true);
-                    break;
-                case CoachingSoldierStateID.Attack2:
-                    attack2Collider.SetActive(true);
-                    break;
-                case CoachingSoldierStateID.Attack3:
-                    break;
-            }
-        }
-
-        public void AttackEnd()
-        {
-            switch (stateMachine.StateID)
-            {
-                case CoachingSoldierStateID.Attack1:
-                    attack1Collider.SetActive(false);
-                    break;
-                case CoachingSoldierStateID.Attack2:
-                    attack2Collider.SetActive(false);
-                    break;
-                case CoachingSoldierStateID.Attack3:
-                    break;
+                attackCollider.SetActive(false);
             }
         }
     }
