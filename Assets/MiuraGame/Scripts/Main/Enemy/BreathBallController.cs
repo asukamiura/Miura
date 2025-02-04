@@ -6,7 +6,7 @@ public class BreathBallController : MonoBehaviour
 
     const float ShowingTime = 1.0f;
 
-    private void OnTriggerEnter(Collider collider)
+    void OnTriggerEnter(Collider collider)
     {
         if (collider.CompareTag("Floor"))
         {

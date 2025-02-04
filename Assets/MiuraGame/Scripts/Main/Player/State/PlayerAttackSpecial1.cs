@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Rendering;
+using UnityEngine;
 
 namespace Player
 {
@@ -15,9 +16,9 @@ namespace Player
 
         public void Enter()
         {
+            core.isInvincible = true;
             core.attackAssist.CorrectionAttack();
             core.Animator.applyRootMotion = true;
-            core.Animator.speed = 1;
             // アニメーションの遷移
             core.Animator.CrossFade("AttackSpecial1", 0.1f, 0, 0);
         }
@@ -37,6 +38,8 @@ namespace Player
         public void Exit()
         {
             core.AttackEnd();
+            core.Animator.applyRootMotion = false;
+            core.isInvincible = false;
         }
     }
 }

@@ -7,8 +7,8 @@ namespace Enemy
     {
         public DragonTerrorStateID StateID => DragonTerrorStateID.Attack;
         DragonTerrorCore core;
-        bool isPlayEffect1 = false;
-        bool isPlayEffect2 = false;
+        bool isPlayedEffect1 = false;
+        bool isPlayedEffect2 = false;
         Quaternion effectRotation = Quaternion.Euler(-90, 0, 0);
 
         // それぞれの攻撃のナンバー
@@ -57,16 +57,16 @@ namespace Enemy
 
                 if (stateInfo.IsName("Attack2")) 
                 {
-                    if (stateInfo.normalizedTime >= PlayerEffect1NormalizedTime && !isPlayEffect1)
+                    if (stateInfo.normalizedTime >= PlayerEffect1NormalizedTime && !isPlayedEffect1)
                     {
                         EffectGenerator.Instance.PlayEffect("EarthBlast", core.attack2EffectTransform.position, effectRotation, EffectShowingTime);
-                        isPlayEffect1 = true;
+                        isPlayedEffect1 = true;
                     }
 
-                    if (stateInfo.normalizedTime >= PlayerEffect2NormalizedTime && !isPlayEffect2)
+                    if (stateInfo.normalizedTime >= PlayerEffect2NormalizedTime && !isPlayedEffect2)
                     {
                         EffectGenerator.Instance.PlayEffect("EarthBlast", core.attack2EffectTransform.position, effectRotation, EffectShowingTime);
-                        isPlayEffect2 = true;
+                        isPlayedEffect2 = true;
                     }
                 }
 
@@ -90,8 +90,8 @@ namespace Enemy
 
         public void Exit()
         {
-            isPlayEffect1 = false;
-            isPlayEffect2 = false;
+            isPlayedEffect1 = false;
+            isPlayedEffect2 = false;
             core.ResetAttackCollider();
             core.isJustGuarded = false;
         }

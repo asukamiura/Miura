@@ -19,10 +19,10 @@ namespace Enemy
         public float DistanceToPlayer { get; set; } // プレイヤーとの距離
         public Vector3 CrossProduct { get; set; }
         public bool IsPlayerInSight => Mathf.Abs(AngleToPlayer) <= Fov && DistanceToPlayer >= minDistance;    // プレイヤーが視野内にいるかのフラグ
-        public EffectPlayer effectPlayer;
         public float minDistance;
         public float rotationAngle = 10;
         public bool isJustGuarded = false;
+        public Transform attack3EffectTransform;
 
         void Awake()
         {
@@ -30,9 +30,6 @@ namespace Enemy
             stateMachine.RegisterState(new DragonNightmareIdle(this));
             stateMachine.RegisterState(new DragonNightmareTakeWarning(this));
             stateMachine.RegisterState(new DragonNightmareSearch(this));
-            stateMachine.RegisterState(new DragonNightmareLeave(this));
-            stateMachine.RegisterState(new DragonNightmareApproach(this));
-            stateMachine.RegisterState(new DragonNightmareRetreat(this));
             stateMachine.RegisterState(new DragonNightmareMove(this));
             stateMachine.RegisterState(new DragonNightmareAttack(this));
             stateMachine.RegisterState(new DragonNightmareDamage(this));
@@ -53,7 +50,7 @@ namespace Enemy
 
         void Update()
         {
-            if (healthManager.isDead)
+            if (healthManager.IsDead)
             {
                 stateMachine.ChangeState(DragonNightmareStateID.Die);
             }
@@ -67,9 +64,6 @@ namespace Enemy
             // プレイヤー方向の角度を計算
             Vector3 direction = (playerTransform.position - transform.position).normalized;
             AngleToPlayer = Vector3.SignedAngle(transform.forward, direction, Vector3.up);
-
-            // 外積
-            //CrossProduct = Vector3.Cross(eyeTransform.forward, direction);
 
             if (playerCore.stateMachine.StateID == PlayerStateID.Block && stateMachine.StateID != DragonNightmareStateID.Damage
                 && stateMachine.StateID != DragonNightmareStateID.Die)

@@ -87,7 +87,7 @@ namespace Player
             if (stateMachine.StateID == PlayerStateID.Dead) { return; }
 
             // 死亡ステートに遷移
-            if (healthManager.isDead && stateMachine.StateID != PlayerStateID.Dead)
+            if (healthManager.IsDead && stateMachine.StateID != PlayerStateID.Dead)
             {
                 stateMachine.ChangeState(PlayerStateID.Dead);
             }
@@ -111,7 +111,7 @@ namespace Player
             }
 
             // 回復処理を実行
-            if (Input.Heal && CanHeal && healthManager.HP < healthManager.maxHP)
+            if (Input.Heal && CanHeal && healthManager.HP < healthManager.MaxHP)
             {
                 justPointManager.UseJustPoints(HealCost);
                 healthManager.Heal(healVal);

@@ -34,14 +34,9 @@ namespace Enemy
             stateMachine.RegisterState(new DragonUsurperIdle(this));
             stateMachine.RegisterState(new DragonUsurperTakeWarning(this));
             stateMachine.RegisterState(new DragonUsurperSearch(this));
-            stateMachine.RegisterState(new DragonUsurperApproach(this));
-            stateMachine.RegisterState(new DragonUsurperTakeOff(this));
-            stateMachine.RegisterState(new DragonUsurperLand(this));
-            stateMachine.RegisterState(new DragonUsurperLeave(this));
             stateMachine.RegisterState(new DragonUsurperMove(this));
             stateMachine.RegisterState(new DragonUsurperAttack(this));
             stateMachine.RegisterState(new DragonUsurperDamage(this));
-            stateMachine.RegisterState(new DragonUsurperFlyAttack(this));
             stateMachine.RegisterState(new DragonUsurperDie(this));
         }
 
@@ -59,7 +54,7 @@ namespace Enemy
 
         void Update()
         {
-            if (healthManager.isDead)
+            if (healthManager.IsDead)
             {
                 stateMachine.ChangeState(DragonUsurperStateID.Die);
             }

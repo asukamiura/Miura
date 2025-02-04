@@ -53,7 +53,7 @@ namespace Enemy
 
         void Update()
         {
-            if (healthManager.isDead)
+            if (healthManager.IsDead)
             {
                 stateMachine.ChangeState(DragonTerrorStateID.Die);
             }
