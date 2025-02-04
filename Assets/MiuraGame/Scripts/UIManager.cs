@@ -25,8 +25,8 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
-        playerHPGauge.fillAmount = playerHealthManager.HP / playerHealthManager.maxHP;
-        enemyHPGauge.fillAmount = enemyHealthManager.HP / enemyHealthManager.maxHP;
+        playerHPGauge.fillAmount = playerHealthManager.HP / playerHealthManager.MaxHP;
+        enemyHPGauge.fillAmount = enemyHealthManager.HP / enemyHealthManager.MaxHP;
         UltimateGauge.fillAmount = ultimateManager.ULTVal / ultimateManager.maxUltVal;
 
         if (previousJustPoints != justPointManager.JustPoints)

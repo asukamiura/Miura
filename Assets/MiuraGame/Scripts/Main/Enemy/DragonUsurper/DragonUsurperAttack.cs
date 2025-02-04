@@ -7,7 +7,7 @@ namespace Enemy
         public DragonUsurperStateID StateID => DragonUsurperStateID.Attack;
         DragonUsurperCore core;
         Vector3 playerPos;
-        bool isPlayEffect = false;
+        bool isPlayedEffect = false;
         Quaternion effectRotation = Quaternion.Euler(-90, 0, 0);
 
         // それぞれの攻撃番号
@@ -61,10 +61,10 @@ namespace Enemy
                         core.navMeshAgent.SetDestination(playerPos);
                     }
 
-                    if (stateInfo.normalizedTime >= PlayerEffectNormalizedTime && !isPlayEffect)
+                    if (stateInfo.normalizedTime >= PlayerEffectNormalizedTime && !isPlayedEffect)
                     {
                         EffectGenerator.Instance.PlayEffect("EarthBlast", core.attack2EffectTransform.position, effectRotation, EffectShowingTime);
-                        isPlayEffect = true;
+                        isPlayedEffect = true;
                     }
                 }
 
@@ -96,7 +96,7 @@ namespace Enemy
 
         public void Exit()
         {
-            isPlayEffect = false;
+            isPlayedEffect = false;
             core.ResetAttackCollider();
             core.isJustGuarded = false;
         }

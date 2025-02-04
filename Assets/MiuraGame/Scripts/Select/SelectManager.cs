@@ -42,6 +42,7 @@ public class SelectManager : MonoBehaviour
                     SceneManager.LoadScene("Stage2Scene");
                     break;
                 case SelectPanelState.Stage3:
+                    SceneManager.LoadScene("Stage3Scene");
                     break;
                 case SelectPanelState.ReturnTitle:
                     SceneManager.LoadScene("TitleScene");

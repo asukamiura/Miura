@@ -1,22 +1,27 @@
-﻿using UnityEngine;
-using Player;
-using UnityEngine.SceneManagement;
+﻿using Player;
+using SoundSystem;
 using System.Collections;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject savePrefab;
-    [SerializeField] private HealthManager playerHealthManager;
-    [SerializeField] private HealthManager enemyHealthManager;
+    [SerializeField] GameObject savePrefab;
+    [SerializeField] PlayerCore playerCore;
+    [SerializeField] HealthManager playerHealthManager;
+    [SerializeField] HealthManager enemyHealthManager;
+    [SerializeField] GameObject blackCurtain;
+    [SerializeField] GameObject pausePanel;
+    [SerializeField] GameObject gameOverPanel;
 
-    private GameObject saveObj;
-    private SaveManager saveManager;
-    private InputReciver Input => InputReciver.Instance;
-    private float delayTime = 3;    // シーン遷移が起こるまでの待機時間
+    GameObject saveObj;
+    SaveManager saveManager;
+    InputReciver Input => InputReciver.Instance;
+    float transitionTime = 3;    // シーン遷移が起こるまでの待機時間
 
-    public static GameManager Instance { get; private set; }
+    public static GameManager Instance { get; set; }
     public enum GameState { Playing, Paused, GameOver }     // ゲームの状態
-    public GameState CurrentState { get; private set; } = GameState.Playing;    // 現在の状態
+    public GameState CurrentState { get; set; } = GameState.Playing;    // 現在の状態
 
     void Awake()
     {
@@ -31,52 +36,64 @@ public class GameManager : MonoBehaviour
 
         saveObj = Instantiate(savePrefab);
         saveObj.name = "SaveManager";
-        saveManager = saveObj.GetComponent<SaveManager>();
+        //saveManager = saveObj.GetComponent<SaveManager>();
     }
 
     void Start()
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        SoundManager.Instance.PlayBGMWithFadeIn("Title");
+        blackCurtain.SetActive(false);
     }
 
     void Update()
     {
-        //if (Input.Pause)
-        //{
-        //    ChangeState(GameState.Paused);
-        //}
+        if (Input.Pause && CurrentState == GameState.Playing)
+        {
+            ChangeState(GameState.Paused);
+        }
 
         // プレイヤーが死んだらゲームオーバーステートに遷移
-        if (playerHealthManager.isDead)
+        if (playerHealthManager.IsDead)
         {
-            ChangeState(GameState.GameOver);            
+            ChangeState(GameState.GameOver);
         }
 
         // 敵が死んだらリザルトシーンに遷移
-        if (enemyHealthManager.isDead)
+        if (enemyHealthManager.IsDead)
         {
-            StartCoroutine(ChangeScene(delayTime));
+            StartCoroutine(ChangeScene(transitionTime));
         }
     }
 
-    private void ChangeState(GameState state)
+    // 各ステートに変更時実行
+    public void ChangeState(GameState state)
     {
         CurrentState = state;
         switch (state)
         {
             case GameState.Playing:
+                blackCurtain.SetActive(false);
+                playerCore.enabled = true;
                 break;
             case GameState.Paused:
+                playerCore.enabled = false;
+                Time.timeScale = 0;
+                blackCurtain.SetActive(true);
+                pausePanel.SetActive(true);
                 break;
             case GameState.GameOver:
+                gameOverPanel.SetActive(true);
                 break;
         }
     }
 
-    private IEnumerator ChangeScene(float delay)
+    IEnumerator ChangeScene(float delay)
     {
         yield return new WaitForSeconds(delay);
+        SoundManager.Instance.StopBGMWithFadeOut();
         SceneManager.LoadScene("ResultScene");
     }
 }
