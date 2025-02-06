@@ -10,7 +10,6 @@ namespace Player
 {
     public class PlayerCore : MonoBehaviour
     {
-        [SerializeField] Collider swordCollider;
         [SerializeField] int healVal = 20;  // 回復量
         [SerializeField] TextMeshProUGUI timingText;
 
@@ -160,24 +159,7 @@ namespace Player
                     scoreManager.SubtractScore((int)enemyAttackHit.damageVal);
                 }
             }
-        }
-
-        public void AttackStart()
-        {
-            if (swordCollider != null)
-            {
-                swordCollider.enabled = true;
-            }
-        }
-
-        public void AttackEnd()
-        {
-            if (swordCollider != null)
-            {
-                swordCollider.enabled = false;
-                hitEnemies.Clear();
-            }
-        }
+        }      
 
         public void TimingUIShow(string timing)
         {

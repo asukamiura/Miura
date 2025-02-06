@@ -34,6 +34,7 @@ namespace Enemy
             stateMachine.RegisterState(new DragonNightmareAttack(this));
             stateMachine.RegisterState(new DragonNightmareDamage(this));
             stateMachine.RegisterState(new DragonNightmareDie(this));
+            attackManager.OnEnemykHit += ReceiveDamage;
         }
 
         void Start()
@@ -81,13 +82,20 @@ namespace Enemy
         {
             if (other.CompareTag("Sword"))
             {
-                var playerCore = other.GetComponentInParent<PlayerCore>();
-
                 if ((playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2
                     || playerCore.stateMachine.StateID == PlayerStateID.AttackUltimate) && stateMachine.StateID != DragonNightmareStateID.Die)
                 {
                     stateMachine.ChangeState(DragonNightmareStateID.Damage);
                 }
+            }
+        }
+
+        void ReceiveDamage()
+        {
+            if ((playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2
+                   || playerCore.stateMachine.StateID == PlayerStateID.AttackUltimate) && stateMachine.StateID != DragonNightmareStateID.Die)
+            {
+                stateMachine.ChangeState(DragonNightmareStateID.Damage);
             }
         }
 

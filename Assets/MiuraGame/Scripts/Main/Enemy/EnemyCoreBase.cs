@@ -6,6 +6,8 @@ public class EnemyCoreBase : MonoBehaviour
 {
     [SerializeField] float[] weights;
     [SerializeField] protected PlayerCore playerCore;
+    [SerializeField] protected PlayerAttackManager attackManager;
+
 
     float totalWeight;
     bool isRotate;

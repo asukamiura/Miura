@@ -93009,6 +93009,13 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
+  - time: 0.76666665
+    functionName: PlaySe
+    data: WindBlade
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 1.1
     functionName: GenerateEffect
     data: AttackSpecial2Effect1
@@ -93016,15 +93023,8 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 1.1666666
-    functionName: AttackStart
-    data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 1.3333334
-    functionName: AttackEnd
+  - time: 1.2
+    functionName: PerformAttackHit
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

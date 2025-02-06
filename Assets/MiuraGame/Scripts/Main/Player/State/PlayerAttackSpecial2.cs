@@ -86,7 +86,6 @@ namespace Player
             isNextAttack = false;
             core.Animator.speed = 1;
             core.isInvincible = false;
-            core.AttackEnd();
         }
     }
 }
