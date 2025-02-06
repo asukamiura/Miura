@@ -20,15 +20,14 @@ namespace Enemy
         public void Enter()
         {
             core.transform.position = new Vector3(core.transform.position.x, resetPosY, core.transform.position.z);
-            core.hitCount = 0;
             moveDirection = Random.Range(1, 3);
             switch (moveDirection)
             {
                 case 1:
-                    core.animator.CrossFade("WalkRight", 0.1f);
+                    core.animator.CrossFade("WalkRight", 0);
                     break;
                 case 2:
-                    core.animator.CrossFade("WalkLeft", 0.1f);
+                    core.animator.CrossFade("WalkLeft", 0);
                     break;
             }
         }

@@ -6,6 +6,8 @@ public class DamageUIGenerator : MonoBehaviour
     [SerializeField] GameObject damageUIPrefab;
     [SerializeField] Canvas uiCanvas;
 
+    const float ShowingTime = 0.8f;
+
     public void GenerateDamageUI(float damageValue, Vector3 targetPosition)
     {
         // ダメージUIを生成
@@ -17,8 +19,9 @@ public class DamageUIGenerator : MonoBehaviour
         // Canvasの子オブジェクトに設定
         damageUI.transform.SetParent(uiCanvas.transform);
 
+        // 生成位置をDamaUIに渡す
         damageUI.GetComponent<DamageUIController>().targetPosition = targetPosition;
 
-        Destroy(damageUI, 1f);
+        Destroy(damageUI, ShowingTime);
     }
 }
