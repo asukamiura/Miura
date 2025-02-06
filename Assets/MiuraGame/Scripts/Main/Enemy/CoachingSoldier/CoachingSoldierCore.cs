@@ -13,8 +13,6 @@ namespace Enemy
 
         const int Fov = 10;     // 視野角
         const int MinSightDistance = 2;
-        const int MinHitCount = 0;
-        const int MaxHitCount = 3;
 
         public TutorialManager tutorialManager;
         public StateMachine<CoachingSoldierStateID> stateMachine;
@@ -22,7 +20,6 @@ namespace Enemy
         public float DistanceToPlayer { get; set; }
         public Vector3 CrossProduct { get; set; }
         public bool IsPlayerInSight => AngleToPlayer <= Fov && DistanceToPlayer >= MinSightDistance;
-        public int hitCount = 0;    // 連続で攻撃を受けた回数
         public bool CanAttack1 => tutorialManager.currentTask is JustGuardTask && !tutorialManager.currentTask.CheckTask();
         public bool CanAttack2 => tutorialManager.currentTask is JustDodgeTask && !tutorialManager.currentTask.CheckTask();
 
@@ -68,8 +65,6 @@ namespace Enemy
                 healthManager.Heal(100);
                 previousHP = healthManager.HP;
             }
-
-            hitCount = Mathf.Clamp(hitCount, MinHitCount, MaxHitCount);
         }
 
         void FixedUpdate()
@@ -80,14 +75,6 @@ namespace Enemy
         void ReceiveDamage()
         {
             stateMachine.ChangeState(CoachingSoldierStateID.Damage);
-        }
-
-        void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Sword"))
-            {
-                stateMachine.ChangeState(CoachingSoldierStateID.Damage);
-            }
         }
 
         public void AttackStart(string attackColliderName)

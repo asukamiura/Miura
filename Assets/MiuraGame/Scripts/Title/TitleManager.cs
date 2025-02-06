@@ -1,71 +1,69 @@
-﻿using TMPro;
+﻿using SoundSystem;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class TitleManager : MonoBehaviour
 {
+    [SerializeField] GameObject[] buttons;
+    [SerializeField] GameObject selectArrow;
+    [SerializeField] GameObject optionPanel;
+    [SerializeField] GameObject checkPanel;
+
     InputReciver Input => InputReciver.Instance;
-    enum TitlePanelState { Start = 0, Option, Quit }
-    TitlePanelState selectState = TitlePanelState.Start;
-    [SerializeField] TextMeshProUGUI[] texts;
+    enum PausePanelState { Start, Option, Quit }
+    PausePanelState pauseState = PausePanelState.Start;
 
     void Start()
     {
-        ChangeTextColor();
+        MoveSelectArrow();
     }
 
     void Update()
     {
         // 選択中のボタンを変更
-        if (Input.SelectMoveUp && selectState != TitlePanelState.Start)
+        if (Input.SelectMoveUp && pauseState != PausePanelState.Start)
         {
-            selectState--;
-            ChangeTextColor();
+            pauseState--;
+            MoveSelectArrow();
+            SoundManager.Instance.PlaySe("MenuMove");
         }
-        else if (Input.SelectMoveDown && selectState != TitlePanelState.Quit)
+        else if (Input.SelectMoveDown && pauseState != PausePanelState.Quit)
         {
-            selectState++;
-            ChangeTextColor();
+            pauseState++;
+            MoveSelectArrow();
+            SoundManager.Instance.PlaySe("MenuMove");
         }
 
         if (Input.Decision)
         {
-            switch (selectState)
+            SoundManager.Instance.PlaySe("Press");
+
+            switch (pauseState)
             {
-                case TitlePanelState.Start:
+                case PausePanelState.Start:
                     SceneManager.LoadScene("SelectScene");
                     break;
-                case TitlePanelState.Option:
+                case PausePanelState.Option:
+                    gameObject.SetActive(false);
+                    optionPanel.SetActive(true);
                     break;
-                case TitlePanelState.Quit:
-                    QuitGame();
+                case PausePanelState.Quit:
+                    gameObject.SetActive(false);
+                    checkPanel.SetActive(true);
                     break;
             }
         }
     }
 
-    void ChangeTextColor()
+    void MoveSelectArrow()
     {
-        // テキストの色を変更
-        for (int i = 0; i < texts.Length; i++)
+        for (int i = 0; i < buttons.Length; i++)
         {
-            if (i == (int)selectState)
+            if (i == (int)pauseState)
             {
-                texts[i].color = Color.red;
-            }
-            else
-            {
-                texts[i].color = Color.black;
+                selectArrow.transform.position = buttons[i].transform.position;
             }
         }
-    }
-
-    void QuitGame()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false; // ゲームプレイ終了
-#else
-            Application.Quit(); // ゲームプレイ終了
-#endif
     }
 }
