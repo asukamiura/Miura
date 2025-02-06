@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Player;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -33,6 +34,7 @@ namespace Enemy
             stateMachine.RegisterState(new CoachingSoldierMove(this));
             stateMachine.RegisterState(new CoachingSoldierAttack(this));
             stateMachine.RegisterState(new CoachingSoldierDamage(this));
+            attackManager.OnEnemykHit += ReceiveDamage;
         }
 
         void Start()
@@ -75,6 +77,10 @@ namespace Enemy
             stateMachine.FixedUpdate();
         }
 
+        void ReceiveDamage()
+        {
+            stateMachine.ChangeState(CoachingSoldierStateID.Damage);
+        }
 
         void OnTriggerEnter(Collider other)
         {

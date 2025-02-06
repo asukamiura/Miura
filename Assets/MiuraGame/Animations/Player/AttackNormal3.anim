@@ -32960,14 +32960,7 @@ AnimationClip:
   m_Events:
   - time: 0.23333333
     functionName: PlaySe
-    data: Attack
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.33333334
-    functionName: AttackStart
-    data: 
+    data: WindBlade
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
@@ -32979,8 +32972,8 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.6666667
-    functionName: AttackEnd
+  - time: 0.5
+    functionName: PerformAttackHit
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

@@ -17,7 +17,6 @@ namespace Player
 
         public void Enter()
         {
-            core.AttackEnd();
             core.Animator.CrossFade("Damage", 0, 0, 0);
             core.Rb.velocity = -core.transform.forward * KnockBackPower;
         }

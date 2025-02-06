@@ -50,7 +50,6 @@ namespace Player
         {
             core.Animator.applyRootMotion = false;
             core.Animator.speed = DefaultAnimationSpeed;
-            core.AttackEnd();
         }
     }
 }

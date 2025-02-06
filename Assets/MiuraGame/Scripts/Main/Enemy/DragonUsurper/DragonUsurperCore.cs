@@ -38,6 +38,8 @@ namespace Enemy
             stateMachine.RegisterState(new DragonUsurperAttack(this));
             stateMachine.RegisterState(new DragonUsurperDamage(this));
             stateMachine.RegisterState(new DragonUsurperDie(this));
+
+            attackManager.OnEnemykHit += ReceiveDamage;
         }
 
         void Start()
@@ -84,15 +86,12 @@ namespace Enemy
             stateMachine.FixedUpdate();
         }
 
-        void OnTriggerEnter(Collider other)
+        void ReceiveDamage()
         {
-            if (other.CompareTag("Sword"))
+            if ((playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2
+                   || playerCore.stateMachine.StateID == PlayerStateID.AttackUltimate) && stateMachine.StateID != DragonUsurperStateID.Die)
             {
-                if ((playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2
-                    || playerCore.stateMachine.StateID == PlayerStateID.AttackUltimate) && stateMachine.StateID != DragonUsurperStateID.Die)
-                {
-                    stateMachine.ChangeState(DragonUsurperStateID.Damage);
-                }
+                stateMachine.ChangeState(DragonUsurperStateID.Damage);
             }
         }
 

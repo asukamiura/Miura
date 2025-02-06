@@ -49,7 +49,6 @@ namespace Player
         {
             core.Animator.applyRootMotion = false;
             isNextAttack = false;
-            core.AttackEnd();
         }
     }
 }

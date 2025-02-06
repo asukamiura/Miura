@@ -13,7 +13,6 @@
 
         public void Enter()
         {
-            core.AttackEnd();
             core.Animator.applyRootMotion = true;
             core.Animator.CrossFade("Death", 0, 0, 0);
         }

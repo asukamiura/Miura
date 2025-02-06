@@ -37,7 +37,6 @@ namespace Player
 
         public void Exit()
         {
-            core.AttackEnd();
             core.Animator.applyRootMotion = false;
             core.isInvincible = false;
         }
