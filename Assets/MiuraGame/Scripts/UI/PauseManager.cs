@@ -11,6 +11,7 @@ public class PauseManager : MonoBehaviour
     InputReciver Input => InputReciver.Instance;
     enum PausePanelState { ReturnSelect, Option, Close }
     PausePanelState pauseState = PausePanelState.Close;
+    bool isPressed = false;
 
     void Start()
     {
@@ -34,8 +35,9 @@ public class PauseManager : MonoBehaviour
             SoundManager.Instance.PlaySe("MenuMove");
         }
 
-        if (Input.Decision)
+        if (Input.Decision && !isPressed)
         {
+            isPressed = true;
             SoundManager.Instance.PlaySe("Press");
 
             switch (pauseState)
@@ -66,5 +68,10 @@ public class PauseManager : MonoBehaviour
                 selectArrow.transform.position = buttons[i].transform.position;
             }
         }
+    }
+
+    void OnEnable()
+    {
+        isPressed = false;
     }
 }

@@ -7,6 +7,8 @@ namespace Enemy
         public CoachingSoldierStateID StateID => CoachingSoldierStateID.Attack;
         CoachingSoldierCore core;
 
+        const float IndicateEffectShowingTime = 1;  // 攻撃を知らせるエフェクトを表示する時間
+
         public CoachingSoldierAttack(CoachingSoldierCore core)
         {
             this.core = core;
@@ -16,10 +18,12 @@ namespace Enemy
         {
             if (core.CanAttack1)
             {
+                core.effectPlayer.PlayEffect("CanGuardEffect", IndicateEffectShowingTime);
                 core.animator.CrossFade("Attack1", 0);
             }
             else if (core.CanAttack2)
             {
+                core.effectPlayer.PlayEffect("CanDodgeEffect", IndicateEffectShowingTime);
                 core.animator.CrossFade("Attack2", 0);
             }
             else

@@ -1,69 +1,98 @@
-﻿using TMPro;
+﻿using SoundSystem;
+using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SelectManager : MonoBehaviour
 {
+    [SerializeField] GameObject[] buttons;
+    [SerializeField] GameObject selectArrow;
+
     InputReciver Input => InputReciver.Instance;
     enum SelectPanelState { Tutorial = 0, Stage1, Stage2, Stage3, ReturnTitle }
     SelectPanelState selectState = SelectPanelState.Tutorial;
-    [SerializeField] TextMeshProUGUI[] texts;
+    bool isPressed = false;
+
+    public static int InStageNum = 0;
 
     void Start()
     {
-        ChangeTextColor();
+
+        SoundManager.Instance.PlayBGMWithFadeIn("Select");
+
+        if (InStageNum == 1 || InStageNum == 2 || InStageNum == 3)
+        {
+            switch (InStageNum)
+            {
+                case 0: selectState = SelectPanelState.Tutorial; break;
+                case 1: selectState = SelectPanelState.Stage1; break;
+                case 2: selectState = SelectPanelState.Stage2; break;
+                case 3: selectState = SelectPanelState.Stage3; break;
+            }
+        }
+
+        MoveSelectArrow();
     }
 
     void Update()
     {
-        // 選択中のボタンを変更
-        if (Input.SelectMoveUp && selectState != SelectPanelState.Tutorial)
+        if (!isPressed)
         {
-            selectState--;
-            ChangeTextColor();
-        }
-        else if (Input.SelectMoveDown && selectState != SelectPanelState.ReturnTitle)
-        {
-            selectState++;
-            ChangeTextColor();
+            // 選択中のボタンを変更
+            if (Input.SelectMoveUp && selectState != SelectPanelState.Tutorial)
+            {
+                selectState--;
+                MoveSelectArrow();
+                SoundManager.Instance.PlaySe("MenuMove");
+            }
+            else if (Input.SelectMoveDown && selectState != SelectPanelState.ReturnTitle)
+            {
+                selectState++;
+                MoveSelectArrow();
+                SoundManager.Instance.PlaySe("MenuMove");
+            }
         }
 
-        if (Input.Decision)
+        if (Input.Decision && !isPressed)
         {
+            isPressed = true;
+            SoundManager.Instance.PlaySe("Press");
+            SoundManager.Instance.StopBGMWithFadeOut();
+
             switch (selectState)
             {
                 case SelectPanelState.Tutorial:
-                    SceneManager.LoadScene("TutorialScene");
+                    FadeManager.Instance.LoadScene("TutorialScene");
+                    InStageNum = 0;
                     break;
                 case SelectPanelState.Stage1:
-                    SceneManager.LoadScene("Stage1Scene");
+                    FadeManager.Instance.LoadScene("Stage1Scene");
+                    InStageNum = 1;
                     break;
                 case SelectPanelState.Stage2:
-                    SceneManager.LoadScene("Stage2Scene");
+                    FadeManager.Instance.LoadScene("Stage2Scene");
+                    InStageNum = 2;
                     break;
                 case SelectPanelState.Stage3:
-                    SceneManager.LoadScene("Stage3Scene");
+                    FadeManager.Instance.LoadScene("Stage3Scene");
+                    InStageNum = 3;
                     break;
                 case SelectPanelState.ReturnTitle:
-                    SceneManager.LoadScene("TitleScene");
+                    FadeManager.Instance.LoadScene("TitleScene");
+                    InStageNum = 0;
                     break;
-
             }
         }
     }
 
-    void ChangeTextColor()
+    void MoveSelectArrow()
     {
-        // テキストの色を変更
-        for (int i = 0; i < texts.Length; i++)
+        for (int i = 0; i < buttons.Length; i++)
         {
             if (i == (int)selectState)
             {
-                texts[i].color = Color.red;
-            }
-            else
-            {
-                texts[i].color = Color.black;
+                selectArrow.transform.position = buttons[i].transform.position;
             }
         }
     }

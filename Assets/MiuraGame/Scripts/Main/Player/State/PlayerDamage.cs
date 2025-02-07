@@ -8,7 +8,8 @@ namespace Player
         InputReciver Input => InputReciver.Instance;
         PlayerCore core;
 
-        const float KnockBackPower = 5;
+        const float KnockBackSpeed = 5;     // ノックバックスピード
+        private const float KnockBackDeceleration = 0.95f; // ノックバック減速率
 
         public PlayerDamage(PlayerCore core)
         {
@@ -17,8 +18,9 @@ namespace Player
 
         public void Enter()
         {
+            core.attackAssist.CorrectionAttack();
             core.Animator.CrossFade("Damage", 0, 0, 0);
-            core.Rb.velocity = -core.transform.forward * KnockBackPower;
+            core.Rb.velocity = -core.transform.forward * KnockBackSpeed;
         }
 
         public void Update()
@@ -33,7 +35,10 @@ namespace Player
             }
         }
 
-        public void FixedUpdate() { }
+        public void FixedUpdate() 
+        {
+            core.Rb.velocity *= KnockBackDeceleration;
+        }
 
         public void Exit()
         {

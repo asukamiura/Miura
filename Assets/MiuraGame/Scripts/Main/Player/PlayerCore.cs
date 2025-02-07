@@ -12,6 +12,7 @@ namespace Player
     {
         [SerializeField] int healVal = 20;  // 回復量
         [SerializeField] TextMeshProUGUI timingText;
+        [SerializeField] EffectPlayer effectPlayer;
 
         HealthManager healthManager;
         InputReciver Input => InputReciver.Instance;
@@ -91,10 +92,11 @@ namespace Player
                 stateMachine.ChangeState(PlayerStateID.Dead);
             }
 
-            // ガード、ブロック、回避、ダメージ状態でなければ実行可能
+            // ガード、ブロック、回避、特殊攻撃1、特殊攻撃2、ダメージ状態でなければ実行可能
             if (stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Block 
                 && stateMachine.StateID != PlayerStateID.Dash && stateMachine.StateID != PlayerStateID.Dodge 
-                && stateMachine.StateID != PlayerStateID.Damage)
+                && stateMachine.StateID != PlayerStateID.Damage && stateMachine.StateID != PlayerStateID.AttackSpecial1
+                && stateMachine.StateID != PlayerStateID.AttackSpecial2)
             {
                 // ガードステートに遷移
                 if (Input.Guard)
@@ -112,6 +114,7 @@ namespace Player
             // 回復処理を実行
             if (Input.Heal && CanHeal && healthManager.HP < healthManager.MaxHP)
             {
+                effectPlayer.PlayEffect("LifeEnchant", 1);
                 justPointManager.UseJustPoints(HealCost);
                 healthManager.Heal(healVal);
             }

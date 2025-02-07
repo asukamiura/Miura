@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -48,6 +49,8 @@ public class TutorialManager : MonoBehaviour
     float completeUIDisplayLatency = 1;
     bool inTutorial = true;
 
+    const float FirstWaitTime = 3;  // 最初のタスク表示までの待機時間
+
     void Awake()
     {
         tutorialTask = new List<ITutorialTask>()
@@ -72,15 +75,8 @@ public class TutorialManager : MonoBehaviour
         justDodgeTaskUI.SetActive(false);
         justGuardTaskUI.SetActive(false);
         attackUltimateTaskUI.SetActive(false);
-        SetFirstTask(tutorialTask.First());
-
-        PlayerEvents.OnJustGuardEvent += CountPlus;
-    }
-
-    void CountPlus()
-    {
-        Debug.Log("AAAAAA");
-        justGuardCount++;
+        //SetFirstTask(tutorialTask.First());
+        StartCoroutine(SetFirstTask(tutorialTask.First(), FirstWaitTime));
     }
 
     void Update()
@@ -123,6 +119,14 @@ public class TutorialManager : MonoBehaviour
     /// <param name="task">最初のタスク</param>
     void SetFirstTask(ITutorialTask task)
     {
+        currentTask = task;
+        currentTask.Enter();
+    }
+
+    IEnumerator SetFirstTask(ITutorialTask task, float waitTime)
+    {
+        yield return new WaitForSecondsRealtime(waitTime);
+
         currentTask = task;
         currentTask.Enter();
     }

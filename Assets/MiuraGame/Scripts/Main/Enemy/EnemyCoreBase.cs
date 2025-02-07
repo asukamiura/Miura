@@ -14,6 +14,7 @@ public class EnemyCoreBase : MonoBehaviour
     float currentAngle;
     Quaternion targetRotation;
 
+    public EffectPlayer effectPlayer;
     public Rigidbody rb;
     public Animator animator;
     public HealthManager healthManager;

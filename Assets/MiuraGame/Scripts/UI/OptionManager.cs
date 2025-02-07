@@ -14,11 +14,30 @@ public class OptionManager : MonoBehaviour
     enum OptionPanelState { Master = 0, BGM, SE, Close }
     OptionPanelState optionState = OptionPanelState.Master;
     enum CurrentScene { Title, Main }
+    float masterVol, bgmVol, seVol = 0;
 
     void Start()
     {
         gameObject.SetActive(false);
         SetVolume();
+        
+        SaveManager.Instance.LoadAudio(ref masterVol, ref bgmVol, ref seVol);
+
+        for (int i = 0; i < volumeSliders.Length; i++)
+        {
+            switch (i)
+            {
+                case 0:
+                    volumeSliders[i].value = masterVol;
+                    break;
+                case 1:
+                    volumeSliders[i].value = bgmVol;
+                    break;
+                case 2:
+                    volumeSliders[i].value = seVol;
+                    break;
+            }
+        }
     }
 
     void Update()
@@ -55,6 +74,7 @@ public class OptionManager : MonoBehaviour
             SoundManager.Instance.PlaySe("Press");
             gameObject.SetActive(false);
             previousPanel.SetActive(true);
+            SaveManager.Instance.SaveAudio(volumeSliders[0].value, volumeSliders[1].value, volumeSliders[2].value);
         }
     }
 
