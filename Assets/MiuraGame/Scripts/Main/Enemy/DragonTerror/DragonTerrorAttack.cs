@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Enemy
 {
@@ -15,9 +14,10 @@ namespace Enemy
         const int Attack1Num = 0;
         const int Attack2Num = 1;
         const int Attack3Num = 2;
-        const float PlayerEffect1NormalizedTime = 0.4f;    // エフェクト1を再生する標準時間
-        const float PlayerEffect2NormalizedTime = 0.7f;     // エフェクト2を再生する標準時間
-        const float EffectShowingTime = 1f;
+        const float PlayEffect1NormalizedTime = 0.4f;     // 攻撃2エフェクト1を再生する標準時間
+        const float PlayEffect2NormalizedTime = 0.7f;     // 攻撃2エフェクト2を再生する標準時間
+        const float AttackEffectShowingTime = 1;          // 攻撃2エフェクトを表示する時間
+        const float IndicateEffectShowingTime = 1;        // 攻撃を知らせるエフェクトを表示する時間
 
         public DragonTerrorAttack(DragonTerrorCore core)
         {
@@ -30,12 +30,15 @@ namespace Enemy
             switch (core.attackType)
             {
                 case Attack1Num:
+                    core.effectPlayer.PlayEffect("CanGuardEffect", IndicateEffectShowingTime);
                     core.animator.CrossFade("Attack1", 0);
                     break;
                 case Attack2Num:
+                    core.effectPlayer.PlayEffect("CanDodgeEffect", IndicateEffectShowingTime);
                     core.animator.CrossFade("Attack2", 0);
                     break;
                 case Attack3Num:
+                    core.effectPlayer.PlayEffect("CanDodgeEffect", IndicateEffectShowingTime);
                     core.animator.CrossFade("Attack3", 0);
                     break;
             }
@@ -55,17 +58,17 @@ namespace Enemy
                     core.navMeshAgent.velocity = Vector3.zero;
                 }
 
-                if (stateInfo.IsName("Attack2")) 
+                if (stateInfo.IsName("Attack2"))
                 {
-                    if (stateInfo.normalizedTime >= PlayerEffect1NormalizedTime && !isPlayedEffect1)
+                    if (stateInfo.normalizedTime >= PlayEffect1NormalizedTime && !isPlayedEffect1)
                     {
-                        EffectGenerator.Instance.PlayEffect("EarthBlast", core.attack2EffectTransform.position, effectRotation, EffectShowingTime);
+                        EffectGenerator.Instance.PlayEffect("EarthBlast", core.attack2EffectTransform.position, effectRotation, AttackEffectShowingTime);
                         isPlayedEffect1 = true;
                     }
 
-                    if (stateInfo.normalizedTime >= PlayerEffect2NormalizedTime && !isPlayedEffect2)
+                    if (stateInfo.normalizedTime >= PlayEffect2NormalizedTime && !isPlayedEffect2)
                     {
-                        EffectGenerator.Instance.PlayEffect("EarthBlast", core.attack2EffectTransform.position, effectRotation, EffectShowingTime);
+                        EffectGenerator.Instance.PlayEffect("EarthBlast", core.attack2EffectTransform.position, effectRotation, AttackEffectShowingTime);
                         isPlayedEffect2 = true;
                     }
                 }

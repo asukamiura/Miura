@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 
         saveObj = Instantiate(savePrefab);
         saveObj.name = "SaveManager";
-        //saveManager = saveObj.GetComponent<SaveManager>();
+        saveManager = saveObj.GetComponent<SaveManager>();
     }
 
     void Start()
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        SoundManager.Instance.PlayBGMWithFadeIn("Title");
+        SoundManager.Instance.PlayBGMWithFadeIn("Main");
         blackCurtain.SetActive(false);
     }
 
@@ -56,7 +56,7 @@ public class GameManager : MonoBehaviour
         }
 
         // プレイヤーが死んだらゲームオーバーステートに遷移
-        if (playerHealthManager.IsDead)
+        if (playerHealthManager.IsDead && CurrentState != GameState.GameOver)
         {
             ChangeState(GameState.GameOver);
         }
@@ -86,6 +86,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.GameOver:
                 gameOverPanel.SetActive(true);
+                Debug.Log("GameOver");
                 break;
         }
     }
@@ -94,6 +95,6 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         SoundManager.Instance.StopBGMWithFadeOut();
-        SceneManager.LoadScene("ResultScene");
+        FadeManager.Instance.LoadScene("ResultScene");
     }
 }

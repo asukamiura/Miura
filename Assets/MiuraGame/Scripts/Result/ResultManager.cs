@@ -10,6 +10,7 @@ public class ResultManager : MonoBehaviour
     private enum TitlePanelState { ReturnSelect = 0, ReturnTitle}
     private TitlePanelState selectState = TitlePanelState.ReturnSelect;
     [SerializeField] private TextMeshProUGUI[] texts;
+    bool isPressed = false;
 
     private void Start()
     {
@@ -18,27 +19,31 @@ public class ResultManager : MonoBehaviour
 
     private void Update()
     {
-        // 選択中のボタンを変更
-        if (Input.SelectMoveUp && selectState != TitlePanelState.ReturnSelect)
+        if (!isPressed)
         {
-            selectState--;
-            ChangeTextColor();
-        }
-        else if (Input.SelectMoveDown && selectState != TitlePanelState.ReturnTitle)
-        {
-            selectState++;
-            ChangeTextColor();
+            // 選択中のボタンを変更
+            if (Input.SelectMoveUp && selectState != TitlePanelState.ReturnSelect)
+            {
+                selectState--;
+                ChangeTextColor();
+            }
+            else if (Input.SelectMoveDown && selectState != TitlePanelState.ReturnTitle)
+            {
+                selectState++;
+                ChangeTextColor();
+            }
         }
 
-        if (Input.Decision)
+        if (Input.Decision && !isPressed)
         {
+            isPressed = true;
             switch (selectState)
             {
                 case TitlePanelState.ReturnSelect:
-                    SceneManager.LoadScene("SelectScene");
+                    FadeManager.Instance.LoadScene("SelectScene");
                     break;
                 case TitlePanelState.ReturnTitle:
-                    SceneManager.LoadScene("TitleScene");
+                    FadeManager.Instance.LoadScene("TitleScene");
                     break;              
             }
         }

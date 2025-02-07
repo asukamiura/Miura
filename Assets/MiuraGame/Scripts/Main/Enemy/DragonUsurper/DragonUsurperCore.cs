@@ -24,7 +24,6 @@ namespace Enemy
         public bool IsPlayerInSight => Mathf.Abs(AngleToPlayer) <= Fov && DistanceToPlayer >= minDistance;    // プレイヤーが視野内にいるかのフラグ
         public float rotationAngle = 1;
         public float minDistance;   // 中心から目までの距離
-        public bool isFlying = false;
         public bool isJustGuarded = false;
         public Transform attack2EffectTransform;
 

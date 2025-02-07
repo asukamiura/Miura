@@ -7,7 +7,13 @@ namespace Player
         public PlayerStateID StateID => PlayerStateID.Guard;
         InputReciver input => InputReciver.Instance;
         PlayerCore core;
-        const int GetJustPoints = 1;    // ジャスト回避成功時に得るジャストポイント量
+
+        private const int GetJustPoints = 1;    // ジャスト回避成功時に得るジャストポイント量
+        private const float LateThreshold = 0.2f;   // 遅すぎる判定のしきい値
+        private const float JustStartThreshold = 0.2f;  // ジャスト判定の開始時間
+        private const float JustEndThreshold = 0.8f;    // ジャスト判定の終了時間
+        private const float FastThreshold = 0.8f;   // 速すぎる判定のしきい値
+        private const float AnimationEndThreshold = 1f; // アニメーション終了のしきい値
 
         public PlayerGuard(PlayerCore core)
         {
@@ -16,7 +22,7 @@ namespace Player
 
         public void Enter()
         {
-            //anim.applyRootMotion = true;
+            // anim.applyRootMotion = true;
             core.attackAssist.CorrectionAttack();
             core.Animator.CrossFade("Guard", 0, 0, 0);
         }
@@ -24,27 +30,31 @@ namespace Player
         public void Update()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.normalizedTime >= 1f)
+            float normalizedTime = stateInfo.normalizedTime;
+
+            if (normalizedTime >= AnimationEndThreshold)
             {
                 core.stateMachine.ChangeState(PlayerStateID.Idle);
             }
+
             if (core.isJustGuard)
             {
-                if (stateInfo.normalizedTime > 0 && stateInfo.normalizedTime < 0.2f)
+                if (normalizedTime > 0 && normalizedTime < LateThreshold)
                 {
                     core.TimingUIShow("Late");
                 }
-                else if (stateInfo.normalizedTime >= 0.2f && stateInfo.normalizedTime < 0.8f)
+                else if (normalizedTime >= JustStartThreshold && normalizedTime < JustEndThreshold)
                 {
                     core.justGuardCount++;
                     core.TimingUIShow("Just");
                     core.justPointManager.AddJustPoints(GetJustPoints);
-                    Debug.Log("JUst!!!");
+                    Debug.Log("Just!!!");
                 }
-                else if (stateInfo.normalizedTime >= 0.8f && stateInfo.normalizedTime < 1)
+                else if (normalizedTime >= FastThreshold && normalizedTime < AnimationEndThreshold)
                 {
                     core.TimingUIShow("Fast");
                 }
+
                 core.stateMachine.ChangeState(PlayerStateID.Block);
             }
         }

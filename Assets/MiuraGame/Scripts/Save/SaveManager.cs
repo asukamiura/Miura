@@ -68,11 +68,6 @@ public class SaveManager : MonoBehaviour
             data.volMaster = DefaultVolumeMaster;
             data.volBgm = DefaultVolumeBgm;
             data.volSe = DefaultVolumeSe;
-            data.clearStageNum = DefaultClearStageNum;
-            for (int i = 0; i < data.highScore.Length; i++)
-            {
-                data.highScore[i] = DefaultHighScore;
-            }
 
             bf.Serialize(file, data);
         }

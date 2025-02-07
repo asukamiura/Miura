@@ -14,7 +14,7 @@ public class CheckManager : MonoBehaviour
     GameOverPanelState gameOverState = GameOverPanelState.No;
     string nextSceneName;   // 次に遷移するシーン名
     enum NextScene { Main, Select, Quit }
-
+    bool isPressed = false;
 
     void Start()
     {
@@ -31,26 +31,32 @@ public class CheckManager : MonoBehaviour
 
     void Update()
     {
-        // 選択中のボタンを変更
-        if (Input.SelectMoveLeft && gameOverState != GameOverPanelState.Yes)
+        if (!isPressed)
         {
-            gameOverState--;
-            MoveSelectArrow();
-            SoundManager.Instance.PlaySe("MenuMove");
-        }
-        else if (Input.SelectMoveRight && gameOverState != GameOverPanelState.No)
-        {
-            gameOverState++;
-            MoveSelectArrow();
-            SoundManager.Instance.PlaySe("MenuMove");
+            // 選択中のボタンを変更
+            if (Input.SelectMoveLeft && gameOverState != GameOverPanelState.Yes)
+            {
+                gameOverState--;
+                MoveSelectArrow();
+                SoundManager.Instance.PlaySe("MenuMove");
+            }
+            else if (Input.SelectMoveRight && gameOverState != GameOverPanelState.No)
+            {
+                gameOverState++;
+                MoveSelectArrow();
+                SoundManager.Instance.PlaySe("MenuMove");
+            }
         }
 
-        if (Input.Decision)
+        if (Input.Decision && !isPressed)
         {
+            isPressed = true;
             SoundManager.Instance.PlaySe("Press");
+
             switch (gameOverState)
             {
                 case GameOverPanelState.Yes:
+                    gameObject.SetActive(false);
                     if (nextScene == NextScene.Quit)
                     {
                         QuitGame();
@@ -58,7 +64,7 @@ public class CheckManager : MonoBehaviour
                     else
                     {
                         Time.timeScale = 1;
-                        SceneManager.LoadScene(nextSceneName);
+                        FadeManager.Instance.LoadScene(nextSceneName);
                         SoundManager.Instance.StopBGMWithFadeOut();
                     }
                     break;
@@ -88,5 +94,10 @@ public class CheckManager : MonoBehaviour
 #else
             Application.Quit(); // ゲームプレイ終了
 #endif
+    }
+
+    void OnEnable()
+    {
+        isPressed = false;
     }
 }

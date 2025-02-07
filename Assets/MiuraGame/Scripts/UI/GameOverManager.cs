@@ -11,12 +11,10 @@ public class GameOverManager : MonoBehaviour
     InputReciver Input => InputReciver.Instance;
     enum GameOverPanelState { ReturnSelect, Retry }
     GameOverPanelState gameOverState = GameOverPanelState.Retry;
-    float selectArrowPositionY = 0f;
 
     void Start()
     {
         gameObject.SetActive(false);
-        selectArrowPositionY = selectArrow.transform.position.y;
         MoveSelectArrow();
     }
 
@@ -47,7 +45,7 @@ public class GameOverManager : MonoBehaviour
                     break;
                 case GameOverPanelState.Retry:
                     Time.timeScale = 1;
-                    //SceneManager.LoadScene("");
+                    FadeManager.Instance.LoadScene(SceneManager.GetActiveScene().name);
                     break;
             }
         }
@@ -59,7 +57,7 @@ public class GameOverManager : MonoBehaviour
         {
             if (i == (int)gameOverState)
             {
-                selectArrow.transform.position = new Vector2(buttons[i].transform.position.x, selectArrowPositionY);
+                selectArrow.transform.position = buttons[i].transform.position;
             }
         }
     }

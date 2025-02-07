@@ -24,7 +24,6 @@ namespace Enemy
         public Vector3 CrossProduct { get; set; }
         public bool IsPlayerInSight => Mathf.Abs(AngleToPlayer) <= Fov && DistanceToPlayer >= MinDistance;    // プレイヤーが視野内にいるかのフラグ
         public float MinDistance { get; set; }   // 中心から目までの距離
-        public EffectPlayer effectPlayer;
         public bool isFlying = false;
         public bool isJustGuarded = false;
         public Transform attack2EffectTransform;
