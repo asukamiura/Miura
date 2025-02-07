@@ -2,7 +2,6 @@
 using SoundSystem;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,7 +16,8 @@ public class GameManager : MonoBehaviour
     GameObject saveObj;
     SaveManager saveManager;
     InputReciver Input => InputReciver.Instance;
-    float transitionTime = 3;    // シーン遷移が起こるまでの待機時間
+    bool isChangedScene = false;    // シーン遷移が実行されたかどうか
+    const float TransitionTime = 3;    // シーン遷移が起こるまでの待機時間
 
     public static GameManager Instance { get; set; }
     public enum GameState { Playing, Paused, GameOver }     // ゲームの状態
@@ -62,9 +62,10 @@ public class GameManager : MonoBehaviour
         }
 
         // 敵が死んだらリザルトシーンに遷移
-        if (enemyHealthManager.IsDead)
+        if (enemyHealthManager.IsDead && !isChangedScene)
         {
-            StartCoroutine(ChangeScene(transitionTime));
+            isChangedScene = true;
+            StartCoroutine(ChangeScene(TransitionTime));
         }
     }
 
@@ -86,7 +87,6 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.GameOver:
                 gameOverPanel.SetActive(true);
-                Debug.Log("GameOver");
                 break;
         }
     }

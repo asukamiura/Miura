@@ -1,12 +1,9 @@
 ﻿using Player;
-using SoundSystem;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -46,9 +43,10 @@ public class TutorialManager : MonoBehaviour
     public InputReciver Input => InputReciver.Instance;
     List<ITutorialTask> tutorialTask; // タスクリスト
     bool taskExecuted = false;
-    float completeUIDisplayLatency = 1;
-    bool inTutorial = true;
+    bool inTutorial = true;     // チュートリアル中かどうか
+    bool isChangedScene = false;     // シーン遷移が実行されたかどうか
 
+    const float CompleteUIDisplayLatency = 1;   // 完了UI表示時間
     const float FirstWaitTime = 3;  // 最初のタスク表示までの待機時間
 
     void Awake()
@@ -75,7 +73,6 @@ public class TutorialManager : MonoBehaviour
         justDodgeTaskUI.SetActive(false);
         justGuardTaskUI.SetActive(false);
         attackUltimateTaskUI.SetActive(false);
-        //SetFirstTask(tutorialTask.First());
         StartCoroutine(SetFirstTask(tutorialTask.First(), FirstWaitTime));
     }
 
@@ -87,6 +84,7 @@ public class TutorialManager : MonoBehaviour
             {
                 currentTask.Update();
 
+                // 現在のタスクを完了したら次のタスクへ
                 if (currentTask.CheckTask())
                 {
                     taskExecuted = true;
@@ -106,10 +104,10 @@ public class TutorialManager : MonoBehaviour
             attackSpecial2CountText.text = attackSpecial2Count.ToString();
             attackUltimateCountText.text = attackUltimateCount.ToString();
         }
-        else
+        else if (!inTutorial && !isChangedScene)
         {
-            // セレクトシーンに遷移
-            SceneManager.LoadScene("SelectScene");
+            isChangedScene = true;
+            FadeManager.Instance.LoadScene("SelectScene");
         }
     }
 
@@ -117,12 +115,8 @@ public class TutorialManager : MonoBehaviour
     /// 最初のタスクを設定
     /// </summary>
     /// <param name="task">最初のタスク</param>
-    void SetFirstTask(ITutorialTask task)
-    {
-        currentTask = task;
-        currentTask.Enter();
-    }
-
+    /// <param name="waitTime">最初のタスクを表示するまでの待機時間</param>
+    /// <returns></returns>
     IEnumerator SetFirstTask(ITutorialTask task, float waitTime)
     {
         yield return new WaitForSecondsRealtime(waitTime);
@@ -141,9 +135,9 @@ public class TutorialManager : MonoBehaviour
     {
         if (currentTask.ShowSuccessUI)
         {
-            yield return new WaitForSeconds(completeUIDisplayLatency);
+            yield return new WaitForSeconds(CompleteUIDisplayLatency);
             completeUI.SetActive(true);
-            yield return new WaitForSeconds(completeUIDisplayLatency);
+            yield return new WaitForSeconds(CompleteUIDisplayLatency);
             completeUI.SetActive(false);
         }
 

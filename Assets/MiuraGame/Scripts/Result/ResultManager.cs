@@ -1,67 +1,71 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using SoundSystem;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class ResultManager : MonoBehaviour
 {
+    [SerializeField] GameObject[] buttons;
+    [SerializeField] GameObject selectArrow;
+
     InputReciver Input => InputReciver.Instance;
-    private enum TitlePanelState { ReturnSelect = 0, ReturnTitle}
-    private TitlePanelState selectState = TitlePanelState.ReturnSelect;
-    [SerializeField] private TextMeshProUGUI[] texts;
+    enum ResultState { ReturnSelect = 0, ReturnTitle }
+    ResultState resultState = ResultState.ReturnSelect;
     bool isPressed = false;
 
-    private void Start()
+    void Start()
     {
-        ChangeTextColor();
+        SoundManager.Instance.PlayBGMWithFadeIn("Result");        
     }
 
-    private void Update()
+    void Update()
     {
         if (!isPressed)
         {
             // 選択中のボタンを変更
-            if (Input.SelectMoveUp && selectState != TitlePanelState.ReturnSelect)
+            if (Input.SelectMoveUp && resultState != ResultState.ReturnSelect)
             {
-                selectState--;
-                ChangeTextColor();
+                resultState--;
+                MoveSelectArrow();
+                SoundManager.Instance.PlaySe("MenuMove");
             }
-            else if (Input.SelectMoveDown && selectState != TitlePanelState.ReturnTitle)
+            else if (Input.SelectMoveDown && resultState != ResultState.ReturnTitle)
             {
-                selectState++;
-                ChangeTextColor();
+                resultState++;
+                MoveSelectArrow();
+                SoundManager.Instance.PlaySe("MenuMove");
             }
         }
 
         if (Input.Decision && !isPressed)
         {
             isPressed = true;
-            switch (selectState)
+            SoundManager.Instance.PlaySe("Press");
+            SoundManager.Instance.StopBGMWithFadeOut();
+
+            switch (resultState)
             {
-                case TitlePanelState.ReturnSelect:
+                case ResultState.ReturnSelect:
                     FadeManager.Instance.LoadScene("SelectScene");
                     break;
-                case TitlePanelState.ReturnTitle:
+                case ResultState.ReturnTitle:
                     FadeManager.Instance.LoadScene("TitleScene");
-                    break;              
+                    break;
             }
         }
     }
 
-    private void ChangeTextColor()
+    void MoveSelectArrow()
     {
-        // テキストの色を変更
-        for (int i = 0; i < texts.Length; i++)
+        for (int i = 0; i < buttons.Length; i++)
         {
-            if (i == (int)selectState)
+            if (i == (int)resultState)
             {
-                texts[i].color = Color.red;
-            }
-            else
-            {
-                texts[i].color = Color.black;
+                selectArrow.transform.position = buttons[i].transform.position;
             }
         }
+    }
+
+    void OnEnable()
+    {
+        isPressed = false;
     }
 }
