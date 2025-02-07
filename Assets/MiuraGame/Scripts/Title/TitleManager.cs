@@ -29,6 +29,9 @@ public class TitleManager : MonoBehaviour
 
     void Start()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+
         SoundManager.Instance.PlayBGMWithFadeIn("Title");
 
         MoveSelectArrow();

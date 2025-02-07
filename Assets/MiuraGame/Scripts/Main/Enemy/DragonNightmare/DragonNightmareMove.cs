@@ -34,13 +34,13 @@ namespace Enemy
 
             if (core.DistanceToPlayer < ChangeMoveDistance)
             {
-                core.animator.CrossFade("WalkFront", 0.1f);
+                core.animator.CrossFade("WalkFront", 0);
                 core.navMeshAgent.speed = WalkSpeed;
             }
             else if (core.DistanceToPlayer >= ChangeMoveDistance)
             {
                 core.navMeshAgent.speed = RunSpeed;
-                core.animator.CrossFade("RunFront", 0.1f);
+                core.animator.CrossFade("RunFront", 0);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Enemy
             if (stateInfo.IsName("WalkFront") && core.DistanceToPlayer > ChangeMoveDistance)
             {
                 core.navMeshAgent.speed = RunSpeed;
-                core.animator.CrossFade("RunFront", 0.1f);
+                core.animator.CrossFade("RunFront", 0);
             }
 
             core.LookAtPlayer();

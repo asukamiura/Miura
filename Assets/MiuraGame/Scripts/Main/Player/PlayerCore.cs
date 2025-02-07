@@ -16,11 +16,13 @@ namespace Player
 
         HealthManager healthManager;
         InputReciver Input => InputReciver.Instance;
-        PlayerEvents events;
 
         const int ChargeAttackCost = 1;  // チャージ攻撃に必要なジャストポイント数
         const int HealCost = 2;          // 回復に必要なジャストポイント数
+        const float HealEffectShowingTime = 1;  // 回復エフェクトの表示時間
         const int PowerUpCost = 3;       // パワーアップに必要なジャストポイント数
+        const float PowerUpEffectShowingTime = 1;  // パワーアップ時のエフェクトの表示時間
+        const float PowerUpTime = 15;    // パワーアップ継続時間
         const int UltCost = 100;         // 必殺技に必要なゲージ量
 
         public StateMachine<PlayerStateID> stateMachine;
@@ -114,7 +116,7 @@ namespace Player
             // 回復処理を実行
             if (Input.Heal && CanHeal && healthManager.HP < healthManager.MaxHP)
             {
-                effectPlayer.PlayEffect("LifeEnchant", 1);
+                effectPlayer.PlayEffect("LifeEnchant", HealEffectShowingTime);
                 justPointManager.UseJustPoints(HealCost);
                 healthManager.Heal(healVal);
             }
@@ -122,6 +124,8 @@ namespace Player
             // パワーアップ処理を実行
             if (Input.PowerUp && CanPowerUp && !powerManager.InPowerUp)
             {
+                effectPlayer.PlayEffect("LightEnchant", PowerUpEffectShowingTime);
+                effectPlayer.PlayEffect("AuraRingLight", PowerUpTime);
                 justPointManager.UseJustPoints(PowerUpCost);
                 powerManager.ActionPowerUp();
             }
