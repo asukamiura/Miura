@@ -10,7 +10,6 @@ public class FadeManager : MonoBehaviour
 {
     private static Canvas canvas;
     private static Image image;
-    private static Text loadingText;
 
     private static FadeManager instance;
     public static FadeManager Instance
@@ -43,20 +42,6 @@ public class FadeManager : MonoBehaviour
         image.rectTransform.anchoredPosition = Vector3.zero;
         image.rectTransform.sizeDelta = new Vector2(Screen.width, Screen.height);
 
-        // Text作成(Now Loading)
-        loadingText = new GameObject("LoadingText").AddComponent<Text>();
-        loadingText.transform.SetParent(canvas.transform, false);
-        // フォント、幅、文字のサイズ、文字揃えなどをセット
-        loadingText.font = Resources.GetBuiltinResource(typeof(Font), "LegacyRuntime.ttf") as Font;
-        loadingText.rectTransform.pivot = new Vector2(1, 0);
-        loadingText.rectTransform.anchorMax = new Vector2(1, 0);
-        loadingText.rectTransform.anchorMin = new Vector2(1, 0);
-        loadingText.rectTransform.sizeDelta = new Vector2(500, 200);
-        loadingText.fontSize = 60;
-        loadingText.alignment = TextAnchor.MiddleLeft;
-        loadingText.color = Color.white;
-        loadingText.enabled = false;
-
         // 遷移先シーンでもオブジェクトを破棄しない
         DontDestroyOnLoad(canvas.gameObject);
 
@@ -66,7 +51,7 @@ public class FadeManager : MonoBehaviour
     }
 
     // フェード付きシーン遷移を行う
-    public void LoadScene(string sceneName, float interval = 1f)
+    public void LoadScene(string sceneName, float interval = 0.5f)
     {
         if (fadeCoroutine != null)
         {
@@ -77,6 +62,7 @@ public class FadeManager : MonoBehaviour
         fadeCoroutine = Fade(sceneName, interval);
         StartCoroutine(fadeCoroutine);
     }
+
     private IEnumerator Fade(string sceneName, float interval)
     {
         float time = 0f;
@@ -87,7 +73,7 @@ public class FadeManager : MonoBehaviour
         {
             float fadeAlpha = Mathf.Lerp(0f, 1f, time / interval);
             image.color = new Color(0.0f, 0f, 0f, fadeAlpha);
-            time += Time.deltaTime;
+            time += Time.unscaledDeltaTime;
             yield return null;
         }
 
@@ -95,23 +81,9 @@ public class FadeManager : MonoBehaviour
         async = SceneManager.LoadSceneAsync(sceneName);
         //
         async.allowSceneActivation = false;
-
-        time = 0f;
-        loadingText.enabled = true;
-        while (async.progress < 0.9f)
-        {
-            time += Time.deltaTime;
-            // 0.3秒ごとに表示切替  
-            if (time < 0.3f) { loadingText.text = "Now Loading"; }
-            else if (time < 0.3f) { loadingText.text = "Now Loading."; }
-            else if (time < 0.3f) { loadingText.text = "Now Loading.."; }
-            else if (time < 0.3f) { loadingText.text = "Now Loading..."; }
-            else { time = 0f; }
-            yield return null;
-        }
+      
         //  ロード完了後、0.5秒待ってからシーン遷移
-        yield return new WaitForSeconds(0.5f);
-        loadingText.enabled = false;
+        yield return new WaitForSecondsRealtime(0.5f);
         async.allowSceneActivation = true;
 
         // シーン非同期ロード
@@ -123,7 +95,7 @@ public class FadeManager : MonoBehaviour
         {
             float fadeAlpha = Mathf.Lerp(1f, 0f, time / interval);
             image.color = new Color(0f, 0f, 0f, fadeAlpha);
-            time += Time.deltaTime;
+            time += Time.unscaledDeltaTime;
             yield return null;
         }
 

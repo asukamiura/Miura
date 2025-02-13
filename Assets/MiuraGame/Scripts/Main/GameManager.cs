@@ -1,4 +1,5 @@
-﻿using Player;
+﻿using Enemy;
+using Player;
 using SoundSystem;
 using System.Collections;
 using UnityEngine;
@@ -7,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject savePrefab;
     [SerializeField] PlayerCore playerCore;
+    [SerializeField] PlayerCameraController playerCameraController;
+    [SerializeField] EnemyCoreBase enemyCore;
     [SerializeField] HealthManager playerHealthManager;
     [SerializeField] HealthManager enemyHealthManager;
     [SerializeField] GameObject blackCurtain;
@@ -18,10 +21,11 @@ public class GameManager : MonoBehaviour
     InputReciver Input => InputReciver.Instance;
     bool isChangedScene = false;    // シーン遷移が実行されたかどうか
     const float TransitionTime = 3;    // シーン遷移が起こるまでの待機時間
+    const float GameStartTime = 8.3f;
 
     public static GameManager Instance { get; set; }
-    public enum GameState { Playing, Paused, GameOver }     // ゲームの状態
-    public GameState CurrentState { get; set; } = GameState.Playing;    // 現在の状態
+    public enum GameState { GameStart, Playing, Paused, GameOver }     // ゲームの状態
+    public GameState CurrentState { get; set; } = GameState.GameStart;    // 現在の状態
 
     void Awake()
     {
@@ -46,17 +50,20 @@ public class GameManager : MonoBehaviour
 
         SoundManager.Instance.PlayBGMWithFadeIn("Main");
         blackCurtain.SetActive(false);
+
+        StartCoroutine(Initialize());
+        Time.timeScale = 1;
     }
 
     void Update()
-    {
+    {       
         if (Input.Pause && CurrentState == GameState.Playing)
         {
             ChangeState(GameState.Paused);
         }
 
         // プレイヤーが死んだらゲームオーバーステートに遷移
-        if (playerHealthManager.IsDead && CurrentState != GameState.GameOver)
+        if (playerHealthManager.IsDead && CurrentState != GameState.GameOver && CurrentState == GameState.Playing)
         {
             ChangeState(GameState.GameOver);
         }
@@ -67,6 +74,8 @@ public class GameManager : MonoBehaviour
             isChangedScene = true;
             StartCoroutine(ChangeScene(TransitionTime));
         }
+
+        Debug.Log(CurrentState.ToString());
     }
 
     // 各ステートに変更時実行
@@ -75,18 +84,26 @@ public class GameManager : MonoBehaviour
         CurrentState = state;
         switch (state)
         {
+            case GameState.GameStart:
+                playerCore.enabled = false;
+                playerCameraController.enabled = false;
+                enemyCore.MoveActive(false);
+                break;
             case GameState.Playing:
                 blackCurtain.SetActive(false);
                 playerCore.enabled = true;
+                playerCameraController.enabled = true;
+                enemyCore.MoveActive(true);
                 break;
             case GameState.Paused:
                 playerCore.enabled = false;
-                Time.timeScale = 0;
                 blackCurtain.SetActive(true);
                 pausePanel.SetActive(true);
+                Time.timeScale = 0;
                 break;
             case GameState.GameOver:
                 gameOverPanel.SetActive(true);
+                Time.timeScale = 0;
                 break;
         }
     }
@@ -96,5 +113,14 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         SoundManager.Instance.StopBGMWithFadeOut();
         FadeManager.Instance.LoadScene("ResultScene");
+    }
+
+    IEnumerator Initialize()
+    {
+        ChangeState(GameState.GameStart);
+
+        yield return new WaitForSeconds(GameStartTime);
+
+        ChangeState(GameState.Playing);
     }
 }

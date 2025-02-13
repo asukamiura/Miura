@@ -63,7 +63,6 @@ public class CheckManager : MonoBehaviour
                     }
                     else
                     {
-                        Time.timeScale = 1;
                         FadeManager.Instance.LoadScene(nextSceneName);
                         SoundManager.Instance.StopBGMWithFadeOut();
                     }

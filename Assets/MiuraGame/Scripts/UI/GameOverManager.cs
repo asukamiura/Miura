@@ -44,7 +44,6 @@ public class GameOverManager : MonoBehaviour
                     checkPanel.SetActive(true);
                     break;
                 case GameOverPanelState.Retry:
-                    Time.timeScale = 1;
                     FadeManager.Instance.LoadScene(SceneManager.GetActiveScene().name);
                     break;
             }

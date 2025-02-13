@@ -71,23 +71,15 @@ namespace Enemy
             {
                 isJustGuarded = true;
             }
+            else
+            {
+                isJustGuarded = false;
+            }
         }
 
         void FixedUpdate()
         {
             stateMachine.FixedUpdate();
-        }
-
-        void OnTriggerEnter(Collider other)
-        {
-            if (other.CompareTag("Sword"))
-            {
-                if ((playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2
-                    || playerCore.stateMachine.StateID == PlayerStateID.AttackUltimate) && stateMachine.StateID != DragonNightmareStateID.Die)
-                {
-                    stateMachine.ChangeState(DragonNightmareStateID.Damage);
-                }
-            }
         }
 
         void ReceiveDamage()

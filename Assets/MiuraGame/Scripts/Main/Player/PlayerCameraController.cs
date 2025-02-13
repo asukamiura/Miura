@@ -33,7 +33,7 @@ public class PlayerCameraController : MonoBehaviour
         if (isInput)
         {
             pov.m_HorizontalAxis.Value += Input.Look.x * horizontalSpeed * sensitivity * Time.deltaTime;
-            pov.m_VerticalAxis.Value += Input.Look.y * verticalSpeed * sensitivity * Time.deltaTime;
+            pov.m_VerticalAxis.Value -= Input.Look.y * verticalSpeed * sensitivity * Time.deltaTime;
         }
 
         if (isChangeFOV)
