@@ -33,8 +33,6 @@ namespace Player
 
         public void Enter()
         {
-            //core.Rb.velocity = Vector3.zero;
-
             // プレイヤーを無敵状態にする
             core.isInvincible = true;
 
@@ -42,7 +40,6 @@ namespace Player
 
             // ブロック演出を開始
             isEffective = true;
-            core.playerCameraController.RecenteringEnabled();
             core.playerCameraController.StartChangeDutch(TargetDutch, ChangeDutchSpeed1);
             core.playerCameraController.StartChangeFOV(TargetFOV, NarrowSpeed);
             core.playerCameraController.ApplyImpulse();
@@ -77,7 +74,6 @@ namespace Player
                 {
                     core.playerCameraController.StartChangeFOV(DefaultFOV, SpreadSpeed);
                     core.playerCameraController.StartChangeDutch(DefaultDutch, ChangeDutchSpeed2);
-                    core.playerCameraController.RecenteringDisabled();
                     core.animationController.ChangeAllAnimationSpeed(DefaultAnimationSpeed);
                     isEffective = false;
                 }

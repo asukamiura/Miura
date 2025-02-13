@@ -28,16 +28,9 @@ namespace Player
                 core.stateMachine.ChangeState(PlayerStateID.Dash);
             }
 
-            if (Input.AttackCharge)
-            {
-                core.justPointManager.UseJustPoints(1);
-                core.stateMachine.ChangeState(PlayerStateID.AttackCharge);
-                Input.ResetInputCountTime();
-            }
-            else if (Input.AttackNormal)
+            if (Input.AttackNormal)
             {
                 core.stateMachine.ChangeState(PlayerStateID.AttackNormal1);
-                Input.ResetInputCountTime();
             }
 
             if (Input.Move != Vector2.zero)

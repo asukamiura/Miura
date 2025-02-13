@@ -17,13 +17,12 @@ namespace Player
         HealthManager healthManager;
         InputReciver Input => InputReciver.Instance;
 
-        const int ChargeAttackCost = 1;  // チャージ攻撃に必要なジャストポイント数
-        const int HealCost = 2;          // 回復に必要なジャストポイント数
-        const float HealEffectShowingTime = 1;  // 回復エフェクトの表示時間
-        const int PowerUpCost = 3;       // パワーアップに必要なジャストポイント数
-        const float PowerUpEffectShowingTime = 1;  // パワーアップ時のエフェクトの表示時間
-        const float PowerUpTime = 15;    // パワーアップ継続時間
-        const int UltCost = 100;         // 必殺技に必要なゲージ量
+        const int HealCost = 2;                      // 回復に必要なジャストポイント数
+        const float HealEffectShowingTime = 1;       // 回復エフェクトの表示時間
+        const int PowerUpCost = 3;                   // パワーアップに必要なジャストポイント数
+        const float PowerUpEffectShowingTime = 1;    // パワーアップ時のエフェクトの表示時間
+        const float PowerUpTime = 15;                // パワーアップ継続時間
+        const int UltCost = 100;                     // 必殺技に必要なゲージ量
 
         public StateMachine<PlayerStateID> stateMachine;
         public JustPointManager justPointManager;
@@ -40,11 +39,9 @@ namespace Player
         public bool isJustGuard = false;
         public bool isJustDodge = false;
         public bool isInvincible = false;   // 無敵状態フラグ
-        public bool CanChargeAttack => justPointManager.JustPoints >= ChargeAttackCost;
         public bool CanHeal => justPointManager.JustPoints >= HealCost;
         public bool CanPowerUp => justPointManager.JustPoints >= PowerUpCost;
         public bool CanUlt => ultimateManager.ULTVal >= UltCost;
-        public HashSet<GameObject> hitEnemies = new HashSet<GameObject>();
         public int justGuardCount = 0;
         public int justDodgeCount = 0;
 
@@ -62,7 +59,6 @@ namespace Player
             stateMachine.RegisterState(new PlayerAttackNormal3(this));
             stateMachine.RegisterState(new PlayerAttackSpecial1(this));
             stateMachine.RegisterState(new PlayerAttackSpecial2(this));
-            stateMachine.RegisterState(new PlayerAttackCharge(this));
             stateMachine.RegisterState(new PlayerAttackUltimate(this));
             stateMachine.RegisterState(new PlayerDamage(this));
             stateMachine.RegisterState(new PlayerDead(this));
@@ -166,7 +162,7 @@ namespace Player
                     scoreManager.SubtractScore((int)enemyAttackHit.damageVal);
                 }
             }
-        }      
+        }     
 
         public void TimingUIShow(string timing)
         {

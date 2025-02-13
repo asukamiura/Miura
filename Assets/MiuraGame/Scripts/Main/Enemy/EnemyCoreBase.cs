@@ -2,17 +2,17 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyCoreBase : MonoBehaviour
+public abstract class EnemyCoreBase : MonoBehaviour
 {
     [SerializeField] float[] weights;
     [SerializeField] protected PlayerCore playerCore;
     [SerializeField] protected PlayerAttackManager attackManager;
 
-
     float totalWeight;
     bool isRotate;
     float currentAngle;
     Quaternion targetRotation;
+    float currentSpeed = 1;
 
     public EffectPlayer effectPlayer;
     public Rigidbody rb;
@@ -22,6 +22,11 @@ public class EnemyCoreBase : MonoBehaviour
     public Transform playerTransform;
     public float rotationSpeed = 1.0f;
     public int attackType;
+
+    public void MoveActive(bool isActive)
+    {
+        this.enabled = isActive;
+    }
 
     /// <summary>
     /// プレイヤーの方向を向く

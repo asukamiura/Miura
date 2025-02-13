@@ -86,7 +86,7 @@ namespace Enemy
                     }
                 }
 
-                if (stateInfo.normalizedTime >= 1 && !core.isJustGuarded)
+                if (stateInfo.normalizedTime >= 1)
                 {
                     core.stateMachine.ChangeState(DragonNightmareStateID.Move);
                 }

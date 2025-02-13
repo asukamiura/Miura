@@ -36,7 +36,7 @@ namespace Player
                 }
                 else
                 {
-                    core.Animator.speed = 1.2f;
+                    core.Animator.speed = 1.5f;
                 }
 
                 if (stateInfo.normalizedTime >= NextStateTransitionTime && !isNextAttack)

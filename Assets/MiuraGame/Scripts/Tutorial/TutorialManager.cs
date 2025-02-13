@@ -47,7 +47,7 @@ public class TutorialManager : MonoBehaviour
     bool isChangedScene = false;     // シーン遷移が実行されたかどうか
 
     const float CompleteUIDisplayLatency = 1;   // 完了UI表示時間
-    const float FirstWaitTime = 3;  // 最初のタスク表示までの待機時間
+    const float FirstWaitTime = 8.4f;  // 最初のタスク表示までの待機時間
 
     void Awake()
     {

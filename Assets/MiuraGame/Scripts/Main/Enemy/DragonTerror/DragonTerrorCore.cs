@@ -77,6 +77,10 @@ namespace Enemy
             {
                 isJustGuarded = true;
             }
+            else
+            {
+                isJustGuarded = false;
+            }
         }
 
         void FixedUpdate()
