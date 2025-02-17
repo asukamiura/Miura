@@ -11,6 +11,7 @@ public class GameOverManager : MonoBehaviour
     InputReciver Input => InputReciver.Instance;
     enum GameOverPanelState { ReturnSelect, Retry }
     GameOverPanelState gameOverState = GameOverPanelState.Retry;
+    bool isPressed = false;
 
     void Start()
     {
@@ -20,32 +21,36 @@ public class GameOverManager : MonoBehaviour
 
     void Update()
     {
-        // 選択中のボタンを変更
-        if (Input.SelectMoveLeft && gameOverState != GameOverPanelState.ReturnSelect)
+        if (!isPressed)
         {
-            gameOverState--;
-            MoveSelectArrow();
-            SoundManager.Instance.PlaySe("MenuMove");
-        }
-        else if (Input.SelectMoveRight && gameOverState != GameOverPanelState.Retry)
-        {
-            gameOverState++;
-            MoveSelectArrow();
-            SoundManager.Instance.PlaySe("MenuMove");
-        }
-
-        if (Input.Decision)
-        {
-            SoundManager.Instance.PlaySe("Press");
-            switch (gameOverState)
+            // 選択中のボタンを変更
+            if (Input.SelectMoveLeft && gameOverState != GameOverPanelState.ReturnSelect)
             {
-                case GameOverPanelState.ReturnSelect:
-                    gameObject.SetActive(false);
-                    checkPanel.SetActive(true);
-                    break;
-                case GameOverPanelState.Retry:
-                    FadeManager.Instance.LoadScene(SceneManager.GetActiveScene().name);
-                    break;
+                gameOverState--;
+                MoveSelectArrow();
+                SoundManager.Instance.PlaySe("MenuMove");
+            }
+            else if (Input.SelectMoveRight && gameOverState != GameOverPanelState.Retry)
+            {
+                gameOverState++;
+                MoveSelectArrow();
+                SoundManager.Instance.PlaySe("MenuMove");
+            }
+
+            if (Input.Decision)
+            {
+                isPressed = true;
+                SoundManager.Instance.PlaySe("Press");
+                switch (gameOverState)
+                {
+                    case GameOverPanelState.ReturnSelect:
+                        gameObject.SetActive(false);
+                        checkPanel.SetActive(true);
+                        break;
+                    case GameOverPanelState.Retry:
+                        FadeManager.Instance.LoadScene(SceneManager.GetActiveScene().name);
+                        break;
+                }
             }
         }
     }
@@ -59,5 +64,10 @@ public class GameOverManager : MonoBehaviour
                 selectArrow.transform.position = buttons[i].transform.position;
             }
         }
+    }
+
+    void OnEnable()
+    {
+        isPressed = false;
     }
 }

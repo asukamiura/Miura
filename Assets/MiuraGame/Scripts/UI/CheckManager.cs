@@ -46,31 +46,31 @@ public class CheckManager : MonoBehaviour
                 MoveSelectArrow();
                 SoundManager.Instance.PlaySe("MenuMove");
             }
-        }
 
-        if (Input.Decision && !isPressed)
-        {
-            isPressed = true;
-            SoundManager.Instance.PlaySe("Press");
-
-            switch (gameOverState)
+            if (Input.Decision)
             {
-                case GameOverPanelState.Yes:
-                    gameObject.SetActive(false);
-                    if (nextScene == NextScene.Quit)
-                    {
-                        QuitGame();
-                    }
-                    else
-                    {
-                        FadeManager.Instance.LoadScene(nextSceneName);
-                        SoundManager.Instance.StopBGMWithFadeOut();
-                    }
-                    break;
-                case GameOverPanelState.No:
-                    gameObject.SetActive(false);
-                    previousPanel.SetActive(true);
-                    break;
+                isPressed = true;
+                SoundManager.Instance.PlaySe("Press");
+
+                switch (gameOverState)
+                {
+                    case GameOverPanelState.Yes:
+                        gameObject.SetActive(false);
+                        if (nextScene == NextScene.Quit)
+                        {
+                            QuitGame();
+                        }
+                        else
+                        {
+                            FadeManager.Instance.LoadScene(nextSceneName);
+                            SoundManager.Instance.StopBGMWithFadeOut();
+                        }
+                        break;
+                    case GameOverPanelState.No:
+                        gameObject.SetActive(false);
+                        previousPanel.SetActive(true);
+                        break;
+                }
             }
         }
     }

@@ -110,8 +110,7 @@ public class GameManager : MonoBehaviour
                 Time.timeScale = 0;
                 break;
             case GameState.GameOver:
-                gameOverPanel.SetActive(true);
-                Time.timeScale = 0;
+                StartCoroutine(ShowGameOverPanel());
                 break;
         }
     }
@@ -130,5 +129,13 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(GameStartTime);
 
         ChangeState(GameState.Playing);
+    }
+
+    IEnumerator ShowGameOverPanel()
+    {
+        yield return new WaitForSeconds(2);
+
+        gameOverPanel.SetActive(true);
+        Time.timeScale = 0;
     }
 }
