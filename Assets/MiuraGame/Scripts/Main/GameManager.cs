@@ -1,5 +1,4 @@
-﻿using Enemy;
-using Player;
+﻿using Player;
 using SoundSystem;
 using System.Collections;
 using UnityEngine;
@@ -15,11 +14,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject blackCurtain;
     [SerializeField] GameObject pausePanel;
     [SerializeField] GameObject gameOverPanel;
+    [SerializeField] GameObject operationUI;
 
     GameObject saveObj;
     SaveManager saveManager;
     InputReciver Input => InputReciver.Instance;
     bool isChangedScene = false;    // シーン遷移が実行されたかどうか
+    float previousTimeScale = 1;
+    bool previousEnabled = true;
+
     const float TransitionTime = 3;    // シーン遷移が起こるまでの待機時間
     const float GameStartTime = 8.3f;
 
@@ -49,14 +52,16 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
 
         SoundManager.Instance.PlayBGMWithFadeIn("Main");
+
         blackCurtain.SetActive(false);
+        operationUI.SetActive(false);
 
         StartCoroutine(Initialize());
         Time.timeScale = 1;
     }
 
     void Update()
-    {       
+    {
         if (Input.Pause && CurrentState == GameState.Playing)
         {
             ChangeState(GameState.Paused);
@@ -74,8 +79,6 @@ public class GameManager : MonoBehaviour
             isChangedScene = true;
             StartCoroutine(ChangeScene(TransitionTime));
         }
-
-        Debug.Log(CurrentState.ToString());
     }
 
     // 各ステートに変更時実行
@@ -91,14 +94,19 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Playing:
                 blackCurtain.SetActive(false);
-                playerCore.enabled = true;
+                operationUI.SetActive(false);
+                playerCore.enabled = previousEnabled;
                 playerCameraController.enabled = true;
                 enemyCore.MoveActive(true);
+                Time.timeScale = previousTimeScale;
                 break;
             case GameState.Paused:
+                previousEnabled = playerCore.enabled;
                 playerCore.enabled = false;
                 blackCurtain.SetActive(true);
+                operationUI.SetActive(true);
                 pausePanel.SetActive(true);
+                previousTimeScale = Time.timeScale;
                 Time.timeScale = 0;
                 break;
             case GameState.GameOver:

@@ -16,6 +16,8 @@ public class TutorialManager : MonoBehaviour
     public int attackSpecial2Count = 0;    // 特殊攻撃2をした回数
     public int attackUltimateCount = 0;
 
+    [SerializeField] GameManager gameManager;
+
     [Header("説明画面")]
     public GameObject attackNormalPanel;
     public GameObject justDodgePanel;
@@ -39,6 +41,7 @@ public class TutorialManager : MonoBehaviour
 
     [Header("成功UI")]
     [SerializeField] GameObject completeUI;
+
 
     public InputReciver Input => InputReciver.Instance;
     List<ITutorialTask> tutorialTask; // タスクリスト
@@ -80,9 +83,9 @@ public class TutorialManager : MonoBehaviour
     {
         if (inTutorial)
         {
-            if (currentTask != null && !taskExecuted)
+            if (currentTask != null && !taskExecuted && gameManager.CurrentState == GameManager.GameState.Playing)
             {
-                currentTask.Update();
+                currentTask?.Update();
 
                 // 現在のタスクを完了したら次のタスクへ
                 if (currentTask.CheckTask())
@@ -119,7 +122,7 @@ public class TutorialManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator SetFirstTask(ITutorialTask task, float waitTime)
     {
-        yield return new WaitForSecondsRealtime(waitTime);
+        yield return new WaitForSeconds(waitTime);
 
         currentTask = task;
         currentTask.Enter();
@@ -143,7 +146,7 @@ public class TutorialManager : MonoBehaviour
 
         currentTask.Exit();
 
-        yield return new WaitForSecondsRealtime(waitTime);
+        yield return new WaitForSeconds(waitTime);
 
         // タスクがない場合、チュートリアル終了
         if (tutorialTask.Count <= 0)
