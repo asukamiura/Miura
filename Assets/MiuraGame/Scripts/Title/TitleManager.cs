@@ -54,27 +54,27 @@ public class TitleManager : MonoBehaviour
                 MoveSelectArrow();
                 SoundManager.Instance.PlaySe("MenuMove");
             }
-        }
 
-        if (Input.Decision && !isPressed)
-        {
-            isPressed = true;
-            SoundManager.Instance.PlaySe("Press");
-
-            switch (pauseState)
+            if (Input.Decision)
             {
-                case PausePanelState.Start:
-                    SoundManager.Instance.StopBGMWithFadeOut();
-                    FadeManager.Instance.LoadScene("SelectScene");
-                    break;
-                case PausePanelState.Option:
-                    gameObject.SetActive(false);
-                    optionPanel.SetActive(true);
-                    break;
-                case PausePanelState.Quit:
-                    gameObject.SetActive(false);
-                    checkPanel.SetActive(true);
-                    break;
+                isPressed = true;
+                SoundManager.Instance.PlaySe("Press");
+
+                switch (pauseState)
+                {
+                    case PausePanelState.Start:
+                        SoundManager.Instance.StopBGMWithFadeOut();
+                        FadeManager.Instance.LoadScene("SelectScene");
+                        break;
+                    case PausePanelState.Option:
+                        gameObject.SetActive(false);
+                        optionPanel.SetActive(true);
+                        break;
+                    case PausePanelState.Quit:
+                        gameObject.SetActive(false);
+                        checkPanel.SetActive(true);
+                        break;
+                }
             }
         }
     }
