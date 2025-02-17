@@ -53,7 +53,6 @@ public class PauseManager : MonoBehaviour
                 case PausePanelState.Close:
                     gameObject.SetActive(false);
                     GameManager.Instance.ChangeState(GameManager.GameState.Playing);
-                    Time.timeScale = 1;
                     break;
             }
         }

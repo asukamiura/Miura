@@ -15,7 +15,7 @@ namespace Player
         [SerializeField] ScoreManager scoreManager;
         [SerializeField] DamageUIGenerator damageUIGenerator;
 
-        private const float AttackRadius = 2f;
+        const float AttackRadius = 2f;
         const float ShowingTime = 1;
 
         void PerformAttack(Vector3 center, float radius)
@@ -64,7 +64,6 @@ namespace Player
                             break;
                     }
 
-                    Debug.Log("Hit");
                     Vector3 closestPoint = enemy.ClosestPoint(transform.position);                   
                     
                     // 敵にダメージを与える

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Player
 {
@@ -15,6 +16,8 @@ namespace Player
         private const float FastThreshold = 0.8f;   // 速すぎる判定のしきい値
         private const float AnimationEndThreshold = 1f; // アニメーション終了のしきい値
 
+        public static event Action<string> OnJudgeGuardTiming;
+
         public PlayerGuard(PlayerCore core)
         {
             this.core = core;
@@ -22,7 +25,6 @@ namespace Player
 
         public void Enter()
         {
-            // anim.applyRootMotion = true;
             core.attackAssist.CorrectionAttack();
             core.Animator.CrossFade("Guard", 0, 0, 0);
         }
@@ -41,18 +43,16 @@ namespace Player
             {
                 if (normalizedTime > 0 && normalizedTime < LateThreshold)
                 {
-                    core.TimingUIShow("Late");
+                    OnJudgeGuardTiming?.Invoke("Late");
                 }
                 else if (normalizedTime >= JustStartThreshold && normalizedTime < JustEndThreshold)
                 {
-                    core.justGuardCount++;
-                    core.TimingUIShow("Just");
+                    OnJudgeGuardTiming?.Invoke("Just");
                     core.justPointManager.AddJustPoints(GetJustPoints);
-                    Debug.Log("Just!!!");
                 }
                 else if (normalizedTime >= FastThreshold && normalizedTime < AnimationEndThreshold)
                 {
-                    core.TimingUIShow("Fast");
+                    OnJudgeGuardTiming?.Invoke("Fast");
                 }
 
                 core.stateMachine.ChangeState(PlayerStateID.Block);

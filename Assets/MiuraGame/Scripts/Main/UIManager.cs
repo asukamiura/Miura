@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using Player;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
@@ -14,14 +14,30 @@ public class UIManager : MonoBehaviour
     [SerializeField] Image enemyHPGauge;
     [SerializeField] Image UltimateGauge;
     [SerializeField] Image[] justPointUI;
+    [SerializeField] GameObject timingUI;
+    [SerializeField] TextMeshProUGUI timingText;
 
     int previousJustPoints;
+
+    void Awake()
+    {
+        PlayerGuard.OnJudgeGuardTiming += TimingUIShow;
+        PlayerDash.OnJudgeDodgeTiming += TimingUIShow;
+    }
+
+    private void OnDisable()
+    {
+        PlayerGuard.OnJudgeGuardTiming -= TimingUIShow;
+        PlayerDash.OnJudgeDodgeTiming -= TimingUIShow;
+    }
 
     void Start()
     {
         previousJustPoints = justPointManager.JustPoints;
 
         UpdateJustPointsUI();
+
+        timingUI.SetActive(false);
     }
 
     void Update()
@@ -30,6 +46,7 @@ public class UIManager : MonoBehaviour
         enemyHPGauge.fillAmount = enemyHealthManager.HP / enemyHealthManager.MaxHP;
         UltimateGauge.fillAmount = ultimateManager.ULTVal / ultimateManager.maxUltVal;
 
+        // ジャストポイントに増減があった場合UIを更新
         if (previousJustPoints != justPointManager.JustPoints)
         {
             UpdateJustPointsUI();
@@ -50,5 +67,20 @@ public class UIManager : MonoBehaviour
             }
         }
         previousJustPoints = justPointManager.JustPoints;
+    }
+
+    public void TimingUIShow(string timing)
+    {
+        StartCoroutine(TimingUIChange(timing));
+    }
+
+    IEnumerator TimingUIChange(string timing)
+    {
+        timingText.text = timing;
+        timingUI.SetActive(true);
+
+        yield return new WaitForSeconds(1);
+
+        timingUI.SetActive(false);
     }
 }

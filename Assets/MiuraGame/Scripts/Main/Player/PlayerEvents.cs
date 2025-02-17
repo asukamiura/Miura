@@ -1,9 +1,7 @@
-﻿namespace Player
-{
-    public class PlayerEvents
-    {
+﻿using System;
 
-        
-    }
+namespace Player
+{
+  
 }
 

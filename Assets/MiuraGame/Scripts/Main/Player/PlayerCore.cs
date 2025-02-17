@@ -1,17 +1,13 @@
 ﻿using SoundSystem;
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace Player
 {
     public class PlayerCore : MonoBehaviour
     {
         [SerializeField] int healVal = 20;  // 回復量
-        [SerializeField] TextMeshProUGUI timingText;
         [SerializeField] EffectPlayer effectPlayer;
 
         HealthManager healthManager;
@@ -42,8 +38,6 @@ namespace Player
         public bool CanHeal => justPointManager.JustPoints >= HealCost;
         public bool CanPowerUp => justPointManager.JustPoints >= PowerUpCost;
         public bool CanUlt => ultimateManager.ULTVal >= UltCost;
-        public int justGuardCount = 0;
-        public int justDodgeCount = 0;
 
         void Awake()
         {
@@ -71,7 +65,6 @@ namespace Player
         void Start()
         {
             stateMachine.Initialize(PlayerStateID.Idle);
-            timingText.enabled = false;
         }
 
         void Update()
@@ -91,8 +84,8 @@ namespace Player
             }
 
             // ガード、ブロック、回避、特殊攻撃1、特殊攻撃2、ダメージ状態でなければ実行可能
-            if (stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Block 
-                && stateMachine.StateID != PlayerStateID.Dash && stateMachine.StateID != PlayerStateID.Dodge 
+            if (stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Block
+                && stateMachine.StateID != PlayerStateID.Dash && stateMachine.StateID != PlayerStateID.Dodge
                 && stateMachine.StateID != PlayerStateID.Damage && stateMachine.StateID != PlayerStateID.AttackSpecial1
                 && stateMachine.StateID != PlayerStateID.AttackSpecial2)
             {
@@ -162,19 +155,6 @@ namespace Player
                     scoreManager.SubtractScore((int)enemyAttackHit.damageVal);
                 }
             }
-        }     
-
-        public void TimingUIShow(string timing)
-        {
-            StartCoroutine(TimingUIChange(timing));
-        }
-
-        IEnumerator TimingUIChange(string timing)
-        {
-            timingText.text = timing;
-            timingText.enabled = true;
-            yield return new WaitForSeconds(1);
-            timingText.enabled = false;
         }
     }
 }

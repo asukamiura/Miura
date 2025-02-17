@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Player
 {
@@ -19,6 +20,8 @@ namespace Player
         private const float JustEndThreshold = 0.25f;   // ジャスト判定の終了時間
         private const float FastThreshold = 0.25f;  // 速すぎる判定のしきい値
         private const float DashEndThreshold = 0.3f; // ダッシュ終了時間
+
+        public static event Action<string> OnJudgeDodgeTiming;
 
         public PlayerDash(PlayerCore core)
         {
@@ -51,18 +54,17 @@ namespace Player
             {
                 if (currentTime > 0 && currentTime < LateThreshold)
                 {
-                    core.TimingUIShow("Late");
+                    OnJudgeDodgeTiming?.Invoke("Late");
                 }
                 else if (currentTime >= JustStartThreshold && currentTime < JustEndThreshold)
                 {
-                    core.justDodgeCount++;
-                    core.TimingUIShow("Just");
+                    OnJudgeDodgeTiming?.Invoke("Just");
                     core.justPointManager.AddJustPoints(GetJustPoints);
                     Debug.Log("Just!!!");
                 }
                 else if (currentTime >= FastThreshold && currentTime < DashEndThreshold)
                 {
-                    core.TimingUIShow("Fast");
+                    OnJudgeDodgeTiming?.Invoke("Fast");
                 }
 
                 core.stateMachine.ChangeState(PlayerStateID.Dodge);
