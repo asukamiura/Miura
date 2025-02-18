@@ -76,6 +76,14 @@ public class OptionManager : MonoBehaviour
             previousPanel.SetActive(true);
             SaveManager.Instance.SaveAudio(volumeSliders[0].value, volumeSliders[1].value, volumeSliders[2].value);
         }
+
+        if (Input.Return)
+        {
+            SoundManager.Instance.PlaySe("Press");
+            gameObject.SetActive(false);
+            previousPanel.SetActive(true);
+            SaveManager.Instance.SaveAudio(volumeSliders[0].value, volumeSliders[1].value, volumeSliders[2].value);
+        }
     }
 
     void MoveSelectArrow()
@@ -100,5 +108,11 @@ public class OptionManager : MonoBehaviour
         volumeConfigUI.SetMasterVolume(SoundManager.Instance.MasterVolume);
         volumeConfigUI.SetBGMVolume(SoundManager.Instance.MasterVolume);
         volumeConfigUI.SetSEVolume(SoundManager.Instance.MasterVolume);
+    }
+
+    void OnEnable()
+    {
+        optionState = OptionPanelState.Master;
+        MoveSelectArrow();
     }
 }

@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
 
     const float TransitionTime = 3;    // シーン遷移が起こるまでの待機時間
     const float GameStartTime = 8.3f;
+    const float FadeTime = 1;
 
     public static GameManager Instance { get; set; }
     public enum GameState { GameStart, Playing, Paused, GameOver }     // ゲームの状態
@@ -51,7 +52,7 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
-        SoundManager.Instance.PlayBGMWithFadeIn("Main");
+        SoundManager.Instance.PlayBGMWithFadeIn("Main", FadeTime);
 
         blackCurtain.SetActive(false);
         operationUI.SetActive(false);
@@ -118,8 +119,8 @@ public class GameManager : MonoBehaviour
     IEnumerator ChangeScene(float delay)
     {
         yield return new WaitForSeconds(delay);
-        SoundManager.Instance.StopBGMWithFadeOut();
-        FadeManager.Instance.LoadScene("ResultScene");
+        SoundManager.Instance.StopBGMWithFadeOut("Main", FadeTime);
+        FadeManager.Instance.LoadScene("ResultScene", FadeTime);
     }
 
     IEnumerator Initialize()

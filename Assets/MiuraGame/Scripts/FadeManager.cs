@@ -51,7 +51,7 @@ public class FadeManager : MonoBehaviour
     }
 
     // フェード付きシーン遷移を行う
-    public void LoadScene(string sceneName, float interval = 0.5f)
+    public void LoadScene(string sceneName, float interval = 1f)
     {
         if (fadeCoroutine != null)
         {
@@ -77,17 +77,11 @@ public class FadeManager : MonoBehaviour
             yield return null;
         }
 
-        //
-        async = SceneManager.LoadSceneAsync(sceneName);
-        //
-        async.allowSceneActivation = false;
-      
-        //  ロード完了後、0.5秒待ってからシーン遷移
-        yield return new WaitForSecondsRealtime(0.5f);
-        async.allowSceneActivation = true;
+        // 完全な黒にする
+        image.color = new Color(0.0f, 0f, 0f, 1f);
 
-        // シーン非同期ロード
-        //yield return SceneManager.LoadSceneAsync(sceneName);
+        //// シーン非同期ロード
+        yield return SceneManager.LoadSceneAsync(sceneName);
 
         // フェードイン
         time = 0f;
@@ -99,7 +93,9 @@ public class FadeManager : MonoBehaviour
             yield return null;
         }
 
-        // 描画を更新しない
+        // 完全に透明にする
+        image.color = new Color(0f, 0f, 0f, 0f);
+
         canvas.enabled = false;
     }
 }

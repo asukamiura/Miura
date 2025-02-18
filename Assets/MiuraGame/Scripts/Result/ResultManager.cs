@@ -11,9 +11,11 @@ public class ResultManager : MonoBehaviour
     ResultState resultState = ResultState.ReturnSelect;
     bool isPressed = false;
 
+    const float FadeTime = 1.0f;
+
     void Start()
     {
-        SoundManager.Instance.PlayBGMWithFadeIn("Result");        
+        SoundManager.Instance.PlayBGMWithFadeIn("Result", FadeTime);        
     }
 
     void Update()
@@ -39,15 +41,15 @@ public class ResultManager : MonoBehaviour
         {
             isPressed = true;
             SoundManager.Instance.PlaySe("Press");
-            SoundManager.Instance.StopBGMWithFadeOut();
+            SoundManager.Instance.StopBGMWithFadeOut(FadeTime);
 
             switch (resultState)
             {
                 case ResultState.ReturnSelect:
-                    FadeManager.Instance.LoadScene("SelectScene");
+                    FadeManager.Instance.LoadScene("SelectScene", FadeTime);
                     break;
                 case ResultState.ReturnTitle:
-                    FadeManager.Instance.LoadScene("TitleScene");
+                    FadeManager.Instance.LoadScene("TitleScene", FadeTime);
                     break;
             }
         }

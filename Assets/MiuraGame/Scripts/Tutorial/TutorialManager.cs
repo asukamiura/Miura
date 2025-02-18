@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using SoundSystem;
 
 public class TutorialManager : MonoBehaviour
 {
@@ -51,6 +52,7 @@ public class TutorialManager : MonoBehaviour
 
     const float CompleteUIDisplayLatency = 1;   // 完了UI表示時間
     const float FirstWaitTime = 8.4f;  // 最初のタスク表示までの待機時間
+    const float FadeTime = 1;
 
     void Awake()
     {
@@ -110,7 +112,8 @@ public class TutorialManager : MonoBehaviour
         else if (!inTutorial && !isChangedScene)
         {
             isChangedScene = true;
-            FadeManager.Instance.LoadScene("SelectScene");
+            FadeManager.Instance.LoadScene("SelectScene", FadeTime);
+            SoundManager.Instance.StopBGMWithFadeOut(FadeTime);
         }
     }
 

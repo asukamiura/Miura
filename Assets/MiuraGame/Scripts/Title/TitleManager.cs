@@ -16,6 +16,8 @@ public class TitleManager : MonoBehaviour
     PausePanelState pauseState = PausePanelState.Start;
     bool isPressed = false;
 
+    const float FadeTime = 1.0f;
+
     void Awake()
     {
         saveObj = Instantiate(savePrefab);
@@ -63,8 +65,8 @@ public class TitleManager : MonoBehaviour
                 switch (pauseState)
                 {
                     case PausePanelState.Start:
-                        SoundManager.Instance.StopBGMWithFadeOut();
-                        FadeManager.Instance.LoadScene("SelectScene");
+                        SoundManager.Instance.StopBGMWithFadeOut(FadeTime);
+                        FadeManager.Instance.LoadScene("SelectScene", FadeTime);
                         break;
                     case PausePanelState.Option:
                         gameObject.SetActive(false);
