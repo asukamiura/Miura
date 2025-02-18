@@ -1,6 +1,5 @@
 ﻿using SoundSystem;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class CheckManager : MonoBehaviour
 {
@@ -10,11 +9,13 @@ public class CheckManager : MonoBehaviour
     [SerializeField] NextScene nextScene;   // 次に遷移するシーン
 
     InputReciver Input => InputReciver.Instance;
-    enum GameOverPanelState { Yes, No }
-    GameOverPanelState gameOverState = GameOverPanelState.No;
+    enum CheckPanelState { Yes, No }
+    CheckPanelState checkState = CheckPanelState.No;
     string nextSceneName;   // 次に遷移するシーン名
-    enum NextScene { Main, Select, Quit }
+    enum NextScene { Title, Select, Quit }
     bool isPressed = false;
+
+    const float FadeTime = 1.0f;
 
     void Start()
     {
@@ -23,7 +24,7 @@ public class CheckManager : MonoBehaviour
 
         nextSceneName = nextScene switch
         {
-            NextScene.Main => "MainScene",
+            NextScene.Title => "TitleScene",
             NextScene.Select => "SelectScene",
             _ => ""
         };
@@ -34,15 +35,15 @@ public class CheckManager : MonoBehaviour
         if (!isPressed)
         {
             // 選択中のボタンを変更
-            if (Input.SelectMoveLeft && gameOverState != GameOverPanelState.Yes)
+            if (Input.SelectMoveLeft && checkState != CheckPanelState.Yes)
             {
-                gameOverState--;
+                checkState--;
                 MoveSelectArrow();
                 SoundManager.Instance.PlaySe("MenuMove");
             }
-            else if (Input.SelectMoveRight && gameOverState != GameOverPanelState.No)
+            else if (Input.SelectMoveRight && checkState != CheckPanelState.No)
             {
-                gameOverState++;
+                checkState++;
                 MoveSelectArrow();
                 SoundManager.Instance.PlaySe("MenuMove");
             }
@@ -52,9 +53,9 @@ public class CheckManager : MonoBehaviour
                 isPressed = true;
                 SoundManager.Instance.PlaySe("Press");
 
-                switch (gameOverState)
+                switch (checkState)
                 {
-                    case GameOverPanelState.Yes:
+                    case CheckPanelState.Yes:
                         gameObject.SetActive(false);
                         if (nextScene == NextScene.Quit)
                         {
@@ -62,15 +63,23 @@ public class CheckManager : MonoBehaviour
                         }
                         else
                         {
-                            FadeManager.Instance.LoadScene(nextSceneName);
-                            SoundManager.Instance.StopBGMWithFadeOut();
+                            FadeManager.Instance.LoadScene(nextSceneName, FadeTime);
+                            SoundManager.Instance.StopBGMWithFadeOut(FadeTime);
                         }
                         break;
-                    case GameOverPanelState.No:
+                    case CheckPanelState.No:
                         gameObject.SetActive(false);
                         previousPanel.SetActive(true);
                         break;
                 }
+            }
+
+            if (Input.Return)
+            {
+                isPressed = true;
+                SoundManager.Instance.PlaySe("Press");
+                gameObject.SetActive(false);
+                previousPanel.SetActive(true);
             }
         }
     }
@@ -79,7 +88,7 @@ public class CheckManager : MonoBehaviour
     {
         for (int i = 0; i < buttons.Length; i++)
         {
-            if (i == (int)gameOverState)
+            if (i == (int)checkState)
             {
                 selectArrow.transform.position = buttons[i].transform.position;
             }
@@ -98,5 +107,7 @@ public class CheckManager : MonoBehaviour
     void OnEnable()
     {
         isPressed = false;
+        checkState = CheckPanelState.No;
+        MoveSelectArrow();
     }
 }

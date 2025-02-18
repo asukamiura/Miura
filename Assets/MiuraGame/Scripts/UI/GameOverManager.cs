@@ -13,6 +13,8 @@ public class GameOverManager : MonoBehaviour
     GameOverPanelState gameOverState = GameOverPanelState.Retry;
     bool isPressed = false;
 
+    const float FadeTime = 1.0f;
+
     void Start()
     {
         gameObject.SetActive(false);
@@ -48,10 +50,11 @@ public class GameOverManager : MonoBehaviour
                         checkPanel.SetActive(true);
                         break;
                     case GameOverPanelState.Retry:
-                        FadeManager.Instance.LoadScene(SceneManager.GetActiveScene().name);
+                        FadeManager.Instance.LoadScene(SceneManager.GetActiveScene().name, FadeTime);
+                        SoundManager.Instance.StopBGMWithFadeOut(FadeTime);
                         break;
                 }
-            }
+            }            
         }
     }
 

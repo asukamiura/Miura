@@ -46,7 +46,7 @@ namespace SoundSystem
             // 音量0で再生開始
             audioSource.Play(audioClip, 0f);
 
-            for (float t = 0f; t < fadeTime; t += Time.deltaTime)
+            for (float t = 0f; t < fadeTime; t += Time.unscaledDeltaTime)
             {
                 audioSource.volume = Mathf.Lerp(0f, targetVolume,Mathf.Clamp01(t / fadeTime));
                 yield return null;
@@ -61,7 +61,7 @@ namespace SoundSystem
             // フェード時間がおかしかった場合は補正
             fadeTime = fadeTime < 0.1f ? 0.1f : fadeTime;
 
-            for (float t = 0f; t < fadeTime; t += Time.deltaTime)
+            for (float t = 0f; t < fadeTime; t += Time.unscaledDeltaTime)
             {
                 audioSource.volume = Mathf.Lerp(startVolume, 0f, Mathf.Clamp01(t / fadeTime));
                 yield return null;

@@ -12,7 +12,6 @@ public abstract class EnemyCoreBase : MonoBehaviour
     bool isRotate;
     float currentAngle;
     Quaternion targetRotation;
-    float currentSpeed = 1;
 
     public EffectPlayer effectPlayer;
     public Rigidbody rb;

@@ -30,6 +30,7 @@ public class InputReciver : MonoBehaviour
     public bool SelectMoveDown { get { return gameInput.UI.SelectMoveDown.WasPressedThisFrame(); } }
     public bool SelectMoveLeft { get { return gameInput.UI.SelectMoveLeft.WasPressedThisFrame(); } }
     public bool SelectMoveRight { get { return gameInput.UI.SelectMoveRight.WasPressedThisFrame(); } }
+    public bool Return { get { return gameInput.Player.Pause.WasReleasedThisFrame(); } }
 
     void OnEnable()
     {

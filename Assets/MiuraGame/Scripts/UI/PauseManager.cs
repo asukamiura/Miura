@@ -21,41 +21,53 @@ public class PauseManager : MonoBehaviour
 
     void Update()
     {
-        // 選択中のボタンを変更
-        if (Input.SelectMoveUp && pauseState != PausePanelState.ReturnSelect)
+        if (!isPressed)
         {
-            pauseState--;
-            MoveSelectArrow();
-            SoundManager.Instance.PlaySe("MenuMove");
-        }
-        else if (Input.SelectMoveDown && pauseState != PausePanelState.Close)
-        {
-            pauseState++;
-            MoveSelectArrow();
-            SoundManager.Instance.PlaySe("MenuMove");
-        }
-
-        if (Input.Decision && !isPressed)
-        {
-            isPressed = true;
-            SoundManager.Instance.PlaySe("Press");
-
-            switch (pauseState)
+            // 選択中のボタンを変更
+            if (Input.SelectMoveUp && pauseState != PausePanelState.ReturnSelect)
             {
-                case PausePanelState.ReturnSelect:
-                    gameObject.SetActive(false);
-                    checkPanel.SetActive(true);
-                    break;
-                case PausePanelState.Option:
-                    gameObject.SetActive(false);
-                    optionPanel.SetActive(true);
-                    break;
-                case PausePanelState.Close:
-                    gameObject.SetActive(false);
-                    GameManager.Instance.ChangeState(GameManager.GameState.Playing);
-                    break;
+                pauseState--;
+                MoveSelectArrow();
+                SoundManager.Instance.PlaySe("MenuMove");
             }
-        }
+            else if (Input.SelectMoveDown && pauseState != PausePanelState.Close)
+            {
+                pauseState++;
+                MoveSelectArrow();
+                SoundManager.Instance.PlaySe("MenuMove");
+            }
+
+            if (Input.Decision)
+            {
+                isPressed = true;
+                SoundManager.Instance.PlaySe("Press");
+
+                switch (pauseState)
+                {
+                    case PausePanelState.ReturnSelect:
+                        gameObject.SetActive(false);
+                        checkPanel.SetActive(true);
+                        break;
+                    case PausePanelState.Option:
+                        gameObject.SetActive(false);
+                        optionPanel.SetActive(true);
+                        break;
+                    case PausePanelState.Close:
+                        gameObject.SetActive(false);
+                        GameManager.Instance.ChangeState(GameManager.GameState.Playing);
+                        break;
+                }
+            }
+
+            if (Input.Return)
+            {
+                isPressed = true;
+                SoundManager.Instance.PlaySe("Press");
+                gameObject.SetActive(false);
+                pauseState = PausePanelState.Close;
+                GameManager.Instance.ChangeState(GameManager.GameState.Playing);
+            }
+        }       
     }
 
     void MoveSelectArrow()
@@ -72,5 +84,6 @@ public class PauseManager : MonoBehaviour
     void OnEnable()
     {
         isPressed = false;
+        MoveSelectArrow();
     }
 }
