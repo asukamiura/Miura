@@ -1,10 +1,15 @@
 ﻿using SoundSystem;
+using TMPro;
 using UnityEngine;
 
 public class ResultManager : MonoBehaviour
 {
     [SerializeField] GameObject[] buttons;
     [SerializeField] GameObject selectArrow;
+    [SerializeField] TextMeshProUGUI rankText;
+    [SerializeField] TextMeshProUGUI scoreText;
+    [SerializeField] TextMeshProUGUI justDodgeCount;
+    [SerializeField] TextMeshProUGUI justGuardCount;
 
     InputReciver Input => InputReciver.Instance;
     enum ResultState { ReturnSelect = 0, ReturnTitle }
@@ -15,7 +20,12 @@ public class ResultManager : MonoBehaviour
 
     void Start()
     {
-        SoundManager.Instance.PlayBGMWithFadeIn("Result", FadeTime);        
+        SoundManager.Instance.PlayBGMWithFadeIn("Result", FadeTime);
+
+        rankText.text = ScoreManager.CurrentRank;
+        scoreText.text = ScoreManager.CurrentScore.ToString();
+        justDodgeCount.text = ScoreManager.JustDodgeCount.ToString();
+        justGuardCount.text = ScoreManager.JustGuardCount.ToString();
     }
 
     void Update()
@@ -35,22 +45,22 @@ public class ResultManager : MonoBehaviour
                 MoveSelectArrow();
                 SoundManager.Instance.PlaySe("MenuMove");
             }
-        }
 
-        if (Input.Decision && !isPressed)
-        {
-            isPressed = true;
-            SoundManager.Instance.PlaySe("Press");
-            SoundManager.Instance.StopBGMWithFadeOut(FadeTime);
-
-            switch (resultState)
+            if (Input.Decision)
             {
-                case ResultState.ReturnSelect:
-                    FadeManager.Instance.LoadScene("SelectScene", FadeTime);
-                    break;
-                case ResultState.ReturnTitle:
-                    FadeManager.Instance.LoadScene("TitleScene", FadeTime);
-                    break;
+                isPressed = true;
+                SoundManager.Instance.PlaySe("Press");
+                SoundManager.Instance.StopBGMWithFadeOut(FadeTime);
+
+                switch (resultState)
+                {
+                    case ResultState.ReturnSelect:
+                        FadeManager.Instance.LoadScene("SelectScene", FadeTime);
+                        break;
+                    case ResultState.ReturnTitle:
+                        FadeManager.Instance.LoadScene("TitleScene", FadeTime);
+                        break;
+                }
             }
         }
     }
