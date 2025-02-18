@@ -60,7 +60,6 @@ namespace Player
                 {
                     OnJudgeDodgeTiming?.Invoke("Just");
                     core.justPointManager.AddJustPoints(GetJustPoints);
-                    Debug.Log("Just!!!");
                 }
                 else if (currentTime >= FastThreshold && currentTime < DashEndThreshold)
                 {

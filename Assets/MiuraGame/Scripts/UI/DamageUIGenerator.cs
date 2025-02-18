@@ -10,6 +10,7 @@ public class DamageUIGenerator : MonoBehaviour
 
     public void GenerateDamageUI(float damageValue, Vector3 targetPosition)
     {
+        if (damageValue == 0) { return; }
         // ダメージUIを生成
         GameObject damageUI = Instantiate(damageUIPrefab);
 

@@ -3159,6 +3159,18 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 644964696980573005, guid: 5a0cab90d8047b54d821fe84206c5dd4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -353
+      objectReference: {fileID: 0}
+    - target: {fileID: 644964696980573005, guid: 5a0cab90d8047b54d821fe84206c5dd4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 234
+      objectReference: {fileID: 0}
+    - target: {fileID: 644964696980573005, guid: 5a0cab90d8047b54d821fe84206c5dd4, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2621297542790987093, guid: 5a0cab90d8047b54d821fe84206c5dd4, type: 3}
       propertyPath: m_Name
       value: DragonTerror
@@ -3222,6 +3234,14 @@ PrefabInstance:
     - target: {fileID: 7629502092722254112, guid: 5a0cab90d8047b54d821fe84206c5dd4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8294140186027790614, guid: 5a0cab90d8047b54d821fe84206c5dd4, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -353
+      objectReference: {fileID: 0}
+    - target: {fileID: 8294140186027790614, guid: 5a0cab90d8047b54d821fe84206c5dd4, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 234
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

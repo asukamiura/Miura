@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Player;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
@@ -11,12 +12,9 @@ public class ScoreManager : MonoBehaviour
         { "AttackSpecial", 300 },
         { "AttackCharge" , 200 },
         { "AttackUltimate", 500 },
-        { "FastDodge", 300 },
-        { "JustDodge", 500 },
-        { "LateDodge", 300 },
-        { "FastGuard", 300 },
-        { "JustGuard", 500 },
-        { "LateGuard", 300 },
+        { "Fast", 300 },
+        { "Just", 500 },
+        { "Late", 300 },       
         { "TimeA", 2000 },
         { "TimeB", 1000 },
         { "TimeC", 500 },
@@ -38,15 +36,39 @@ public class ScoreManager : MonoBehaviour
 
     Rank rank = Rank.D;
 
+    public static ScoreManager Instance { get; set; }
+
+    public static int JustGuardCount { get; set; } = 0;
+    public static int JustDodgeCount { get; set; } = 0;
+    public static string CurrentRank { get; set; } = "D";
+    public static int CurrentScore { get; set; } = 0;
+    
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        PlayerDash.OnJudgeDodgeTiming += AddScore;
+        PlayerDash.OnJudgeDodgeTiming += CountUpJustDodge;
+        PlayerGuard.OnJudgeGuardTiming += AddScore;
+        PlayerGuard.OnJudgeGuardTiming += CountUpJustGuard;
+    }
+
     void Update()
     {
         currentTime += Time.deltaTime;
 
-        if (totalScore >= 5000)
+        if (totalScore >= 8000)
         {
             rank = Rank.S;
         }
-        else if (totalScore >= 4000 && totalScore <= 4999)
+        else if (totalScore >= 4000 && totalScore <= 7999)
         {
             rank = Rank.A;
         }
@@ -61,6 +83,22 @@ public class ScoreManager : MonoBehaviour
         else
         {
             rank = Rank.D;
+        }
+    }
+
+    void CountUpJustDodge(string timing)
+    {
+        if (timing == "Just")
+        {
+            JustDodgeCount++;
+        }
+    }
+
+    void CountUpJustGuard(string timing)
+    {
+        if (timing == "Just")
+        {
+            JustGuardCount++;
         }
     }
 
@@ -83,5 +121,34 @@ public class ScoreManager : MonoBehaviour
     public void SubtractScore(int value)
     {
         totalScore -= value;
+    }
+
+    /// <summary>
+    /// ランク取得用メソッド
+    /// </summary>
+    /// <returns>ランク</returns>
+    public string GetRank()
+    {
+        string rankName = "";
+        switch (rank)
+        {
+            case Rank.S: rankName = "S"; break;
+            case Rank.A: rankName = "A"; break;
+            case Rank.B: rankName = "B"; break;
+            case Rank.C: rankName = "C"; break;
+            case Rank.D: rankName = "D"; break;
+        }
+        return rankName;
+    }
+
+    private void OnDisable()
+    {
+        CurrentRank = GetRank();
+        CurrentScore = totalScore;
+        Debug.Log(CurrentRank);
+        PlayerDash.OnJudgeDodgeTiming -= AddScore;
+        PlayerGuard.OnJudgeGuardTiming -= AddScore;
+        PlayerDash.OnJudgeDodgeTiming -= CountUpJustDodge;
+        PlayerGuard.OnJudgeGuardTiming -= CountUpJustGuard;
     }
 }
