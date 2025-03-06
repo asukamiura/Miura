@@ -44,7 +44,7 @@ public class UIManager : MonoBehaviour
     {
         playerHPGauge.fillAmount = playerHealthManager.HP / playerHealthManager.MaxHP;
         enemyHPGauge.fillAmount = enemyHealthManager.HP / enemyHealthManager.MaxHP;
-        UltimateGauge.fillAmount = ultimateManager.ULTVal / ultimateManager.maxUltVal;
+        UltimateGauge.fillAmount = ultimateManager.UltVal / ultimateManager.MaxUltVal;
 
         // ジャストポイントに増減があった場合UIを更新
         if (previousJustPoints != justPointManager.JustPoints)
@@ -53,6 +53,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // ジャストポイントUIの更新処理
     void UpdateJustPointsUI()
     {
         for (int i = 0; i < justPointUI.Length; i++)
@@ -74,6 +75,7 @@ public class UIManager : MonoBehaviour
         StartCoroutine(TimingUIChange(timing));
     }
 
+    // ガード、回避のタイミングUIの表示処理
     IEnumerator TimingUIChange(string timing)
     {
         timingText.text = timing;

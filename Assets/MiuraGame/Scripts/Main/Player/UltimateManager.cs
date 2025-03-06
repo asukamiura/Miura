@@ -3,30 +3,26 @@
 public class UltimateManager : MonoBehaviour
 {
     float ultVal = 0;
-    public int maxUltVal = 100;
 
-    public float ULTVal
+    public int MaxUltVal { get; set; } = 100;
+
+    public float UltVal => ultVal;
+
+    /// <summary>
+    /// 必殺技ゲージ増加処理
+    /// </summary>
+    /// <param name="increaseVal">増加させる量</param>
+    public void IncreaseGauge(int increaseVal)
     {
-        get { return ultVal; }
-        set
-        {
-            ultVal = Mathf.Clamp(ultVal, 0, maxUltVal);
-        }
+        ultVal = Mathf.Clamp(ultVal + increaseVal, 0, MaxUltVal);
     }
 
-    public void IncreaseGauge(int healVal)
+    /// <summary>
+    /// 必殺技ゲージ減少処理
+    /// </summary>
+    /// <param name="decreaseVal">減少させる量</param>
+    public void DecreaseGauge(int decreaseVal)
     {
-        if (ultVal < maxUltVal)
-        {
-            ultVal += healVal;
-        }
-    }
-
-    public void DecreaseGauge(int damageVal)
-    {
-        if (ultVal > 0)
-        {
-            ultVal -= damageVal;
-        }
+        ultVal = Mathf.Clamp(ultVal - decreaseVal, 0, MaxUltVal);
     }
 }
