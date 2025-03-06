@@ -37,7 +37,7 @@ namespace Player
         public bool isInvincible = false;   // 無敵状態フラグ
         public bool CanHeal => justPointManager.JustPoints >= HealCost;
         public bool CanPowerUp => justPointManager.JustPoints >= PowerUpCost;
-        public bool CanUlt => ultimateManager.ULTVal >= UltCost;
+        public bool CanUlt => ultimateManager.UltVal >= UltCost;
 
         void Awake()
         {

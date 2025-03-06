@@ -23,6 +23,8 @@ public class ScoreManager : MonoBehaviour
         { "Damage", -50 },
     };
 
+    int justDodgeCount = 0; // ジャスト回避カウント
+    int justGuardCount = 0; // ジャストガードカウント
     int totalScore = 0;     // 合計スコア
     float currentTime = 0;  // 経過時間
     enum Rank
@@ -57,7 +59,7 @@ public class ScoreManager : MonoBehaviour
         PlayerDash.OnJudgeDodgeTiming += AddScore;
         PlayerDash.OnJudgeDodgeTiming += CountUpJustDodge;
         PlayerGuard.OnJudgeGuardTiming += AddScore;
-        PlayerGuard.OnJudgeGuardTiming += CountUpJustGuard;
+        PlayerGuard.OnJudgeGuardTiming += CountUpJustGuard;     
     }
 
     void Update()
@@ -90,7 +92,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (timing == "Just")
         {
-            JustDodgeCount++;
+            justDodgeCount++;
         }
     }
 
@@ -98,7 +100,7 @@ public class ScoreManager : MonoBehaviour
     {
         if (timing == "Just")
         {
-            JustGuardCount++;
+            justGuardCount++;
         }
     }
 
@@ -145,7 +147,9 @@ public class ScoreManager : MonoBehaviour
     {
         CurrentRank = GetRank();
         CurrentScore = totalScore;
-        Debug.Log(CurrentRank);
+        JustDodgeCount = justDodgeCount;
+        JustGuardCount = justGuardCount;
+
         PlayerDash.OnJudgeDodgeTiming -= AddScore;
         PlayerGuard.OnJudgeGuardTiming -= AddScore;
         PlayerDash.OnJudgeDodgeTiming -= CountUpJustDodge;
