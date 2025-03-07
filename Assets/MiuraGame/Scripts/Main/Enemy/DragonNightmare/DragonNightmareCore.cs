@@ -28,8 +28,6 @@ namespace Enemy
         {
             stateMachine = new StateMachine<DragonNightmareStateID>();
             stateMachine.RegisterState(new DragonNightmareIdle(this));
-            stateMachine.RegisterState(new DragonNightmareTakeWarning(this));
-            stateMachine.RegisterState(new DragonNightmareSearch(this));
             stateMachine.RegisterState(new DragonNightmareMove(this));
             stateMachine.RegisterState(new DragonNightmareAttack(this));
             stateMachine.RegisterState(new DragonNightmareDamage(this));
