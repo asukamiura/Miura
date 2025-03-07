@@ -23,7 +23,7 @@ namespace Player
             core.Animator.CrossFade("AttackSpecial1", 0.1f, 0, 0);
         }
 
-        public void Update()
+        public void StateUpdate()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             // アニメーションが終わったらIdleStateに遷移
@@ -33,7 +33,7 @@ namespace Player
             }
         }
 
-        public void FixedUpdate() { }
+        public void StateFixedUpdate() { }
 
         public void Exit()
         {

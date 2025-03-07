@@ -3,11 +3,12 @@
 public class HealthManager : MonoBehaviour
 {
     [SerializeField] float hp;  // HP
+    
+    const float minHP = 0;   // HP下限
 
     public float HP => hp;
-    public float MaxHP { get; set; }  // HP上限
-    public float MinHP { get; set; } = 0;   // HP下限
-    public bool IsDead => 0 >= hp;  // 死亡フラグ
+    public float MaxHP { get; set; }        // HP上限
+    public bool IsDead => 0 >= hp;          // 死亡フラグ
 
     void Awake()
     {
@@ -20,7 +21,7 @@ public class HealthManager : MonoBehaviour
     /// <param name="healVal">回復量</param>
     public void Heal(float healVal)
     {
-        hp = Mathf.Clamp(hp + healVal, MinHP, MaxHP);
+        hp = Mathf.Clamp(hp + healVal, minHP, MaxHP);
     }
 
     /// <summary>
@@ -29,7 +30,7 @@ public class HealthManager : MonoBehaviour
     /// <param name="damageVal">ダメージ量</param>
     public void Damage(float damageVal)
     {
-        hp = Mathf.Clamp(hp - damageVal, MinHP, MaxHP);
+        hp = Mathf.Clamp(hp - damageVal, minHP, MaxHP);
     }
 
 }

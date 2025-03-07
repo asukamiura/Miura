@@ -46,7 +46,7 @@ namespace Enemy
             core.UpdateTotalWeight(core.attackType);
         }
 
-        public void Update()
+        public void StateUpdate()
         {
             AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("Attack1") || stateInfo.IsName("Attack2") || stateInfo.IsName("Attack3"))
@@ -89,7 +89,7 @@ namespace Enemy
             }
         }
 
-        public void FixedUpdate() { }
+        public void StateFixedUpdate() { }
 
         public void Exit()
         {

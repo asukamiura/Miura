@@ -28,7 +28,7 @@ namespace Enemy
             core.navMeshAgent.acceleration = MoveSpeed * 2;
         }
 
-        public void Update()
+        public void StateUpdate()
         {
             if (core.transform.position != targetPos)
             {
@@ -48,7 +48,7 @@ namespace Enemy
             }
         }
 
-        public void FixedUpdate()
+        public void StateFixedUpdate()
         {
         }
 

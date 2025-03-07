@@ -56,7 +56,6 @@ public class GameManager : MonoBehaviour
 
         blackCurtain.SetActive(false);
         operationUI.SetActive(false);
-        pausePanel.SetActive(false);
 
         StartCoroutine(Initialize());
         Time.timeScale = 1;

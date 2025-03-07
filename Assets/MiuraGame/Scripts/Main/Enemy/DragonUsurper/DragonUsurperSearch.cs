@@ -19,9 +19,9 @@ namespace Enemy
             core.animator.CrossFade("WalkFront", 0.1f);
         }
 
-        public void Update() { }
+        public void StateUpdate() { }
 
-        public void FixedUpdate()
+        public void StateFixedUpdate()
         {
             if (!core.IsPlayerInSight)
             {

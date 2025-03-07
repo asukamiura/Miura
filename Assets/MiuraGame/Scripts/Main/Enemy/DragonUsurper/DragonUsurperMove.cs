@@ -51,7 +51,7 @@ namespace Enemy
             targetPos = core.DistanceToPlayer > targetDistance ? core.playerTransform.position : core.playerTransform.position - core.transform.forward * targetDistance;
         }
 
-        public void Update() 
+        public void StateUpdate() 
         {            
             if (animationName == "RunFront")
             {
@@ -77,7 +77,7 @@ namespace Enemy
             }
         }
 
-        public void FixedUpdate()
+        public void StateFixedUpdate()
         {
         }
 

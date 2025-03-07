@@ -17,12 +17,12 @@
             core.Animator.CrossFade("Death", 0, 0, 0);
         }
 
-        public void Update()
+        public void StateUpdate()
         {
 
         }
 
-        public void FixedUpdate() { }
+        public void StateFixedUpdate() { }
 
         public void Exit()
         {

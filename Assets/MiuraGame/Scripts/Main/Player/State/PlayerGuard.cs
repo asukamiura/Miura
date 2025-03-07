@@ -29,7 +29,7 @@ namespace Player
             core.Animator.CrossFade("Guard", 0, 0, 0);
         }
 
-        public void Update()
+        public void StateUpdate()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             float normalizedTime = stateInfo.normalizedTime;
@@ -48,7 +48,7 @@ namespace Player
                 else if (normalizedTime >= JustStartThreshold && normalizedTime < JustEndThreshold)
                 {
                     OnJudgeGuardTiming?.Invoke("Just");
-                    core.justPointManager.AddJustPoints(GetJustPoints);
+                    core.justPointManager.AddJustPoint(GetJustPoints);
                 }
                 else if (normalizedTime >= FastThreshold && normalizedTime < AnimationEndThreshold)
                 {
@@ -59,7 +59,7 @@ namespace Player
             }
         }
 
-        public void FixedUpdate() { }
+        public void StateFixedUpdate() { }
 
         public void Exit()
         {
