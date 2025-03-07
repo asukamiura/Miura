@@ -6,16 +6,19 @@ namespace Enemy
     public class DragonUsurperMove : IState<DragonUsurperStateID>
     {
         public DragonUsurperStateID StateID => DragonUsurperStateID.Move;
-        private DragonUsurperCore core;
-        private float targetDistance;
-        private Vector3 targetPos;
-        private string animationName;
+        DragonUsurperCore core;
+        float targetDistance;
+        Vector3 targetPos;
+        string animationName;
 
-        private const float MoveSpeed = 8;
-        private const float Acceleration = 16;
-        private const float Attack1Range = 6;
-        private const float Attack2Range = 8;
-        private const float Attack3Range = 10;
+        const int Attack1Num = 0;
+        const int Attack2Num = 1;
+        const int Attack3Num = 2;
+        const float MoveSpeed = 8;
+        const float Acceleration = 16;
+        const float Attack1Range = 6;
+        const float Attack2Range = 8;
+        const float Attack3Range = 10;
 
         public DragonUsurperMove(DragonUsurperCore core)
         {
@@ -30,9 +33,9 @@ namespace Enemy
             // 攻撃を行う距離を設定
             targetDistance = core.attackType switch
             {
-                0 => Attack1Range,
-                1 => Attack2Range,
-                2 => Attack3Range,
+                Attack1Num => Attack1Range,
+                Attack2Num => Attack2Range,
+                Attack3Num => Attack3Range,
                 _ => Attack1Range,
             };
            

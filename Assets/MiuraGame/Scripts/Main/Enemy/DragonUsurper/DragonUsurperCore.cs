@@ -31,8 +31,6 @@ namespace Enemy
         {
             stateMachine = new StateMachine<DragonUsurperStateID>();
             stateMachine.RegisterState(new DragonUsurperIdle(this));
-            stateMachine.RegisterState(new DragonUsurperTakeWarning(this));
-            stateMachine.RegisterState(new DragonUsurperSearch(this));
             stateMachine.RegisterState(new DragonUsurperMove(this));
             stateMachine.RegisterState(new DragonUsurperAttack(this));
             stateMachine.RegisterState(new DragonUsurperDamage(this));
