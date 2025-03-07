@@ -126,7 +126,6 @@ namespace Enemy
 
         public void GenerateEnergyBall()
         {
-            Debug.Log("Genarate");
             GameObject breathObj = Instantiate(energyBall, breathPoint.transform.position, Quaternion.identity);
             breathObj.GetComponent<Rigidbody>().velocity = transform.forward * 10;
             energyBalls.Add(breathObj);

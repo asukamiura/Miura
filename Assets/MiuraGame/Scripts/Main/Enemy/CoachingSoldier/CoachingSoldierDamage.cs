@@ -17,7 +17,7 @@ namespace Enemy
             core.animator.CrossFade("Damage", 0, 0, 0, 0);
         }
 
-        public void Update()
+        public void StateUpdate()
         {
             AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("Damage"))
@@ -29,7 +29,7 @@ namespace Enemy
             }
         }
 
-        public void FixedUpdate() { }
+        public void StateFixedUpdate() { }
 
         public void Exit()
         {

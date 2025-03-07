@@ -26,7 +26,7 @@ namespace Player
             core.Animator.CrossFade("AttackNormal3", 0.1f);
         }
 
-        public void Update()
+        public void StateUpdate()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             // アニメーションが終わったらIdleStateに遷移
@@ -44,7 +44,7 @@ namespace Player
             }
         }
 
-        public void FixedUpdate() { }
+        public void StateFixedUpdate() { }
 
         public void Exit()
         {

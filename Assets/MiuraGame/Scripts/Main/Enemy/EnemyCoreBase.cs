@@ -55,6 +55,9 @@ public abstract class EnemyCoreBase : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 攻撃抽選の重さを初期化
+    /// </summary>
     public void InitializeTotalWeight()
     {
         for (int i = 0; i < weights.Length; i++)
@@ -63,6 +66,10 @@ public abstract class EnemyCoreBase : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 重さの更新
+    /// </summary>
+    /// <param name="attackNum">攻撃タイプ</param>
     public void UpdateTotalWeight(int attackNum)
     {
         totalWeight = 0;
@@ -82,6 +89,10 @@ public abstract class EnemyCoreBase : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 攻撃タイプの抽選
+    /// </summary>
+    /// <returns>攻撃タイプ</returns>
     public int ChooseAttack()
     {
         var randomPoint = Random.Range(0, totalWeight);

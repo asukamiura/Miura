@@ -4,8 +4,9 @@ public class UltimateManager : MonoBehaviour
 {
     float ultVal = 0;
 
-    public int MaxUltVal { get; set; } = 100;
+    const int minUltVal = 0;    // 必殺技ゲージの下限
 
+    public int MaxUltVal { get; set; } = 100;   // 必殺技ゲージの上限
     public float UltVal => ultVal;
 
     /// <summary>
@@ -14,7 +15,7 @@ public class UltimateManager : MonoBehaviour
     /// <param name="increaseVal">増加させる量</param>
     public void IncreaseGauge(int increaseVal)
     {
-        ultVal = Mathf.Clamp(ultVal + increaseVal, 0, MaxUltVal);
+        ultVal = Mathf.Clamp(ultVal + increaseVal, minUltVal, MaxUltVal);
     }
 
     /// <summary>
@@ -23,6 +24,6 @@ public class UltimateManager : MonoBehaviour
     /// <param name="decreaseVal">減少させる量</param>
     public void DecreaseGauge(int decreaseVal)
     {
-        ultVal = Mathf.Clamp(ultVal - decreaseVal, 0, MaxUltVal);
+        ultVal = Mathf.Clamp(ultVal - decreaseVal, minUltVal, MaxUltVal);
     }
 }

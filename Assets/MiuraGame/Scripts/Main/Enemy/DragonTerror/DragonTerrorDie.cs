@@ -17,12 +17,12 @@ namespace Enemy
             core.animator.CrossFade("Die", 0);
         }
 
-        public void Update()
+        public void StateUpdate()
         {
            
         }
 
-        public void FixedUpdate() { }
+        public void StateFixedUpdate() { }
 
         public void Exit()
         {

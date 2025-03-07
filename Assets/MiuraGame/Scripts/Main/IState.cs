@@ -2,7 +2,7 @@
 {
     TStateID StateID { get; }
     public void Enter();
-    public void Update();
-    public void FixedUpdate();
+    public void StateUpdate();
+    public void StateFixedUpdate();
     public void Exit();
 }

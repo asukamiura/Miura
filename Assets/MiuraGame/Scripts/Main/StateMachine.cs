@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class StateMachine<TStateID>
 {
-    private IState<TStateID> currentState;
-    public TStateID StateID;
-    private Dictionary<TStateID, IState<TStateID>> states = new Dictionary<TStateID, IState<TStateID>>();
+    IState<TStateID> currentState;
+    Dictionary<TStateID, IState<TStateID>> states = new Dictionary<TStateID, IState<TStateID>>();
 
+    public TStateID StateID { get; set; }
+
+    // ステートを登録
     public void RegisterState(IState<TStateID> state)
     {
-        Debug.Log(state.ToString());
         if (!states.ContainsKey(state.StateID))
         {
             states.Add(state.StateID, state);
@@ -27,6 +28,7 @@ public class StateMachine<TStateID>
         }
     }
 
+    // ステートの変更
     public void ChangeState(TStateID stateID)
     {
         if (states.TryGetValue(stateID, out IState<TStateID> newState))
@@ -35,17 +37,16 @@ public class StateMachine<TStateID>
             currentState = newState;
             currentState?.Enter();
             StateID = stateID;
-            Debug.Log(newState.ToString());
         }
     }
 
     public void Update()
     {
-        currentState?.Update();
+        currentState?.StateUpdate();
     }
 
     public void FixedUpdate()
     {
-        currentState?.FixedUpdate();
+        currentState?.StateFixedUpdate();
     }
 }

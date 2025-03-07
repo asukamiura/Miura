@@ -42,7 +42,7 @@ namespace Player
             }
         }
 
-        public void Update()
+        public void StateUpdate()
         {
             currentTime += Time.deltaTime;
             if (currentTime >= DashTime)
@@ -59,7 +59,7 @@ namespace Player
                 else if (currentTime >= JustStartThreshold && currentTime < JustEndThreshold)
                 {
                     OnJudgeDodgeTiming?.Invoke("Just");
-                    core.justPointManager.AddJustPoints(GetJustPoints);
+                    core.justPointManager.AddJustPoint(GetJustPoints);
                 }
                 else if (currentTime >= FastThreshold && currentTime < DashEndThreshold)
                 {
@@ -70,7 +70,7 @@ namespace Player
             }
         }
 
-        public void FixedUpdate()
+        public void StateFixedUpdate()
         {
             core.Rb.velocity *= DashDeceleration;
         }

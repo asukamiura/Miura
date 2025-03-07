@@ -98,7 +98,6 @@ public class SelectManager : MonoBehaviour
                 InStageNum = 0;
             }
         }
-
     }
 
     void MoveSelectArrow()

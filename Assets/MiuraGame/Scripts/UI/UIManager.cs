@@ -33,7 +33,7 @@ public class UIManager : MonoBehaviour
 
     void Start()
     {
-        previousJustPoints = justPointManager.JustPoints;
+        previousJustPoints = justPointManager.JustPoint;
 
         UpdateJustPointsUI();
 
@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour
         UltimateGauge.fillAmount = ultimateManager.UltVal / ultimateManager.MaxUltVal;
 
         // ジャストポイントに増減があった場合UIを更新
-        if (previousJustPoints != justPointManager.JustPoints)
+        if (previousJustPoints != justPointManager.JustPoint)
         {
             UpdateJustPointsUI();
         }
@@ -58,7 +58,7 @@ public class UIManager : MonoBehaviour
     {
         for (int i = 0; i < justPointUI.Length; i++)
         {
-            if (i < justPointManager.JustPoints)
+            if (i < justPointManager.JustPoint)
             {
                 justPointUI[i].enabled = true;
             }
@@ -67,7 +67,7 @@ public class UIManager : MonoBehaviour
                 justPointUI[i].enabled = false;
             }
         }
-        previousJustPoints = justPointManager.JustPoints;
+        previousJustPoints = justPointManager.JustPoint;
     }
 
     public void TimingUIShow(string timing)

@@ -51,7 +51,7 @@ namespace Player
             core.animationController.ChangeAllAnimationSpeed(PerformanceAnimationSpeed);
         }
 
-        public void Update()
+        public void StateUpdate()
         {          
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("Block"))
@@ -90,7 +90,7 @@ namespace Player
             }
         }
 
-        public void FixedUpdate() 
+        public void StateFixedUpdate() 
         {
             core.Rb.velocity *= DecelerationRate;
         }

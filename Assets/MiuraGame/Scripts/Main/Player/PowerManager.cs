@@ -51,7 +51,6 @@ public class PowerManager : MonoBehaviour
     {
         InPowerUp = true;
         StartCoroutine(ApplyPowerUp(powerUpDuration, attackPowerUpMultiplier, speedUpMultiplier));
-        Debug.Log("パワーアップ");
     }
 
     /// <summary>
@@ -86,7 +85,5 @@ public class PowerManager : MonoBehaviour
         }
 
         MoveSpeed = defaultMoveSpeed;
-
-        Debug.Log("パワーダウン");
     }
 }

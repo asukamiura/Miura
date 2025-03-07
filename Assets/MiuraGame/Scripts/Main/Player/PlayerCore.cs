@@ -35,8 +35,8 @@ namespace Player
         public bool isJustGuard = false;
         public bool isJustDodge = false;
         public bool isInvincible = false;   // 無敵状態フラグ
-        public bool CanHeal => justPointManager.JustPoints >= HealCost;
-        public bool CanPowerUp => justPointManager.JustPoints >= PowerUpCost;
+        public bool CanHeal => justPointManager.JustPoint >= HealCost;
+        public bool CanPowerUp => justPointManager.JustPoint >= PowerUpCost;
         public bool CanUlt => ultimateManager.UltVal >= UltCost;
 
         void Awake()
@@ -106,7 +106,7 @@ namespace Player
             if (Input.Heal && CanHeal && healthManager.HP < healthManager.MaxHP)
             {
                 effectPlayer.PlayEffect("LifeEnchant", HealEffectShowingTime);
-                justPointManager.UseJustPoints(HealCost);
+                justPointManager.UseJustPoint(HealCost);
                 healthManager.Heal(healVal);
             }
 
@@ -115,7 +115,7 @@ namespace Player
             {
                 effectPlayer.PlayEffect("LightEnchant", PowerUpEffectShowingTime);
                 effectPlayer.PlayEffect("AuraRingLight", PowerUpTime);
-                justPointManager.UseJustPoints(PowerUpCost);
+                justPointManager.UseJustPoint(PowerUpCost);
                 powerManager.ActionPowerUp();
             }
 

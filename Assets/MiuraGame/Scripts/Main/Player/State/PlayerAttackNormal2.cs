@@ -22,7 +22,7 @@ namespace Player
             core.Animator.CrossFade("AttackNormal2", 0.1f, 0, 0);
         }
 
-        public void Update()
+        public void StateUpdate()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("AttackNormal2"))
@@ -43,7 +43,7 @@ namespace Player
             }
         }
 
-        public void FixedUpdate() { }
+        public void StateFixedUpdate() { }
 
         public void Exit()
         {
