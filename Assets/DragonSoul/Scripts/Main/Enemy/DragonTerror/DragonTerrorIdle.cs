@@ -19,7 +19,7 @@ namespace Enemy
             core.animator.CrossFade("Idle", 0.1f);
         }
 
-        public void StateUpdate()
+        public void Update()
         {
             currentTime += Time.deltaTime;
 
@@ -29,7 +29,7 @@ namespace Enemy
             }
         }
 
-        public void StateFixedUpdate() { }
+        public void FixedUpdate() { }
 
         public void Exit()
         {

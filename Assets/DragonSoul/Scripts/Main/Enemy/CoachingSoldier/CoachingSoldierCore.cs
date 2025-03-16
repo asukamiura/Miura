@@ -48,7 +48,7 @@ namespace Enemy
                 stateMachine.ChangeState(CoachingSoldierStateID.Die);
             }
 
-            stateMachine.Update();
+            stateMachine.StateUpdate();
 
             // プレイヤー方向の角度を計算
             Vector3 direction = (playerTransform.position - transform.position).normalized;
@@ -69,7 +69,7 @@ namespace Enemy
 
         void FixedUpdate()
         {
-            stateMachine.FixedUpdate();
+            stateMachine.StateFixedUpdate();
         }
 
         void ReceiveDamage()

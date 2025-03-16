@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class StateMachine<TStateID>
@@ -40,13 +41,25 @@ public class StateMachine<TStateID>
         }
     }
 
-    public void Update()
+    public void StateUpdate()
     {
-        currentState?.StateUpdate();
+        currentState?.Update();
     }
 
-    public void FixedUpdate()
+    public void StateFixedUpdate()
     {
-        currentState?.StateFixedUpdate();
+        currentState?.FixedUpdate();
     }
+
+    //IEnumerator ChangeStateIE(TStateID stateID)
+    //{
+    //    if (states.TryGetValue(stateID, out IState<TStateID> newState))
+    //    {
+    //        yield return new WaitForSeconds(newState.TransitionDuration());
+    //        currentState?.Exit();
+    //        currentState = newState;
+    //        currentState?.Enter();
+    //        StateID = stateID;
+    //    }
+    //}
 }

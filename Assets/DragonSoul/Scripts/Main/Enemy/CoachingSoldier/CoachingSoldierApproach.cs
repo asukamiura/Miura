@@ -23,9 +23,9 @@ namespace Enemy
             attackTargetPos = core.playerTransform.position - core.transform.forward * targetDistance;
         }
 
-        public void StateUpdate() { }
+        public void Update() { }
 
-        public void StateFixedUpdate()
+        public void FixedUpdate()
         {
             if (core.transform.position == attackTargetPos)
             {

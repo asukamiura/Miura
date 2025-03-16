@@ -19,7 +19,7 @@ namespace Player
             core.Animator.CrossFade("Locomotion", 0.2f, 0, 0);
         }
 
-        public void StateUpdate()
+        public void Update()
         {
             core.Rb.velocity = Vector3.zero;
 
@@ -39,7 +39,7 @@ namespace Player
             }
         }
 
-        public void StateFixedUpdate() { }
+        public void FixedUpdate() { }
 
         public void Exit()
         {

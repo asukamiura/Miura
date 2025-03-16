@@ -46,7 +46,7 @@ namespace Player
             core.animationController.ChangeAllAnimationSpeed(PerformanceAnimationSpeed);
         }
 
-        public void StateUpdate()
+        public void Update()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("Dodge"))
@@ -84,7 +84,7 @@ namespace Player
             }
         }
 
-        public void StateFixedUpdate() { }
+        public void FixedUpdate() { }
 
         public void Exit()
         {

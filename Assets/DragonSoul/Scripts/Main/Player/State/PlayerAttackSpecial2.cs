@@ -25,7 +25,7 @@ namespace Player
             core.Animator.CrossFade("AttackSpecial2_1", 0.1f, 0, 0.1f);
         }
 
-        public void StateUpdate()
+        public void Update()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("AttackSpecial2_1"))
@@ -79,7 +79,7 @@ namespace Player
             }
         }
 
-        public void StateFixedUpdate() { }
+        public void FixedUpdate() { }
 
         public void Exit()
         {

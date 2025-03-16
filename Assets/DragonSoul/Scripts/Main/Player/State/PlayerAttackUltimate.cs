@@ -36,9 +36,11 @@ namespace Player
             isEffective = true;
             core.playerCameraController.StartChangeFOV(TargetFOV, NarrowSpeed);
             core.animationController.ChangeAllAnimationSpeed(PerformanceAnimationSpeed);
+
+            core.playerEventManager.TriggerUltimate();
         }
 
-        public void StateUpdate()
+        public void Update()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             // アニメーションが終わったらIdleStateに遷移
@@ -58,7 +60,7 @@ namespace Player
             }
         }
 
-        public void StateFixedUpdate() { }
+        public void FixedUpdate() { }
 
         public void Exit()
         {
