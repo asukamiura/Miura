@@ -1,6 +1,5 @@
 ﻿using SoundSystem;
-using System.Collections;
-using TMPro;
+using System;
 using UnityEngine;
 
 namespace Player
@@ -29,6 +28,7 @@ namespace Player
         public AnimationController animationController;
         public GameSePlayer gameSePlayer;
         public PlayerCameraController playerCameraController;
+        public PlayerEventManager playerEventManager;
         public float MoveSpeed => powerManager.MoveSpeed;
         public Rigidbody Rb { get; set; }
         public Animator Animator { get; set; }
@@ -69,7 +69,7 @@ namespace Player
 
         void Update()
         {
-            stateMachine.Update();
+            stateMachine.StateUpdate();
 
             // アイドル状態と移動状態のアニメーション更新
             Animator.SetFloat("Speed", Mathf.Clamp(Rb.velocity.magnitude, 0, 7.5f), 0.1f, Time.deltaTime);
@@ -108,6 +108,8 @@ namespace Player
                 effectPlayer.PlayEffect("LifeEnchant", HealEffectShowingTime);
                 justPointManager.UseJustPoint(HealCost);
                 healthManager.Heal(healVal);
+
+                playerEventManager.TriggerHeal();
             }
 
             // パワーアップ処理を実行
@@ -117,6 +119,8 @@ namespace Player
                 effectPlayer.PlayEffect("AuraRingLight", PowerUpTime);
                 justPointManager.UseJustPoint(PowerUpCost);
                 powerManager.ActionPowerUp();
+
+                playerEventManager.TriggerPowerUp();
             }
 
             // 必殺技を実行
@@ -129,7 +133,7 @@ namespace Player
 
         void FixedUpdate()
         {
-            stateMachine?.FixedUpdate();
+            stateMachine?.StateFixedUpdate();
         }
 
         void OnTriggerEnter(Collider other)

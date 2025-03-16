@@ -32,9 +32,9 @@ namespace Enemy
             }
         }
 
-        public void StateUpdate() { }
+        public void Update() { }
         
-        public void StateFixedUpdate() 
+        public void FixedUpdate() 
         {
             currentTime += Time.deltaTime;
 

@@ -19,9 +19,10 @@ namespace Player
             core.Animator.applyRootMotion = true;
             core.attackAssist.CorrectionAttack();
             core.Animator.CrossFade("AttackNormal1", 0.1f, 0, 0);
+            core.playerEventManager.TriggerAttack();
         }
 
-        public void StateUpdate()
+        public void Update()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("AttackNormal1"))
@@ -42,7 +43,7 @@ namespace Player
             }
         }
 
-        public void StateFixedUpdate() { }
+        public void FixedUpdate() { }
 
         public void Exit()
         {

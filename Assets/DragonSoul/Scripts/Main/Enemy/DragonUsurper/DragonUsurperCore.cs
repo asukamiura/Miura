@@ -58,7 +58,7 @@ namespace Enemy
                 stateMachine.ChangeState(DragonUsurperStateID.Die);
             }
 
-            stateMachine.Update();
+            stateMachine.StateUpdate();
 
             // プレイヤーとの距離を計算
             Vector3 playerPosition = new Vector3(playerTransform.position.x, transform.position.y, playerTransform.position.z);
@@ -84,7 +84,7 @@ namespace Enemy
 
         void FixedUpdate()
         {
-            stateMachine.FixedUpdate();
+            stateMachine.StateFixedUpdate();
         }
 
         void ReceiveDamage()

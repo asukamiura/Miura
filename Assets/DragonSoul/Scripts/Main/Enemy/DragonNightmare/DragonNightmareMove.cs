@@ -44,7 +44,7 @@ namespace Enemy
             }
         }
 
-        public void StateUpdate()
+        public void Update()
         {
             AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("WalkFront") && core.DistanceToPlayer > ChangeMoveDistance)
@@ -63,7 +63,7 @@ namespace Enemy
             }
         }
 
-        public void StateFixedUpdate()
+        public void FixedUpdate()
         {
         }
 

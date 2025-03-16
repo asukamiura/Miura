@@ -23,7 +23,7 @@ namespace Player
             core.Rb.velocity = -core.transform.forward * KnockBackSpeed;
         }
 
-        public void StateUpdate()
+        public void Update()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("Damage"))
@@ -35,7 +35,7 @@ namespace Player
             }
         }
 
-        public void StateFixedUpdate() 
+        public void FixedUpdate() 
         {
             core.Rb.velocity *= KnockBackDeceleration;
         }

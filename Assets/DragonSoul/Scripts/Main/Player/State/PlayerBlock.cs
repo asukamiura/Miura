@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Player
 {
@@ -51,7 +52,7 @@ namespace Player
             core.animationController.ChangeAllAnimationSpeed(PerformanceAnimationSpeed);
         }
 
-        public void StateUpdate()
+        public void Update()
         {          
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("Block"))
@@ -90,7 +91,7 @@ namespace Player
             }
         }
 
-        public void StateFixedUpdate() 
+        public void FixedUpdate() 
         {
             core.Rb.velocity *= DecelerationRate;
         }

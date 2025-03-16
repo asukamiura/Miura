@@ -21,7 +21,7 @@ namespace Player
             core.Animator.CrossFade("Locomotion", 0.2f, 0, 0);
         }
 
-        public void StateUpdate()
+        public void Update()
         {
             if (Input.Move == Vector2.zero)
             {
@@ -39,7 +39,7 @@ namespace Player
             }
         }
 
-        public void StateFixedUpdate()
+        public void FixedUpdate()
         {
             // カメラの角度に沿って移動
             Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);

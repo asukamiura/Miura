@@ -40,9 +40,11 @@ namespace Player
                 core.Animator.CrossFade("DashFront", 0.1f);
                 core.Rb.velocity = core.transform.forward * DashSpeed;
             }
+
+            core.playerEventManager.TriggerDash();
         }
 
-        public void StateUpdate()
+        public void Update()
         {
             currentTime += Time.deltaTime;
             if (currentTime >= DashTime)
@@ -70,7 +72,7 @@ namespace Player
             }
         }
 
-        public void StateFixedUpdate()
+        public void FixedUpdate()
         {
             core.Rb.velocity *= DashDeceleration;
         }

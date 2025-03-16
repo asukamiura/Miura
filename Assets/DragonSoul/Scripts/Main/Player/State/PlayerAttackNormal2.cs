@@ -20,9 +20,10 @@ namespace Player
             core.attackAssist.CorrectionAttack();
             // アニメーションの遷移
             core.Animator.CrossFade("AttackNormal2", 0.1f, 0, 0);
+            core.playerEventManager.TriggerAttack();
         }
 
-        public void StateUpdate()
+        public void Update()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("AttackNormal2"))
@@ -43,7 +44,7 @@ namespace Player
             }
         }
 
-        public void StateFixedUpdate() { }
+        public void FixedUpdate() { }
 
         public void Exit()
         {

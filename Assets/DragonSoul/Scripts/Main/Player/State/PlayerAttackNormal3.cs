@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Player
 {
@@ -24,9 +25,10 @@ namespace Player
             core.attackAssist.CorrectionAttack();
             // アニメーションの遷移
             core.Animator.CrossFade("AttackNormal3", 0.1f);
+            core.playerEventManager.TriggerAttack();
         }
 
-        public void StateUpdate()
+        public void Update()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             // アニメーションが終わったらIdleStateに遷移
@@ -44,7 +46,7 @@ namespace Player
             }
         }
 
-        public void StateFixedUpdate() { }
+        public void FixedUpdate() { }
 
         public void Exit()
         {

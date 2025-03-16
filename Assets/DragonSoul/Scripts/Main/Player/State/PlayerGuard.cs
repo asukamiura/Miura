@@ -27,9 +27,11 @@ namespace Player
         {
             core.attackAssist.CorrectionAttack();
             core.Animator.CrossFade("Guard", 0, 0, 0);
+
+            core.playerEventManager.TriggerGuard();
         }
 
-        public void StateUpdate()
+        public void Update()
         {
             AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             float normalizedTime = stateInfo.normalizedTime;
@@ -59,7 +61,7 @@ namespace Player
             }
         }
 
-        public void StateFixedUpdate() { }
+        public void FixedUpdate() { }
 
         public void Exit()
         {

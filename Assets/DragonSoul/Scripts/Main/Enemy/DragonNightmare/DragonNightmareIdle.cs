@@ -22,7 +22,7 @@ namespace Enemy
             core.transform.position = new Vector3(core.transform.position.x, resetPosY, core.transform.position.z);
         }
 
-        public void StateUpdate()
+        public void Update()
         {
             currentTime += Time.deltaTime;
 
@@ -32,7 +32,7 @@ namespace Enemy
             }
         }
 
-        public void StateFixedUpdate() { }
+        public void FixedUpdate() { }
 
         public void Exit()
         {
