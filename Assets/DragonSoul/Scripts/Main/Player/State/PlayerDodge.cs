@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using SoundSystem;
+using System.Collections;
+using UnityEngine;
 
 namespace Player
 {
@@ -11,8 +13,8 @@ namespace Player
         bool isEffective = false;   // ブロック演出中はtrue,それ以外はfalse
         bool isNextAttack = false;  // 特殊攻撃2を行う場合true,行わない場合false
 
-        const float NormalizedTimeOffset = 0.2f;
-        const float DefaultFOV = 70;            // 通常の視野角
+        const float NormalizedTimeOffset = 0.3f;
+        const float DefaultFOV = 80;            // 通常の視野角
         const float TargetFOV = 50;             // 演出時の視野角
         const float SpreadSpeed = 2;            // 視野角を広げる速度
         const float NarrowSpeed = 20;           // 視野角を狭める速度
@@ -25,6 +27,8 @@ namespace Player
         const float EffectiveTime = 1;          // 演出の効果時間
         const float TranstionAttackSpecialNormalizedTime = 0.75f;
         const float TranstionIdleNormalizedTime = 0.75f;
+        const float KnockBackPower = 50;
+        const float DecelerationRate = 0.9f; // 減速率
 
         public PlayerDodge(PlayerCore core)
         {
@@ -38,12 +42,18 @@ namespace Player
 
             core.Animator.CrossFade("Dodge", 0, 0, NormalizedTimeOffset);
 
+            // プレイヤーをノックバックさせる
+            Vector3 knockbackDir = (-core.transform.forward + -core.transform.right).normalized;
+            core.Rb.velocity = knockbackDir * KnockBackPower;
+
             // ブロック演出を開始
             isEffective = true;
-            core.playerCameraController.StartChangeDutch(TargetDutch, ChangeDutchSpeed1);
-            core.playerCameraController.StartChangeFOV(TargetFOV, NarrowSpeed);
             core.playerCameraController.ApplyImpulse();
             core.animationController.ChangeAllAnimationSpeed(PerformanceAnimationSpeed);
+            core.playerCameraController.ChangeJustDodgeCamera();
+
+            EffectGenerator.Instance.PlayEffect("NovaLight", core.transform.position, Quaternion.Euler(-90,0,0), 2);
+            core.effectPlayer.PlayEffect("SpikyExplosion", 1);
         }
 
         public void Update()
@@ -54,7 +64,7 @@ namespace Player
                 // 次攻撃の入力があった場合、特殊攻撃2に遷移
                 if (stateInfo.normalizedTime >= TranstionAttackSpecialNormalizedTime && isNextAttack)
                 {
-                    core.stateMachine.ChangeState(PlayerStateID.AttackSpecial1);
+                    core.stateMachine.ChangeState(PlayerStateID.AttackSpecial1_1);
                 }
                 else if (stateInfo.normalizedTime >= TranstionIdleNormalizedTime && !isNextAttack)
                 {
@@ -77,22 +87,24 @@ namespace Player
                     core.animationController.ChangeAllAnimationSpeed(DefaultAnimationSpeed);
                     isEffective = false;
                 }
-                else
-                {
-                    currentTime += Time.deltaTime;
-                }
+             
+                currentTime += Time.deltaTime;
             }
         }
 
-        public void FixedUpdate() { }
+        public void FixedUpdate() 
+        {
+            core.Rb.velocity *= DecelerationRate;
+        }
 
         public void Exit()
         {
-            core.Rb.velocity = Vector3.zero;
+            //core.Rb.velocity = Vector3.zero;
             core.isJustDodge = false;
             core.isInvincible = false;
             currentTime = 0;
             isNextAttack = false;
-        }
+            core.playerCameraController.ChangePlayerCamera();
+        }      
     }
 }

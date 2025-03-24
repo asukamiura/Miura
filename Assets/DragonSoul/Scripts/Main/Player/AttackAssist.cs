@@ -32,7 +32,6 @@ namespace Player
             {
                 // 敵の方向計算
                 direction = (target.transform.position - transform.position).normalized;
-
             }
 
             UpdateClosestTarget();

@@ -70,7 +70,7 @@ public class JustDodgeTask : ITutorialTask
                 if (tutorialManager.justDodgeCount == NeedJustDodgeCount) { return; }
                 tutorialManager.justDodgeCount++;
                 break;
-            case PlayerStateID.AttackSpecial1:
+            case PlayerStateID.AttackSpecial1_1:
                 if (tutorialManager.attackSpecial1Count == NeedAttackSpecial1Count) { return; }
                 tutorialManager.attackSpecial1Count++;
                 break;

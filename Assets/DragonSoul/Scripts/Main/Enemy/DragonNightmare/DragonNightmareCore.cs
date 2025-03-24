@@ -1,5 +1,4 @@
-﻿using Player;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -73,6 +72,11 @@ namespace Enemy
             {
                 isJustGuarded = false;
             }
+
+            if (animator.IsInTransition(0))
+            {
+                ResetAttackCollider();
+            }
         }
 
         void FixedUpdate()
@@ -82,7 +86,7 @@ namespace Enemy
 
         void ReceiveDamage()
         {
-            if ((playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2
+            if ((playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1_1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2
                    || playerCore.stateMachine.StateID == PlayerStateID.AttackUltimate) && stateMachine.StateID != DragonNightmareStateID.Die)
             {
                 stateMachine.ChangeState(DragonNightmareStateID.Damage);
