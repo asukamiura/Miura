@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 
 public class StateMachine<TStateID>
 {
     IState<TStateID> currentState;
     Dictionary<TStateID, IState<TStateID>> states = new Dictionary<TStateID, IState<TStateID>>();
 
-    public TStateID StateID { get; set; }
+    public TStateID StateID { get; private set; }
+    public IState<TStateID> CurrentState => currentState;
 
     // ステートを登録
     public void RegisterState(IState<TStateID> state)
@@ -23,7 +22,6 @@ public class StateMachine<TStateID>
     {
         if (states.TryGetValue(stateID, out IState<TStateID> startState))
         {
-            currentState?.Exit();
             currentState = startState;
             currentState?.Enter();
         }
@@ -50,16 +48,4 @@ public class StateMachine<TStateID>
     {
         currentState?.FixedUpdate();
     }
-
-    //IEnumerator ChangeStateIE(TStateID stateID)
-    //{
-    //    if (states.TryGetValue(stateID, out IState<TStateID> newState))
-    //    {
-    //        yield return new WaitForSeconds(newState.TransitionDuration());
-    //        currentState?.Exit();
-    //        currentState = newState;
-    //        currentState?.Enter();
-    //        StateID = stateID;
-    //    }
-    //}
 }

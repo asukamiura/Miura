@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class EffectGenerator : MonoBehaviour
 {
-    public static EffectGenerator Instance { get; set; }
+    public static EffectGenerator Instance { get; private set; }
     [SerializeField] List<GameObject> effectList = new List<GameObject>();
 
     void Awake()

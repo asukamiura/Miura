@@ -7,7 +7,6 @@ namespace Player
     public class PlayerCore : MonoBehaviour
     {
         [SerializeField] int healVal = 20;  // 回復量
-        [SerializeField] EffectPlayer effectPlayer;
 
         HealthManager healthManager;
         InputReciver Input => InputReciver.Instance;
@@ -28,6 +27,7 @@ namespace Player
         public AnimationController animationController;
         public GameSePlayer gameSePlayer;
         public PlayerCameraController playerCameraController;
+        public EffectPlayer effectPlayer;
         public PlayerEventManager playerEventManager;
         public float MoveSpeed => powerManager.MoveSpeed;
         public Rigidbody Rb { get; set; }
@@ -51,7 +51,9 @@ namespace Player
             stateMachine.RegisterState(new PlayerAttackNormal1(this));
             stateMachine.RegisterState(new PlayerAttackNormal2(this));
             stateMachine.RegisterState(new PlayerAttackNormal3(this));
-            stateMachine.RegisterState(new PlayerAttackSpecial1(this));
+            stateMachine.RegisterState(new PlayerAttackSpecial1_1(this));
+            stateMachine.RegisterState(new PlayerAttackSpecial1_2(this));
+            stateMachine.RegisterState(new PlayerAttackSpecial1_3(this));
             stateMachine.RegisterState(new PlayerAttackSpecial2(this));
             stateMachine.RegisterState(new PlayerAttackUltimate(this));
             stateMachine.RegisterState(new PlayerDamage(this));
@@ -86,7 +88,7 @@ namespace Player
             // ガード、ブロック、回避、特殊攻撃1、特殊攻撃2、ダメージ状態でなければ実行可能
             if (stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Block
                 && stateMachine.StateID != PlayerStateID.Dash && stateMachine.StateID != PlayerStateID.Dodge
-                && stateMachine.StateID != PlayerStateID.Damage && stateMachine.StateID != PlayerStateID.AttackSpecial1
+                && stateMachine.StateID != PlayerStateID.Damage && stateMachine.StateID != PlayerStateID.AttackSpecial1_1
                 && stateMachine.StateID != PlayerStateID.AttackSpecial2)
             {
                 // ガードステートに遷移

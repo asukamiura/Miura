@@ -12,7 +12,7 @@ namespace Player
         bool isEffective = false;   // ブロック演出中はtrue,それ以外はfalse
         bool isNextAttack = false;  // 特殊攻撃2を行う場合true,行わない場合false
             
-        const float DefaultFOV = 70;            // 通常の視野角
+        const float DefaultFOV = 80;            // 通常の視野角
         const float TargetFOV = 50;             // 演出時の視野角
         const float SpreadSpeed = 2;            // 視野角を広げる速度
         const float NarrowSpeed = 20;           // 視野角を狭める速度

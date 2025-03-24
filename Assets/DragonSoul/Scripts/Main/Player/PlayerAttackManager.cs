@@ -1,13 +1,13 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace Player
 {
     public class PlayerAttackManager : MonoBehaviour
     {
         public event Action OnEnemykHit;
-        
+
+        [SerializeField] Transform playerTransform;
         [SerializeField] Transform attackTransform;
         [SerializeField] PlayerCore playerCore;
         [SerializeField] PowerManager powerManager;
@@ -43,7 +43,17 @@ namespace Player
                             ultimateManager.IncreaseGauge(3);
                             scoreManager.AddScore("AttackNormal3");
                             break;
-                        case PlayerStateID.AttackSpecial1:
+                        case PlayerStateID.AttackSpecial1_1:
+                            damageValue = powerManager.AttackPower("Special");
+                            scoreManager.AddScore("AttackSpecial");
+                            ultimateManager.IncreaseGauge(9);
+                            break;
+                        case PlayerStateID.AttackSpecial1_2:
+                            damageValue = powerManager.AttackPower("Special");
+                            scoreManager.AddScore("AttackSpecial");
+                            ultimateManager.IncreaseGauge(9);
+                            break;
+                        case PlayerStateID.AttackSpecial1_3:
                             damageValue = powerManager.AttackPower("Special");
                             scoreManager.AddScore("AttackSpecial");
                             ultimateManager.IncreaseGauge(9);
@@ -64,11 +74,11 @@ namespace Player
                             break;
                     }
 
-                    Vector3 closestPoint = enemy.ClosestPoint(transform.position);                   
-                    
+                    Vector3 closestPoint = enemy.ClosestPoint(playerTransform.position);
+
                     // 敵にダメージを与える
                     enemy.GetComponentInParent<HealthManager>().Damage(damageValue);
-                    
+
                     // ヒットエフェクトを生成
                     EffectGenerator.Instance.PlayEffect("HitEffect", closestPoint, Quaternion.identity, ShowingTime);
 
@@ -88,7 +98,8 @@ namespace Player
         void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(attackTransform.position, 2); // 攻撃範囲を表示
+            Gizmos.DrawWireSphere(attackTransform.position, AttackRadius); // 攻撃範囲を表示
+          
         }
 
     }
