@@ -15,6 +15,7 @@
     AttackSpecial2,
     AttackUltimate,
     AttackCharge,
+    PowerUp,
     Damage,
     Dead,
 }

@@ -1,5 +1,4 @@
 ﻿using SoundSystem;
-using System;
 using UnityEngine;
 
 namespace Player
@@ -15,7 +14,7 @@ namespace Player
         const float HealEffectShowingTime = 1;       // 回復エフェクトの表示時間
         const int PowerUpCost = 3;                   // パワーアップに必要なジャストポイント数
         const float PowerUpEffectShowingTime = 1;    // パワーアップ時のエフェクトの表示時間
-        const float PowerUpTime = 15;                // パワーアップ継続時間
+        public const float PowerUpTime = 15;                // パワーアップ継続時間
         const int UltCost = 100;                     // 必殺技に必要なゲージ量
 
         public StateMachine<PlayerStateID> stateMachine;
@@ -56,6 +55,7 @@ namespace Player
             stateMachine.RegisterState(new PlayerAttackSpecial1_3(this));
             stateMachine.RegisterState(new PlayerAttackSpecial2(this));
             stateMachine.RegisterState(new PlayerAttackUltimate(this));
+            stateMachine.RegisterState(new PlayerPowerUp(this));
             stateMachine.RegisterState(new PlayerDamage(this));
             stateMachine.RegisterState(new PlayerDead(this));
             Rb = GetComponent<Rigidbody>();
@@ -117,12 +117,15 @@ namespace Player
             // パワーアップ処理を実行
             if (Input.PowerUp && CanPowerUp && !powerManager.InPowerUp)
             {
-                effectPlayer.PlayEffect("LightEnchant", PowerUpEffectShowingTime);
-                effectPlayer.PlayEffect("AuraRingLight", PowerUpTime);
+
+                //effectPlayer.PlayEffect("LightEnchant", PowerUpEffectShowingTime);
+                //effectPlayer.PlayEffect("AuraRingLight", PowerUpTime);
                 justPointManager.UseJustPoint(PowerUpCost);
                 powerManager.ActionPowerUp();
 
                 playerEventManager.TriggerPowerUp();
+
+                stateMachine.ChangeState(PlayerStateID.PowerUp);
             }
 
             // 必殺技を実行

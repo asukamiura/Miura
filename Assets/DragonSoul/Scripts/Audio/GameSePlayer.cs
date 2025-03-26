@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -20,7 +19,7 @@ namespace SoundSystem
 
         public void PlayFirstAudioClip()
         {
-            if (IsPaused) {  return; }
+            if (IsPaused) { return; }
 
             if (audioClipList.Count > 0)
             {

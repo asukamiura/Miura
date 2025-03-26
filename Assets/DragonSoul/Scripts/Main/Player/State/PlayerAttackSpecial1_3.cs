@@ -40,7 +40,7 @@ namespace Player
         public void Exit()
         {
             core.Animator.applyRootMotion = false;
-            core.isInvincible = false;
+            core.isInvincible = false;           
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using SoundSystem;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Player
@@ -49,11 +50,13 @@ namespace Player
             // ブロック演出を開始
             isEffective = true;
             core.playerCameraController.ApplyImpulse();
+            core.StartCoroutine(DelayChangeCamera(0));
+            core.playerCameraController.RecenteringEnabled();
             core.animationController.ChangeAllAnimationSpeed(PerformanceAnimationSpeed);
-            core.playerCameraController.ChangeJustDodgeCamera();
 
             EffectGenerator.Instance.PlayEffect("NovaLight", core.transform.position, Quaternion.Euler(-90,0,0), 2);
             core.effectPlayer.PlayEffect("SpikyExplosion", 1);
+            //core.effectPlayer.PlayEffect("Lightning aura", 5);
         }
 
         public void Update()
@@ -104,7 +107,24 @@ namespace Player
             core.isInvincible = false;
             currentTime = 0;
             isNextAttack = false;
+            core.playerCameraController.RecenteringDisabled();
             core.playerCameraController.ChangePlayerCamera();
-        }      
+        }
+
+        IEnumerator DelayChangeCamera(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            core.playerCameraController.ChangeJustDodgeCamera();
+        }
+
+        IEnumerator DelayKnockBack(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            // プレイヤーをノックバックさせる
+            Vector3 knockbackDir = (-core.transform.forward + -core.transform.right).normalized;
+            core.Rb.velocity = knockbackDir * KnockBackPower;
+        }
     }
 }
