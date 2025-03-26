@@ -80,7 +80,7 @@ namespace Player
                     enemy.GetComponentInParent<HealthManager>().Damage(damageValue);
 
                     // ヒットエフェクトを生成
-                    EffectGenerator.Instance.PlayEffect("HitEffect", closestPoint, Quaternion.identity, ShowingTime);
+                    EffectGenerator.Instance.PlayEffect("HitEffect", closestPoint, transform.rotation, ShowingTime);
 
                     // ダメージUIを生成
                     damageUIGenerator.GenerateDamageUI(damageValue, closestPoint);

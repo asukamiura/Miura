@@ -1,13 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 public class MaterialManager : MonoBehaviour
 {
-    List<Material> materialList = new List<Material>();
+    [SerializeField] Material forceFieldMaterial;
+    //List<Material> materialList = new List<Material>();
+    [SerializeField] GameObject player;
+    [SerializeField] Renderer[] playerRenderer;
+
+    float currentVelocity = 0;
+
+    const float DisabledSmoothTime = 0.3f;
+    const float ActiveSmoothTime = 0;
+    const float DefaultFresnalPower = 0;
+    const float ActiveFresnalPower = 3;
 
     public static MaterialManager Instance;
+    public bool IsActiveForceField { get; set; } = false;
+    public bool IsDisabledForceField { get; set; } = false;
 
     void Awake()
     {
@@ -19,14 +30,71 @@ public class MaterialManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        //materialList.Add(forceFieldMaterial);
+
+        //playerRenderer = player.GetComponentsInChildren<Renderer>();
+
+        forceFieldMaterial.SetFloat("_FresnelPower", DefaultFresnalPower);
     }
 
-    public void AddMaterial(string materialName)
+    void Update()
     {
-        var material = materialList.FirstOrDefault(effect => effect.name == materialName);
+        if (IsActiveForceField)
+        {
+            forceFieldMaterial.SetFloat("_FresnelPower", Mathf.SmoothDamp(forceFieldMaterial.GetFloat("_FresnelPower"), ActiveFresnalPower, ref currentVelocity, ActiveSmoothTime));
 
-        if (material == null) { return; }
+            if (Mathf.Abs(ActiveFresnalPower - forceFieldMaterial.GetFloat("_FresnelPower")) < 0.1f)
+            {
+                forceFieldMaterial.SetFloat("_FresnelPower", ActiveFresnalPower);
 
-        
+                IsActiveForceField = false;
+            }
+        }
+
+        if (IsDisabledForceField)
+        {
+            forceFieldMaterial.SetFloat("_FresnelPower", Mathf.SmoothDamp(forceFieldMaterial.GetFloat("_FresnelPower"), DefaultFresnalPower, ref currentVelocity, DisabledSmoothTime));
+
+            if (Mathf.Abs(DefaultFresnalPower - forceFieldMaterial.GetFloat("_FresnelPower")) < 0.1f)
+            {
+                forceFieldMaterial.SetFloat("_FresnelPower", DefaultFresnalPower);
+
+                IsDisabledForceField = false;
+            }
+        }
+    }
+
+    //public void AddMaterial(string materialName)
+    //{
+    //    var material = materialList.FirstOrDefault(material => material.name == materialName);
+
+    //    if (material == null) { return; }
+
+    //    foreach (var renderer in playerRenderer)
+    //    {
+    //        List<Material> materials = renderer.sharedMaterials.ToList();
+
+    //        materials.Add(material);
+
+    //        renderer.sharedMaterials = materials.ToArray();
+    //    }
+    //}
+
+    //public void RemoveMaterial(string materialName)
+    //{
+    //    foreach (var renderer in playerRenderer)
+    //    {
+    //        List<Material> materials = renderer.sharedMaterials.ToList();
+
+    //        materials.RemoveAll(m => m.name == materialName);
+
+    //        renderer.sharedMaterials = materials.ToArray();
+    //    }       
+    //}
+
+    void OnDisable()
+    {
+        forceFieldMaterial.SetFloat("_FresnelPower", DefaultFresnalPower);
     }
 }
