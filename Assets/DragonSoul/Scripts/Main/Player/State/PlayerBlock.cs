@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Player
 {
@@ -11,15 +10,11 @@ namespace Player
         float currentTime = 0;      // 演出の効果時間計測用
         bool isEffective = false;   // ブロック演出中はtrue,それ以外はfalse
         bool isNextAttack = false;  // 特殊攻撃2を行う場合true,行わない場合false
-            
+
         const float DefaultFOV = 80;            // 通常の視野角
         const float TargetFOV = 50;             // 演出時の視野角
-        const float SpreadSpeed = 2;            // 視野角を広げる速度
-        const float NarrowSpeed = 20;           // 視野角を狭める速度
-        const float TargetDutch = 5;            // 演出時のカメラの角度
         const float DefaultDutch = 0;           // 通常のカメラの角度
-        const float ChangeDutchSpeed1 = 20;     // カメラの角度を変える速度1
-        const float ChangeDutchSpeed2 = 5;      // カメラの角度を変える速度2
+        const float TargetDutch = 5;            // 演出時のカメラの角度
         const float PerformanceAnimationSpeed = 0.3f;
         const float DefaultAnimationSpeed = 1;
         const float EffectiveTime = 1;          // 演出の効果時間
@@ -36,7 +31,7 @@ namespace Player
         public void Enter()
         {
             // プレイヤーを無敵状態にする
-            core.isInvincible = true;
+            core.IsInvincible = true;
 
             core.Animator.CrossFade("Block", 0);
 
@@ -45,28 +40,26 @@ namespace Player
 
             // ブロック演出を開始
             isEffective = true;
-            core.playerCameraController.RecenteringEnabled();
-            core.playerCameraController.StartChangeDutch(TargetDutch, ChangeDutchSpeed1);
-            core.playerCameraController.StartChangeFOV(TargetFOV, NarrowSpeed);
-            core.playerCameraController.ApplyImpulse();
+            CameraManager.Instance.EnabledRecentering();
+            CameraManager.Instance.PlayCameraEffect(targetFOV: TargetFOV, targetDutch: TargetDutch, 0.1f);
+            CameraManager.Instance.ApplyImpulse();
             core.animationController.ChangeAllAnimationSpeed(PerformanceAnimationSpeed);
         }
 
         public void Update()
-        {          
-            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("Block"))
+        {
+            if (core.CurrentStateInfo.IsName("Block"))
             {
                 // 次攻撃の入力があった場合、特殊攻撃2に遷移
-                if (stateInfo.normalizedTime >= TranstionAttackSpecialNormalizedTime && isNextAttack)
+                if (core.CurrentStateInfo.normalizedTime >= TranstionAttackSpecialNormalizedTime && isNextAttack)
                 {
                     core.stateMachine.ChangeState(PlayerStateID.AttackSpecial2);
                 }
-                else if (stateInfo.normalizedTime >= TranstionIdleNormalizedTime && !isNextAttack)
-                {                   
+                else if (core.CurrentStateInfo.normalizedTime >= TranstionIdleNormalizedTime && !isNextAttack)
+                {
                     core.stateMachine.ChangeState(PlayerStateID.Idle);
                 }
-                
+
                 if (Input.AttackNormal)
                 {
                     isNextAttack = true;
@@ -78,9 +71,8 @@ namespace Player
                 // 効果時間が過ぎたら演出を終了
                 if (currentTime >= EffectiveTime)
                 {
-                    core.playerCameraController.StartChangeFOV(DefaultFOV, SpreadSpeed);
-                    core.playerCameraController.StartChangeDutch(DefaultDutch, ChangeDutchSpeed2);
-                    core.playerCameraController.RecenteringDisabled();
+                    CameraManager.Instance.PlayCameraEffect(targetFOV: DefaultFOV, targetDutch: DefaultDutch, EffectiveTime);
+                    CameraManager.Instance.DisabledRecentering();
                     core.animationController.ChangeAllAnimationSpeed(DefaultAnimationSpeed);
                     isEffective = false;
                 }
@@ -91,16 +83,16 @@ namespace Player
             }
         }
 
-        public void FixedUpdate() 
+        public void FixedUpdate()
         {
             core.Rb.velocity *= DecelerationRate;
         }
 
         public void Exit()
-        {            
+        {
             core.Rb.velocity = Vector3.zero;
-            core.isJustGuard = false;
-            core.isInvincible = false;
+            core.IsJustGuard = false;
+            core.IsInvincible = false;
             currentTime = 0;
             isNextAttack = false;
         }

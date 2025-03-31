@@ -16,7 +16,6 @@ namespace Enemy
         const int Attack3Num = 2;
         const float PlayEffect1NormalizedTime = 0.4f;     // 攻撃2エフェクト1を再生する標準時間
         const float PlayEffect2NormalizedTime = 0.7f;     // 攻撃2エフェクト2を再生する標準時間
-        const float AttackEffectShowingTime = 1;          // 攻撃2エフェクトを表示する時間
         const float IndicateEffectShowingTime = 1;        // 攻撃を知らせるエフェクトを表示する時間
 
         public DragonTerrorAttack(DragonTerrorCore core)
@@ -30,15 +29,15 @@ namespace Enemy
             switch (core.attackType)
             {
                 case Attack1Num:
-                    core.effectPlayer.PlayEffect("CanGuardEffect", IndicateEffectShowingTime);
+                    core.effectPlayer.ShowEffect("CanGuardEffect", IndicateEffectShowingTime);
                     core.animator.CrossFade("Attack1", 0);
                     break;
                 case Attack2Num:
-                    core.effectPlayer.PlayEffect("CanDodgeEffect", IndicateEffectShowingTime);
+                    core.effectPlayer.ShowEffect("CanDodgeEffect", IndicateEffectShowingTime);
                     core.animator.CrossFade("Attack2", 0);
                     break;
                 case Attack3Num:
-                    core.effectPlayer.PlayEffect("CanDodgeEffect", IndicateEffectShowingTime);
+                    core.effectPlayer.ShowEffect("CanDodgeEffect", IndicateEffectShowingTime);
                     core.animator.CrossFade("Attack3", 0);
                     break;
             }
@@ -62,13 +61,13 @@ namespace Enemy
                 {
                     if (stateInfo.normalizedTime >= PlayEffect1NormalizedTime && !isPlayedEffect1)
                     {
-                        EffectGenerator.Instance.PlayEffect("EarthBlast", core.attack2EffectTransform.position, effectRotation, AttackEffectShowingTime);
+                        EffectManager.Instance.PlayEffect("EarthBlast", core.attack2EffectTransform.position, effectRotation);
                         isPlayedEffect1 = true;
                     }
 
                     if (stateInfo.normalizedTime >= PlayEffect2NormalizedTime && !isPlayedEffect2)
                     {
-                        EffectGenerator.Instance.PlayEffect("EarthBlast", core.attack2EffectTransform.position, effectRotation, AttackEffectShowingTime);
+                        EffectManager.Instance.PlayEffect("EarthBlast", core.attack2EffectTransform.position, effectRotation);
                         isPlayedEffect2 = true;
                     }
                 }

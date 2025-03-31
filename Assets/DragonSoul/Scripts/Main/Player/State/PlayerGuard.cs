@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEngine;
 
 namespace Player
 {
@@ -26,22 +25,21 @@ namespace Player
         public void Enter()
         {
             core.attackAssist.CorrectionAttack();
-            core.Animator.CrossFade("Guard", 0, 0, 0);
+            core.Animator.CrossFade("Guard", 0);
 
             core.playerEventManager.TriggerGuard();
         }
 
         public void Update()
         {
-            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
-            float normalizedTime = stateInfo.normalizedTime;
+            float normalizedTime = core.CurrentStateInfo.normalizedTime;
 
             if (normalizedTime >= AnimationEndThreshold)
             {
                 core.stateMachine.ChangeState(PlayerStateID.Idle);
             }
 
-            if (core.isJustGuard)
+            if (core.IsJustGuard)
             {
                 if (normalizedTime > 0 && normalizedTime < LateThreshold)
                 {
@@ -65,7 +63,7 @@ namespace Player
 
         public void Exit()
         {
-            core.isJustGuard = false;
+            core.IsJustGuard = false;
         }
     }
 }

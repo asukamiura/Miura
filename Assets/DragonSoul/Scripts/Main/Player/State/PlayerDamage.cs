@@ -25,10 +25,9 @@ namespace Player
 
         public void Update()
         {
-            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("Damage"))
+            if (core.CurrentStateInfo.IsName("Damage"))
             {
-                if (stateInfo.normalizedTime >= 1)
+                if (core.CurrentStateInfo.normalizedTime >= 1)
                 {
                     core.stateMachine.ChangeState(PlayerStateID.Idle);
                 }

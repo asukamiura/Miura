@@ -19,18 +19,19 @@ namespace Player
         public void Enter()
         {
             core.Animator.applyRootMotion = true;
-            core.isInvincible = true;
+            core.IsInvincible = true;
             core.Animator.applyRootMotion = true;
             // アニメーションの遷移
             core.Animator.CrossFade("AttackSpecial2_1", 0.1f, 0, 0.1f);
+
+            core.powerManager.SetAttackPower("Special1_1");
         }
 
         public void Update()
         {
-            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("AttackSpecial2_1"))
+            if (core.CurrentStateInfo.IsName("AttackSpecial2_1"))
             {
-                if (stateInfo.normalizedTime >= 0.24 && stateInfo.normalizedTime <= 0.31)
+                if (core.CurrentStateInfo.normalizedTime >= 0.24 && core.CurrentStateInfo.normalizedTime <= 0.31)
                 {
                     core.Animator.speed = 0.3f;
                 }
@@ -39,30 +40,30 @@ namespace Player
                     core.Animator.speed = 1.5f;
                 }
 
-                if (stateInfo.normalizedTime >= NextStateTransitionTime && !isNextAttack)
+                if (core.CurrentStateInfo.normalizedTime >= NextStateTransitionTime && !isNextAttack)
                 {
                     isNextAttack = true;
                     // 次のアニメーションに遷移
                     core.Animator.CrossFade("AttackSpecial2_2", 0.1f, 0, 0.5f);
                 }
             }
-            else if (stateInfo.IsName("AttackSpecial2_2"))
+            else if (core.CurrentStateInfo.IsName("AttackSpecial2_2"))
             {
-                if (stateInfo.normalizedTime >= 1)
+                if (core.CurrentStateInfo.normalizedTime >= 1)
                 {
                     core.Animator.CrossFade("AttackSpecial2_3", 0);
                 }
             }
-            else if (stateInfo.IsName("AttackSpecial2_3"))
+            else if (core.CurrentStateInfo.IsName("AttackSpecial2_3"))
             {
-                if (stateInfo.normalizedTime >= 1)
+                if (core.CurrentStateInfo.normalizedTime >= 1)
                 {
                     core.Animator.CrossFade("AttackSpecial2_4", 0);
                 }
             }
-            else if (stateInfo.IsName("AttackSpecial2_4"))
+            else if (core.CurrentStateInfo.IsName("AttackSpecial2_4"))
             {
-                if (stateInfo.normalizedTime >= 0.26 && stateInfo.normalizedTime <= 0.33)
+                if (core.CurrentStateInfo.normalizedTime >= 0.26 && core.CurrentStateInfo.normalizedTime <= 0.33)
                 {
                     core.animationController.ChangeAllAnimationSpeed(0.3f);
                 }
@@ -72,7 +73,7 @@ namespace Player
                     core.animationController.ChangeAnimationSpeed("Enemy", 1f);
                 }
 
-                if (stateInfo.normalizedTime >= 1)
+                if (core.CurrentStateInfo.normalizedTime >= 1)
                 {
                     core.stateMachine.ChangeState(PlayerStateID.Idle);
                 }
@@ -85,7 +86,7 @@ namespace Player
         {
             isNextAttack = false;
             core.Animator.speed = 1;
-            core.isInvincible = false;
+            core.IsInvincible = false;
         }
     }
 }

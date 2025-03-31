@@ -21,23 +21,24 @@ namespace Player
             // アニメーションの遷移
             core.Animator.CrossFade("AttackNormal2", 0.1f, 0, 0);
             core.playerEventManager.TriggerAttack();
+
+            core.powerManager.SetAttackPower("Normal2");
         }
 
         public void Update()
         {
-            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("AttackNormal2"))
+            if (core.CurrentStateInfo.IsName("AttackNormal2"))
             {
                 if (Input.AttackNormal)
                 {
                     isNextAttack = true;
                 }
 
-                if (isNextAttack && stateInfo.normalizedTime >= 0.6f)
+                if (isNextAttack && core.CurrentStateInfo.normalizedTime >= 0.6f)
                 {
                     core.stateMachine.ChangeState(PlayerStateID.AttackNormal3);
                 }
-                else if (stateInfo.normalizedTime >= 1)
+                else if (core.CurrentStateInfo.normalizedTime >= 1)
                 {
                     core.stateMachine.ChangeState(PlayerStateID.Idle);
                 }

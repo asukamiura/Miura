@@ -52,7 +52,7 @@ namespace Player
                 core.stateMachine.ChangeState(PlayerStateID.Move);
             }
 
-            if (core.isJustDodge)
+            if (core.IsJustDodge)
             {
                 if (currentTime > 0 && currentTime < LateThreshold)
                 {
@@ -81,7 +81,7 @@ namespace Player
         {
             core.Rb.velocity = Vector3.zero;
             currentTime = 0;
-            core.isJustDodge = false;
+            core.IsJustDodge = false;
         }
     }
 }

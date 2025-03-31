@@ -21,8 +21,6 @@ namespace Enemy
         const float PlayEffect1NormalizedTime = 0.47f;    // 攻撃3エフェクト1を再生する標準時間
         const float PlayEffect2NormalizedTime = 0.5f;     // 攻撃3エフェクト2を再生する標準時間
         const float PlayEffect3NormalizedTime = 0.53f;    // 攻撃3エフェクト3を再生する標準時間
-        const float AttackEffectShowingTime = 2;          // 攻撃3エフェクトを表示する時間
-        const float IndicateEffectShowingTime = 1;        // 攻撃を知らせるエフェクトを表示する時間
 
         public DragonNightmareAttack(DragonNightmareCore core)
         {
@@ -34,15 +32,15 @@ namespace Enemy
             switch (core.attackType)
             {
                 case Attack1Num:
-                    core.effectPlayer.PlayEffect("CanDodgeEffect", IndicateEffectShowingTime);
+                    core.effectPlayer.ShowEffect("CanDodgeEffect");
                     core.animator.CrossFade("Attack1", 0);
                     break;
                 case Attack2Num:
-                    core.effectPlayer.PlayEffect("CanGuardEffect", IndicateEffectShowingTime);
+                    core.effectPlayer.ShowEffect("CanGuardEffect");
                     core.animator.CrossFade("Attack2", 0);
                     break;
                 case Attack3Num:
-                    core.effectPlayer.PlayEffect("CanDodgeEffect", IndicateEffectShowingTime);
+                    core.effectPlayer.ShowEffect("CanDodgeEffect");
                     core.animator.CrossFade("Attack3", 0);
                     break;
             }
@@ -69,19 +67,19 @@ namespace Enemy
                 {
                     if (stateInfo.normalizedTime >= PlayEffect1NormalizedTime && !isPlayedEffect1)
                     {
-                        EffectGenerator.Instance.PlayEffect("FireMuzzleBig", core.attack3EffectTransform.position, effectRotation, AttackEffectShowingTime);
+                        EffectManager.Instance.PlayEffect("FireMuzzleBig", core.attack3EffectTransform.position, effectRotation);
                         isPlayedEffect1 = true;
                     }
 
                     if (stateInfo.normalizedTime >= PlayEffect2NormalizedTime && !isPlayedEffect2)
                     {
-                        EffectGenerator.Instance.PlayEffect("FireMuzzleBig", core.attack3EffectTransform.position, effectRotation, AttackEffectShowingTime);
+                        EffectManager.Instance.PlayEffect("FireMuzzleBig", core.attack3EffectTransform.position, effectRotation);
                         isPlayedEffect2 = true;
                     }
 
                     if (stateInfo.normalizedTime >= PlayEffect3NormalizedTime && !isPlayedEffect3)
                     {
-                        EffectGenerator.Instance.PlayEffect("FireMuzzleBig", core.attack3EffectTransform.position, effectRotation, AttackEffectShowingTime);
+                        EffectManager.Instance.PlayEffect("FireMuzzleBig", core.attack3EffectTransform.position, effectRotation);
                         isPlayedEffect3 = true;
                     }
                 }

@@ -9,39 +9,42 @@ public class PowerManager : MonoBehaviour
     [SerializeField] float attackPowerUpMultiplier = 1.5f;
     [SerializeField] float powerUpDuration = 15;
 
-    public float MoveSpeed { get; set; }
-    public bool InPowerUp { get; set; } = false;
+    public float MoveSpeed { get; private set; }
+    public bool InPowerUp { get; private set; } = false;
+    public float AttackPower { get; set; } = 0;
 
-    readonly Dictionary<string, float> baseAttackPower = new Dictionary<string, float>
+    readonly Dictionary<string, float> defaultAttackPower = new Dictionary<string, float>
     {
         { "Normal1", 2 },
         { "Normal2", 4 },
         { "Normal3", 6 },
-        { "Special", 18 },
-        { "Charge" , 20 },
+        { "Special1_1", 8 },
+        { "Special1_2", 10 },
+        { "Special1_3", 20 },
+        { "Special2_1", 8 },
+        { "Special2_2", 10 },
+        { "Special2_3", 12 },
+        { "Special2_4", 20 },
         { "Ultimate", 40 },
     };
 
     Dictionary<string, float> currentAttackPower = new Dictionary<string, float>();
 
-    void Start()
+    void Awake()
     {
         ResetAttackPower();
-        MoveSpeed = defaultMoveSpeed;
     }
 
     /// <summary>
-    /// 現在の攻撃力を取得
+    /// 攻撃力を設定
     /// </summary>
-    /// <param name="attackName">攻撃の名前</param>
-    /// <returns>攻撃力</returns>
-    public float AttackPower(string attackName)
+    /// <param name="attackName"></param>
+    public void SetAttackPower(string attackName)
     {
         if (currentAttackPower.TryGetValue(attackName, out float power))
         {
-            return power;
+            AttackPower = power;
         }
-        return 0;
     }
 
     /// <summary>
@@ -50,27 +53,23 @@ public class PowerManager : MonoBehaviour
     public void ActionPowerUp()
     {
         InPowerUp = true;
-        StartCoroutine(ApplyPowerUp(powerUpDuration, attackPowerUpMultiplier, speedUpMultiplier));
+        StartCoroutine(ApplyPowerUp());
     }
 
-    /// <summary>
-    /// パワーアップ処理
-    /// </summary>
-    /// <param name="duration">パワーアップの継続時間</param>
-    /// <param name="attackPowerUpMultiplier">攻撃力アップ倍率</param>
-    /// <param name="speedUpMultiplier">移動スピード倍率</param>
-    IEnumerator ApplyPowerUp(float duration, float attackPowerUpMultiplier, float speedUpMultiplier)
+    // パワーアップ処理
+    IEnumerator ApplyPowerUp()
     {
-        foreach (string key in baseAttackPower.Keys)
+        foreach (string key in defaultAttackPower.Keys)
         {
-            currentAttackPower[key] = baseAttackPower[key] * attackPowerUpMultiplier;
+            currentAttackPower[key] = defaultAttackPower[key] * attackPowerUpMultiplier;
         }
 
         MoveSpeed = defaultMoveSpeed * speedUpMultiplier;
 
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(powerUpDuration);
 
         ResetAttackPower();
+
         InPowerUp = false;
     }
 
@@ -79,9 +78,9 @@ public class PowerManager : MonoBehaviour
     /// </summary>
     void ResetAttackPower()
     {
-        foreach (string key in baseAttackPower.Keys)
+        foreach (string key in defaultAttackPower.Keys)
         {
-            currentAttackPower[key] = baseAttackPower[key];
+            currentAttackPower[key] = defaultAttackPower[key];
         }
 
         MoveSpeed = defaultMoveSpeed;

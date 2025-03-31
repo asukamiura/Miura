@@ -22,7 +22,7 @@ public class EnemyAttackHit : MonoBehaviour
             HealthManager healthManager = other.GetComponentInParent<HealthManager>();
             GameObject player = other.transform.root.gameObject;
 
-            if (playerCore == null || healthManager == null || playerCore.isInvincible)
+            if (playerCore == null || healthManager == null || playerCore.IsInvincible)
             {
                 return;
             }

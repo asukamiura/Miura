@@ -26,17 +26,18 @@ namespace Player
             // アニメーションの遷移
             core.Animator.CrossFade("AttackNormal3", 0.1f);
             core.playerEventManager.TriggerAttack();
+
+            core.powerManager.SetAttackPower("Normal3");
         }
 
         public void Update()
         {
-            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             // アニメーションが終わったらIdleStateに遷移
-            if (stateInfo.normalizedTime <= ChargeNormalizedTime)
+            if (core.CurrentStateInfo.normalizedTime <= ChargeNormalizedTime)
             {
                 core.Animator.speed = ChargeAnimationApeed;
             }
-            else if (stateInfo.normalizedTime >= TransitionNormalizedTime)
+            else if (core.CurrentStateInfo.normalizedTime >= TransitionNormalizedTime)
             {
                 core.stateMachine.ChangeState(PlayerStateID.Idle);
             }

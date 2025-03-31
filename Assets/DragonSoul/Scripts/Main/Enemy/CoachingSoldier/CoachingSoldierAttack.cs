@@ -18,12 +18,12 @@ namespace Enemy
         {
             if (core.CanAttack1)
             {
-                core.effectPlayer.PlayEffect("CanGuardEffect", IndicateEffectShowingTime);
+                core.effectPlayer.ShowEffect("CanGuardEffect", IndicateEffectShowingTime);
                 core.animator.CrossFade("Attack1", 0);
             }
             else if (core.CanAttack2)
             {
-                core.effectPlayer.PlayEffect("CanDodgeEffect", IndicateEffectShowingTime);
+                core.effectPlayer.ShowEffect("CanDodgeEffect", IndicateEffectShowingTime);
                 core.animator.CrossFade("Attack2", 0);
             }
             else
