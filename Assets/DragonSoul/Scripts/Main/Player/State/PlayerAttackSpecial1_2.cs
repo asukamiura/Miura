@@ -9,6 +9,8 @@ namespace Player
         PlayerCore core;
         InputReciver input => InputReciver.Instance;
 
+        bool isEffective = false;
+
         public PlayerAttackSpecial1_2(PlayerCore core)
         {
             this.core = core;
@@ -16,20 +18,26 @@ namespace Player
 
         public void Enter()
         {
-            core.isInvincible = true;
+            core.IsInvincible = true;
             core.attackAssist.CorrectionAttack();
             core.Animator.applyRootMotion = true;
             // アニメーションの遷移
             core.Animator.CrossFade("AttackSpecial1_2", 0.1f, 0, 0.3f);
+
+            core.powerManager.SetAttackPower("Special1_2");
         }
 
         public void Update()
-        {
-            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
-
-            if (stateInfo.IsName("AttackSpecial1_2"))
+        {           
+            if (core.CurrentStateInfo.IsName("AttackSpecial1_2"))
             {
-                if (stateInfo.normalizedTime >= 0.7)
+                if (!isEffective && core.CurrentStateInfo.normalizedTime > 0.6)
+                {
+                    isEffective = true;
+                    EffectManager.Instance.PlayEffect("SpikeEffect", core.transform.position, Quaternion.identity);
+
+                }
+                else if (core.CurrentStateInfo.normalizedTime >= 0.7)
                 {
                     core.stateMachine.ChangeState(PlayerStateID.AttackSpecial1_3);
                 }
@@ -40,8 +48,9 @@ namespace Player
 
         public void Exit()
         {
+            isEffective = false;
             core.Animator.applyRootMotion = false;
-            core.isInvincible = false;
+            core.IsInvincible = false;
         }
     }
 }

@@ -8,8 +8,6 @@ namespace Player
         PlayerCore core;
         InputReciver Input => InputReciver.Instance;
 
-        const float RotationSpeed = 10;
-
         public PlayerMove(PlayerCore core)
         {
             this.core = core;

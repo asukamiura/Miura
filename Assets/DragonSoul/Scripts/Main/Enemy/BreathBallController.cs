@@ -10,7 +10,7 @@ public class BreathBallController : MonoBehaviour
     {
         if (collider.CompareTag("Floor"))
         {
-            EffectGenerator.Instance.PlayEffect("FrostExplosionMega", transform.position, effectRotation, ShowingTime);
+            EffectManager.Instance.PlayEffect("FrostExplosionMega", transform.position, effectRotation);
             Destroy(gameObject);
         }
     }

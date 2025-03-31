@@ -14,7 +14,7 @@
         public void Enter()
         {
             core.Animator.applyRootMotion = true;
-            core.Animator.CrossFade("Death", 0, 0, 0);
+            core.Animator.CrossFade("Death", 0);
         }
 
         public void Update()

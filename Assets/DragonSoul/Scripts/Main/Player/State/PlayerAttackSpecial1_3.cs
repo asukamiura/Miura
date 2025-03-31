@@ -15,20 +15,20 @@ namespace Player
 
         public void Enter()
         {
-            core.isInvincible = true;
+            core.IsInvincible = true;
             core.attackAssist.CorrectionAttack();
             core.Animator.applyRootMotion = true;
             // アニメーションの遷移
             core.Animator.CrossFade("AttackSpecial1_3", 0.1f, 0, 0.1f);
+
+            core.powerManager.SetAttackPower("Special1_3");
         }
 
         public void Update()
-        {
-            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
-
-            if (stateInfo.IsName("AttackSpecial1_3"))
+        {          
+            if (core.CurrentStateInfo.IsName("AttackSpecial1_3"))
             {
-                if (stateInfo.normalizedTime >= 0.8)
+                if (core.CurrentStateInfo.normalizedTime >= 0.8)
                 {
                     core.stateMachine.ChangeState(PlayerStateID.Idle);
                 }
@@ -40,7 +40,7 @@ namespace Player
         public void Exit()
         {
             core.Animator.applyRootMotion = false;
-            core.isInvincible = false;           
+            core.IsInvincible = false;           
         }
     }
 }

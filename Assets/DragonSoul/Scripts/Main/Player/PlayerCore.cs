@@ -13,8 +13,7 @@ namespace Player
         const int HealCost = 2;                      // 回復に必要なジャストポイント数
         const float HealEffectShowingTime = 1;       // 回復エフェクトの表示時間
         const int PowerUpCost = 3;                   // パワーアップに必要なジャストポイント数
-        const float PowerUpEffectShowingTime = 1;    // パワーアップ時のエフェクトの表示時間
-        public const float PowerUpTime = 15;                // パワーアップ継続時間
+        const float PowerUpTime = 15;                // パワーアップ継続時間
         const int UltCost = 100;                     // 必殺技に必要なゲージ量
 
         public StateMachine<PlayerStateID> stateMachine;
@@ -25,18 +24,19 @@ namespace Player
         public AttackAssist attackAssist;
         public AnimationController animationController;
         public GameSePlayer gameSePlayer;
-        public PlayerCameraController playerCameraController;
         public EffectPlayer effectPlayer;
         public PlayerEventManager playerEventManager;
         public float MoveSpeed => powerManager.MoveSpeed;
         public Rigidbody Rb { get; set; }
         public Animator Animator { get; set; }
-        public bool isJustGuard = false;
-        public bool isJustDodge = false;
-        public bool isInvincible = false;   // 無敵状態フラグ
-        public bool CanHeal => justPointManager.JustPoint >= HealCost;
-        public bool CanPowerUp => justPointManager.JustPoint >= PowerUpCost;
-        public bool CanUlt => ultimateManager.UltVal >= UltCost;
+        public bool IsJustGuard { get; set; } = false;
+        public bool IsJustDodge { get; set; } = false;
+        public bool IsInvincible { get; set; } = false;   // 無敵状態フラグ
+        public AnimatorStateInfo CurrentStateInfo { get; private set; }
+
+        bool CanHeal => justPointManager.JustPoint >= HealCost;
+        bool CanPowerUp => justPointManager.JustPoint >= PowerUpCost && (stateMachine.StateID == PlayerStateID.Idle || stateMachine.StateID == PlayerStateID.Move);
+        bool CanUlt => ultimateManager.UltVal >= UltCost;
 
         void Awake()
         {
@@ -73,6 +73,8 @@ namespace Player
         {
             stateMachine.StateUpdate();
 
+            CurrentStateInfo = Animator.GetCurrentAnimatorStateInfo(0);
+
             // アイドル状態と移動状態のアニメーション更新
             Animator.SetFloat("Speed", Mathf.Clamp(Rb.velocity.magnitude, 0, 7.5f), 0.1f, Time.deltaTime);
 
@@ -107,7 +109,7 @@ namespace Player
             // 回復処理を実行
             if (Input.Heal && CanHeal && healthManager.HP < healthManager.MaxHP)
             {
-                effectPlayer.PlayEffect("LifeEnchant", HealEffectShowingTime);
+                effectPlayer.ShowEffect("LifeEnchant", HealEffectShowingTime);
                 justPointManager.UseJustPoint(HealCost);
                 healthManager.Heal(healVal);
 
@@ -117,9 +119,6 @@ namespace Player
             // パワーアップ処理を実行
             if (Input.PowerUp && CanPowerUp && !powerManager.InPowerUp)
             {
-
-                //effectPlayer.PlayEffect("LightEnchant", PowerUpEffectShowingTime);
-                //effectPlayer.PlayEffect("AuraRingLight", PowerUpTime);
                 justPointManager.UseJustPoint(PowerUpCost);
                 powerManager.ActionPowerUp();
 
@@ -143,7 +142,7 @@ namespace Player
 
         void OnTriggerEnter(Collider other)
         {
-            if (stateMachine.StateID == PlayerStateID.Dead || isJustDodge || isInvincible) { return; }
+            if (stateMachine.StateID == PlayerStateID.Dead || IsJustDodge || IsInvincible) { return; }
 
             var enemyAttackHit = other.GetComponent<EnemyAttackHit>();
 
@@ -151,11 +150,11 @@ namespace Player
             {
                 if (other.CompareTag("EnemyAttackCanGuard") && stateMachine.StateID == PlayerStateID.Guard)
                 {
-                    isJustGuard = true;
+                    IsJustGuard = true;
                 }
                 else if (other.CompareTag("EnemyAttackCanDodge") && stateMachine.StateID == PlayerStateID.Dash)
                 {
-                    isJustDodge = true;
+                    IsJustDodge = true;
                 }
                 else
                 {

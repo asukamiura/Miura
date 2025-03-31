@@ -14,18 +14,11 @@ namespace Player
         bool isEffective = false;   // ブロック演出中はtrue,それ以外はfalse
         bool isNextAttack = false;  // 特殊攻撃2を行う場合true,行わない場合false
 
-        const float NormalizedTimeOffset = 0.3f;
-        const float DefaultFOV = 80;            // 通常の視野角
-        const float TargetFOV = 50;             // 演出時の視野角
-        const float SpreadSpeed = 2;            // 視野角を広げる速度
-        const float NarrowSpeed = 20;           // 視野角を狭める速度
-        const float TargetDutch = 5;            // 演出時のカメラの角度
-        const float DefaultDutch = 0;           // 通常のカメラの角度
-        const float ChangeDutchSpeed1 = 20;     // カメラの角度を変える速度1
-        const float ChangeDutchSpeed2 = 5;      // カメラの角度を変える速度2
+        const float NormalizedTimeOffset = 0.3f;       
         const float PerformanceAnimationSpeed = 0.3f;
         const float DefaultAnimationSpeed = 1;
         const float EffectiveTime = 1;          // 演出の効果時間
+        const float CameraBlendTime = 0.5f;
         const float TranstionAttackSpecialNormalizedTime = 0.75f;
         const float TranstionIdleNormalizedTime = 0.75f;
         const float KnockBackPower = 50;
@@ -39,7 +32,7 @@ namespace Player
         public void Enter()
         {
             // プレイヤーを無敵状態にする
-            core.isInvincible = true;
+            core.IsInvincible = true;
 
             core.Animator.CrossFade("Dodge", 0, 0, NormalizedTimeOffset);
 
@@ -49,27 +42,27 @@ namespace Player
 
             // ブロック演出を開始
             isEffective = true;
-            core.playerCameraController.ApplyImpulse();
-            core.StartCoroutine(DelayChangeCamera(0));
-            core.playerCameraController.RecenteringEnabled();
+            CameraManager.Instance.ApplyImpulse();
+
+            core.StartCoroutine(CameraManager.Instance.SwitchCamera(CameraBlendTime));
+
+            CameraManager.Instance.EnabledRecentering();
             core.animationController.ChangeAllAnimationSpeed(PerformanceAnimationSpeed);
 
-            EffectGenerator.Instance.PlayEffect("NovaLight", core.transform.position, Quaternion.Euler(-90,0,0), 2);
-            core.effectPlayer.PlayEffect("SpikyExplosion", 1);
-            //core.effectPlayer.PlayEffect("Lightning aura", 5);
+            EffectManager.Instance.PlayEffect("NovaLight", core.transform.position, Quaternion.Euler(-90,0,0));
+            core.effectPlayer.ShowEffect("SpikyExplosion");
         }
 
         public void Update()
         {
-            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("Dodge"))
+            if (core.CurrentStateInfo.IsName("Dodge"))
             {
                 // 次攻撃の入力があった場合、特殊攻撃2に遷移
-                if (stateInfo.normalizedTime >= TranstionAttackSpecialNormalizedTime && isNextAttack)
+                if (core.CurrentStateInfo.normalizedTime >= TranstionAttackSpecialNormalizedTime && isNextAttack)
                 {
                     core.stateMachine.ChangeState(PlayerStateID.AttackSpecial1_1);
                 }
-                else if (stateInfo.normalizedTime >= TranstionIdleNormalizedTime && !isNextAttack)
+                else if (core.CurrentStateInfo.normalizedTime >= TranstionIdleNormalizedTime && !isNextAttack)
                 {
                     core.stateMachine.ChangeState(PlayerStateID.Idle);
                 }
@@ -85,8 +78,6 @@ namespace Player
                 // 効果時間が過ぎたら演出を終了
                 if (currentTime >= EffectiveTime)
                 {
-                    core.playerCameraController.StartChangeFOV(DefaultFOV, SpreadSpeed);
-                    core.playerCameraController.StartChangeDutch(DefaultDutch, ChangeDutchSpeed2);
                     core.animationController.ChangeAllAnimationSpeed(DefaultAnimationSpeed);
                     isEffective = false;
                 }
@@ -102,29 +93,12 @@ namespace Player
 
         public void Exit()
         {
-            //core.Rb.velocity = Vector3.zero;
-            core.isJustDodge = false;
-            core.isInvincible = false;
+            core.IsJustDodge = false;
+            core.IsInvincible = false;
             currentTime = 0;
             isNextAttack = false;
-            core.playerCameraController.RecenteringDisabled();
-            core.playerCameraController.ChangePlayerCamera();
-        }
-
-        IEnumerator DelayChangeCamera(float delay)
-        {
-            yield return new WaitForSeconds(delay);
-
-            core.playerCameraController.ChangeJustDodgeCamera();
-        }
-
-        IEnumerator DelayKnockBack(float delay)
-        {
-            yield return new WaitForSeconds(delay);
-
-            // プレイヤーをノックバックさせる
-            Vector3 knockbackDir = (-core.transform.forward + -core.transform.right).normalized;
-            core.Rb.velocity = knockbackDir * KnockBackPower;
+            CameraManager.Instance.DisabledRecentering();
+            core.StartCoroutine(CameraManager.Instance.SwitchCamera(1));
         }
     }
 }

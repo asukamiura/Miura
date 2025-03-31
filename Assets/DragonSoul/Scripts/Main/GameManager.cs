@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject savePrefab;
     [SerializeField] PlayerCore playerCore;
-    [SerializeField] PlayerCameraController playerCameraController;
     [SerializeField] EnemyCoreBase enemyCore;
     [SerializeField] HealthManager playerHealthManager;
     [SerializeField] HealthManager enemyHealthManager;
@@ -90,14 +89,14 @@ public class GameManager : MonoBehaviour
         {
             case GameState.GameStart:
                 playerCore.enabled = false;
-                playerCameraController.enabled = false;
+                CameraManager.Instance.IsInput = false;
                 enemyCore.MoveActive(false);
                 break;
             case GameState.Playing:
                 blackCurtain.SetActive(false);
                 operationUI.SetActive(false);
                 playerCore.enabled = previousEnabled;
-                playerCameraController.enabled = true;
+                CameraManager.Instance.IsInput = true;
                 enemyCore.MoveActive(true);
                 Time.timeScale = previousTimeScale;
                 break;

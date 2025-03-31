@@ -5,6 +5,7 @@ namespace Player
     public class PlayerAttackNormal1 : IState<PlayerStateID>
     {
         public PlayerStateID StateID => PlayerStateID.AttackNormal1;
+
         PlayerCore core;
         InputReciver Input => InputReciver.Instance;
         bool isNextAttack = false;
@@ -18,25 +19,27 @@ namespace Player
         {
             core.Animator.applyRootMotion = true;
             core.attackAssist.CorrectionAttack();
-            core.Animator.CrossFade("AttackNormal1", 0.1f, 0, 0);
+            core.Animator.CrossFade("AttackNormal1", 0.1f);
             core.playerEventManager.TriggerAttack();
+
+            // 攻撃力を設定
+            core.powerManager.SetAttackPower("Normal1");
         }
 
         public void Update()
         {
-            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("AttackNormal1"))
+            if (core.CurrentStateInfo.IsName("AttackNormal1"))
             {
                 if (Input.AttackNormal)
                 {
                     isNextAttack = true;
                 }
 
-                if (isNextAttack && stateInfo.normalizedTime >= 0.6f)
+                if (isNextAttack && core.CurrentStateInfo.normalizedTime >= 0.6f)
                 {
                     core.stateMachine.ChangeState(PlayerStateID.AttackNormal2);
                 }
-                else if (stateInfo.normalizedTime >= 1)
+                else if (core.CurrentStateInfo.normalizedTime >= 1)
                 {
                     core.stateMachine.ChangeState(PlayerStateID.Idle);
                 }

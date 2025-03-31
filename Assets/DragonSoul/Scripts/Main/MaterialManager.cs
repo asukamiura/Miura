@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -6,8 +7,6 @@ public class MaterialManager : MonoBehaviour
 {
     [SerializeField] Material forceFieldMaterial;
     //List<Material> materialList = new List<Material>();
-    [SerializeField] GameObject player;
-    [SerializeField] Renderer[] playerRenderer;
 
     float currentVelocity = 0;
 
@@ -65,33 +64,27 @@ public class MaterialManager : MonoBehaviour
         }
     }
 
-    //public void AddMaterial(string materialName)
-    //{
-    //    var material = materialList.FirstOrDefault(material => material.name == materialName);
+    IEnumerator ChangeFresnelPower(float targetFresnelPower, float duration)
+    {
+        float startFresnelPower = forceFieldMaterial.GetFloat("_FresnelPower");
+        float time = 0;
 
-    //    if (material == null) { return; }
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            forceFieldMaterial.SetFloat("_FresnelPower", Mathf.Lerp(startFresnelPower, targetFresnelPower, time / duration));
+            yield return null;
+        }
 
-    //    foreach (var renderer in playerRenderer)
-    //    {
-    //        List<Material> materials = renderer.sharedMaterials.ToList();
+        forceFieldMaterial.SetFloat("_FresnelPower", targetFresnelPower);
+    }
 
-    //        materials.Add(material);
+    public void PlayChangeFresnelPower(float targetFresnelPower, float duration)
+    {
+        StopCoroutine("ChangeFresnelPower");
 
-    //        renderer.sharedMaterials = materials.ToArray();
-    //    }
-    //}
-
-    //public void RemoveMaterial(string materialName)
-    //{
-    //    foreach (var renderer in playerRenderer)
-    //    {
-    //        List<Material> materials = renderer.sharedMaterials.ToList();
-
-    //        materials.RemoveAll(m => m.name == materialName);
-
-    //        renderer.sharedMaterials = materials.ToArray();
-    //    }       
-    //}
+        StartCoroutine(ChangeFresnelPower(targetFresnelPower, duration));  
+    }
 
     void OnDisable()
     {

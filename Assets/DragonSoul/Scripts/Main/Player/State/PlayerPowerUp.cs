@@ -18,26 +18,24 @@ namespace Player
 
         public void Enter()
         {
-            core.isInvincible = true;
+            core.IsInvincible = true;
             core.Rb.velocity = Vector3.zero;
             core.Animator.CrossFade("PowerUp", 0);
         }
 
         public void Update()
-        {
-            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("PowerUp"))
+        {           
+            if (core.CurrentStateInfo.IsName("PowerUp"))
             {               
-                if (!isEffective && stateInfo.normalizedTime >= 0.4)
+                if (!isEffective && core.CurrentStateInfo.normalizedTime >= 0.4)
                 {
                     isEffective = true;
-                    EffectGenerator.Instance.PlayEffect("VFX_Zap_02_Blue", core.transform.position, Quaternion.identity, 3);
-                    EffectGenerator.Instance.PlayEffect("LightningBlueExplosion", core.transform.position, Quaternion.identity, 1);
-                    EffectGenerator.Instance.PlayEffect("NovaLightningBlue", core.transform.position, Quaternion.Euler(-90, 0, 0), 1);
-                    core.effectPlayer.PlayEffect("Lightning aura", 15);
+                    EffectManager.Instance.PlayEffect("VFX_Zap_02_Blue", core.transform.position, Quaternion.identity);
+                    EffectManager.Instance.PlayEffect("NovaLightningBlue", core.transform.position, Quaternion.Euler(-90, 0, 0));
+                    core.effectPlayer.ShowEffect("Lightning aura", 15);
                     core.StartCoroutine(ActiveForceField(15));
                 }
-                else if (stateInfo.normalizedTime >= 1)
+                else if (core.CurrentStateInfo.normalizedTime >= 1)
                 {
                     core.stateMachine.ChangeState(PlayerStateID.Idle);
                 }
@@ -52,7 +50,7 @@ namespace Player
         public void Exit()
         {
             isEffective = false;
-            core.isInvincible = false;
+            core.IsInvincible = false;
         }
 
         IEnumerator ActiveForceField(float duration)

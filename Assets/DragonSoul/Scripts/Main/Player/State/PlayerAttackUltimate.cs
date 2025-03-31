@@ -28,33 +28,32 @@ namespace Player
         public void Enter()
         {
             core.Animator.applyRootMotion = true;
-            core.isInvincible = true;
+            core.IsInvincible = true;
             // アニメーションの遷移
             core.Animator.CrossFade("AttackUltimate", 0);
 
             // ブロック演出を開始
             isEffective = true;
-            core.playerCameraController.StartChangeFOV(TargetFOV, NarrowSpeed);
             core.animationController.ChangeAllAnimationSpeed(PerformanceAnimationSpeed);
 
             core.playerEventManager.TriggerUltimate();
+
+            core.powerManager.SetAttackPower("Ultimate");
         }
 
         public void Update()
         {
-            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             // アニメーションが終わったらIdleStateに遷移
-            if(stateInfo.normalizedTime >= 0.2)
+            if(core.CurrentStateInfo.normalizedTime >= 0.2)
             {
                 if (isEffective)
                 {
-                    core.playerCameraController.StartChangeFOV(DefaultFOV, SpreadSpeed);
                     core.animationController.ChangeAllAnimationSpeed(DefaultAnimationSpeed);
                     isEffective = false;
                 }
             }
 
-            if (stateInfo.normalizedTime >= 0.8f)
+            if (core.CurrentStateInfo.normalizedTime >= 0.8f)
             {
                 core.stateMachine.ChangeState(PlayerStateID.Idle);
             }
@@ -65,7 +64,7 @@ namespace Player
         public void Exit()
         {
             core.Animator.applyRootMotion = false;
-            core.isInvincible = false;
+            core.IsInvincible = false;
         }
     }
 }
