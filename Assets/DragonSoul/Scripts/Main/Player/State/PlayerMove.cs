@@ -4,7 +4,7 @@ namespace Player
 {
     public class PlayerMove : IState<PlayerStateID>
     {
-        public PlayerStateID StateID => PlayerStateID.Move;
+        public PlayerStateID StateID => PlayerStateID.Locomotion;
         PlayerCore core;
         InputReciver Input => InputReciver.Instance;
 
@@ -21,10 +21,10 @@ namespace Player
 
         public void Update()
         {
-            if (Input.Move == Vector2.zero)
-            {
-                core.stateMachine.ChangeState(PlayerStateID.Idle);
-            }
+            //if (Input.Move == Vector2.zero)
+            //{
+            //    core.stateMachine.ChangeState(PlayerStateID.Idle);
+            //}
 
             if (Input.Dash)
             {
@@ -33,7 +33,7 @@ namespace Player
 
             if (Input.AttackNormal)
             {
-                core.stateMachine.ChangeState(PlayerStateID.AttackNormal1);
+                core.stateMachine.ChangeState(PlayerStateID.AttackNormal);
             }
         }
 
@@ -50,6 +50,10 @@ namespace Player
             }
 
             core.Rb.velocity = moveDirection * core.MoveSpeed;
+
+            // アイドル状態と移動状態のアニメーション更新
+            //Animator.SetFloat("Speed", Mathf.Clamp(Rb.velocity.magnitude, 0, 7.5f), 0.1f, Time.deltaTime);
+            //core.Animator.SetFloat("Speed",moveDirection.magnitude);
         }
 
         public void Exit()

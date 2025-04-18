@@ -2,56 +2,69 @@
 
 namespace Player
 {
-    public class AttackAssist : MonoBehaviour, IMatchTarget
+    public class AttackAssist : MonoBehaviour
     {
-        [SerializeField] GameObject target;
-        [SerializeField] Collider[] targetColliders;
+        [SerializeField] Rigidbody rb;
+        [SerializeField] float assistDistance = 8;
+        [SerializeField] float assistPower = 80;
+        [SerializeField] float stopDistance = 1;
 
-        Animator animator;
-        Collider targetCollider;
-        InputReciver Input => InputReciver.Instance;
-        Vector3 direction;
+        bool isAssisting = false;   // 攻撃アシストが有効な場合true,無効の場合false
+        Collider targetCollider;    
 
-        void Start()
+        void Awake()
         {
-            animator = GetComponent<Animator>();
-            target = GameObject.FindWithTag("Enemy");
-            targetColliders = target.GetComponentsInChildren<Collider>(false);
-     
-            animator.keepAnimatorStateOnDisable = true;
+            rb = GetComponent<Rigidbody>();
+        }
 
-            foreach (var smb in animator.GetBehaviours<MatchPositionSMB>())
+        void FixedUpdate()
+        {
+            if (!isAssisting) { return; }
+
+            Vector3 closestTarget = targetCollider.ClosestPoint(rb.position);
+            Vector3 playerPos = rb.position;
+            Vector3 targetPos = new Vector3(closestTarget.x, 0, closestTarget.z);
+
+            Vector3 direction = (targetPos - playerPos).normalized;
+
+            rb.velocity = direction * assistPower;
+
+            if (Vector3.Distance(playerPos, targetPos) < stopDistance)
             {
-                smb.target = this;
+                rb.velocity = Vector3.zero;
+
+                isAssisting = false;
             }
         }
 
-        void Update()
+        void OnDrawGizmos()
         {
-            if (target != null)
-            {
-                // 敵の方向計算
-                direction = (target.transform.position - transform.position).normalized;
-            }
-
-            UpdateClosestTarget();
+            if (rb == null) { return; }
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(rb.position, assistDistance); // アシスト範囲を表示                                                             
         }
 
-        public void CorrectionAttack()
+        /// <summary>
+        /// ターゲットのコライダー、距離、方向を取得
+        /// </summary>
+        /// <returns>コライダー、距離、方向</returns>
+        (Collider collider, float distance, Vector3 direction) GetClosestTarget()
         {
-            transform.rotation = Quaternion.LookRotation(direction);
-        }
+            // アシスト範囲にあるコライダーをすべて取得
+            Collider[] hitColliders = Physics.OverlapSphere(rb.position, assistDistance);
 
-        // 攻撃アシストのターゲット更新
-        public void UpdateClosestTarget()
-        {
             float closestDistance = float.MaxValue;
             Collider closestCollider = null;
 
-            foreach (var collider in targetColliders)
+            // 一番近い敵のコライダーとその距離を取得
+            foreach (var collider in hitColliders)
             {
-                float distance = Vector3.Distance(transform.position, collider.transform.position);
+                if (!collider.CompareTag("Enemy")) continue;
 
+                // 敵のコライダーの中で一番プレイヤーに近い点との距離
+                float distance = Vector3.Distance(rb.position, collider.ClosestPoint(rb.position));
+
+                // 距離を比べる
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
@@ -59,9 +72,46 @@ namespace Player
                 }
             }
 
-            targetCollider = closestCollider;
+            Vector3 closestPoint = closestCollider.ClosestPoint(rb.position);
+
+            // ターゲットの方向
+            Vector3 targetDirection = (new Vector3(closestPoint.x, 0, closestPoint.z) - rb.position).normalized;
+
+            return (closestCollider, closestDistance, targetDirection);
         }
 
-        public Vector3 TargetPosition => targetCollider.ClosestPoint(transform.position);
+        /// <summary>
+        /// 攻撃アシストを有効
+        /// </summary>
+        public void OnAssist()
+        {
+            var (collider, distance, direction) = GetClosestTarget();
+
+            // アシスト有効範囲外なら処理を飛ばす
+            if (distance > assistDistance)
+            {
+                return;
+            }
+
+            targetCollider = collider;
+
+            isAssisting = true;
+
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
+
+        /// <summary>
+        /// 攻撃アシストを無効
+        /// </summary>
+        public void StopAssist()
+        {
+            isAssisting = false;
+        }
+
+        public void CorrectionAttack()
+        {
+            var (_, _, direction) = GetClosestTarget();
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
     }
 }

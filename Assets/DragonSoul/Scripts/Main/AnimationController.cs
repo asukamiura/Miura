@@ -12,11 +12,14 @@ public class AnimationController : MonoBehaviour
         var gameObject = gameObjects.FirstOrDefault(gameObject => gameObject.tag == tagName);
 
         var animator = gameObject.GetComponent<Animator>();
+
+        if (animator == null) { return; }
+
         animator.speed = animationSpeed;
 
         if (gameObject.CompareTag("Enemy"))
         {
-            NavMeshAgent navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
+            var navMeshAgent = gameObject.GetComponent<NavMeshAgent>();
             navMeshAgent.speed *= animationSpeed;
             navMeshAgent.acceleration *= animationSpeed;
         }

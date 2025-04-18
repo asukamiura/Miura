@@ -37,7 +37,7 @@ namespace Player
                 }
                 else if (core.CurrentStateInfo.normalizedTime >= 1)
                 {
-                    core.stateMachine.ChangeState(PlayerStateID.Idle);
+                    core.stateMachine.ChangeState(PlayerStateID.Locomotion);
                 }
             }
         }

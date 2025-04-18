@@ -4,7 +4,7 @@ namespace Player
 {
     public class PlayerIdle : IState<PlayerStateID>
     {
-        public PlayerStateID StateID => PlayerStateID.Idle;
+        public PlayerStateID StateID => PlayerStateID.Locomotion;
         InputReciver Input => InputReciver.Instance;
         PlayerCore core;
 
@@ -23,20 +23,24 @@ namespace Player
         {
             core.Rb.velocity = Vector3.zero;
 
-            if (Input.Dash)
+            if (core.CurrentStateInfo.IsName("Locomotion"))
             {
-                core.stateMachine.ChangeState(PlayerStateID.Dash);
+                if (Input.Dash)
+                {
+                    core.stateMachine.ChangeState(PlayerStateID.Dash);
+                }
+
+                if (Input.AttackNormal)
+                {
+                    core.stateMachine.ChangeState(PlayerStateID.AttackNormal);
+                }
+
+                //if (Input.Move != Vector2.zero)
+                //{
+                //    core.stateMachine.ChangeState(PlayerStateID.Move);
+                //}
             }
 
-            if (Input.AttackNormal)
-            {
-                core.stateMachine.ChangeState(PlayerStateID.AttackNormal1);
-            }
-
-            if (Input.Move != Vector2.zero)
-            {
-                core.stateMachine.ChangeState(PlayerStateID.Move);
-            }
         }
 
         public void FixedUpdate() { }

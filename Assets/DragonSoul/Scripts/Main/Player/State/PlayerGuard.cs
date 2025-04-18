@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Player
 {
@@ -34,28 +35,23 @@ namespace Player
         {
             float normalizedTime = core.CurrentStateInfo.normalizedTime;
 
-            if (normalizedTime >= AnimationEndThreshold)
+            if (normalizedTime >= AnimationEndThreshold && core.CurrentStateInfo.IsName("Guard"))
             {
-                core.stateMachine.ChangeState(PlayerStateID.Idle);
+                core.stateMachine.ChangeState(PlayerStateID.Locomotion);
             }
 
             if (core.IsJustGuard)
             {
-                if (normalizedTime > 0 && normalizedTime < LateThreshold)
+                GuardTiming timing = JudgeGuard(normalizedTime); 
+                
+                if (timing == GuardTiming.Just)
                 {
-                    OnJudgeGuardTiming?.Invoke("Late");
-                }
-                else if (normalizedTime >= JustStartThreshold && normalizedTime < JustEndThreshold)
-                {
-                    OnJudgeGuardTiming?.Invoke("Just");
                     core.justPointManager.AddJustPoint(GetJustPoints);
                 }
-                else if (normalizedTime >= FastThreshold && normalizedTime < AnimationEndThreshold)
-                {
-                    OnJudgeGuardTiming?.Invoke("Fast");
-                }
 
-                core.stateMachine.ChangeState(PlayerStateID.Block);
+                OnJudgeGuardTiming?.Invoke(timing.ToString());
+
+                core.stateMachine.ChangeState(PlayerStateID.Block);               
             }
         }
 
@@ -64,6 +60,25 @@ namespace Player
         public void Exit()
         {
             core.IsJustGuard = false;
+        }
+
+        enum GuardTiming{ None, Fast, Just, Late }
+
+        GuardTiming JudgeGuard(float normalizedTime)
+        {
+            if (normalizedTime >= 0 && normalizedTime < LateThreshold)
+            {
+                return GuardTiming.Late;                
+            }
+            else if (normalizedTime >= JustStartThreshold && normalizedTime < JustEndThreshold)
+            {
+                return GuardTiming.Just;
+            }
+            else if (normalizedTime >= FastThreshold && normalizedTime < AnimationEndThreshold)
+            {
+                return GuardTiming.Fast;
+            }
+            return GuardTiming.None;
         }
     }
 }

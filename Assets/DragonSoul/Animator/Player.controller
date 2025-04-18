@@ -37,8 +37,7 @@ AnimatorState:
   m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours:
-  - {fileID: 6560121274101580340}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -209,22 +208,6 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!114 &-803591169778277029
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f7401e389f6fff4ebb9209eff46ca9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetBodyPart: 5
-  effectiveRange: {x: 0.27, y: 0.4}
-  assistPower: 0.5
-  assistDistance: 5
 --- !u!1102 &-284048776679195026
 AnimatorState:
   serializedVersion: 6
@@ -236,8 +219,7 @@ AnimatorState:
   m_Speed: 1.1
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours:
-  - {fileID: 8614138082489369595}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -252,22 +234,6 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!114 &-279739482329644600
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f7401e389f6fff4ebb9209eff46ca9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetBodyPart: 5
-  effectiveRange: {x: 0, y: 0.5}
-  assistPower: 1
-  assistDistance: 10
 --- !u!1102 &-202383381386735679
 AnimatorState:
   serializedVersion: 6
@@ -294,22 +260,6 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!114 &-164903656988819099
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f7401e389f6fff4ebb9209eff46ca9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetBodyPart: 5
-  effectiveRange: {x: 0, y: 0.4}
-  assistPower: 1
-  assistDistance: 10
 --- !u!91 &9100000
 AnimatorController:
   m_ObjectHideFlags: 0
@@ -349,8 +299,7 @@ AnimatorState:
   m_Speed: 1.1
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours:
-  - {fileID: -803591169778277029}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -431,7 +380,7 @@ AnimatorStateMachine:
     m_Position: {x: 80, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1125060689721341417}
-    m_Position: {x: 90, y: 390, z: 0}
+    m_Position: {x: 90, y: 400, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -202383381386735679}
     m_Position: {x: 610, y: 270, z: 0}
@@ -446,7 +395,7 @@ AnimatorStateMachine:
     m_Position: {x: 90, y: 210, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 96635593242674639}
-    m_Position: {x: 90, y: 330, z: 0}
+    m_Position: {x: 80, y: 330, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7066964018522462280}
     m_Position: {x: 90, y: 270, z: 0}
@@ -507,8 +456,7 @@ AnimatorState:
   m_Speed: 1.2
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours:
-  - {fileID: -279739482329644600}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -549,22 +497,6 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!114 &4943557738513589746
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f7401e389f6fff4ebb9209eff46ca9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetBodyPart: 5
-  effectiveRange: {x: 0, y: 0.7}
-  assistPower: 1
-  assistDistance: 10
 --- !u!1102 &5763949115862699380
 AnimatorState:
   serializedVersion: 6
@@ -617,22 +549,6 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!114 &6560121274101580340
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f7401e389f6fff4ebb9209eff46ca9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetBodyPart: 5
-  effectiveRange: {x: 0, y: 0.38}
-  assistPower: 1
-  assistDistance: 10
 --- !u!1102 &7066964018522462280
 AnimatorState:
   serializedVersion: 6
@@ -644,8 +560,7 @@ AnimatorState:
   m_Speed: 1.1
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours:
-  - {fileID: 9176443813632771807}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -668,11 +583,10 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AttackSpecial2_3
-  m_Speed: 1.2
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours:
-  - {fileID: -164903656988819099}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -719,14 +633,6 @@ BlendTree:
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
     m_Mirror: 0
-  - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: a0bcb95e11fb03d4db76fc735db5b50b, type: 2}
-    m_Threshold: 7.5
-    m_Position: {x: 0, y: 0}
-    m_TimeScale: 0.8
-    m_CycleOffset: 0
-    m_DirectBlendParameter: Speed
-    m_Mirror: 0
   m_BlendParameter: Speed
   m_BlendParameterY: Blend
   m_MinThreshold: -2.5
@@ -734,22 +640,6 @@ BlendTree:
   m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
   m_BlendType: 0
---- !u!114 &8614138082489369595
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f7401e389f6fff4ebb9209eff46ca9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetBodyPart: 5
-  effectiveRange: {x: 0.06, y: 0.36}
-  assistPower: 0.5
-  assistDistance: 5
 --- !u!1102 &9089622449732348613
 AnimatorState:
   serializedVersion: 6
@@ -758,11 +648,10 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: AttackSpecial2_2
-  m_Speed: 1.2
+  m_Speed: 1.5
   m_CycleOffset: 0
   m_Transitions: []
-  m_StateMachineBehaviours:
-  - {fileID: 4943557738513589746}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -777,19 +666,3 @@ AnimatorState:
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
---- !u!114 &9176443813632771807
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f7401e389f6fff4ebb9209eff46ca9a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetBodyPart: 5
-  effectiveRange: {x: 0.01, y: 0.34}
-  assistPower: 0.5
-  assistDistance: 5
