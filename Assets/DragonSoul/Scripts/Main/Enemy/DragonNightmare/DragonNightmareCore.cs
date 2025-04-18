@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Player;
 
 namespace Enemy
 {
@@ -86,7 +87,7 @@ namespace Enemy
 
         void ReceiveDamage()
         {
-            if ((playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1_1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2
+            if ((playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2
                    || playerCore.stateMachine.StateID == PlayerStateID.AttackUltimate) && stateMachine.StateID != DragonNightmareStateID.Die)
             {
                 stateMachine.ChangeState(DragonNightmareStateID.Damage);

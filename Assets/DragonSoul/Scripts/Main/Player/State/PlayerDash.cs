@@ -49,7 +49,7 @@ namespace Player
             currentTime += Time.deltaTime;
             if (currentTime >= DashTime)
             {
-                core.stateMachine.ChangeState(PlayerStateID.Move);
+                core.stateMachine.ChangeState(PlayerStateID.Locomotion);
             }
 
             if (core.IsJustDodge)
@@ -79,7 +79,7 @@ namespace Player
 
         public void Exit()
         {
-            core.Rb.velocity = Vector3.zero;
+            //core.Rb.velocity = Vector3.zero;
             currentTime = 0;
             core.IsJustDodge = false;
         }

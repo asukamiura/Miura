@@ -26,37 +26,17 @@ namespace Player
                 {
                     switch (playerCore.stateMachine.StateID)
                     {
-                        case PlayerStateID.AttackNormal1:
+                        case PlayerStateID.AttackNormal:
                             ultimateManager.IncreaseGauge(1);
                             scoreManager.AddScore("AttackNormal1");
-                            break;
-                        case PlayerStateID.AttackNormal2:
-                            ultimateManager.IncreaseGauge(2);
-                            scoreManager.AddScore("AttackNormal2");
-                            break;
-                        case PlayerStateID.AttackNormal3:
-                            ultimateManager.IncreaseGauge(3);
-                            scoreManager.AddScore("AttackNormal3");
-                            break;
-                        case PlayerStateID.AttackSpecial1_1:
-                            scoreManager.AddScore("AttackSpecial");
-                            ultimateManager.IncreaseGauge(9);
-                            break;
-                        case PlayerStateID.AttackSpecial1_2:
-                            scoreManager.AddScore("AttackSpecial");
-                            ultimateManager.IncreaseGauge(9);
-                            break;
-                        case PlayerStateID.AttackSpecial1_3:
+                            break;                      
+                        case PlayerStateID.AttackSpecial1:
                             scoreManager.AddScore("AttackSpecial");
                             ultimateManager.IncreaseGauge(9);
                             break;
                         case PlayerStateID.AttackSpecial2:
                             scoreManager.AddScore("AttackSpecial");
-                            ultimateManager.IncreaseGauge(9);
-                            break;
-                        case PlayerStateID.AttackCharge:
-                            scoreManager.AddScore("AttackCharge");
-                            ultimateManager.IncreaseGauge(10);
+                            ultimateManager.IncreaseGauge(9);                                                   
                             break;
                         case PlayerStateID.AttackUltimate:
                             scoreManager.AddScore("AttackUltimate");
@@ -66,13 +46,13 @@ namespace Player
                     Vector3 closestPoint = enemy.ClosestPoint(playerTransform.position);
 
                     // 敵にダメージを与える
-                    enemy.GetComponentInParent<HealthManager>().Damage(powerManager.AttackPower);
+                    enemy.GetComponentInParent<HealthManager>().Damage(powerManager.GetAttackPower());
 
                     // ヒットエフェクトを生成
                     EffectManager.Instance.PlayEffect("HitEffect", closestPoint, transform.rotation);
 
                     // ダメージUIを生成
-                    damageUIGenerator.GenerateDamageUI(powerManager.AttackPower, closestPoint);
+                    damageUIGenerator.GenerateDamageUI(powerManager.GetAttackPower(), closestPoint);
 
                     OnEnemykHit?.Invoke();
                 }
@@ -84,12 +64,10 @@ namespace Player
             PerformAttack(attackTransform.position, AttackRadius);
         }
 
-        void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(attackTransform.position, AttackRadius); // 攻撃範囲を表示
-          
-        }
-
+        //void OnDrawGizmos()
+        //{
+        //    Gizmos.color = Color.red;
+        //    Gizmos.DrawWireSphere(attackTransform.position, AttackRadius); // 攻撃範囲を表示          
+        //}
     }
 }

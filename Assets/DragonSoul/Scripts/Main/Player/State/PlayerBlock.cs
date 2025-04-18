@@ -36,7 +36,9 @@ namespace Player
             core.Animator.CrossFade("Block", 0);
 
             // プレイヤーをノックバックさせる
-            core.Rb.velocity = -core.transform.forward * KnockBackPower;
+            //core.Rb.velocity = -core.transform.forward * KnockBackPower;
+            core.Rb.AddForce(-core.transform.forward * KnockBackPower, ForceMode.VelocityChange);
+
 
             // ブロック演出を開始
             isEffective = true;
@@ -57,7 +59,7 @@ namespace Player
                 }
                 else if (core.CurrentStateInfo.normalizedTime >= TranstionIdleNormalizedTime && !isNextAttack)
                 {
-                    core.stateMachine.ChangeState(PlayerStateID.Idle);
+                    core.stateMachine.ChangeState(PlayerStateID.Locomotion);
                 }
 
                 if (Input.AttackNormal)
@@ -71,7 +73,7 @@ namespace Player
                 // 効果時間が過ぎたら演出を終了
                 if (currentTime >= EffectiveTime)
                 {
-                    CameraManager.Instance.PlayCameraEffect(targetFOV: DefaultFOV, targetDutch: DefaultDutch, EffectiveTime);
+                    CameraManager.Instance.PlayCameraEffect(targetFOV: DefaultFOV, targetDutch: DefaultDutch, 2);
                     CameraManager.Instance.DisabledRecentering();
                     core.animationController.ChangeAllAnimationSpeed(DefaultAnimationSpeed);
                     isEffective = false;
@@ -90,7 +92,7 @@ namespace Player
 
         public void Exit()
         {
-            core.Rb.velocity = Vector3.zero;
+            //core.Rb.velocity = Vector3.zero;
             core.IsJustGuard = false;
             core.IsInvincible = false;
             currentTime = 0;

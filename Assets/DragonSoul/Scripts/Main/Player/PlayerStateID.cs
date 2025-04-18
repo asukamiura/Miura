@@ -1,21 +1,20 @@
-﻿public enum PlayerStateID
+﻿namespace Player
 {
-    Idle,
-    Move,
-    Dash,
-    Dodge,
-    Guard,
-    Block,
-    AttackNormal1,
-    AttackNormal2,
-    AttackNormal3,
-    AttackSpecial1_1,
-    AttackSpecial1_2,
-    AttackSpecial1_3,
-    AttackSpecial2,
-    AttackUltimate,
-    AttackCharge,
-    PowerUp,
-    Damage,
-    Dead,
+    public enum PlayerStateID
+    {
+        Locomotion,
+        //Idle,
+        //Move,
+        Dash,
+        Dodge,
+        Guard,
+        Block,
+        AttackNormal,
+        AttackSpecial1,       
+        AttackSpecial2,
+        AttackUltimate,
+        PowerUp,
+        Damage,
+        Dead,
+    }
 }

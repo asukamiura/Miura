@@ -1,7 +1,4 @@
-﻿using SoundSystem;
-using System.Collections;
-using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Player
 {
@@ -14,7 +11,7 @@ namespace Player
         bool isEffective = false;   // ブロック演出中はtrue,それ以外はfalse
         bool isNextAttack = false;  // 特殊攻撃2を行う場合true,行わない場合false
 
-        const float NormalizedTimeOffset = 0.3f;       
+        const float NormalizedTimeOffset = 0.3f;
         const float PerformanceAnimationSpeed = 0.3f;
         const float DefaultAnimationSpeed = 1;
         const float EffectiveTime = 1;          // 演出の効果時間
@@ -49,7 +46,7 @@ namespace Player
             CameraManager.Instance.EnabledRecentering();
             core.animationController.ChangeAllAnimationSpeed(PerformanceAnimationSpeed);
 
-            EffectManager.Instance.PlayEffect("NovaLight", core.transform.position, Quaternion.Euler(-90,0,0));
+            EffectManager.Instance.PlayEffect("NovaLight", core.transform.position, Quaternion.Euler(-90, 0, 0));
             core.effectPlayer.ShowEffect("SpikyExplosion");
         }
 
@@ -60,11 +57,11 @@ namespace Player
                 // 次攻撃の入力があった場合、特殊攻撃2に遷移
                 if (core.CurrentStateInfo.normalizedTime >= TranstionAttackSpecialNormalizedTime && isNextAttack)
                 {
-                    core.stateMachine.ChangeState(PlayerStateID.AttackSpecial1_1);
+                    core.stateMachine.ChangeState(PlayerStateID.AttackSpecial1);
                 }
                 else if (core.CurrentStateInfo.normalizedTime >= TranstionIdleNormalizedTime && !isNextAttack)
                 {
-                    core.stateMachine.ChangeState(PlayerStateID.Idle);
+                    core.stateMachine.ChangeState(PlayerStateID.Locomotion);
                 }
 
                 if (Input.AttackNormal)
@@ -81,12 +78,12 @@ namespace Player
                     core.animationController.ChangeAllAnimationSpeed(DefaultAnimationSpeed);
                     isEffective = false;
                 }
-             
+
                 currentTime += Time.deltaTime;
             }
         }
 
-        public void FixedUpdate() 
+        public void FixedUpdate()
         {
             core.Rb.velocity *= DecelerationRate;
         }

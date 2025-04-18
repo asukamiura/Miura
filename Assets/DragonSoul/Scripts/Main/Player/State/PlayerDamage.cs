@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace Player
+﻿namespace Player
 {
     public class PlayerDamage : IState<PlayerStateID>
     {
@@ -9,7 +7,7 @@ namespace Player
         PlayerCore core;
 
         const float KnockBackSpeed = 5;     // ノックバックスピード
-        private const float KnockBackDeceleration = 0.95f; // ノックバック減速率
+        const float KnockBackDeceleration = 0.95f; // ノックバック減速率
 
         public PlayerDamage(PlayerCore core)
         {
@@ -29,12 +27,12 @@ namespace Player
             {
                 if (core.CurrentStateInfo.normalizedTime >= 1)
                 {
-                    core.stateMachine.ChangeState(PlayerStateID.Idle);
+                    core.stateMachine.ChangeState(PlayerStateID.Locomotion);
                 }
             }
         }
 
-        public void FixedUpdate() 
+        public void FixedUpdate()
         {
             core.Rb.velocity *= KnockBackDeceleration;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Player;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,29 +7,31 @@ public class PowerManager : MonoBehaviour
 {
     [SerializeField] float defaultMoveSpeed = 5;
     [SerializeField] float speedUpMultiplier = 1.3f;
-    [SerializeField] float attackPowerUpMultiplier = 1.5f;
+    [SerializeField] float defaultAttackPower = 1;
+    [SerializeField] float powerUpMultiplier = 1.5f;
     [SerializeField] float powerUpDuration = 15;
+
+    float currentAttackPower = 0;
 
     public float MoveSpeed { get; private set; }
     public bool InPowerUp { get; private set; } = false;
-    public float AttackPower { get; set; } = 0;
 
-    readonly Dictionary<string, float> defaultAttackPower = new Dictionary<string, float>
+    AttackType currentAttackType = AttackType.None;
+
+    readonly Dictionary<AttackType, float> defaultAttackMultiplier = new Dictionary<AttackType, float>
     {
-        { "Normal1", 2 },
-        { "Normal2", 4 },
-        { "Normal3", 6 },
-        { "Special1_1", 8 },
-        { "Special1_2", 10 },
-        { "Special1_3", 20 },
-        { "Special2_1", 8 },
-        { "Special2_2", 10 },
-        { "Special2_3", 12 },
-        { "Special2_4", 20 },
-        { "Ultimate", 40 },
+        { AttackType.Normal1, 2 },
+        { AttackType.Normal2, 4 },
+        { AttackType.Normal3, 6 },
+        { AttackType.Special1_1, 8 },
+        { AttackType.Special1_2, 10 },
+        { AttackType.Special1_3, 20 },
+        { AttackType.Special2_1, 8 },
+        { AttackType.Special2_2, 10 },
+        { AttackType.Special2_3, 12 },
+        { AttackType.Special2_4, 20 },
+        { AttackType.Ultimate, 40 },
     };
-
-    Dictionary<string, float> currentAttackPower = new Dictionary<string, float>();
 
     void Awake()
     {
@@ -38,13 +41,24 @@ public class PowerManager : MonoBehaviour
     /// <summary>
     /// 攻撃力を設定
     /// </summary>
-    /// <param name="attackName"></param>
-    public void SetAttackPower(string attackName)
+    /// <param name="attackType">攻撃タイプ</param>
+    public void SetAttackType(AttackType attackType)
+    {      
+        currentAttackType = attackType;
+    }
+
+    /// <summary>
+    /// 与えるダメージを取得
+    /// </summary>
+    /// <returns>与えるダメージ</returns>
+    public float GetAttackPower()
     {
-        if (currentAttackPower.TryGetValue(attackName, out float power))
+        if (defaultAttackMultiplier.TryGetValue(currentAttackType, out float multiplier))
         {
-            AttackPower = power;
+            return currentAttackPower * multiplier;
         }
+
+        return 0;
     }
 
     /// <summary>
@@ -58,11 +72,8 @@ public class PowerManager : MonoBehaviour
 
     // パワーアップ処理
     IEnumerator ApplyPowerUp()
-    {
-        foreach (string key in defaultAttackPower.Keys)
-        {
-            currentAttackPower[key] = defaultAttackPower[key] * attackPowerUpMultiplier;
-        }
+    {       
+        currentAttackPower *= powerUpMultiplier;
 
         MoveSpeed = defaultMoveSpeed * speedUpMultiplier;
 
@@ -77,12 +88,8 @@ public class PowerManager : MonoBehaviour
     /// 攻撃力を初期値に戻す
     /// </summary>
     void ResetAttackPower()
-    {
-        foreach (string key in defaultAttackPower.Keys)
-        {
-            currentAttackPower[key] = defaultAttackPower[key];
-        }
-
+    {      
         MoveSpeed = defaultMoveSpeed;
+        currentAttackPower = defaultAttackPower;
     }
 }

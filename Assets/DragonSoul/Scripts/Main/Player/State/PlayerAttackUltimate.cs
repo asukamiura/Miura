@@ -38,7 +38,7 @@ namespace Player
 
             core.playerEventManager.TriggerUltimate();
 
-            core.powerManager.SetAttackPower("Ultimate");
+            core.powerManager.SetAttackType(AttackType.Ultimate);
         }
 
         public void Update()
@@ -55,7 +55,7 @@ namespace Player
 
             if (core.CurrentStateInfo.normalizedTime >= 0.8f)
             {
-                core.stateMachine.ChangeState(PlayerStateID.Idle);
+                core.stateMachine.ChangeState(PlayerStateID.Locomotion);
             }
         }
 

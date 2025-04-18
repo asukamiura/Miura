@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Player;
 
 public class AttackNormalTask : ITutorialTask
 {
@@ -64,7 +65,7 @@ public class AttackNormalTask : ITutorialTask
     {
         switch (currentState)
         {
-            case PlayerStateID.AttackNormal3:
+            case PlayerStateID.AttackNormal:
                 tutorialManager.attackNormalCount++;
                 break;
             default:

@@ -13,7 +13,6 @@ namespace Player
         const int HealCost = 2;                      // 回復に必要なジャストポイント数
         const float HealEffectShowingTime = 1;       // 回復エフェクトの表示時間
         const int PowerUpCost = 3;                   // パワーアップに必要なジャストポイント数
-        const float PowerUpTime = 15;                // パワーアップ継続時間
         const int UltCost = 100;                     // 必殺技に必要なゲージ量
 
         public StateMachine<PlayerStateID> stateMachine;
@@ -35,24 +34,21 @@ namespace Player
         public AnimatorStateInfo CurrentStateInfo { get; private set; }
 
         bool CanHeal => justPointManager.JustPoint >= HealCost;
-        bool CanPowerUp => justPointManager.JustPoint >= PowerUpCost && (stateMachine.StateID == PlayerStateID.Idle || stateMachine.StateID == PlayerStateID.Move);
+        bool CanPowerUp => justPointManager.JustPoint >= PowerUpCost && stateMachine.StateID == PlayerStateID.Locomotion;
         bool CanUlt => ultimateManager.UltVal >= UltCost;
 
         void Awake()
         {
             stateMachine = new StateMachine<PlayerStateID>();
-            stateMachine.RegisterState(new PlayerIdle(this));
-            stateMachine.RegisterState(new PlayerMove(this));
+            stateMachine.RegisterState(new PlayerLocomotion(this));
+            //stateMachine.RegisterState(new PlayerIdle(this));
+            //stateMachine.RegisterState(new PlayerMove(this));
             stateMachine.RegisterState(new PlayerDash(this));
             stateMachine.RegisterState(new PlayerDodge(this));
             stateMachine.RegisterState(new PlayerGuard(this));
             stateMachine.RegisterState(new PlayerBlock(this));
-            stateMachine.RegisterState(new PlayerAttackNormal1(this));
-            stateMachine.RegisterState(new PlayerAttackNormal2(this));
-            stateMachine.RegisterState(new PlayerAttackNormal3(this));
-            stateMachine.RegisterState(new PlayerAttackSpecial1_1(this));
-            stateMachine.RegisterState(new PlayerAttackSpecial1_2(this));
-            stateMachine.RegisterState(new PlayerAttackSpecial1_3(this));
+            stateMachine.RegisterState(new PlayerAttackNormal(this));
+            stateMachine.RegisterState(new PlayerAttackSpecial1(this));
             stateMachine.RegisterState(new PlayerAttackSpecial2(this));
             stateMachine.RegisterState(new PlayerAttackUltimate(this));
             stateMachine.RegisterState(new PlayerPowerUp(this));
@@ -66,7 +62,7 @@ namespace Player
 
         void Start()
         {
-            stateMachine.Initialize(PlayerStateID.Idle);
+            stateMachine.Initialize(PlayerStateID.Locomotion);
         }
 
         void Update()
@@ -74,9 +70,6 @@ namespace Player
             stateMachine.StateUpdate();
 
             CurrentStateInfo = Animator.GetCurrentAnimatorStateInfo(0);
-
-            // アイドル状態と移動状態のアニメーション更新
-            Animator.SetFloat("Speed", Mathf.Clamp(Rb.velocity.magnitude, 0, 7.5f), 0.1f, Time.deltaTime);
 
             // 死亡していた場合、以降の処理を実行しない。
             if (stateMachine.StateID == PlayerStateID.Dead) { return; }
@@ -90,7 +83,7 @@ namespace Player
             // ガード、ブロック、回避、特殊攻撃1、特殊攻撃2、ダメージ状態でなければ実行可能
             if (stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Block
                 && stateMachine.StateID != PlayerStateID.Dash && stateMachine.StateID != PlayerStateID.Dodge
-                && stateMachine.StateID != PlayerStateID.Damage && stateMachine.StateID != PlayerStateID.AttackSpecial1_1
+                && stateMachine.StateID != PlayerStateID.Damage && stateMachine.StateID != PlayerStateID.AttackSpecial1
                 && stateMachine.StateID != PlayerStateID.AttackSpecial2)
             {
                 // ガードステートに遷移
@@ -150,7 +143,7 @@ namespace Player
             {
                 if (other.CompareTag("EnemyAttackCanGuard") && stateMachine.StateID == PlayerStateID.Guard)
                 {
-                    IsJustGuard = true;
+                    IsJustGuard = true;                    
                 }
                 else if (other.CompareTag("EnemyAttackCanDodge") && stateMachine.StateID == PlayerStateID.Dash)
                 {
@@ -158,6 +151,9 @@ namespace Player
                 }
                 else
                 {
+                    // 攻撃アシストの位置補正処理を止める                   
+                    attackAssist.StopAssist();
+
                     // 攻撃を受けたらダメージステートへ遷移
                     stateMachine.ChangeState(PlayerStateID.Damage);
                     scoreManager.SubtractScore((int)enemyAttackHit.damageVal);
