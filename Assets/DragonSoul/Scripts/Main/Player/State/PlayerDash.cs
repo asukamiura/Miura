@@ -79,7 +79,7 @@ namespace Player
 
         public void Exit()
         {
-            //core.Rb.velocity = Vector3.zero;
+            core.Rb.velocity = Vector3.zero;
             currentTime = 0;
             core.IsJustDodge = false;
         }

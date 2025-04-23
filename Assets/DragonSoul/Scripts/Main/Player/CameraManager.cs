@@ -104,8 +104,11 @@ public class CameraManager : MonoBehaviour
     /// カメラを揺らす処理
     /// </summary>
     /// <param name="force">揺らす力の大きさ</param>
-    public void ApplyImpulse(float force = 1)
+    /// <param name="duration">減衰にかかる時間</param>
+    public void ApplyImpulse(float force = 1, float duration = 0.2f)
     {
+        //impulseSource.m_ImpulseDefinition.m_TimeEnvelope.m_SustainTime = duration /2; 
+        impulseSource.m_ImpulseDefinition.m_TimeEnvelope.m_DecayTime = duration; 
         impulseSource.GenerateImpulse(force);
     }
 

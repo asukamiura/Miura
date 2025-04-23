@@ -8,20 +8,34 @@ public class DamageUIGenerator : MonoBehaviour
 
     const float ShowingTime = 0.8f;
 
-    public void GenerateDamageUI(float damageValue, Vector3 targetPosition)
+    public void GenerateDamageUI(float damageValue, Vector3 targetPosition, bool inPowerUp)
     {
         if (damageValue == 0) { return; }
+
         // ダメージUIを生成
         GameObject damageUI = Instantiate(damageUIPrefab);
 
+        // TextMeshProUGUIを取得
+        TextMeshProUGUI damageUITextMesh = damageUI.GetComponent<TextMeshProUGUI>();
+
         // ダメージ量をUIに反映
-        damageUI.GetComponent<TextMeshProUGUI>().text = damageValue.ToString();
+        damageUITextMesh.text = damageValue.ToString();
+
+        // パワーアップ中はシアンに、それ以外はホワイトに色を設定
+        if (inPowerUp)
+        {
+            damageUITextMesh.color = Color.cyan;
+        }
+        else
+        {
+            damageUITextMesh.color = Color.white;
+        }
 
         // Canvasの子オブジェクトに設定
         damageUI.transform.SetParent(uiCanvas.transform);
 
         // 生成位置をDamaUIに渡す
-        damageUI.GetComponent<DamageUIController>().targetPosition = targetPosition;
+        damageUI.GetComponent<DamageUIController>().TargetPosition = targetPosition;
 
         Destroy(damageUI, ShowingTime);
     }

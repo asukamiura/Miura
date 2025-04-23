@@ -38,7 +38,7 @@ namespace Enemy
             stateMachine.RegisterState(new DragonTerrorDamage(this));
             stateMachine.RegisterState(new DragonTerrorDie(this));
 
-            attackManager.OnEnemykHit += ReceiveDamage;
+            attackManager.OnEnemyHit += ReceiveDamage;
         }
 
         void Start()

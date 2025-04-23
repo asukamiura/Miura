@@ -16,8 +16,6 @@ public class PowerManager : MonoBehaviour
     public float MoveSpeed { get; private set; }
     public bool InPowerUp { get; private set; } = false;
 
-    AttackType currentAttackType = AttackType.None;
-
     readonly Dictionary<AttackType, float> defaultAttackMultiplier = new Dictionary<AttackType, float>
     {
         { AttackType.Normal1, 2 },
@@ -39,21 +37,12 @@ public class PowerManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 攻撃力を設定
-    /// </summary>
-    /// <param name="attackType">攻撃タイプ</param>
-    public void SetAttackType(AttackType attackType)
-    {      
-        currentAttackType = attackType;
-    }
-
-    /// <summary>
     /// 与えるダメージを取得
     /// </summary>
     /// <returns>与えるダメージ</returns>
-    public float GetAttackPower()
+    public float GetAttackPower(AttackType currentType)
     {
-        if (defaultAttackMultiplier.TryGetValue(currentAttackType, out float multiplier))
+        if (defaultAttackMultiplier.TryGetValue(currentType, out float multiplier))
         {
             return currentAttackPower * multiplier;
         }
