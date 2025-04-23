@@ -38,7 +38,7 @@ namespace Player
 
             core.playerEventManager.TriggerUltimate();
 
-            core.powerManager.SetAttackType(AttackType.Ultimate);
+            core.attackController.SetAttackType(AttackType.Ultimate);
         }
 
         public void Update()

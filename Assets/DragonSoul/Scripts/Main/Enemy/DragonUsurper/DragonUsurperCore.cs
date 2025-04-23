@@ -37,7 +37,7 @@ namespace Enemy
             stateMachine.RegisterState(new DragonUsurperDamage(this));
             stateMachine.RegisterState(new DragonUsurperDie(this));
 
-            attackManager.OnEnemykHit += ReceiveDamage;
+            attackManager.OnEnemyHit += ReceiveDamage;
         }
 
         void Start()

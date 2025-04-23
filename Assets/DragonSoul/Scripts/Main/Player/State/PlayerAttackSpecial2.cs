@@ -9,10 +9,10 @@ namespace Player
 
         protected override Dictionary<int, AttackAnimationConfig> AnimationData => new()
         {
-            {1, new AttackAnimationConfig{ animationName = "AttackSpecial2_1", transitionDuration = 0.1f, layer = 0, offset = 0.1f, nextStateTransitionTime = 0.645f, attackType = AttackType.Special2_1} },
-            {2, new AttackAnimationConfig{ animationName = "AttackSpecial2_2", transitionDuration = 0, layer = 0, offset = 0.5f, nextStateTransitionTime = 1,  attackType = AttackType.Special2_2} },
-            {3, new AttackAnimationConfig{ animationName = "AttackSpecial2_3", transitionDuration = 0, layer = 0, offset = 0, nextStateTransitionTime = 1,  attackType = AttackType.Special2_3} },
-            {4, new AttackAnimationConfig{ animationName = "AttackSpecial2_4", transitionDuration = 0, layer = 0, offset = 0, nextStateTransitionTime = 1, attackType = AttackType.Special2_4} }
+            {1, new AttackAnimationConfig("AttackSpecial2_1", 0.1f, 0, 0.1f, 0.645f, AttackType.Special2_1) },
+            {2, new AttackAnimationConfig("AttackSpecial2_2", 0, 0, 0.5f, 1, AttackType.Special2_2) },
+            {3, new AttackAnimationConfig("AttackSpecial2_3", 0, 0, 0, 1, AttackType.Special2_3) },
+            {4, new AttackAnimationConfig("AttackSpecial2_4", 0, 0, 0, 1, AttackType.Special2_4) }
         };
 
         public PlayerAttackSpecial2(PlayerCore core) : base(core) { }

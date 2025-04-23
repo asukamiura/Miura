@@ -32,7 +32,7 @@ namespace Enemy
             stateMachine.RegisterState(new DragonNightmareAttack(this));
             stateMachine.RegisterState(new DragonNightmareDamage(this));
             stateMachine.RegisterState(new DragonNightmareDie(this));
-            attackManager.OnEnemykHit += ReceiveDamage;
+            attackManager.OnEnemyHit += ReceiveDamage;
         }
 
         void Start()

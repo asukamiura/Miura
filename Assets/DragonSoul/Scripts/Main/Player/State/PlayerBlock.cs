@@ -36,9 +36,7 @@ namespace Player
             core.Animator.CrossFade("Block", 0);
 
             // プレイヤーをノックバックさせる
-            //core.Rb.velocity = -core.transform.forward * KnockBackPower;
             core.Rb.AddForce(-core.transform.forward * KnockBackPower, ForceMode.VelocityChange);
-
 
             // ブロック演出を開始
             isEffective = true;

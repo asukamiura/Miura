@@ -20,6 +20,7 @@ namespace Player
         public PowerManager powerManager;
         public UltimateManager ultimateManager;
         public ScoreManager scoreManager;
+        public AttackController attackController;
         public AttackAssist attackAssist;
         public AnimationController animationController;
         public GameSePlayer gameSePlayer;
@@ -41,8 +42,6 @@ namespace Player
         {
             stateMachine = new StateMachine<PlayerStateID>();
             stateMachine.RegisterState(new PlayerLocomotion(this));
-            //stateMachine.RegisterState(new PlayerIdle(this));
-            //stateMachine.RegisterState(new PlayerMove(this));
             stateMachine.RegisterState(new PlayerDash(this));
             stateMachine.RegisterState(new PlayerDodge(this));
             stateMachine.RegisterState(new PlayerGuard(this));

@@ -6,12 +6,17 @@ public class ScoreManager : MonoBehaviour
 {
     readonly Dictionary<string, int> scoreDic = new Dictionary<string, int>
     {
-        { "AttackNormal1", 10 },
-        { "AttackNormal2", 20 },
-        { "AttackNormal3", 30 },
-        { "AttackSpecial", 300 },
-        { "AttackCharge" , 200 },
-        { "AttackUltimate", 500 },
+        { (AttackType.Normal1).ToString(), 10 },
+        { (AttackType.Normal2).ToString(), 20 },
+        { (AttackType.Normal3).ToString(), 30 },
+        { (AttackType.Special1_1).ToString(), 300 },
+        { (AttackType.Special1_2).ToString(), 300 },
+        { (AttackType.Special1_3).ToString(), 300 },
+        { (AttackType.Special2_1).ToString(), 300 },
+        { (AttackType.Special2_2).ToString(), 300 },
+        { (AttackType.Special2_3).ToString(), 300 },
+        { (AttackType.Special2_4).ToString(), 300 },
+        { (AttackType.Ultimate).ToString(), 500 },
         { "Fast", 300 },
         { "Just", 500 },
         { "Late", 300 },       

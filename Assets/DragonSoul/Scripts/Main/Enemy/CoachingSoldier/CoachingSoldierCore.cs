@@ -31,7 +31,7 @@ namespace Enemy
             stateMachine.RegisterState(new CoachingSoldierMove(this));
             stateMachine.RegisterState(new CoachingSoldierAttack(this));
             stateMachine.RegisterState(new CoachingSoldierDamage(this));
-            attackManager.OnEnemykHit += ReceiveDamage;
+            attackManager.OnEnemyHit += ReceiveDamage;
         }
 
         void Start()
@@ -72,7 +72,7 @@ namespace Enemy
             stateMachine.StateFixedUpdate();
         }
 
-        void ReceiveDamage()
+        protected void ReceiveDamage()
         {
             stateMachine.ChangeState(CoachingSoldierStateID.Damage);
         }

@@ -10,9 +10,9 @@ namespace Player
 
         protected override Dictionary<int, AttackAnimationConfig> AnimationData => new()
         {
-            {1, new AttackAnimationConfig{ animationName = "AttackNormal1", transitionDuration = 0.1f, layer = 0, offset = 0, nextStateTransitionTime = 0.6f, attackType = AttackType.Normal1} },
-            {2, new AttackAnimationConfig{ animationName = "AttackNormal2", transitionDuration = 0.1f, layer = 0, offset = 0, nextStateTransitionTime = 0.6f,  attackType = AttackType.Normal2} },
-            {3, new AttackAnimationConfig{ animationName = "AttackNormal3", transitionDuration = 0.1f, layer = 0, offset = 0, nextStateTransitionTime = 0.85f,  attackType = AttackType.Normal3} },
+            {1, new AttackAnimationConfig("AttackNormal1", 0.1f, 0, 0, 0.6f, AttackType.Normal1) },
+            {2, new AttackAnimationConfig("AttackNormal2", 0.1f, 0, 0, 0.6f, AttackType.Normal2) },
+            {3, new AttackAnimationConfig("AttackNormal3", 0.1f, 0, 0, 0.85f, AttackType.Normal3) },
         };
 
         InputReciver Input => InputReciver.Instance;
@@ -41,9 +41,7 @@ namespace Player
                 }
                 else
                 {
-                    core.Animator.CrossFade(AnimationData[step].animationName, AnimationData[step].transitionDuration, AnimationData[step].layer, AnimationData[step].offset);
-
-                    core.powerManager.SetAttackType(AnimationData[step].attackType);
+                    PlayCurrentAnimation();                  
 
                     canContinueCombo = false;
                 }
