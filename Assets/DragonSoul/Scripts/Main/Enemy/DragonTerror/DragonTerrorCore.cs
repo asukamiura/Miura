@@ -73,8 +73,8 @@ namespace Enemy
             // 外積
             CrossProduct = Vector3.Cross(transform.forward, direction);
 
-            if (playerCore.stateMachine.StateID == PlayerStateID.Block && stateMachine.StateID != DragonTerrorStateID.Damage
-                && stateMachine.StateID != DragonTerrorStateID.Die)
+            if (playerCore.stateMachine.CurrentState == PlayerStateID.Block && stateMachine.CurrentState != DragonTerrorStateID.Damage
+                && stateMachine.CurrentState != DragonTerrorStateID.Die)
             {
                 isJustGuarded = true;
             }
@@ -91,8 +91,8 @@ namespace Enemy
 
         void ReceiveDamage()
         {
-            if ((playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2
-                   || playerCore.stateMachine.StateID == PlayerStateID.AttackUltimate) && stateMachine.StateID != DragonTerrorStateID.Die)
+            if ((playerCore.stateMachine.CurrentState == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.CurrentState == PlayerStateID.AttackSpecial2
+                   || playerCore.stateMachine.CurrentState == PlayerStateID.AttackUltimate) && stateMachine.CurrentState != DragonTerrorStateID.Die)
             {
                 stateMachine.ChangeState(DragonTerrorStateID.Damage);
             }

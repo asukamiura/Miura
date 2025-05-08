@@ -23,7 +23,7 @@ public class BattleOperationUIManager : MonoBehaviour
         playerEventManager.OnAttack += ShowAttackUIEffect;
         playerEventManager.OnDash += ShowDashUIEffect;
         playerEventManager.OnGuard += ShowGuardUIEffect;
-        playerEventManager.OnUltimate += ShowUltimateUIEffect;
+        playerEventManager.OnUltimateEnter += ShowUltimateUIEffect;
         playerEventManager.OnHeal += ShowHealUIEffect;
         playerEventManager.OnPowerUp += ShowPowerUpUIEffect;
     }
@@ -33,7 +33,7 @@ public class BattleOperationUIManager : MonoBehaviour
         playerEventManager.OnAttack -= ShowAttackUIEffect;
         playerEventManager.OnDash -= ShowDashUIEffect;
         playerEventManager.OnGuard -= ShowGuardUIEffect;
-        playerEventManager.OnUltimate -= ShowUltimateUIEffect;
+        playerEventManager.OnUltimateEnter -= ShowUltimateUIEffect;
         playerEventManager.OnHeal -= ShowHealUIEffect;
         playerEventManager.OnPowerUp -= ShowPowerUpUIEffect;
     }

@@ -5,8 +5,7 @@ public class StateMachine<TStateID>
     IState<TStateID> currentState;
     Dictionary<TStateID, IState<TStateID>> states = new Dictionary<TStateID, IState<TStateID>>();
 
-    public TStateID StateID { get; private set; }
-    public IState<TStateID> CurrentState => currentState;
+    public TStateID CurrentState => currentState.StateID;
 
     // ステートを登録
     public void RegisterState(IState<TStateID> state)
@@ -35,7 +34,6 @@ public class StateMachine<TStateID>
             currentState?.Exit();
             currentState = newState;
             currentState?.Enter();
-            StateID = stateID;
         }
     }
 

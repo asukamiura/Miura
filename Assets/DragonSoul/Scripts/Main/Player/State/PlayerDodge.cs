@@ -28,6 +28,8 @@ namespace Player
 
         public void Enter()
         {
+            PostEffectManager.Instance.ChangePostEffect(PostEffectManager.ProfileNum.JustDodge, 0);
+
             // プレイヤーを無敵状態にする
             core.IsInvincible = true;
 
@@ -41,7 +43,7 @@ namespace Player
             isEffective = true;
             CameraManager.Instance.ApplyImpulse();
 
-            core.StartCoroutine(CameraManager.Instance.SwitchCamera(CameraBlendTime));
+            CameraManager.Instance.SwitchCamera(CameraManager.CameraType.JustDodge, CameraBlendTime);
 
             CameraManager.Instance.EnabledRecentering();
             core.animationController.ChangeAllAnimationSpeed(PerformanceAnimationSpeed);
@@ -94,8 +96,11 @@ namespace Player
             core.IsInvincible = false;
             currentTime = 0;
             isNextAttack = false;
+
+            PostEffectManager.Instance.ChangePostEffect(PostEffectManager.ProfileNum.Normal, 0);
+
             CameraManager.Instance.DisabledRecentering();
-            core.StartCoroutine(CameraManager.Instance.SwitchCamera(1));
+            CameraManager.Instance.SwitchCamera(CameraManager.CameraType.Main, 1);
         }
     }
 }

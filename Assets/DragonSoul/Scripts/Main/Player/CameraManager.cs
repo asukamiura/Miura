@@ -1,5 +1,6 @@
 ﻿using Cinemachine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraManager : MonoBehaviour
@@ -8,17 +9,24 @@ public class CameraManager : MonoBehaviour
     [SerializeField] CinemachineImpulseSource impulseSource;
     [SerializeField] CinemachineVirtualCamera playerCamera;
     [SerializeField] CinemachineVirtualCamera justDodgeCamera;
+    [SerializeField] CinemachineVirtualCamera ultimateCamera1;
+    [SerializeField] CinemachineVirtualCamera ultimateCamera2;
+    [SerializeField] CinemachineVirtualCamera ultimateCamera3;
+
+    public enum CameraType { Main, JustDodge, Ultimate1,  Ultimate2, Ultimate3 };
+
+    readonly Dictionary<CameraType, CinemachineVirtualCamera> cameraData = new Dictionary<CameraType, CinemachineVirtualCamera>();
 
     CinemachinePOV pov;
     float horizontalSpeed = 2;
     float verticalSpeed = 1;
     float sensitivity = 50;
-    public bool IsInput { get; set; } = true;
-
+    CinemachineVirtualCamera currentCamera;     // 現在のカメラ
     const float RecenteringTime = 0.1f;
 
     InputReciver Input => InputReciver.Instance;
 
+    public bool IsInput { get; set; } = true;
     public static CameraManager Instance { get; set; }
 
     void Awake()
@@ -36,6 +44,13 @@ public class CameraManager : MonoBehaviour
 
     void Start()
     {
+        cameraData.Add(CameraType.Main, playerCamera);
+        cameraData.Add(CameraType.JustDodge, justDodgeCamera);
+        cameraData.Add(CameraType.Ultimate1, ultimateCamera1);
+        cameraData.Add(CameraType.Ultimate2, ultimateCamera2);
+        cameraData.Add(CameraType.Ultimate3, ultimateCamera3);
+
+        SwitchCamera(CameraType.Main, 0);
         pov = playerCamera.GetCinemachineComponent<CinemachinePOV>();
     }
 
@@ -97,7 +112,7 @@ public class CameraManager : MonoBehaviour
         if (targetDutch.HasValue)
         {
             StartCoroutine(ChangeDutch(targetDutch.Value, duration));
-        } 
+        }
     }
 
     /// <summary>
@@ -108,7 +123,7 @@ public class CameraManager : MonoBehaviour
     public void ApplyImpulse(float force = 1, float duration = 0.2f)
     {
         //impulseSource.m_ImpulseDefinition.m_TimeEnvelope.m_SustainTime = duration /2; 
-        impulseSource.m_ImpulseDefinition.m_TimeEnvelope.m_DecayTime = duration; 
+        impulseSource.m_ImpulseDefinition.m_TimeEnvelope.m_DecayTime = duration;
         impulseSource.GenerateImpulse(force);
     }
 
@@ -127,22 +142,22 @@ public class CameraManager : MonoBehaviour
     {
         pov.m_VerticalRecentering.m_enabled = false;
         pov.m_HorizontalRecentering.m_enabled = false;
-    }
+    }  
 
-    public IEnumerator SwitchCamera(float blendTime)
+    public void SwitchCamera(CameraType targetCamera, float blendTime)
     {
-        IsInput = false;
-
-        //　ブレンドタイムを設定
         cinemachineBrain.m_DefaultBlend.m_Time = blendTime;
+        
+        if (currentCamera != null)
+        {
+            currentCamera.Priority = 0;
+        }
 
-        // カメラの描画優先順位を入れ替え
-        int priority = justDodgeCamera.Priority;
-        justDodgeCamera.Priority = playerCamera.Priority;
-        playerCamera.Priority = priority;
+        currentCamera = cameraData[targetCamera];
 
-        yield return new WaitForSeconds(blendTime);
-
-        IsInput = true;
+        if (currentCamera != null)
+        {
+            currentCamera.Priority = 1;
+        }
     }
 }

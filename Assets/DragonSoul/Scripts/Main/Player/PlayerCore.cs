@@ -20,7 +20,8 @@ namespace Player
         public PowerManager powerManager;
         public UltimateManager ultimateManager;
         public ScoreManager scoreManager;
-        public AttackController attackController;
+        public PlayerAttackManager attackManager;
+        public AttackTypeHolder attackTypeHolder;
         public AttackAssist attackAssist;
         public AnimationController animationController;
         public GameSePlayer gameSePlayer;
@@ -29,13 +30,14 @@ namespace Player
         public float MoveSpeed => powerManager.MoveSpeed;
         public Rigidbody Rb { get; set; }
         public Animator Animator { get; set; }
+        public Collider bodyCollider;
         public bool IsJustGuard { get; set; } = false;
         public bool IsJustDodge { get; set; } = false;
         public bool IsInvincible { get; set; } = false;   // 無敵状態フラグ
         public AnimatorStateInfo CurrentStateInfo { get; private set; }
 
         bool CanHeal => justPointManager.JustPoint >= HealCost;
-        bool CanPowerUp => justPointManager.JustPoint >= PowerUpCost && stateMachine.StateID == PlayerStateID.Locomotion;
+        bool CanPowerUp => justPointManager.JustPoint >= PowerUpCost && stateMachine.CurrentState == PlayerStateID.Locomotion;
         bool CanUlt => ultimateManager.UltVal >= UltCost;
 
         void Awake()
@@ -71,19 +73,19 @@ namespace Player
             CurrentStateInfo = Animator.GetCurrentAnimatorStateInfo(0);
 
             // 死亡していた場合、以降の処理を実行しない。
-            if (stateMachine.StateID == PlayerStateID.Dead) { return; }
+            if (stateMachine.CurrentState == PlayerStateID.Dead) { return; }
 
             // 死亡ステートに遷移
-            if (healthManager.IsDead && stateMachine.StateID != PlayerStateID.Dead)
+            if (healthManager.IsDead && stateMachine.CurrentState != PlayerStateID.Dead)
             {
                 stateMachine.ChangeState(PlayerStateID.Dead);
             }
 
             // ガード、ブロック、回避、特殊攻撃1、特殊攻撃2、ダメージ状態でなければ実行可能
-            if (stateMachine.StateID != PlayerStateID.Guard && stateMachine.StateID != PlayerStateID.Block
-                && stateMachine.StateID != PlayerStateID.Dash && stateMachine.StateID != PlayerStateID.Dodge
-                && stateMachine.StateID != PlayerStateID.Damage && stateMachine.StateID != PlayerStateID.AttackSpecial1
-                && stateMachine.StateID != PlayerStateID.AttackSpecial2)
+            if (stateMachine.CurrentState != PlayerStateID.Guard && stateMachine.CurrentState != PlayerStateID.Block
+                && stateMachine.CurrentState != PlayerStateID.Dash && stateMachine.CurrentState != PlayerStateID.Dodge
+                && stateMachine.CurrentState != PlayerStateID.Damage && stateMachine.CurrentState != PlayerStateID.AttackSpecial1
+                && stateMachine.CurrentState != PlayerStateID.AttackSpecial2)
             {
                 // ガードステートに遷移
                 if (Input.Guard)
@@ -134,17 +136,17 @@ namespace Player
 
         void OnTriggerEnter(Collider other)
         {
-            if (stateMachine.StateID == PlayerStateID.Dead || IsJustDodge || IsInvincible) { return; }
+            if (stateMachine.CurrentState == PlayerStateID.Dead || IsJustDodge || IsInvincible) { return; }
 
             var enemyAttackHit = other.GetComponent<EnemyAttackHit>();
 
             if (other.CompareTag("EnemyAttackCanGuard") || other.CompareTag("EnemyAttackCanDodge"))
             {
-                if (other.CompareTag("EnemyAttackCanGuard") && stateMachine.StateID == PlayerStateID.Guard)
+                if (other.CompareTag("EnemyAttackCanGuard") && stateMachine.CurrentState == PlayerStateID.Guard)
                 {
                     IsJustGuard = true;                    
                 }
-                else if (other.CompareTag("EnemyAttackCanDodge") && stateMachine.StateID == PlayerStateID.Dash)
+                else if (other.CompareTag("EnemyAttackCanDodge") && stateMachine.CurrentState == PlayerStateID.Dash)
                 {
                     IsJustDodge = true;
                 }

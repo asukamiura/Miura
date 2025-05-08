@@ -32,10 +32,10 @@ public class EnemyAttackHit : MonoBehaviour
             switch (attackType)
             {
                 case AttackType.CanGuard:
-                    if (playerCore.stateMachine.StateID == PlayerStateID.Guard) { return; }
+                    if (playerCore.stateMachine.CurrentState == PlayerStateID.Guard) { return; }
                     break;
                 case AttackType.CanDodge:
-                    if (playerCore.stateMachine.StateID == PlayerStateID.Dash) { return; }
+                    if (playerCore.stateMachine.CurrentState == PlayerStateID.Dash) { return; }
                     break;
             }
 
