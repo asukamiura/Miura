@@ -1,70 +1,85 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
 
 namespace Player
 {
-    public class PlayerAttackUltimate : IState<PlayerStateID>
+    public class PlayerAttackUltimate : AttackStateBase<PlayerStateID>
     {
-        public PlayerStateID StateID => PlayerStateID.AttackUltimate;
-        PlayerCore core;
-        InputReciver Input => InputReciver.Instance;
+        public override PlayerStateID StateID => PlayerStateID.AttackUltimate;
 
-        bool isEffective = false;   // ブロック演出中はtrue,それ以外はfalse
+        public PlayerAttackUltimate(PlayerCore core) : base(core) { }
 
-        const float DefaultFOV = 70;            // 通常の視野角
-        const float TargetFOV = 50;             // 演出時の視野角
-        const float SpreadSpeed = 2;            // 視野角を広げる速度
-        const float NarrowSpeed = 10;           // 視野角を狭める速度
-        const float PerformanceAnimationSpeed = 0.3f;
-        const float DefaultAnimationSpeed = 1;
-        const float EffectiveTime = 1;          // 演出の効果時間
-        const float TranstionAttackSpecialNormalizedTime = 0.75f;
-        const float TranstionIdleNormalizedTime = 0.75f;
-
-        public PlayerAttackUltimate(PlayerCore core)
+        protected override Dictionary<int, AttackAnimationConfig> AnimationData => new()
         {
-            this.core = core;
-        }
+            {1, new AttackAnimationConfig("AttackUltimate1", 0.1f, 0, 0, 1, AttackType.Ultimate) },
+            {2, new AttackAnimationConfig("AttackUltimate2", 0, 0, 0, 1, AttackType.Ultimate) },
+            {3, new AttackAnimationConfig("AttackUltimate3", 0, 0, 0, 1, AttackType.Ultimate) },
+        };
 
-        public void Enter()
+        Vector3 effectPosition;
+
+        public override void Enter()
         {
-            core.Animator.applyRootMotion = true;
+            core.playerEventManager.TriggerUltimateEnter();
+            core.bodyCollider.enabled = false;
             core.IsInvincible = true;
-            // アニメーションの遷移
-            core.Animator.CrossFade("AttackUltimate", 0);
+            base.Enter();
 
-            // ブロック演出を開始
-            isEffective = true;
-            core.animationController.ChangeAllAnimationSpeed(PerformanceAnimationSpeed);
+            PostEffectManager.Instance.ChangePostEffect(PostEffectManager.ProfileNum.Ultimate, 0);
+            core.animationController.ChangeAnimationSpeed("Enemy", 0);
 
-            core.playerEventManager.TriggerUltimate();
+            core.StartCoroutine(ChangeCamera());
 
-            core.attackController.SetAttackType(AttackType.Ultimate);
+            effectPosition = new Vector3(core.transform.position.x, core.transform.position.y, core.transform.position.z);
         }
 
-        public void Update()
+        public override void Update()
         {
-            // アニメーションが終わったらIdleStateに遷移
-            if(core.CurrentStateInfo.normalizedTime >= 0.2)
+            if (core.CurrentStateInfo.normalizedTime >= AnimationData[step].nextStateTransitionTime && core.CurrentStateInfo.IsName(AnimationData[step].animationName))
             {
-                if (isEffective)
-                {
-                    core.animationController.ChangeAllAnimationSpeed(DefaultAnimationSpeed);
-                    isEffective = false;
-                }
-            }
+                step++;
 
-            if (core.CurrentStateInfo.normalizedTime >= 0.8f)
+                if (step > MaxStep)
+                {
+                    core.stateMachine.ChangeState(PlayerStateID.Locomotion);                    
+                }
+                else
+                {
+                    PlayCurrentAnimation();                                            
+                }
+
+                if (step == 3)
+                {
+                    CameraManager.Instance.SwitchCamera(CameraManager.CameraType.Ultimate3, 0.3f);
+                    core.animationController.ChangeAnimationSpeed("Enemy", 1);
+                }            
+            }
+            else if (core.CurrentStateInfo.normalizedTime >= 1 && core.CurrentStateInfo.IsName(AnimationData[step].animationName))
             {
                 core.stateMachine.ChangeState(PlayerStateID.Locomotion);
             }
         }
 
-        public void FixedUpdate() { }
+        public override void FixedUpdate() { }
 
-        public void Exit()
+        public override void Exit()
         {
-            core.Animator.applyRootMotion = false;
+            base.Exit();
             core.IsInvincible = false;
+            core.bodyCollider.enabled = true;
+            PostEffectManager.Instance.ChangePostEffect(PostEffectManager.ProfileNum.Normal, 1);
+            CameraManager.Instance.SwitchCamera(CameraManager.CameraType.Main, 1);
+        }
+      
+        IEnumerator ChangeCamera()
+        {
+            CameraManager.Instance.SwitchCamera(CameraManager.CameraType.Ultimate1, 0);
+
+            yield return new WaitForSeconds(0.1f);
+
+            CameraManager.Instance.SwitchCamera(CameraManager.CameraType.Ultimate2, 1);
         }
     }
 }

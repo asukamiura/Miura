@@ -13,7 +13,8 @@ public class PlayerEventManager : MonoBehaviour
 
     public event Action OnDash;
 
-    public event Action OnUltimate;
+    public event Action OnUltimateEnter;
+    public event Action OnUltimateExit;
 
     // 回復イベントの発火処理
     public void TriggerHeal() { OnHeal?.Invoke(); }
@@ -31,5 +32,6 @@ public class PlayerEventManager : MonoBehaviour
     public void TriggerDash() { OnDash?.Invoke(); }
 
     // 必殺技イベントの発火処理
-    public void TriggerUltimate() { OnUltimate?.Invoke(); }
+    public void TriggerUltimateEnter() { OnUltimateEnter?.Invoke(); }
+    public void TriggerUltimateExit() { OnUltimateExit?.Invoke(); }
 }

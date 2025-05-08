@@ -24,16 +24,16 @@ public class AttackNormalTask : ITutorialTask
         tutorialManager.playerCore.enabled = false;
         ExplanationPanel.SetActive(true);
         Time.timeScale = 0;
-        previousState = tutorialManager.playerCore.stateMachine.StateID;
+        previousState = tutorialManager.playerCore.stateMachine.CurrentState;
     }
 
     public void Update()
     {
         // プレイヤーの状態が変化したときのみ処理
-        if (tutorialManager.playerCore.stateMachine.StateID != previousState)
+        if (tutorialManager.playerCore.stateMachine.CurrentState != previousState)
         {
-            HandleStateChange(tutorialManager.playerCore.stateMachine.StateID);
-            previousState = tutorialManager.playerCore.stateMachine.StateID;
+            HandleStateChange(tutorialManager.playerCore.stateMachine.CurrentState);
+            previousState = tutorialManager.playerCore.stateMachine.CurrentState;
         }
 
         if (tutorialManager.Input.Decision && ExplanationPanel.activeSelf)

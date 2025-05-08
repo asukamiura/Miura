@@ -52,7 +52,7 @@ public abstract class AttackStateBase<TStateID> : IState<TStateID>
 
         core.Animator.CrossFade(config.animationName, config.transitionDuration, config.layer, config.offset);
 
-        core.attackController.SetAttackType(config.attackType);
+        core.attackTypeHolder.SetAttackType(config.attackType);
     }
 
     protected class AttackAnimationConfig

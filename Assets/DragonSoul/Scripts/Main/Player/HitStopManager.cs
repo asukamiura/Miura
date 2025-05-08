@@ -29,9 +29,15 @@ public class HitStopManager : MonoBehaviour
         {AttackType.Special2_2, new HitStopConfig(0.03f, 0.1f) },
         {AttackType.Special2_3, new HitStopConfig(0.03f, 0.1f) },
         {AttackType.Special2_4, new HitStopConfig(0.15f, 1.5f) },
-        {AttackType.Ultimate, new HitStopConfig(0.03f, 0.1f) },      
+        {AttackType.Ultimate, new HitStopConfig(0.2f, 2f) },      
     };
 
+    /// <summary>
+    /// ヒットストップを開始
+    /// </summary>
+    /// <param name="playerAnimator">プレイヤーのアニメーター</param>
+    /// <param name="enemyAnimators">攻撃の当たった敵のアニメーター</param>
+    /// <param name="attackType">攻撃のタイプ</param>
     public void OnHitStop(Animator playerAnimator, Animator[] enemyAnimators, AttackType attackType)
     {
         StartCoroutine(StopAnimation(playerAnimator, enemyAnimators, hitStopData[attackType].stopDuration));
@@ -39,6 +45,7 @@ public class HitStopManager : MonoBehaviour
         CameraManager.Instance.ApplyImpulse(hitStopData[attackType].impulseForce, hitStopData[attackType].stopDuration);
     }
 
+    // アニメーションを止める処理
     IEnumerator StopAnimation(Animator playerAnimator, Animator[] enemyAnimators, float duration)
     {      
         float playerAnimationSpeed = playerAnimator.speed;

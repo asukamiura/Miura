@@ -64,8 +64,8 @@ namespace Enemy
             Vector3 direction = (playerTransform.position - transform.position).normalized;
             AngleToPlayer = Vector3.SignedAngle(transform.forward, direction, Vector3.up);
 
-            if (playerCore.stateMachine.StateID == PlayerStateID.Block && stateMachine.StateID != DragonNightmareStateID.Damage
-                && stateMachine.StateID != DragonNightmareStateID.Die)
+            if (playerCore.stateMachine.CurrentState == PlayerStateID.Block && stateMachine.CurrentState != DragonNightmareStateID.Damage
+                && stateMachine.CurrentState != DragonNightmareStateID.Die)
             {
                 isJustGuarded = true;
             }
@@ -87,8 +87,8 @@ namespace Enemy
 
         void ReceiveDamage()
         {
-            if ((playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.StateID == PlayerStateID.AttackSpecial2
-                   || playerCore.stateMachine.StateID == PlayerStateID.AttackUltimate) && stateMachine.StateID != DragonNightmareStateID.Die)
+            if ((playerCore.stateMachine.CurrentState == PlayerStateID.AttackSpecial1 || playerCore.stateMachine.CurrentState == PlayerStateID.AttackSpecial2
+                   || playerCore.stateMachine.CurrentState == PlayerStateID.AttackUltimate) && stateMachine.CurrentState != DragonNightmareStateID.Die)
             {
                 stateMachine.ChangeState(DragonNightmareStateID.Damage);
             }

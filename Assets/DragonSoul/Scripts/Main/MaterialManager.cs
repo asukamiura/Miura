@@ -30,10 +30,6 @@ public class MaterialManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        //materialList.Add(forceFieldMaterial);
-
-        //playerRenderer = player.GetComponentsInChildren<Renderer>();
-
         forceFieldMaterial.SetFloat("_FresnelPower", DefaultFresnalPower);
     }
 

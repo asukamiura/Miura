@@ -1,7 +1,7 @@
 ﻿using Player;
 using UnityEngine;
 
-public class AttackController : MonoBehaviour
+public class AttackTypeHolder : MonoBehaviour
 {
     AttackType currentAttackType = AttackType.None;
 

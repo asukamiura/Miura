@@ -11,7 +11,7 @@ namespace Player
         [SerializeField] Animator playerAnimator;
         [SerializeField] Transform playerTransform;
         [SerializeField] Transform attackTransform;
-        [SerializeField] AttackController attackController;
+        [SerializeField] AttackTypeHolder attackController;
         [SerializeField] PowerManager powerManager;
         [SerializeField] UltimateManager ultimateManager;
         [SerializeField] ScoreManager scoreManager;

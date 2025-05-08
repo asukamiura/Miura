@@ -6,6 +6,7 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] PlayerEventManager playerEventManager;
     [SerializeField] HealthManager playerHealthManager;
     [SerializeField] HealthManager enemyHealthManager;
     [SerializeField] UltimateManager ultimateManager;
@@ -84,5 +85,5 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         timingUI.SetActive(false);
-    }
+    } 
 }
