@@ -9,7 +9,7 @@ public class PowerManager : MonoBehaviour
     [SerializeField] float speedUpMultiplier = 1.3f;
     [SerializeField] float defaultAttackPower = 1;
     [SerializeField] float powerUpMultiplier = 1.5f;
-    [SerializeField] float powerUpDuration = 15;
+    [SerializeField] float powerUpDuration = 20;
 
     float currentAttackPower = 0;
 

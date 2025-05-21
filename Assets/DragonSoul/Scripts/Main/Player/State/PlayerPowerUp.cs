@@ -32,8 +32,8 @@ namespace Player
                     isEffective = true;
                     EffectManager.Instance.PlayEffect("VFX_Zap_02_Blue", core.transform.position, Quaternion.identity);
                     EffectManager.Instance.PlayEffect("NovaLightningBlue", core.transform.position, Quaternion.Euler(-90, 0, 0));
-                    core.effectPlayer.ShowEffect("Lightning aura", 15);
-                    core.StartCoroutine(ActiveForceField(15));
+                    core.effectPlayer.ShowEffect("Lightning aura", 20);
+                    core.StartCoroutine(ActiveForceField(20));
                 }
                 else if (core.CurrentStateInfo.normalizedTime >= 1)
                 {

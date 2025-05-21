@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
+public enum ProfileNum { Normal, Ultimate, JustDodge, JustGuard, Clear }
+
 public class PostEffectManager : MonoBehaviour
 {
     [SerializeField] Volume volume1;
@@ -11,11 +13,12 @@ public class PostEffectManager : MonoBehaviour
     [SerializeField] VolumeProfile ultimateProfile;
     [SerializeField] VolumeProfile justDodgeProfile;
     [SerializeField] VolumeProfile justGuardProfile;
+    [SerializeField] VolumeProfile clearProfile;
 
     Volume activeVolume;
     Volume inactiveVolume;
 
-    public enum ProfileNum { Normal, Ultimate, JustDodge, JustGuard }
+   
 
     readonly Dictionary<ProfileNum, VolumeProfile> volumeProfileData = new Dictionary<ProfileNum, VolumeProfile>();
 
@@ -29,7 +32,7 @@ public class PostEffectManager : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(this);
             return;
         }
     }
@@ -43,6 +46,7 @@ public class PostEffectManager : MonoBehaviour
         volumeProfileData[ProfileNum.Ultimate] = ultimateProfile;
         volumeProfileData[ProfileNum.JustDodge] = justDodgeProfile;
         volumeProfileData[ProfileNum.JustGuard] = justGuardProfile;
+        volumeProfileData[ProfileNum.Clear] = clearProfile; 
 
         activeVolume.profile = normalProfile;
     }

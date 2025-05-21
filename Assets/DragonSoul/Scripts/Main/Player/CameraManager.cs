@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CameraType { Main, JustDodge, Ultimate1,  Ultimate2, Ultimate3 };
+
 public class CameraManager : MonoBehaviour
 {
     [SerializeField] CinemachineBrain cinemachineBrain;
@@ -13,7 +15,6 @@ public class CameraManager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera ultimateCamera2;
     [SerializeField] CinemachineVirtualCamera ultimateCamera3;
 
-    public enum CameraType { Main, JustDodge, Ultimate1,  Ultimate2, Ultimate3 };
 
     readonly Dictionary<CameraType, CinemachineVirtualCamera> cameraData = new Dictionary<CameraType, CinemachineVirtualCamera>();
 

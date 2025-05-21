@@ -1,7 +1,8 @@
 ﻿using SoundSystem;
+using System;
 using UnityEngine;
 
-public class PauseManager : MonoBehaviour
+public class PausePanelManager : MonoBehaviour
 {
     [SerializeField] GameObject[] buttons;
     [SerializeField] GameObject selectArrow;
@@ -10,12 +11,16 @@ public class PauseManager : MonoBehaviour
 
     InputReciver Input => InputReciver.Instance;
     enum PausePanelState { ReturnSelect, Option, Close }
-    PausePanelState pauseState = PausePanelState.Close;
+    PausePanelState currentState = PausePanelState.Close;
     bool isPressed = false;
+
+    public Action ReturnSelectPressed;
+    public Action SoundPressed;
+    public Action ClosePressed;
 
     void Start()
     {
-        gameObject.SetActive(false);
+        HidePausePanel();
         MoveSelectArrow();
     }
 
@@ -24,15 +29,15 @@ public class PauseManager : MonoBehaviour
         if (!isPressed)
         {
             // 選択中のボタンを変更
-            if (Input.SelectMoveUp && pauseState != PausePanelState.ReturnSelect)
+            if (Input.SelectMoveUp && currentState != PausePanelState.ReturnSelect)
             {
-                pauseState--;
+                currentState--;
                 MoveSelectArrow();
                 SoundManager.Instance.PlaySe("MenuMove");
             }
-            else if (Input.SelectMoveDown && pauseState != PausePanelState.Close)
+            else if (Input.SelectMoveDown && currentState != PausePanelState.Close)
             {
-                pauseState++;
+                currentState++;
                 MoveSelectArrow();
                 SoundManager.Instance.PlaySe("MenuMove");
             }
@@ -42,19 +47,20 @@ public class PauseManager : MonoBehaviour
                 isPressed = true;
                 SoundManager.Instance.PlaySe("Press");
 
-                switch (pauseState)
+                switch (currentState)
                 {
                     case PausePanelState.ReturnSelect:
-                        gameObject.SetActive(false);
+                        HidePausePanel();
                         checkPanel.SetActive(true);
                         break;
                     case PausePanelState.Option:
-                        gameObject.SetActive(false);
+                        HidePausePanel();
                         optionPanel.SetActive(true);
                         break;
                     case PausePanelState.Close:
-                        gameObject.SetActive(false);
-                        GameManager.Instance.ChangeState(GameManager.GameState.Playing);
+                        //HidePausePanel();
+                        //GameManager.Instance.ChangeState(GameManager.GameState.Playing);                       
+                        ClosePressed?.Invoke();
                         break;
                 }
             }
@@ -63,9 +69,10 @@ public class PauseManager : MonoBehaviour
             {
                 isPressed = true;
                 SoundManager.Instance.PlaySe("Press");
-                gameObject.SetActive(false);
-                pauseState = PausePanelState.Close;
-                GameManager.Instance.ChangeState(GameManager.GameState.Playing);
+                //currentState = PausePanelState.Close;
+                //GameManager.Instance.ChangeState(GameManager.GameState.Playing);
+                
+                ClosePressed?.Invoke();
             }
         }       
     }
@@ -74,7 +81,7 @@ public class PauseManager : MonoBehaviour
     {
         for (int i = 0; i < buttons.Length; i++)
         {
-            if (i == (int)pauseState)
+            if (i == (int)currentState)
             {
                 selectArrow.transform.position = buttons[i].transform.position;
             }
@@ -85,5 +92,15 @@ public class PauseManager : MonoBehaviour
     {
         isPressed = false;
         MoveSelectArrow();
+    }
+
+    public void ShowPausePanel()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void HidePausePanel()
+    {
+        gameObject.SetActive(false);
     }
 }

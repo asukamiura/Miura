@@ -30,7 +30,7 @@ namespace Player
 
         public void Enter()
         {
-            PostEffectManager.Instance.ChangePostEffect(PostEffectManager.ProfileNum.JustGuard, 0);
+            PostEffectManager.Instance.ChangePostEffect(ProfileNum.JustGuard, 0);
 
             // プレイヤーを無敵状態にする
             core.IsInvincible = true;
@@ -97,7 +97,7 @@ namespace Player
             core.IsInvincible = false;
             currentTime = 0;
             isNextAttack = false;
-            PostEffectManager.Instance.ChangePostEffect(PostEffectManager.ProfileNum.Normal, 1);
+            PostEffectManager.Instance.ChangePostEffect(ProfileNum.Normal, 1);
         }
     }
 }
