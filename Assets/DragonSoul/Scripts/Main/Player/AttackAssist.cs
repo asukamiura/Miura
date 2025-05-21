@@ -72,6 +72,8 @@ namespace Player
                 }
             }
 
+            if (closestCollider == null) { return (null, 0, Vector3.zero); }
+
             Vector3 closestPoint = closestCollider.ClosestPoint(rb.position);
 
             // ターゲットの方向
@@ -87,11 +89,8 @@ namespace Player
         {
             var (collider, distance, direction) = GetClosestTarget();
 
-            // アシスト有効範囲外なら処理を飛ばす
-            if (distance > assistDistance)
-            {
-                return;
-            }
+            // アシスト範囲内にコライダーがなかった場合、処理を飛ばす
+            if (collider == null) { return; }
 
             targetCollider = collider;
 

@@ -25,9 +25,10 @@ namespace Player
             core.playerEventManager.TriggerUltimateEnter();
             core.bodyCollider.enabled = false;
             core.IsInvincible = true;
+            core.Rb.velocity = Vector3.zero;
             base.Enter();
 
-            PostEffectManager.Instance.ChangePostEffect(PostEffectManager.ProfileNum.Ultimate, 0);
+            PostEffectManager.Instance.ChangePostEffect(ProfileNum.Ultimate, 0);
             core.animationController.ChangeAnimationSpeed("Enemy", 0);
 
             core.StartCoroutine(ChangeCamera());
@@ -52,7 +53,7 @@ namespace Player
 
                 if (step == 3)
                 {
-                    CameraManager.Instance.SwitchCamera(CameraManager.CameraType.Ultimate3, 0.3f);
+                    CameraManager.Instance.SwitchCamera(CameraType.Ultimate3, 0.3f);
                     core.animationController.ChangeAnimationSpeed("Enemy", 1);
                 }            
             }
@@ -69,17 +70,17 @@ namespace Player
             base.Exit();
             core.IsInvincible = false;
             core.bodyCollider.enabled = true;
-            PostEffectManager.Instance.ChangePostEffect(PostEffectManager.ProfileNum.Normal, 1);
-            CameraManager.Instance.SwitchCamera(CameraManager.CameraType.Main, 1);
+            PostEffectManager.Instance.ChangePostEffect(ProfileNum.Normal, 1);
+            CameraManager.Instance.SwitchCamera(CameraType.Main, 1);
         }
       
         IEnumerator ChangeCamera()
         {
-            CameraManager.Instance.SwitchCamera(CameraManager.CameraType.Ultimate1, 0);
+            CameraManager.Instance.SwitchCamera(CameraType.Ultimate1, 0);
 
             yield return new WaitForSeconds(0.1f);
 
-            CameraManager.Instance.SwitchCamera(CameraManager.CameraType.Ultimate2, 1);
+            CameraManager.Instance.SwitchCamera(CameraType.Ultimate2, 1);
         }
     }
 }

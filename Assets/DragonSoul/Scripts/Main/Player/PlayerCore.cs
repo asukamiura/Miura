@@ -38,7 +38,7 @@ namespace Player
 
         bool CanHeal => justPointManager.JustPoint >= HealCost;
         bool CanPowerUp => justPointManager.JustPoint >= PowerUpCost && stateMachine.CurrentState == PlayerStateID.Locomotion;
-        bool CanUlt => ultimateManager.UltVal >= UltCost;
+        bool CanUlt => ultimateManager.UltVal >= UltCost && stateMachine.CurrentState == PlayerStateID.Locomotion || stateMachine.CurrentState == PlayerStateID.AttackNormal;
 
         void Awake()
         {

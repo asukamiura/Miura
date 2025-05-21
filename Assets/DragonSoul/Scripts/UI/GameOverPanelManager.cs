@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class GameOverManager : MonoBehaviour
+public class GameOverPanelManager : MonoBehaviour
 {
     [SerializeField] GameObject[] buttons;
     [SerializeField] GameObject selectArrow;
@@ -72,5 +72,10 @@ public class GameOverManager : MonoBehaviour
     void OnEnable()
     {
         isPressed = false;
+    }
+
+    public void ShowGameOverPanel()
+    {
+        gameObject.SetActive(true);
     }
 }

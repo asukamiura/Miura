@@ -22,14 +22,14 @@ public class UIManager : MonoBehaviour
 
     void Awake()
     {
-        PlayerGuard.OnJudgeGuardTiming += TimingUIShow;
-        PlayerDash.OnJudgeDodgeTiming += TimingUIShow;
+        PlayerGuard.OnJudgeGuardTiming += ShowTimingUI;
+        PlayerDash.OnJudgeDodgeTiming += ShowTimingUI;
     }
 
     private void OnDisable()
     {
-        PlayerGuard.OnJudgeGuardTiming -= TimingUIShow;
-        PlayerDash.OnJudgeDodgeTiming -= TimingUIShow;
+        PlayerGuard.OnJudgeGuardTiming -= ShowTimingUI;
+        PlayerDash.OnJudgeDodgeTiming -= ShowTimingUI;
     }
 
     void Start()
@@ -71,13 +71,13 @@ public class UIManager : MonoBehaviour
         previousJustPoints = justPointManager.JustPoint;
     }
 
-    public void TimingUIShow(string timing)
+    public void ShowTimingUI(string timing)
     {
-        StartCoroutine(TimingUIChange(timing));
+        StartCoroutine(ChangeTimingUI(timing));
     }
 
     // ガード、回避のタイミングUIの表示処理
-    IEnumerator TimingUIChange(string timing)
+    IEnumerator ChangeTimingUI(string timing)
     {
         timingText.text = timing;
         timingUI.SetActive(true);

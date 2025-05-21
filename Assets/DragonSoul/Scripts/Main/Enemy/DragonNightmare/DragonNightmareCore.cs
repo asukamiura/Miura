@@ -23,6 +23,7 @@ namespace Enemy
         public float rotationAngle = 10;
         public bool isJustGuarded = false;
         public Transform attack3EffectTransform;
+        public Collider bodyCollider;
 
         void Awake()
         {
@@ -51,6 +52,7 @@ namespace Enemy
         {
             if (healthManager.IsDead)
             {
+                bodyCollider.enabled = false;
                 stateMachine.ChangeState(DragonNightmareStateID.Die);
             }
 

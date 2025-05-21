@@ -28,7 +28,7 @@ namespace Player
             foreach (Collider enemy in hitColliders)
             {
                 if (enemy.CompareTag("Enemy"))
-                {                    
+                {
                     // 現在の攻撃タイプを取得
                     AttackType currentType = attackController.GetAttackType();
 
@@ -46,7 +46,7 @@ namespace Player
 
                     // 敵にダメージを与える
                     enemy.GetComponentInParent<HealthManager>().Damage(powerManager.GetAttackPower(currentType));
-
+                    
                     // ヒットエフェクトを生成
                     EffectManager.Instance.PlayEffect("HitEffect", closestPoint, transform.rotation);
 

@@ -3,8 +3,8 @@ using UnityEngine.InputSystem;
 
 public class InputReciver : MonoBehaviour
 {
-    public static InputReciver Instance { get; set; }
-    public bool IsGamepad { get; set; }    // ゲームパッド使用時はtrue、キーボード&マウス使用時はfalse
+    public static InputReciver Instance { get; private set; }
+    public bool IsGamepad { get; private set; }    // ゲームパッド使用時はtrue、キーボード&マウス使用時はfalse
 
     // それぞれのデバイスの全ての入力を取得する
     InputAction gamepadAny = new InputAction(type: InputActionType.PassThrough, binding: "<Gamepad>/*", interactions: "Press");
@@ -77,5 +77,29 @@ public class InputReciver : MonoBehaviour
         {
             IsGamepad = false;
         }        
+    }
+
+    public void EnablePlayerInput(bool enable)
+    {
+        if (enable)
+        {
+            gameInput.Player.Enable();
+        }
+        else
+        {
+            gameInput.Player.Disable();
+        }
+    }
+
+    public void EnableUIInput(bool enable)
+    {
+        if (enable)
+        {
+            gameInput.UI.Enable();
+        }
+        else
+        {
+            gameInput.UI.Disable();
+        }
     }
 }
