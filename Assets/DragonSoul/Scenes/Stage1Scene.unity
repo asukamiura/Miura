@@ -2841,38 +2841,38 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1394301136}
     m_Modifications:
-    - target: {fileID: 520790182794429040, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+    - target: {fileID: 1748397915149194856, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+      propertyPath: m_Name
+      value: NormalStageManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
       propertyPath: enemyCore
       value: 
       objectReference: {fileID: 1204625065}
-    - target: {fileID: 520790182794429040, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
       propertyPath: operationUI
       value: 
       objectReference: {fileID: 6395197101689906248}
-    - target: {fileID: 520790182794429040, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
       propertyPath: blackCurtain
       value: 
       objectReference: {fileID: 4546711228203692022}
-    - target: {fileID: 520790182794429040, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
       propertyPath: gameOverManager
       value: 
       objectReference: {fileID: 7208734354868679705}
-    - target: {fileID: 520790182794429040, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
       propertyPath: pausePanelManager
       value: 
       objectReference: {fileID: 5230805988232165965}
-    - target: {fileID: 520790182794429040, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
       propertyPath: enemyHealthManager
       value: 
       objectReference: {fileID: 1204625037}
-    - target: {fileID: 520790182794429040, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
       propertyPath: playerHealthManager
       value: 
       objectReference: {fileID: 164457327002146883}
-    - target: {fileID: 1748397915149194856, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
-      propertyPath: m_Name
-      value: GameFlowManager
-      objectReference: {fileID: 0}
     - target: {fileID: 6855135017728247741, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -3543,6 +3543,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 135412774}
     m_Modifications:
+    - target: {fileID: 163186314673926211, guid: f5368643a445a8c45b16b372539c1167, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.0704892
+      objectReference: {fileID: 0}
+    - target: {fileID: 163186314673926211, guid: f5368643a445a8c45b16b372539c1167, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.5078468
+      objectReference: {fileID: 0}
     - target: {fileID: 1217041992293451335, guid: f5368643a445a8c45b16b372539c1167, type: 3}
       propertyPath: m_Follow
       value: 
@@ -3627,6 +3635,14 @@ PrefabInstance:
       propertyPath: m_Targets.Array.data[1].target
       value: 
       objectReference: {fileID: 1204625068}
+    - target: {fileID: 8972299720032400159, guid: f5368643a445a8c45b16b372539c1167, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7504891
+      objectReference: {fileID: 0}
+    - target: {fileID: 8972299720032400159, guid: f5368643a445a8c45b16b372539c1167, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.0621533
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

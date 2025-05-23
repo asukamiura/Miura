@@ -20,7 +20,7 @@ public class PlayingState : IState<GameFlowStateID>
     public void Enter()
     {
         Time.timeScale = flowManager.PreviousTimeScale;
-        // プレイヤー操作を有効
+
         Input.EnablePlayerInput(true);
     }
 

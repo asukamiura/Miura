@@ -18,10 +18,8 @@ public class JustPointTask : ITutorialTask
     }
 
     public void Enter()
-    {
-        tutorialManager.playerCore.enabled = false;
+    {        
         ExplanationPanel.SetActive(true);
-        Time.timeScale = 0;
     }
 
     public void Update()
@@ -36,11 +34,12 @@ public class JustPointTask : ITutorialTask
 
     public bool CheckTask()
     {
-        if (tutorialManager.Input.Decision && ExplanationPanel.activeSelf)
+        if (tutorialManager.Input.GoNext && ExplanationPanel.activeSelf)
         {
             ExplanationPanel.SetActive(false);
-            tutorialManager.playerCore.enabled = true;
-            Time.timeScale = 1;
+
+            TutorialStageManager.Instance.ChangeState(GameFlowStateID.Playing);
+
             return true;
         }
         return false;

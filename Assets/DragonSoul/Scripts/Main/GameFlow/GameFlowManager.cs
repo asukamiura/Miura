@@ -3,52 +3,31 @@ using UnityEngine;
 
 public class GameFlowManager : MonoBehaviour
 {
-    [SerializeField] PausePanelManager pausePanelManager;
-    [SerializeField] GameOverPanelManager gameOverManager;
-    [SerializeField] HealthManager playerHealthManager;
-    [SerializeField] HealthManager enemyHealthManager;
-    [SerializeField] EnemyCoreBase enemyCore;
     [SerializeField] GameObject blackCurtain;
     [SerializeField] GameObject operationUI;
     [SerializeField] GameObject savePrefab;
 
-    StateMachine<GameFlowStateID> stateMachine;
+    protected StateMachine<GameFlowStateID> stateMachine;
     GameObject saveObj;
     SaveManager saveManager;
 
     const float FadeTime = 1;
 
+    public GameFlowStateID CurrentState => stateMachine.CurrentState;
+    public GameFlowStateID PreivousState => stateMachine.PreviousState;
     public float PreviousTimeScale { get; set; } = 1;
-    public static GameFlowManager Instance { get; private set; }
 
-    void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-
+    protected virtual void Awake()
+    {       
         stateMachine = new StateMachine<GameFlowStateID>();
-
-        stateMachine.RegisterState(new IntroState(this, enemyCore));
-        stateMachine.RegisterState(new PlayingState(this, playerHealthManager, enemyHealthManager));
-        stateMachine.RegisterState(new PauseState(this, pausePanelManager));
-        stateMachine.RegisterState(new ClearState(this));
-        stateMachine.RegisterState(new GameOverState(this, gameOverManager));
 
         saveObj = Instantiate(savePrefab);
         saveObj.name = "SaveManager";
         saveManager = saveObj.GetComponent<SaveManager>();
     }
 
-    private void Start()
+    protected virtual void Start()
     {
-        stateMachine.Initialize(GameFlowStateID.Intro);
-
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
@@ -62,7 +41,8 @@ public class GameFlowManager : MonoBehaviour
     {
         stateMachine.StateUpdate();
 
-        Debug.Log(stateMachine.CurrentState);
+        Debug.Log($"Previous: {stateMachine.PreviousState}");        
+        Debug.Log($"Current: {stateMachine.CurrentState}");        
     }
 
     void FixedUpdate()

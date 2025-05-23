@@ -22,7 +22,7 @@ public class InputReciver : MonoBehaviour
     public bool AttackUltimate { get { return gameInput.Player.AttackUltimate.WasPressedThisFrame(); } }
     public bool Heal { get { return gameInput.Player.Heal.WasPressedThisFrame(); } }
     public bool PowerUp { get { return gameInput.Player.PowerUp.WasPressedThisFrame(); } }
-    public bool Pause { get { return gameInput.Player.Pause.WasReleasedThisFrame(); } }
+    public bool Pause { get { return gameInput.Player.Pause.WasReleasedThisFrame() || gameInput.UI.Pause.WasReleasedThisFrame(); } }
 
     // UI操作用
     public bool Decision { get { return gameInput.UI.Decision.WasPressedThisFrame(); } }
@@ -31,6 +31,12 @@ public class InputReciver : MonoBehaviour
     public bool SelectMoveLeft { get { return gameInput.UI.SelectMoveLeft.WasPressedThisFrame(); } }
     public bool SelectMoveRight { get { return gameInput.UI.SelectMoveRight.WasPressedThisFrame(); } }
     public bool Return { get { return gameInput.Player.Pause.WasReleasedThisFrame(); } }
+
+    // チュートリアル操作用
+    public bool GoNext { get { return gameInput.Tutorial.GoNext.WasPressedThisFrame(); } }
+
+    public bool PlayerInputEnabled { get; private set; }
+    public bool UIInputEnabled { get; private set; }
 
     void OnEnable()
     {
@@ -64,6 +70,9 @@ public class InputReciver : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        EnableUIInput(false);
+        EnablePlayerInput(false);
     }
 
     void Update()
@@ -81,6 +90,7 @@ public class InputReciver : MonoBehaviour
 
     public void EnablePlayerInput(bool enable)
     {
+        PlayerInputEnabled = enable;
         if (enable)
         {
             gameInput.Player.Enable();
@@ -93,6 +103,7 @@ public class InputReciver : MonoBehaviour
 
     public void EnableUIInput(bool enable)
     {
+        UIInputEnabled = enable;
         if (enable)
         {
             gameInput.UI.Enable();
@@ -100,6 +111,18 @@ public class InputReciver : MonoBehaviour
         else
         {
             gameInput.UI.Disable();
+        }
+    }
+
+    public void EnableTutorialInput(bool enable)
+    {
+        if (enable)
+        {
+            gameInput.Tutorial.Enable();
+        }
+        else
+        {
+            gameInput.Tutorial.Disable();
         }
     }
 }

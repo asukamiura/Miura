@@ -17,7 +17,7 @@ public class TutorialManager : MonoBehaviour
     public int attackSpecial2Count = 0;    // 特殊攻撃2をした回数
     public int attackUltimateCount = 0;
 
-    [SerializeField] GameManager gameManager;
+    [SerializeField] GameFlowManager gameFlowManager;
 
     [Header("説明画面")]
     public GameObject attackNormalPanel;
@@ -85,7 +85,7 @@ public class TutorialManager : MonoBehaviour
     {
         if (inTutorial)
         {
-            if (currentTask != null && !taskExecuted && gameManager.CurrentState == GameManager.GameState.Playing)
+            if (currentTask != null && !taskExecuted)
             {
                 currentTask?.Update();
 
@@ -129,6 +129,8 @@ public class TutorialManager : MonoBehaviour
 
         currentTask = task;
         currentTask.Enter();
+
+        TutorialStageManager.Instance.ChangeState(GameFlowStateID.Tutorial);
     }
 
     /// <summary>
@@ -160,6 +162,8 @@ public class TutorialManager : MonoBehaviour
 
         currentTask = task;
         currentTask.Enter();
+
+        TutorialStageManager.Instance.ChangeState(GameFlowStateID.Tutorial);
 
         taskExecuted = false;
     }

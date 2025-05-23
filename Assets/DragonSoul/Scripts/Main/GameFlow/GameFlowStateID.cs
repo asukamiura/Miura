@@ -5,4 +5,5 @@
     GameOver,
     Clear,
     Pause,
+    Tutorial
 }
