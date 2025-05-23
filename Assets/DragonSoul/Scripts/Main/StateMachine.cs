@@ -3,9 +3,11 @@
 public class StateMachine<TStateID>
 {
     IState<TStateID> currentState;
+    IState<TStateID> previousState;
     Dictionary<TStateID, IState<TStateID>> states = new Dictionary<TStateID, IState<TStateID>>();
 
     public TStateID CurrentState => currentState.StateID;
+    public TStateID PreviousState => previousState.StateID;
 
     // ステートを登録
     public void RegisterState(IState<TStateID> state)
@@ -21,6 +23,7 @@ public class StateMachine<TStateID>
     {
         if (states.TryGetValue(stateID, out IState<TStateID> startState))
         {
+            previousState = startState;
             currentState = startState;
             currentState?.Enter();
         }
@@ -32,6 +35,7 @@ public class StateMachine<TStateID>
         if (states.TryGetValue(stateID, out IState<TStateID> newState))
         {
             currentState?.Exit();
+            previousState = currentState;
             currentState = newState;
             currentState?.Enter();
         }

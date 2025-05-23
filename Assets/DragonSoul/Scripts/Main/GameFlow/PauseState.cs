@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 
-[System.Serializable]
 public class PauseState : IState<GameFlowStateID>
 {
     GameFlowManager flowManager;
     PausePanelManager panelManager;
+
+    GameFlowStateID transitionStateID;
 
     public PauseState(GameFlowManager flowManager, PausePanelManager panelManager)
     {
@@ -16,9 +17,12 @@ public class PauseState : IState<GameFlowStateID>
 
     public GameFlowStateID StateID => GameFlowStateID.Pause;
 
+
+
     public void Enter() 
     {
-        panelManager.ClosePressed += () => flowManager.ChangeState(GameFlowStateID.Playing);
+        transitionStateID = flowManager.PreivousState;
+        panelManager.ClosePressed += () => flowManager.ChangeState(transitionStateID);
 
         flowManager.ShowBlackCurtain();
         flowManager.ShowOperationUI();
@@ -50,9 +54,9 @@ public class PauseState : IState<GameFlowStateID>
 
         Time.timeScale = flowManager.PreviousTimeScale;
 
-        // UI操作を有効
+        // UI操作を無効
         Input.EnableUIInput(false);
 
-        panelManager.ClosePressed -= () => flowManager.ChangeState(GameFlowStateID.Playing);
+        panelManager.ClosePressed -= () => flowManager.ChangeState(transitionStateID);
     }
 }

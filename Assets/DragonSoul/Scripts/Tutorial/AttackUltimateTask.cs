@@ -21,9 +21,8 @@ public class AttackUltimateTask : ITutorialTask
 
     public void Enter()
     {
-        tutorialManager.playerCore.enabled = false;
         ExplanationPanel.SetActive(true);
-        Time.timeScale = 0;
+
         previousState = tutorialManager.playerCore.stateMachine.CurrentState;
     }
 
@@ -36,12 +35,13 @@ public class AttackUltimateTask : ITutorialTask
             previousState = tutorialManager.playerCore.stateMachine.CurrentState;
         }
 
-        if (tutorialManager.Input.Decision && ExplanationPanel.activeSelf)
-        {
+        if (tutorialManager.Input.GoNext && ExplanationPanel.activeSelf)
+        {           
             ExplanationPanel.SetActive(false);
-            Time.timeScale = 1;
-            tutorialManager.playerCore.enabled = true;
+
             TaskUI.SetActive(true);
+
+            TutorialStageManager.Instance.ChangeState(GameFlowStateID.Playing);
         }
     }
 

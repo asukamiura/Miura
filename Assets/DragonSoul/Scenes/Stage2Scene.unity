@@ -541,8 +541,36 @@ PrefabInstance:
       objectReference: {fileID: 799526091}
     - target: {fileID: 1748397915149194856, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
       propertyPath: m_Name
-      value: GameFlowManager
+      value: NormalStageManager
       objectReference: {fileID: 0}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+      propertyPath: enemyCore
+      value: 
+      objectReference: {fileID: 1636935323}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+      propertyPath: operationUI
+      value: 
+      objectReference: {fileID: 2376241223008692423}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+      propertyPath: blackCurtain
+      value: 
+      objectReference: {fileID: 5126080343586857849}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+      propertyPath: gameOverManager
+      value: 
+      objectReference: {fileID: 2031341821683906710}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+      propertyPath: pausePanelManager
+      value: 
+      objectReference: {fileID: 3507698798595372738}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+      propertyPath: enemyHealthManager
+      value: 
+      objectReference: {fileID: 1636935309}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+      propertyPath: playerHealthManager
+      value: 
+      objectReference: {fileID: 799526091}
     - target: {fileID: 6855135017728247741, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
