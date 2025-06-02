@@ -17,7 +17,7 @@ public class TutorialManager : MonoBehaviour
     public int attackSpecial2Count = 0;    // 特殊攻撃2をした回数
     public int attackUltimateCount = 0;
 
-    [SerializeField] GameFlowManager gameFlowManager;
+    [SerializeField] GameFlowManagerBase gameFlowManager;
 
     [Header("説明画面")]
     public GameObject attackNormalPanel;

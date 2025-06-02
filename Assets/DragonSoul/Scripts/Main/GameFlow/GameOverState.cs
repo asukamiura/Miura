@@ -3,12 +3,12 @@ using System.Collections;
 
 public class GameOverState : IState<GameFlowStateID>
 {
-    GameFlowManager flowManager;
+    GameFlowManagerBase flowManager;
     GameOverPanelManager panelManager;
 
     const float WaitTime = 2;
 
-    public GameOverState(GameFlowManager flowManager, GameOverPanelManager panelManager)
+    public GameOverState(GameFlowManagerBase flowManager, GameOverPanelManager panelManager)
     {
         this.flowManager = flowManager;
         this.panelManager = panelManager;

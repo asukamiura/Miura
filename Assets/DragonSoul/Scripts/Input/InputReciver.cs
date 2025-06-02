@@ -22,7 +22,7 @@ public class InputReciver : MonoBehaviour
     public bool AttackUltimate { get { return gameInput.Player.AttackUltimate.WasPressedThisFrame(); } }
     public bool Heal { get { return gameInput.Player.Heal.WasPressedThisFrame(); } }
     public bool PowerUp { get { return gameInput.Player.PowerUp.WasPressedThisFrame(); } }
-    public bool Pause { get { return gameInput.Player.Pause.WasReleasedThisFrame() || gameInput.UI.Pause.WasReleasedThisFrame(); } }
+    public bool Pause { get { return gameInput.Player.Pause.WasPressedThisFrame() || gameInput.UI.Pause.WasPressedThisFrame(); } }
 
     // UI操作用
     public bool Decision { get { return gameInput.UI.Decision.WasPressedThisFrame(); } }
@@ -30,7 +30,7 @@ public class InputReciver : MonoBehaviour
     public bool SelectMoveDown { get { return gameInput.UI.SelectMoveDown.WasPressedThisFrame(); } }
     public bool SelectMoveLeft { get { return gameInput.UI.SelectMoveLeft.WasPressedThisFrame(); } }
     public bool SelectMoveRight { get { return gameInput.UI.SelectMoveRight.WasPressedThisFrame(); } }
-    public bool Return { get { return gameInput.Player.Pause.WasReleasedThisFrame(); } }
+    public bool Return { get { return gameInput.UI.Return.WasPressedThisFrame(); } }
 
     // チュートリアル操作用
     public bool GoNext { get { return gameInput.Tutorial.GoNext.WasPressedThisFrame(); } }

@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using SoundSystem;
+using UnityEngine.Playables;
 
 public class ClearState : IState<GameFlowStateID>
 {
-    GameFlowManager flowManager;
+    GameFlowManagerBase flowManager;
+    const float ChangeTiming = 6.5f;
 
-    public ClearState(GameFlowManager flowManager)
+    public ClearState(GameFlowManagerBase flowManager)
     {
         this.flowManager = flowManager;
     }
@@ -18,10 +20,11 @@ public class ClearState : IState<GameFlowStateID>
     public void Enter() 
     {
         TimelineManager.Instance.ClearDirector.Play();
-        Time.timeScale = 0;
+
         PostEffectManager.Instance.ChangePostEffect(ProfileNum.Clear, 0);
 
-        flowManager.StartCoroutine(ChangeScene(2.5f));
+        flowManager.StartCoroutine(ChangeTimeScale(ChangeTiming));
+        flowManager.StartCoroutine(WaitForTimelineEnd());
     }
 
     public void Update() { }
@@ -30,15 +33,29 @@ public class ClearState : IState<GameFlowStateID>
 
     public void Exit() { }
 
-    IEnumerator ChangeScene(float delay)
+    IEnumerator ChangeTimeScale(float delay)
     {
-        yield return new WaitForSecondsRealtime(6.5f);
-
-        Time.timeScale = 1;
+        Time.timeScale = 0;
 
         yield return new WaitForSecondsRealtime(delay);
 
+        Time.timeScale = 1;
+    }
+
+    void ChangeScene(PlayableDirector director)
+    {
         SoundManager.Instance.StopBGMWithFadeOut("Main");
         FadeManager.Instance.LoadScene("ResultScene");
+    }
+
+    IEnumerator WaitForTimelineEnd()
+    {
+        var director = TimelineManager.Instance.ClearDirector;
+        while (director.time < director.duration)
+        {
+            yield return null;
+        }
+
+        ChangeScene(director);
     }
 }

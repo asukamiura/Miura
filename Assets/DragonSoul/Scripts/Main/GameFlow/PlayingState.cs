@@ -2,11 +2,12 @@
 
 public class PlayingState : IState<GameFlowStateID>
 {
-    GameFlowManager flowManager;
+    GameFlowManagerBase flowManager;
     HealthManager playerHealthManager;
     HealthManager enemyHealthManager;
+    bool ignorePause = true;
 
-    public PlayingState(GameFlowManager flowManager, HealthManager playerHealthManager, HealthManager enemyHealthManager)
+    public PlayingState(GameFlowManagerBase flowManager, HealthManager playerHealthManager, HealthManager enemyHealthManager)
     {
         this.flowManager = flowManager;
         this.playerHealthManager = playerHealthManager;
@@ -26,9 +27,19 @@ public class PlayingState : IState<GameFlowStateID>
 
     public void Update() 
     {
-        if (Input.Pause)
+        if (ignorePause)
         {
-            flowManager.ChangeState(GameFlowStateID.Pause);
+            if (!Input.Pause)
+            {
+                ignorePause = false;
+            }
+        }
+        else 
+        {
+            if (Input.Pause)
+            {
+                flowManager.ChangeState(GameFlowStateID.Pause);
+            }
         }
 
         if (playerHealthManager.IsDead)
@@ -48,5 +59,6 @@ public class PlayingState : IState<GameFlowStateID>
     {
         // プレイヤー操作無効
         Input.EnablePlayerInput(false);
+        ignorePause = true;
     }
 }

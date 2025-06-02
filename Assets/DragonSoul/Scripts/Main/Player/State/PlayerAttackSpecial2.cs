@@ -20,7 +20,6 @@ namespace Player
         public override void Enter()
         {
             base.Enter();
-            core.Animator.applyRootMotion = true;
             core.IsInvincible = true;            
         }
 

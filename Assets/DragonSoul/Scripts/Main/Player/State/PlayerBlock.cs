@@ -20,8 +20,8 @@ namespace Player
         const float EffectiveTime = 1;          // 演出の効果時間
         const float TranstionAttackSpecialNormalizedTime = 0.75f;
         const float TranstionIdleNormalizedTime = 1;
-        const float KnockBackPower = 10;
-        const float DecelerationRate = 0.99f; // 減速率
+        const float KnockBackPower = 20;
+        const float DecelerationRate = 0.97f; // 減速率
 
         public PlayerBlock(PlayerCore core)
         {
@@ -38,7 +38,8 @@ namespace Player
             core.Animator.CrossFade("Block", 0);
 
             // プレイヤーをノックバックさせる
-            core.Rb.AddForce(-core.transform.forward * KnockBackPower, ForceMode.VelocityChange);
+            //core.Rb.AddForce(-core.transform.forward * KnockBackPower, ForceMode.VelocityChange);
+            core.Rb.velocity = -core.transform.forward * KnockBackPower;
 
             // ブロック演出を開始
             isEffective = true;

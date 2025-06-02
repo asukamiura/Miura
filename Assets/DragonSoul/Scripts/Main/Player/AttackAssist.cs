@@ -11,6 +11,7 @@ namespace Player
 
         bool isAssisting = false;   // 攻撃アシストが有効な場合true,無効の場合false
         Collider targetCollider;    
+        float targetDistance = 0;
 
         void Awake()
         {
@@ -27,7 +28,7 @@ namespace Player
 
             Vector3 direction = (targetPos - playerPos).normalized;
 
-            rb.velocity = direction * assistPower;
+            rb.velocity = direction * assistPower * targetDistance / assistDistance;
 
             if (Vector3.Distance(playerPos, targetPos) < stopDistance)
             {
@@ -93,6 +94,8 @@ namespace Player
             if (collider == null) { return; }
 
             targetCollider = collider;
+
+            targetDistance = distance;
 
             isAssisting = true;
 

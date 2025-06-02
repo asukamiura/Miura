@@ -460,6 +460,15 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Return"",
+                    ""type"": ""Button"",
+                    ""id"": ""23950ea2-256b-43c5-99c7-2192db0bd76d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -682,6 +691,28 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""244911e9-7a76-4605-afb2-d91099489822"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KeyboardMouse"",
+                    ""action"": ""Return"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""aadb40fc-3d69-4f68-93ff-fcd5e1473a67"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Return"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -777,6 +808,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         m_UI_SelectMoveLeft = m_UI.FindAction("SelectMoveLeft", throwIfNotFound: true);
         m_UI_SelectMoveRight = m_UI.FindAction("SelectMoveRight", throwIfNotFound: true);
         m_UI_Pause = m_UI.FindAction("Pause", throwIfNotFound: true);
+        m_UI_Return = m_UI.FindAction("Return", throwIfNotFound: true);
         // Tutorial
         m_Tutorial = asset.FindActionMap("Tutorial", throwIfNotFound: true);
         m_Tutorial_GoNext = m_Tutorial.FindAction("GoNext", throwIfNotFound: true);
@@ -967,6 +999,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_SelectMoveLeft;
     private readonly InputAction m_UI_SelectMoveRight;
     private readonly InputAction m_UI_Pause;
+    private readonly InputAction m_UI_Return;
     public struct UIActions
     {
         private @GameInput m_Wrapper;
@@ -979,6 +1012,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         public InputAction @SelectMoveLeft => m_Wrapper.m_UI_SelectMoveLeft;
         public InputAction @SelectMoveRight => m_Wrapper.m_UI_SelectMoveRight;
         public InputAction @Pause => m_Wrapper.m_UI_Pause;
+        public InputAction @Return => m_Wrapper.m_UI_Return;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1012,6 +1046,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @Return.started += instance.OnReturn;
+            @Return.performed += instance.OnReturn;
+            @Return.canceled += instance.OnReturn;
         }
 
         private void UnregisterCallbacks(IUIActions instance)
@@ -1040,6 +1077,9 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @Return.started -= instance.OnReturn;
+            @Return.performed -= instance.OnReturn;
+            @Return.canceled -= instance.OnReturn;
         }
 
         public void RemoveCallbacks(IUIActions instance)
@@ -1144,6 +1184,7 @@ public partial class @GameInput: IInputActionCollection2, IDisposable
         void OnSelectMoveLeft(InputAction.CallbackContext context);
         void OnSelectMoveRight(InputAction.CallbackContext context);
         void OnPause(InputAction.CallbackContext context);
+        void OnReturn(InputAction.CallbackContext context);
     }
     public interface ITutorialActions
     {

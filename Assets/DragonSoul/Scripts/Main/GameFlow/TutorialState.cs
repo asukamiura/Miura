@@ -2,9 +2,9 @@
 
 public class TutorialState : IState<GameFlowStateID>
 {
-    GameFlowManager flowManager;
+    GameFlowManagerBase flowManager;
 
-    public TutorialState(GameFlowManager flowManager)
+    public TutorialState(GameFlowManagerBase flowManager)
     {
         this.flowManager = flowManager;
     }
