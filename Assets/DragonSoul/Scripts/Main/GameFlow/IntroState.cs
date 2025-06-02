@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class IntroState : IState<GameFlowStateID>
 {
-    GameFlowManager flowManager;
+    GameFlowManagerBase flowManager;
     EnemyCoreBase enemyCore;
 
-    public IntroState(GameFlowManager flowManager, EnemyCoreBase enemyCore)
+    public IntroState(GameFlowManagerBase flowManager, EnemyCoreBase enemyCore)
     {
         this.flowManager = flowManager;
         this.enemyCore = enemyCore;

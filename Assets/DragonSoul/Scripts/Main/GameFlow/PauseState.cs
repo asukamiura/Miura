@@ -2,12 +2,12 @@
 
 public class PauseState : IState<GameFlowStateID>
 {
-    GameFlowManager flowManager;
+    GameFlowManagerBase flowManager;
     PausePanelManager panelManager;
 
     GameFlowStateID transitionStateID;
 
-    public PauseState(GameFlowManager flowManager, PausePanelManager panelManager)
+    public PauseState(GameFlowManagerBase flowManager, PausePanelManager panelManager)
     {
         this.flowManager = flowManager;
         this.panelManager = panelManager;          

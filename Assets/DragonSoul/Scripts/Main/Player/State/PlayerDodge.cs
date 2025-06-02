@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SoundSystem;
+using UnityEngine;
 
 namespace Player
 {
@@ -29,6 +30,7 @@ namespace Player
         public void Enter()
         {
             PostEffectManager.Instance.ChangePostEffect(ProfileNum.JustDodge, 0);
+            SoundManager.Instance.PlaySe("Dodge");
 
             // プレイヤーを無敵状態にする
             core.IsInvincible = true;

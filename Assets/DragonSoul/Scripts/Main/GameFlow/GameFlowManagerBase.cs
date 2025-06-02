@@ -1,7 +1,7 @@
 ﻿using SoundSystem;
 using UnityEngine;
 
-public class GameFlowManager : MonoBehaviour
+public class GameFlowManagerBase : MonoBehaviour
 {
     [SerializeField] GameObject blackCurtain;
     [SerializeField] GameObject operationUI;
@@ -39,10 +39,7 @@ public class GameFlowManager : MonoBehaviour
 
     void Update()
     {
-        stateMachine.StateUpdate();
-
-        Debug.Log($"Previous: {stateMachine.PreviousState}");        
-        Debug.Log($"Current: {stateMachine.CurrentState}");        
+        stateMachine.StateUpdate();       
     }
 
     void FixedUpdate()

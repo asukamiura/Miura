@@ -18,7 +18,7 @@ public class PostEffectManager : MonoBehaviour
     Volume activeVolume;
     Volume inactiveVolume;
 
-   
+    ProfileNum currentProfile;
 
     readonly Dictionary<ProfileNum, VolumeProfile> volumeProfileData = new Dictionary<ProfileNum, VolumeProfile>();
 
@@ -49,10 +49,12 @@ public class PostEffectManager : MonoBehaviour
         volumeProfileData[ProfileNum.Clear] = clearProfile; 
 
         activeVolume.profile = normalProfile;
+        currentProfile = ProfileNum.Normal;
     }
 
     public void ChangePostEffect(ProfileNum profileNum, float duration)
     {
+        if (currentProfile == ProfileNum.Clear) { return; }
         StartCoroutine(FadeProfile(profileNum, duration));
     }
 
@@ -60,17 +62,21 @@ public class PostEffectManager : MonoBehaviour
     {
         inactiveVolume.profile = activeVolume.profile;
         activeVolume.profile = volumeProfileData[profileNum];
+        currentProfile = profileNum;
 
         float time = 0;
 
-        while (time < duration)
+        if (duration > 0)
         {
-            float t = time / duration;
-            inactiveVolume.weight = 1 - t;
-            activeVolume.weight = t;
+            while (time < duration)
+            {
+                float t = time / duration;
+                inactiveVolume.weight = 1 - t;
+                activeVolume.weight = t;
 
-            time += Time.deltaTime;
-            yield return null;
+                time += Time.deltaTime;
+                yield return null;
+            }
         }
 
         inactiveVolume.weight = 0;

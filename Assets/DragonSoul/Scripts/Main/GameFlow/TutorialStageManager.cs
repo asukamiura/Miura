@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class TutorialStageManager : GameFlowManager
+public class TutorialStageManager : GameFlowManagerBase
 {
     [SerializeField] PausePanelManager pausePanelManager;
     [SerializeField] GameOverPanelManager gameOverManager;

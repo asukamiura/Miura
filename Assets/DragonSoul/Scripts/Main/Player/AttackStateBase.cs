@@ -18,6 +18,7 @@ public abstract class AttackStateBase<TStateID> : IState<TStateID>
     public virtual void Enter() 
     {
         PlayCurrentAnimation();
+        core.Animator.applyRootMotion = true;
     }
 
     public virtual void Update() 
@@ -43,6 +44,7 @@ public abstract class AttackStateBase<TStateID> : IState<TStateID>
     {
         step = 1;
         core.attackAssist.StopAssist();
+        core.Animator.applyRootMotion = false;
     }
 
     // ステップに登録されたアニメーションを再生

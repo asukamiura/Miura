@@ -57,9 +57,7 @@ public class PausePanelManager : MonoBehaviour
                         HidePausePanel();
                         optionPanel.SetActive(true);
                         break;
-                    case PausePanelState.Close:
-                        //HidePausePanel();
-                        //GameManager.Instance.ChangeState(GameManager.GameState.Playing);                       
+                    case PausePanelState.Close:                    
                         ClosePressed?.Invoke();
                         break;
                 }
@@ -69,8 +67,6 @@ public class PausePanelManager : MonoBehaviour
             {
                 isPressed = true;
                 SoundManager.Instance.PlaySe("Press");
-                //currentState = PausePanelState.Close;
-                //GameManager.Instance.ChangeState(GameManager.GameState.Playing);
                 
                 ClosePressed?.Invoke();
             }

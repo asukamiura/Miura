@@ -1,4 +1,6 @@
-﻿namespace Player
+﻿using UnityEngine;
+
+namespace Player
 {
     public class PlayerDamage : IState<PlayerStateID>
     {
@@ -6,8 +8,8 @@
         InputReciver Input => InputReciver.Instance;
         PlayerCore core;
 
-        const float KnockBackSpeed = 5;     // ノックバックスピード
-        const float KnockBackDeceleration = 0.95f; // ノックバック減速率
+        const float KnockBackSpeed = 11;     // ノックバックスピード
+        const float KnockBackDeceleration = 0.94f; // ノックバック減速率
 
         public PlayerDamage(PlayerCore core)
         {
@@ -39,6 +41,7 @@
 
         public void Exit()
         {
+            core.Rb.velocity = Vector3.zero;
         }
     }
 }

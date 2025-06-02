@@ -13,7 +13,7 @@ public class UltimateManager : MonoBehaviour
 
     readonly Dictionary<AttackType, float> increaseValueData = new Dictionary<AttackType, float>
     {
-        {AttackType.Normal1, 100},
+        {AttackType.Normal1, 1},
         {AttackType.Normal2, 2},
         {AttackType.Normal3, 3},
         {AttackType.Special1_1, 5},
