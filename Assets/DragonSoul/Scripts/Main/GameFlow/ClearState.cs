@@ -6,7 +6,7 @@ using UnityEngine.Playables;
 public class ClearState : IState<GameFlowStateID>
 {
     GameFlowManagerBase flowManager;
-    const float ChangeTiming = 6.5f;
+    const float ChangeTiming = 2f;
 
     public ClearState(GameFlowManagerBase flowManager)
     {

@@ -25,8 +25,9 @@ namespace Enemy
         public Transform attack3EffectTransform;
         public Collider bodyCollider;
 
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             stateMachine = new StateMachine<DragonNightmareStateID>();
             stateMachine.RegisterState(new DragonNightmareIdle(this));
             stateMachine.RegisterState(new DragonNightmareMove(this));

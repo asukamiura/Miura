@@ -29,7 +29,7 @@ namespace Player
             base.Enter();
 
             PostEffectManager.Instance.ChangePostEffect(ProfileNum.Ultimate, 0);
-            core.animationController.ChangeAnimationSpeed("Enemy", 0);
+            SlowManager.Instance.ApplySlow(0);
 
             core.StartCoroutine(ChangeCamera());
 
@@ -54,8 +54,8 @@ namespace Player
                 if (step == 3)
                 {
                     CameraManager.Instance.SwitchCamera(CameraType.Ultimate3, 0.3f);
-                    core.animationController.ChangeAnimationSpeed("Enemy", 1);
-                }            
+                    SlowManager.Instance.ApplySlow(1);
+                }
             }
             else if (core.CurrentStateInfo.normalizedTime >= 1 && core.CurrentStateInfo.IsName(AnimationData[step].animationName))
             {

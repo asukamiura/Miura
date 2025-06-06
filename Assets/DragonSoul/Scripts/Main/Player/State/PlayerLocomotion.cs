@@ -28,7 +28,7 @@ namespace Player
 
             if (Input.AttackNormal)
             {
-                core.stateMachine.ChangeState(PlayerStateID.AttackNormal);
+                core.stateMachine.ChangeState(PlayerStateID.AttackNormal1);
             }
 
             core.Animator.SetFloat("Speed", Mathf.Clamp(core.Rb.velocity.magnitude, 0, 5), 0.1f, Time.deltaTime);

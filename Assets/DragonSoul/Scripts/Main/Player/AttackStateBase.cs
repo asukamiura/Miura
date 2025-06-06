@@ -8,7 +8,7 @@ public abstract class AttackStateBase<TStateID> : IState<TStateID>
     protected abstract Dictionary<int, AttackAnimationConfig> AnimationData { get; }
     protected int MaxStep => AnimationData.Count;
 
-    public virtual TStateID StateID => default;
+    public abstract TStateID StateID { get; }
 
     public AttackStateBase(PlayerCore core)
     {

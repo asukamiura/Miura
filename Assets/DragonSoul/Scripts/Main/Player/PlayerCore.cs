@@ -23,7 +23,6 @@ namespace Player
         public PlayerAttackManager attackManager;
         public AttackTypeHolder attackTypeHolder;
         public AttackAssist attackAssist;
-        public AnimationController animationController;
         public GameSePlayer gameSePlayer;
         public EffectPlayer effectPlayer;
         public PlayerEventManager playerEventManager;
@@ -38,7 +37,9 @@ namespace Player
 
         bool CanHeal => justPointManager.JustPoint >= HealCost;
         bool CanPowerUp => justPointManager.JustPoint >= PowerUpCost && stateMachine.CurrentState == PlayerStateID.Locomotion;
-        bool CanUlt => ultimateManager.UltVal >= UltCost && (stateMachine.CurrentState == PlayerStateID.Locomotion || stateMachine.CurrentState == PlayerStateID.AttackNormal);
+        bool CanUlt => ultimateManager.UltVal >= UltCost 
+            && (stateMachine.CurrentState == PlayerStateID.Locomotion || stateMachine.CurrentState == PlayerStateID.AttackNormal1 
+            || stateMachine.CurrentState == PlayerStateID.AttackNormal2 || stateMachine.CurrentState == PlayerStateID.AttackNormal3);
 
         void Awake()
         {
@@ -48,7 +49,9 @@ namespace Player
             stateMachine.RegisterState(new PlayerDodge(this));
             stateMachine.RegisterState(new PlayerGuard(this));
             stateMachine.RegisterState(new PlayerBlock(this));
-            stateMachine.RegisterState(new PlayerAttackNormal(this));
+            stateMachine.RegisterState(new PlayerAttackNormal1(this));
+            stateMachine.RegisterState(new PlayerAttackNormal2(this));
+            stateMachine.RegisterState(new PlayerAttackNormal3(this));
             stateMachine.RegisterState(new PlayerAttackSpecial1(this));
             stateMachine.RegisterState(new PlayerAttackSpecial2(this));
             stateMachine.RegisterState(new PlayerAttackUltimate(this));

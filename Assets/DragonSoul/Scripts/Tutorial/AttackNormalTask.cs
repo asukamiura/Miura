@@ -3,7 +3,7 @@ using Player;
 
 public class AttackNormalTask : ITutorialTask
 {
-    TutorialManager tutorialManager;
+    TutorialTaskManager tutorialManager;
     PlayerStateID previousState;
 
     const int NeedAttackNormalCount = 3;    // タスク達成に必要な通常攻撃の回数
@@ -14,7 +14,7 @@ public class AttackNormalTask : ITutorialTask
     public bool ShowTaskUI => true;
     public bool ShowSuccessUI => true;
 
-    public AttackNormalTask(TutorialManager tutorialManager)
+    public AttackNormalTask(TutorialTaskManager tutorialManager)
     {
         this.tutorialManager = tutorialManager;
     }
@@ -65,7 +65,7 @@ public class AttackNormalTask : ITutorialTask
     {
         switch (currentState)
         {
-            case PlayerStateID.AttackNormal:
+            case PlayerStateID.AttackNormal3:
                 tutorialManager.attackNormalCount++;
                 break;
             default:

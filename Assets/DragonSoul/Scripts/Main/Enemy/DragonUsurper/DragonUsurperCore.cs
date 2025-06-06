@@ -28,8 +28,9 @@ namespace Enemy
         public bool isJustGuarded = false;
         public Transform attack2EffectTransform;
 
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             stateMachine = new StateMachine<DragonUsurperStateID>();
             stateMachine.RegisterState(new DragonUsurperIdle(this));
             stateMachine.RegisterState(new DragonUsurperMove(this));

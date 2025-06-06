@@ -1,5 +1,4 @@
-﻿using Player;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -14,17 +13,18 @@ namespace Enemy
         const int Fov = 10;     // 視野角
         const int MinSightDistance = 2;
 
-        public TutorialManager tutorialManager;
+        public TutorialTaskManager tutorialTaskManager;
         public StateMachine<CoachingSoldierStateID> stateMachine;
         public float AngleToPlayer { get; set; }
         public float DistanceToPlayer { get; set; }
         public Vector3 CrossProduct { get; set; }
         public bool IsPlayerInSight => AngleToPlayer <= Fov && DistanceToPlayer >= MinSightDistance;
-        public bool CanAttack1 => tutorialManager.currentTask is JustGuardTask && !tutorialManager.currentTask.CheckTask();
-        public bool CanAttack2 => tutorialManager.currentTask is JustDodgeTask && !tutorialManager.currentTask.CheckTask();
+        public bool CanAttack1 => tutorialTaskManager.currentTask is JustGuardTask && !tutorialTaskManager.currentTask.CheckTask();
+        public bool CanAttack2 => tutorialTaskManager.currentTask is JustDodgeTask && !tutorialTaskManager.currentTask.CheckTask();
 
-        void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             stateMachine = new StateMachine<CoachingSoldierStateID>();
             stateMachine.RegisterState(new CoachingSoldierIdle(this));
             stateMachine.RegisterState(new CoachingSoldierTakeWarning(this));

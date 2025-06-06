@@ -1,0 +1,15 @@
+﻿using Player;
+using System.Collections.Generic;
+
+public class PlayerAttackNormal3 : AttackStateBase<PlayerStateID>
+{
+    InputReciver Input => InputReciver.Instance;
+
+    public override PlayerStateID StateID => PlayerStateID.AttackNormal3;
+    public PlayerAttackNormal3(PlayerCore core) : base(core) { }
+
+    protected override Dictionary<int, AttackAnimationConfig> AnimationData => new()
+    {
+        {1, new AttackAnimationConfig("AttackNormal3", 0.1f, 0, 0, 0.85f, AttackType.Normal3) },
+    };
+}

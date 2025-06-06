@@ -3,7 +3,7 @@ using Player;
 
 public class AttackUltimateTask : ITutorialTask
 {
-    TutorialManager tutorialManager;
+    TutorialTaskManager tutorialManager;
     PlayerStateID previousState;
 
     const int NeedAttackUltimateCount = 1;    // タスク達成に必要な通常攻撃の回数
@@ -14,7 +14,7 @@ public class AttackUltimateTask : ITutorialTask
     public bool ShowTaskUI => true;
     public bool ShowSuccessUI => true;
 
-    public AttackUltimateTask(TutorialManager tutorialManager)
+    public AttackUltimateTask(TutorialTaskManager tutorialManager)
     {
         this.tutorialManager = tutorialManager;
     }

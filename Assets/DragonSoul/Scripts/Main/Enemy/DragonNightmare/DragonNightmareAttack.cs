@@ -84,13 +84,13 @@ namespace Enemy
                     }
                 }
 
-                if (stateInfo.normalizedTime >= 1)
-                {
-                    core.stateMachine.ChangeState(DragonNightmareStateID.Move);
-                }
-                else if (stateInfo.normalizedTime >= 0.6 && core.isJustGuarded)
+                if (core.isJustGuarded && stateInfo.normalizedTime >= 1 )
                 {
                     core.stateMachine.ChangeState(DragonNightmareStateID.Idle);
+                }
+                else if (stateInfo.normalizedTime >= 1)
+                {
+                    core.stateMachine.ChangeState(DragonNightmareStateID.Move);
                 }
 
                 if (stateInfo.normalizedTime < LookAtTime)

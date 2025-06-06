@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace Player
 {
@@ -7,21 +8,21 @@ namespace Player
         public PlayerStateID StateID => PlayerStateID.Block;
         InputReciver Input => InputReciver.Instance;
         PlayerCore core;
-        float currentTime = 0;      // 演出の効果時間計測用
-        bool isEffective = false;   // ブロック演出中はtrue,それ以外はfalse
         bool isNextAttack = false;  // 特殊攻撃2を行う場合true,行わない場合false
 
         const float DefaultFOV = 80;            // 通常の視野角
         const float TargetFOV = 50;             // 演出時の視野角
         const float DefaultDutch = 0;           // 通常のカメラの角度
-        const float TargetDutch = 5;            // 演出時のカメラの角度
-        const float PerformanceAnimationSpeed = 0.3f;
+        const float TargetDutch = 7;            // 演出時のカメラの角度
+        const float PerformanceAnimationSpeed = 0;
+        const float SlowAnimationSpeed = 0.5f;
         const float DefaultAnimationSpeed = 1;
-        const float EffectiveTime = 1;          // 演出の効果時間
+        const float StopDuration = 0.25f; // 動きを止める時間
+        const float SlowDuration = 0.3f; // 動きを遅くする時間
         const float TranstionAttackSpecialNormalizedTime = 0.75f;
         const float TranstionIdleNormalizedTime = 1;
         const float KnockBackPower = 20;
-        const float DecelerationRate = 0.97f; // 減速率
+        const float DecelerationRate = 0.95f; // 減速率
 
         public PlayerBlock(PlayerCore core)
         {
@@ -37,16 +38,14 @@ namespace Player
 
             core.Animator.CrossFade("Block", 0);
 
-            // プレイヤーをノックバックさせる
-            //core.Rb.AddForce(-core.transform.forward * KnockBackPower, ForceMode.VelocityChange);
-            core.Rb.velocity = -core.transform.forward * KnockBackPower;
-
             // ブロック演出を開始
-            isEffective = true;
             CameraManager.Instance.EnabledRecentering();
             CameraManager.Instance.PlayCameraEffect(targetFOV: TargetFOV, targetDutch: TargetDutch, 0.1f);
             CameraManager.Instance.ApplyImpulse();
-            core.animationController.ChangeAllAnimationSpeed(PerformanceAnimationSpeed);
+
+            core.effectPlayer.ShowEffect("NovaLight");
+
+            core.StartCoroutine(StopMotion());
         }
 
         public void Update()
@@ -68,22 +67,6 @@ namespace Player
                     isNextAttack = true;
                 }
             }
-
-            if (isEffective)
-            {
-                // 効果時間が過ぎたら演出を終了
-                if (currentTime >= EffectiveTime)
-                {
-                    CameraManager.Instance.PlayCameraEffect(targetFOV: DefaultFOV, targetDutch: DefaultDutch, 2);
-                    CameraManager.Instance.DisabledRecentering();
-                    core.animationController.ChangeAllAnimationSpeed(DefaultAnimationSpeed);
-                    isEffective = false;
-                }
-                else
-                {
-                    currentTime += Time.deltaTime;
-                }
-            }
         }
 
         public void FixedUpdate()
@@ -93,12 +76,33 @@ namespace Player
 
         public void Exit()
         {
-            //core.Rb.velocity = Vector3.zero;
+            core.Rb.velocity = Vector3.zero;
             core.IsJustGuard = false;
             core.IsInvincible = false;
-            currentTime = 0;
             isNextAttack = false;
             PostEffectManager.Instance.ChangePostEffect(ProfileNum.Normal, 1);
+        }
+
+        IEnumerator StopMotion()
+        {
+            core.Animator.speed = PerformanceAnimationSpeed;
+            SlowManager.Instance.ApplySlow(PerformanceAnimationSpeed);
+
+            yield return new WaitForSeconds(StopDuration);
+
+            core.Animator.speed = SlowAnimationSpeed;
+            SlowManager.Instance.ApplySlow(SlowAnimationSpeed);
+
+            // プレイヤーをノックバックさせる
+            core.Rb.velocity = -core.transform.forward * KnockBackPower;
+
+            CameraManager.Instance.PlayCameraEffect(targetFOV: DefaultFOV, targetDutch: DefaultDutch, 2);
+            CameraManager.Instance.DisabledRecentering();
+
+            yield return new WaitForSeconds(SlowDuration);
+
+            core.Animator.speed = DefaultAnimationSpeed;
+            SlowManager.Instance.ApplySlow(DefaultAnimationSpeed);
         }
     }
 }

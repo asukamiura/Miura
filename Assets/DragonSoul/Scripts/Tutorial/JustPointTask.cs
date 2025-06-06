@@ -3,7 +3,7 @@ using Player;
 
 public class JustPointTask : ITutorialTask
 {
-    TutorialManager tutorialManager;
+    TutorialTaskManager tutorialManager;
     PlayerStateID previousState;
 
     public GameObject ExplanationPanel => tutorialManager.justPointPanel;
@@ -12,7 +12,7 @@ public class JustPointTask : ITutorialTask
     public bool ShowTaskUI => false;
     public bool ShowSuccessUI => false;
 
-    public JustPointTask(TutorialManager tutorialManager)
+    public JustPointTask(TutorialTaskManager tutorialManager)
     {
         this.tutorialManager = tutorialManager;
     }
