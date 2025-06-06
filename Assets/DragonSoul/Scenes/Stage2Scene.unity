@@ -955,17 +955,6 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 7519020020793248266, guid: 0d3e26f2b20b0d4478bf2169d4c354dc, type: 3}
   m_PrefabInstance: {fileID: 440615628}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &457149287 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7601636255331268197, guid: d2dabfef93a331544964623941e50745, type: 3}
-  m_PrefabInstance: {fileID: 1210664065}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be8dc9d61f928eb4c8c88b646544ab03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &549274418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1547,7 +1536,7 @@ PrefabInstance:
     - target: {fileID: 438048278375530293, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
       propertyPath: animationController
       value: 
-      objectReference: {fileID: 457149287}
+      objectReference: {fileID: 0}
     - target: {fileID: 734859064835529011, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -1603,7 +1592,7 @@ PrefabInstance:
     - target: {fileID: 5047967604397620441, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
       propertyPath: animationController
       value: 
-      objectReference: {fileID: 457149287}
+      objectReference: {fileID: 0}
     - target: {fileID: 5923603331828961246, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
       propertyPath: m_Constraints
       value: 116
@@ -1659,7 +1648,7 @@ PrefabInstance:
     - target: {fileID: 8385906280321703668, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
       propertyPath: animationController
       value: 
-      objectReference: {fileID: 457149287}
+      objectReference: {fileID: 0}
     - target: {fileID: 8637962641897898181, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
       propertyPath: scoreManager
       value: 
@@ -2494,7 +2483,7 @@ MonoBehaviour:
   volumeTrigger: {fileID: 1121612527}
   volumeLayer:
     serializedVersion: 2
-    m_Bits: 1025
+    m_Bits: 1024
   stopNaNPropagation: 1
   finalBlitToCameraTarget: 0
   antialiasingMode: 0
@@ -2991,6 +2980,26 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1121612524}
     - target: {fileID: 991290121378997284, guid: 8e3758f60fb422b4ab96e0a7e5b5b056, type: 3}
+      propertyPath: m_ExposedReferences.m_References.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 991290121378997284, guid: 8e3758f60fb422b4ab96e0a7e5b5b056, type: 3}
+      propertyPath: m_ExposedReferences.m_References.Array.data[3].first
+      value: aa5059aaab76f1541bae3462870c7926
+      objectReference: {fileID: 0}
+    - target: {fileID: 991290121378997284, guid: 8e3758f60fb422b4ab96e0a7e5b5b056, type: 3}
+      propertyPath: m_ExposedReferences.m_References.Array.data[4].first
+      value: 9db52c1e01bba2f408395abc90cadcf9
+      objectReference: {fileID: 0}
+    - target: {fileID: 991290121378997284, guid: 8e3758f60fb422b4ab96e0a7e5b5b056, type: 3}
+      propertyPath: m_ExposedReferences.m_References.Array.data[5].first
+      value: 186eb8eaa8477e340a0cac3ee0638536
+      objectReference: {fileID: 0}
+    - target: {fileID: 991290121378997284, guid: 8e3758f60fb422b4ab96e0a7e5b5b056, type: 3}
+      propertyPath: m_ExposedReferences.m_References.Array.data[6].first
+      value: 121d18f6379bc2947a7f8aa36f9aba5a
+      objectReference: {fileID: 0}
+    - target: {fileID: 991290121378997284, guid: 8e3758f60fb422b4ab96e0a7e5b5b056, type: 3}
       propertyPath: m_ExposedReferences.m_References.Array.data[0].second
       value: 
       objectReference: {fileID: 428522359}
@@ -3005,9 +3014,13 @@ PrefabInstance:
     - target: {fileID: 991290121378997284, guid: 8e3758f60fb422b4ab96e0a7e5b5b056, type: 3}
       propertyPath: m_ExposedReferences.m_References.Array.data[3].second
       value: 
-      objectReference: {fileID: 1743583342}
+      objectReference: {fileID: 428522359}
     - target: {fileID: 991290121378997284, guid: 8e3758f60fb422b4ab96e0a7e5b5b056, type: 3}
       propertyPath: m_ExposedReferences.m_References.Array.data[4].second
+      value: 
+      objectReference: {fileID: 1743583342}
+    - target: {fileID: 991290121378997284, guid: 8e3758f60fb422b4ab96e0a7e5b5b056, type: 3}
+      propertyPath: m_ExposedReferences.m_References.Array.data[5].second
       value: 
       objectReference: {fileID: 1743583341}
     - target: {fileID: 2515130707193118857, guid: 8e3758f60fb422b4ab96e0a7e5b5b056, type: 3}

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class EnemyCoreBase : MonoBehaviour
+public abstract class EnemyCoreBase : MonoBehaviour, ISlowable
 {
     [SerializeField] float[] weights;
     [SerializeField] protected PlayerCore playerCore;
@@ -12,6 +12,8 @@ public abstract class EnemyCoreBase : MonoBehaviour
     bool isRotate;
     float currentAngle;
     Quaternion targetRotation;
+    float slowFactor = 1;
+    float baseSpeed = 1;
 
     public EffectPlayer effectPlayer;
     public Rigidbody rb;
@@ -22,9 +24,27 @@ public abstract class EnemyCoreBase : MonoBehaviour
     public float rotationSpeed = 1.0f;
     public int attackType;
 
+    protected virtual void Awake()
+    {
+        SlowManager.Instance.Register(this);
+    }
+
     public void MoveActive(bool isActive)
     {
         this.enabled = isActive;
+    }
+
+    public void ApplySlow(float factor)
+    {
+        slowFactor = factor;
+        animator.speed = slowFactor;
+        navMeshAgent.speed = baseSpeed * slowFactor;
+    }
+
+    public void SetBaseSpeed(float speed)
+    {
+        baseSpeed = speed;
+        navMeshAgent.speed = baseSpeed * slowFactor;
     }
 
     /// <summary>

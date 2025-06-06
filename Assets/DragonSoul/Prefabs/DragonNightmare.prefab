@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 610156331673619264}
   m_Layer: 0
   m_Name: Tail03Collider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 9039683651774984367}
   m_Layer: 0
   m_Name: L_ArmHornCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -354,7 +354,7 @@ GameObject:
   - component: {fileID: 2719602672981444272}
   m_Layer: 0
   m_Name: R_WristCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -442,7 +442,7 @@ GameObject:
   - component: {fileID: 6405922274505257948}
   m_Layer: 0
   m_Name: R_LowerLeg02Collider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -497,7 +497,7 @@ GameObject:
   - component: {fileID: 7929059459684194271}
   m_Layer: 0
   m_Name: Tail02Collider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -767,7 +767,7 @@ GameObject:
   - component: {fileID: 7764600517913096071}
   m_Layer: 0
   m_Name: R_ArmHornCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -884,7 +884,7 @@ GameObject:
   - component: {fileID: 7790340064634057110}
   m_Layer: 0
   m_Name: Neck01Collider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1294,7 +1294,7 @@ GameObject:
   - component: {fileID: 8806303539837037834}
   m_Layer: 0
   m_Name: L_LowerArmCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1381,7 +1381,7 @@ GameObject:
   - component: {fileID: 2932900725712008579}
   m_Layer: 0
   m_Name: Spine01Collider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1616,6 +1616,7 @@ MonoBehaviour:
   rotationAngle: 10
   isJustGuarded: 0
   attack3EffectTransform: {fileID: 2594458736423794690}
+  bodyCollider: {fileID: 0}
 --- !u!114 &8644722023114623301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1789,7 +1790,7 @@ GameObject:
   - component: {fileID: 4441209683344632216}
   m_Layer: 0
   m_Name: R_LowerLeg01Collider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1875,7 +1876,7 @@ GameObject:
   - component: {fileID: 3751744568870202869}
   m_Layer: 0
   m_Name: HeadCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1930,7 +1931,7 @@ GameObject:
   - component: {fileID: 4900689991595169142}
   m_Layer: 0
   m_Name: L_LowerLeg02Collider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1985,7 +1986,7 @@ GameObject:
   - component: {fileID: 8090034859060701537}
   m_Layer: 0
   m_Name: Tail01Collider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2141,7 +2142,7 @@ GameObject:
   - component: {fileID: 5128030875350180878}
   m_Layer: 0
   m_Name: BodyCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2387,7 +2388,7 @@ GameObject:
   - component: {fileID: 8580570492066813466}
   m_Layer: 0
   m_Name: R_UpperArmCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2666,7 +2667,7 @@ GameObject:
   - component: {fileID: 2705038271406366547}
   m_Layer: 0
   m_Name: ChestCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2752,7 +2753,7 @@ GameObject:
   - component: {fileID: 8849083952349070114}
   m_Layer: 0
   m_Name: L_WristCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2807,7 +2808,7 @@ GameObject:
   - component: {fileID: 3315867327127279547}
   m_Layer: 0
   m_Name: L_ShoulderCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2899,7 +2900,7 @@ GameObject:
   - component: {fileID: 6189439733459168586}
   m_Layer: 0
   m_Name: L_LowerLeg01Collider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2988,7 +2989,7 @@ GameObject:
   - component: {fileID: 6617684769591252178}
   m_Layer: 0
   m_Name: L_UpperLegCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3043,7 +3044,7 @@ GameObject:
   - component: {fileID: 6732336931350673802}
   m_Layer: 0
   m_Name: Tail04Collider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3227,7 +3228,7 @@ GameObject:
   - component: {fileID: 2441453251194025824}
   m_Layer: 0
   m_Name: L_UpperArmCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3539,7 +3540,7 @@ GameObject:
   - component: {fileID: 7713599413079312892}
   m_Layer: 0
   m_Name: R_UpperLegCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3594,7 +3595,7 @@ GameObject:
   - component: {fileID: 4626247656112036165}
   m_Layer: 0
   m_Name: R_LowerArmCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3711,7 +3712,7 @@ GameObject:
   - component: {fileID: 1829339540186743625}
   m_Layer: 0
   m_Name: Neck02Collider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3766,7 +3767,7 @@ GameObject:
   - component: {fileID: 310870377170553729}
   m_Layer: 0
   m_Name: R_ShoulderCollider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

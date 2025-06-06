@@ -3,7 +3,7 @@ using Player;
 
 public class JustGuardTask : ITutorialTask
 {
-    TutorialManager tutorialManager;
+    TutorialTaskManager tutorialManager;
     PlayerStateID previousState;
 
     const int NeedJustGuardCount = 3;               // タスク達成に必要なブロックの回数
@@ -15,7 +15,7 @@ public class JustGuardTask : ITutorialTask
     public bool ShowTaskUI => true;
     public bool ShowSuccessUI => true;
 
-    public JustGuardTask(TutorialManager tutorialManager)
+    public JustGuardTask(TutorialTaskManager tutorialManager)
     {
         this.tutorialManager = tutorialManager;
     }

@@ -48,7 +48,9 @@ namespace Player
             CameraManager.Instance.SwitchCamera(CameraType.JustDodge, CameraBlendTime);
 
             CameraManager.Instance.EnabledRecentering();
-            core.animationController.ChangeAllAnimationSpeed(PerformanceAnimationSpeed);
+
+            core.Animator.speed = PerformanceAnimationSpeed;
+            SlowManager.Instance.ApplySlow(PerformanceAnimationSpeed);
 
             EffectManager.Instance.PlayEffect("NovaLight", core.transform.position, Quaternion.Euler(-90, 0, 0));
             core.effectPlayer.ShowEffect("SpikyExplosion");
@@ -79,7 +81,8 @@ namespace Player
                 // 効果時間が過ぎたら演出を終了
                 if (currentTime >= EffectiveTime)
                 {
-                    core.animationController.ChangeAllAnimationSpeed(DefaultAnimationSpeed);
+                    core.Animator.speed = DefaultAnimationSpeed;
+                    SlowManager.Instance.ApplySlow(DefaultAnimationSpeed);
                     isEffective = false;
                 }
 

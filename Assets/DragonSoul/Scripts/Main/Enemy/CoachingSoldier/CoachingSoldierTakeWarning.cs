@@ -9,8 +9,11 @@ namespace Enemy
         private float currentTime = 0;
         private const float warningTime = 3;
         private int moveDirection;
-        private float moveSpeed = 0.5f;
-        private const int resetPosY = 0;
+        private const int ResetPosY = 0;
+        const float MoveOffset = 2;
+        const float WalkSpeed = 1;
+        const float Acceleration = 50;
+        const float StoppingDistance = 0;
 
         public CoachingSoldierTakeWarning(CoachingSoldierCore core)
         {
@@ -18,8 +21,12 @@ namespace Enemy
         }
 
         public void Enter()
-        {
-            core.transform.position = new Vector3(core.transform.position.x, resetPosY, core.transform.position.z);
+        {            
+            core.navMeshAgent.acceleration = Acceleration;
+            core.navMeshAgent.stoppingDistance = StoppingDistance;
+            core.SetBaseSpeed(WalkSpeed);
+
+            core.transform.position = new Vector3(core.transform.position.x, ResetPosY, core.transform.position.z);
             moveDirection = Random.Range(1, 3);
             switch (moveDirection)
             {
@@ -58,10 +65,10 @@ namespace Enemy
                 switch (moveDirection)
                 {                   
                     case 1:
-                        core.transform.position += core.transform.right * moveSpeed * Time.deltaTime;
+                        core.navMeshAgent.SetDestination(core.transform.position + core.transform.right * MoveOffset);
                         break;
                     case 2:
-                        core.transform.position -= core.transform.right * moveSpeed * Time.deltaTime;
+                        core.navMeshAgent.SetDestination(core.transform.position + -core.transform.right * MoveOffset);
                         break;
                 }
             }
@@ -70,6 +77,9 @@ namespace Enemy
         public void Exit()
         {
             currentTime = 0;
+            core.navMeshAgent.speed = 0;
+            core.navMeshAgent.acceleration = 0;
+            core.navMeshAgent.velocity = Vector3.zero;
         }
     }
 }

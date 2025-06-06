@@ -3,7 +3,7 @@ using Player;
 
 public class JustDodgeTask : ITutorialTask
 {
-    TutorialManager tutorialManager;
+    TutorialTaskManager tutorialManager;
     PlayerStateID previousState;
 
     const int NeedJustDodgeCount = 3;               // タスク達成に必要なブロックの回数
@@ -15,7 +15,7 @@ public class JustDodgeTask : ITutorialTask
     public bool ShowTaskUI => true;
     public bool ShowSuccessUI => true;
 
-    public JustDodgeTask(TutorialManager tutorialManager)
+    public JustDodgeTask(TutorialTaskManager tutorialManager)
     {
         this.tutorialManager = tutorialManager;
     }

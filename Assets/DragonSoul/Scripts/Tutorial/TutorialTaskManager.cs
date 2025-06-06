@@ -5,9 +5,12 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using SoundSystem;
+using UnityEngine.Playables;
 
-public class TutorialManager : MonoBehaviour
+public class TutorialTaskManager : MonoBehaviour
 {
+    [SerializeField] GameFlowManagerBase gameFlowManager;
+   
     public PlayerCore playerCore;
     public ITutorialTask currentTask; // 現在のタスク
     public int attackNormalCount = 0;      // 通常攻撃をした回数
@@ -16,8 +19,6 @@ public class TutorialManager : MonoBehaviour
     public int justGuardCount = 0;          // ジャストガード回数
     public int attackSpecial2Count = 0;    // 特殊攻撃2をした回数
     public int attackUltimateCount = 0;
-
-    [SerializeField] GameFlowManagerBase gameFlowManager;
 
     [Header("説明画面")]
     public GameObject attackNormalPanel;
@@ -40,23 +41,22 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI attackSpecial2CountText;
     [SerializeField] TextMeshProUGUI attackUltimateCountText;
 
-    [Header("成功UI")]
+    [Header("完了UI")]
     [SerializeField] GameObject completeUI;
 
-
     public InputReciver Input => InputReciver.Instance;
-    List<ITutorialTask> tutorialTask; // タスクリスト
+    List<ITutorialTask> tutorialTasks; // タスクリスト
     bool taskExecuted = false;
     bool inTutorial = true;     // チュートリアル中かどうか
     bool isChangedScene = false;     // シーン遷移が実行されたかどうか
 
     const float CompleteUIDisplayLatency = 1;   // 完了UI表示時間
-    const float FirstWaitTime = 8.4f;  // 最初のタスク表示までの待機時間
+    const float FirstWaitTime = 5f;  // 最初のタスク表示までの待機時間
     const float FadeTime = 1;
 
     void Awake()
     {
-        tutorialTask = new List<ITutorialTask>()
+        tutorialTasks = new List<ITutorialTask>()
         {
             new AttackNormalTask(this),
             new JustDodgeTask(this),
@@ -78,7 +78,7 @@ public class TutorialManager : MonoBehaviour
         justDodgeTaskUI.SetActive(false);
         justGuardTaskUI.SetActive(false);
         attackUltimateTaskUI.SetActive(false);
-        StartCoroutine(SetFirstTask(tutorialTask.First(), FirstWaitTime));
+        StartCoroutine(SetFirstTask(tutorialTasks.First(), FirstWaitTime));
     }
 
     void Update()
@@ -94,9 +94,9 @@ public class TutorialManager : MonoBehaviour
                 {
                     taskExecuted = true;
 
-                    tutorialTask.RemoveAt(0);
+                    tutorialTasks.RemoveAt(0);
 
-                    var nextTask = tutorialTask.FirstOrDefault();
+                    var nextTask = tutorialTasks.FirstOrDefault();
                     StartCoroutine(SetNextTask(nextTask, currentTask.TransitionTime()));
                 }
             }
@@ -154,7 +154,7 @@ public class TutorialManager : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
 
         // タスクがない場合、チュートリアル終了
-        if (tutorialTask.Count <= 0)
+        if (tutorialTasks.Count <= 0)
         {
             inTutorial = false;
             yield break;

@@ -10,7 +10,7 @@ namespace Enemy
         float targetDistance;
 
         const float WalkSpeed = 3;
-        const float RunSpeed = 50;
+        const float RunSpeed = 40;
         const float Acceleration = 50;
         const float ChangeMoveDistance = 8;
         readonly float[] attackRanges = { 4f, 4f, 4f };
