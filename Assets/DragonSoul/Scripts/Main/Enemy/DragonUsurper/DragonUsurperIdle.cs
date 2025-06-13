@@ -16,7 +16,7 @@ namespace Enemy
 
         public void Enter()
         {
-            core.animator.CrossFade("Idle", 0.1f);
+            core.Animator.CrossFade("Idle", 0.1f);
         }
 
         public void Update()

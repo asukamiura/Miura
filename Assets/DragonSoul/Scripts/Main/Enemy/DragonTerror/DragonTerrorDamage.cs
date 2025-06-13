@@ -5,7 +5,12 @@ namespace Enemy
     public class DragonTerrorDamage : IState<DragonTerrorStateID>
     {
         public DragonTerrorStateID StateID => DragonTerrorStateID.Damage;
+
         DragonTerrorCore core;
+
+        const float TransitionDuration = 0.1f;  // アニメーションの遷移継続時間
+        const float TransitionTime = 0.8f;      // アニメーションを遷移させる時間
+        const float TimeOffset = 0.3f;
 
         public DragonTerrorDamage(DragonTerrorCore core)
         {
@@ -14,7 +19,7 @@ namespace Enemy
 
         public void Enter()
         {
-            core.animator.CrossFade("Damage", 0.1f, 0, 0.2f);
+            core.Animator.CrossFade("Damage", TransitionDuration, 0, TimeOffset);
 
             core.navMeshAgent.speed = 0;
             core.navMeshAgent.acceleration = 0;
@@ -23,10 +28,9 @@ namespace Enemy
 
         public void Update()
         {
-            AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("Damage"))
+            if (core.CurrentStateInfo.IsName("Damage"))
             {
-                if (stateInfo.normalizedTime >= 1)
+                if (core.CurrentStateInfo.normalizedTime >= TransitionTime)
                 {
                     core.stateMachine.ChangeState(DragonTerrorStateID.Idle);
                 }

@@ -1,30 +1,21 @@
-﻿using System.Collections;
+﻿using Player;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using Player;
 
 namespace Enemy
 {
     public class DragonTerrorCore : EnemyCoreBase
     {
-        [SerializeField] List<GameObject> attackColliders = new List<GameObject>();
         [SerializeField] Transform breathPoint;
         [SerializeField] GameObject energyBall;
         [SerializeField] Transform eyeTransform;
 
-        Vector3 eyePosition;
-
-        const int Fov = 10;     // 視野角
         const float BreathPower = 20;
 
         public List<GameObject> energyBalls = new List<GameObject>();
         public StateMachine<DragonTerrorStateID> stateMachine;
-        public float AngleToPlayer { get; set; }
-        public float DistanceToPlayer { get; set; }
-        public Vector3 CrossProduct { get; set; }
-        public bool IsPlayerInSight => Mathf.Abs(AngleToPlayer) <= Fov && DistanceToPlayer >= MinDistance;    // プレイヤーが視野内にいるかのフラグ
-        public float MinDistance { get; set; }   // 中心から目までの距離
+        public AttackSelector<DragonTerrorStateID> AttackSelector { get; private set; }
         public bool isFlying = false;
         public bool isJustGuarded = false;
         public Transform attack2EffectTransform;
@@ -35,9 +26,20 @@ namespace Enemy
             stateMachine = new StateMachine<DragonTerrorStateID>();
             stateMachine.RegisterState(new DragonTerrorIdle(this));
             stateMachine.RegisterState(new DragonTerrorMove(this));
-            stateMachine.RegisterState(new DragonTerrorAttack(this));
+            stateMachine.RegisterState(new DragonTerrorAttackBite(this));
+            stateMachine.RegisterState(new DragonTerrorAttackClaw(this));
+            stateMachine.RegisterState(new DragonTerrorAttackBreath(this));
             stateMachine.RegisterState(new DragonTerrorDamage(this));
             stateMachine.RegisterState(new DragonTerrorDie(this));
+
+            var initialWeights = new Dictionary<DragonTerrorStateID, float>()
+            {
+                { DragonTerrorStateID.AttackBite, 10f },
+                { DragonTerrorStateID.AttackClaw, 10f },
+                { DragonTerrorStateID.AttackBreath, 10f },
+            };
+
+            AttackSelector = new AttackSelector<DragonTerrorStateID>(initialWeights);
 
             attackManager.OnEnemyHit += ReceiveDamage;
         }
@@ -46,33 +48,22 @@ namespace Enemy
         {
             stateMachine.Initialize(DragonTerrorStateID.Idle);
 
-            InitializeTotalWeight();
-
             ResetAttackCollider();
-
-            eyePosition = new Vector3(eyeTransform.position.x, transform.position.y, eyeTransform.position.z);
-            MinDistance = Vector3.Distance(transform.position, eyePosition);
         }
 
-        void Update()
+        protected override void Update()
         {
+            base.Update();
+
             if (healthManager.IsDead)
             {
                 stateMachine.ChangeState(DragonTerrorStateID.Die);
             }
 
-            stateMachine.StateUpdate();
-
-            // プレイヤーとの距離を計算
-            Vector3 playerPosition = new Vector3(playerTransform.position.x, transform.position.y, playerTransform.position.z);
-            DistanceToPlayer = Vector3.Distance(transform.position, playerPosition);
-
-            // プレイヤー方向の角度を計算
-            Vector3 direction = (playerTransform.position - transform.position).normalized;
-            AngleToPlayer = Vector3.SignedAngle(transform.forward, direction, Vector3.up);
-
-            // 外積
-            CrossProduct = Vector3.Cross(transform.forward, direction);
+            if (isMovable)
+            {
+                stateMachine.StateUpdate();
+            }
 
             if (playerCore.stateMachine.CurrentState == PlayerStateID.Block && stateMachine.CurrentState != DragonTerrorStateID.Damage
                 && stateMachine.CurrentState != DragonTerrorStateID.Die)
@@ -83,6 +74,8 @@ namespace Enemy
             {
                 isJustGuarded = false;
             }
+
+            Debug.Log(stateMachine.CurrentState);
         }
 
         void FixedUpdate()
@@ -96,32 +89,6 @@ namespace Enemy
                    || playerCore.stateMachine.CurrentState == PlayerStateID.AttackUltimate) && stateMachine.CurrentState != DragonTerrorStateID.Die)
             {
                 stateMachine.ChangeState(DragonTerrorStateID.Damage);
-            }
-        }
-
-        public void AttackStart(string attackColliderName)
-        {
-            var attackCollider = attackColliders.FirstOrDefault(attackCollider => attackCollider.name == attackColliderName);
-
-            if (attackCollider == null) { return; }
-
-            attackCollider.SetActive(true);
-        }
-
-        public void AttackEnd(string attackColliderName)
-        {
-            var attackCollider = attackColliders.FirstOrDefault(attackCollider => attackCollider.name == attackColliderName);
-
-            if (attackCollider == null) { return; }
-
-            attackCollider.SetActive(false);
-        }
-
-        public void ResetAttackCollider()
-        {
-            foreach (var attackCollider in attackColliders)
-            {
-                attackCollider.SetActive(false);
             }
         }
 

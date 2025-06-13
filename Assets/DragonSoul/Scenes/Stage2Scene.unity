@@ -2816,6 +2816,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 234639639226804085, guid: ebb7a00414525654684b3014c887d90c, type: 3}
+      propertyPath: m_Height
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 234639639226804085, guid: ebb7a00414525654684b3014c887d90c, type: 3}
+      propertyPath: m_Radius
+      value: 2.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 988720251831324649, guid: ebb7a00414525654684b3014c887d90c, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 1420a40f7b2cd1341944b103718427f4, type: 3}
+    - target: {fileID: 988720251831324649, guid: ebb7a00414525654684b3014c887d90c, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4341683788636890806, guid: ebb7a00414525654684b3014c887d90c, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2872,6 +2888,10 @@ PrefabInstance:
       propertyPath: playerCore
       value: 
       objectReference: {fileID: 799526093}
+    - target: {fileID: 8065231349993632893, guid: ebb7a00414525654684b3014c887d90c, type: 3}
+      propertyPath: bodyCollider
+      value: 
+      objectReference: {fileID: 2134677580}
     - target: {fileID: 8065231349993632893, guid: ebb7a00414525654684b3014c887d90c, type: 3}
       propertyPath: effectPlayer
       value: 
@@ -3511,6 +3531,11 @@ Light:
 Transform:
   m_CorrespondingSourceObject: {fileID: 1599187831255420634, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
   m_PrefabInstance: {fileID: 799526088}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &2134677580 stripped
+MeshCollider:
+  m_CorrespondingSourceObject: {fileID: 6104123767690520817, guid: ebb7a00414525654684b3014c887d90c, type: 3}
+  m_PrefabInstance: {fileID: 1589665355}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1085869774418141879 stripped
 MonoBehaviour:

@@ -31,10 +31,10 @@ namespace Enemy
             switch (moveDirection)
             {
                 case 1:
-                    core.animator.CrossFade("WalkRight", 0);
+                    core.Animator.CrossFade("WalkRight", 0);
                     break;
                 case 2:
-                    core.animator.CrossFade("WalkLeft", 0);
+                    core.Animator.CrossFade("WalkLeft", 0);
                     break;
             }
         }

@@ -14,12 +14,12 @@ namespace Enemy
 
         public void Enter()
         {
-            core.animator.CrossFade("Damage", 0, 0, 0, 0);
+            core.Animator.CrossFade("Damage", 0, 0, 0, 0);
         }
 
         public void Update()
         {
-            AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
+            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("Damage"))
             {
                 if (stateInfo.normalizedTime >= 1)

@@ -961,6 +961,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6097548736247821941, guid: 58c78d7b6ba39f84cab5d61682718e97, type: 3}
   m_PrefabInstance: {fileID: 1138756252}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &302324215 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 7044576080651600328, guid: 80577d84cc7be8d4eb6a5bb3a22875ea, type: 3}
+  m_PrefabInstance: {fileID: 614815409610846885}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &331985696 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8594047881918256793, guid: 06f7710770f7a6048aead2a47fcfeb10, type: 3}
@@ -8005,6 +8010,10 @@ PrefabInstance:
       propertyPath: playerCore
       value: 
       objectReference: {fileID: 1849004014}
+    - target: {fileID: 4060793150982652846, guid: 80577d84cc7be8d4eb6a5bb3a22875ea, type: 3}
+      propertyPath: bodyCollider
+      value: 
+      objectReference: {fileID: 302324215}
     - target: {fileID: 4060793150982652846, guid: 80577d84cc7be8d4eb6a5bb3a22875ea, type: 3}
       propertyPath: attackManager
       value: 

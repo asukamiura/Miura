@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Enemy
@@ -6,19 +7,22 @@ namespace Enemy
     public class DragonUsurperMove : IState<DragonUsurperStateID>
     {
         public DragonUsurperStateID StateID => DragonUsurperStateID.Move;
+
         DragonUsurperCore core;
         float targetDistance;
         Vector3 targetPos;
         string animationName;
+        DragonUsurperStateID selectedAttackState;
 
-        const int Attack1Num = 0;
-        const int Attack2Num = 1;
-        const int Attack3Num = 2;
+        readonly Dictionary<DragonUsurperStateID, float> attackStartDistances = new Dictionary<DragonUsurperStateID, float>()
+        {
+            { DragonUsurperStateID.AttackBite, 6},
+            { DragonUsurperStateID.AttackClaw, 8},
+            { DragonUsurperStateID.AttackBreath, 10},
+        };
+
         const float MoveSpeed = 8;
         const float Acceleration = 16;
-        const float Attack1Range = 6;
-        const float Attack2Range = 8;
-        const float Attack3Range = 10;
 
         public DragonUsurperMove(DragonUsurperCore core)
         {
@@ -28,61 +32,61 @@ namespace Enemy
         public void Enter()
         {
             // 攻撃タイプを抽選
-            core.attackType = core.ChooseAttack();
+            selectedAttackState = core.attackSelector.ChooseAttack();
 
-            // 攻撃を行う距離を設定
-            targetDistance = core.attackType switch
+            foreach (var attackRange in attackStartDistances)
             {
-                Attack1Num => Attack1Range,
-                Attack2Num => Attack2Range,
-                Attack3Num => Attack3Range,
-                _ => Attack1Range,
-            };
-           
+                if (selectedAttackState == attackRange.Key)
+                {
+                    targetDistance = attackRange.Value;
+                }
+            }
+
             // 移動速度、加速度、止まる距離を設定
             core.navMeshAgent.speed = MoveSpeed;
             core.navMeshAgent.acceleration = Acceleration;
-            //core.navMeshAgent.stoppingDistance = targetDistance;
+            ////core.navMeshAgent.stoppingDistance = targetDistance;
 
-            core.navMeshAgent.stoppingDistance = core.DistanceToPlayer > targetDistance ? targetDistance : 0;
-
-            // アニメーションを設定
-            animationName = core.DistanceToPlayer > targetDistance ? "RunFront" : "RunBack";
-            core.animator.CrossFade(animationName, 0.1f);
-
-            // ターゲット座標を設定
-            targetPos = core.DistanceToPlayer > targetDistance ? core.playerTransform.position : core.playerTransform.position - core.transform.forward * targetDistance;
-        }
-
-        public void Update() 
-        {            
-            if (animationName == "RunFront")
+            if (core.DistanceToPlayer() > targetDistance)
             {
-                Vector3 nextPoint = core.navMeshAgent.steeringTarget;
-                Vector3 targetDirection = nextPoint - core.transform.position;
+                core.navMeshAgent.stoppingDistance = targetDistance;
+                animationName = "RunFront";
+                targetPos = core.playerTransform.position;
+            }
+            else
+            {
+                core.navMeshAgent.stoppingDistance = 2;
+                animationName = "RunBack";
 
-                Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
-                core.transform.rotation = Quaternion.RotateTowards(core.transform.rotation, targetRotation, 360f * Time.deltaTime);
+                //Vector3 direction = (core.transform.position - core.playerTransform.position).normalized;
+
+                targetPos = core.playerTransform.position - core.transform.forward * targetDistance;
+
+                if (NavMesh.SamplePosition(targetPos, out NavMeshHit hit, targetDistance, NavMesh.AllAreas))
+                {
+                    targetPos = hit.position;
+                }
             }
 
-            core.navMeshAgent.SetDestination(targetPos);
+            if (core.navMeshAgent.enabled)
+            {
+                core.navMeshAgent.SetDestination(targetPos);
+            }
+            core.Animator.CrossFade(animationName, 0.1f);
+        }
+
+        public void Update()
+        {
+            core.LookAtPlayer();
 
             if (Vector3.Distance(targetPos, core.transform.position) <= core.navMeshAgent.stoppingDistance)
             {
                 core.navMeshAgent.ResetPath();
-                core.stateMachine.ChangeState(DragonUsurperStateID.Attack);
-            }
-
-            if (!NavMesh.SamplePosition(targetPos, out NavMeshHit hit, 0, NavMesh.AllAreas))
-            {
-                core.navMeshAgent.ResetPath();
-                core.stateMachine.ChangeState(DragonUsurperStateID.Attack);
+                core.stateMachine.ChangeState(selectedAttackState);
             }
         }
 
-        public void FixedUpdate()
-        {
-        }
+        public void FixedUpdate() { }
 
         public void Exit()
         {
@@ -91,7 +95,6 @@ namespace Enemy
             core.navMeshAgent.velocity = Vector3.zero;
         }
     }
-
 }
 
 

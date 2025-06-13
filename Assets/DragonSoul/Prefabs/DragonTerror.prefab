@@ -1335,7 +1335,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 116
   m_CollisionDetection: 0
 --- !u!114 &3805359544899370873
 MonoBehaviour:
@@ -1349,23 +1349,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d8c57c1e1820754c944f6f51d908651, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weights:
-  - 10
-  - 10
-  - 10
   playerCore: {fileID: 0}
   attackManager: {fileID: 0}
+  attackColliders:
+  - {fileID: 7318941889342187744}
+  - {fileID: 8593438773732097421}
+  bodyCollider: {fileID: 0}
   effectPlayer: {fileID: 7571436637581294189}
-  rb: {fileID: 1378963116194097872}
-  animator: {fileID: 2328352535282002562}
   healthManager: {fileID: 2849374971627615931}
   navMeshAgent: {fileID: 5261962844300193190}
   playerTransform: {fileID: 0}
   rotationSpeed: 10
   attackType: 0
-  attackColliders:
-  - {fileID: 7318941889342187744}
-  - {fileID: 8593438773732097421}
   breathPoint: {fileID: 6759083189621068567}
   energyBall: {fileID: 862392982553350025, guid: 65c031125b146454c977e9fa2c0c7692, type: 3}
   eyeTransform: {fileID: 2673731025547914194}

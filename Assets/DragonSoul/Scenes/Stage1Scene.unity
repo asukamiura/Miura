@@ -1662,14 +1662,14 @@ PrefabInstance:
     - target: {fileID: 6180691071375491217, guid: d5272bd5b05667b41a3a60ca3333619a, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 9000000, guid: 2f4e6492f506bbb4a8aeba850e3bb52f, type: 3}
+      objectReference: {fileID: 9000000, guid: a8d68f882ac2f2f48982204cc9c22f27, type: 3}
     - target: {fileID: 6180691071375491217, guid: d5272bd5b05667b41a3a60ca3333619a, type: 3}
       propertyPath: m_CullingMode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6180691071375491217, guid: d5272bd5b05667b41a3a60ca3333619a, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6736973613082615224, guid: d5272bd5b05667b41a3a60ca3333619a, type: 3}
       propertyPath: playerCore
@@ -1687,6 +1687,10 @@ PrefabInstance:
       propertyPath: attackManager
       value: 
       objectReference: {fileID: 2280359291614795492}
+    - target: {fileID: 6736973613082615224, guid: d5272bd5b05667b41a3a60ca3333619a, type: 3}
+      propertyPath: isJustGuarded
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6736973613082615224, guid: d5272bd5b05667b41a3a60ca3333619a, type: 3}
       propertyPath: playerTransform
       value: 

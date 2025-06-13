@@ -17,7 +17,7 @@ namespace Enemy
 
         public void Enter()
         {
-            core.animator.CrossFade("Run", 0);
+            core.Animator.CrossFade("Run", 0);
 
             // 攻撃開始地点を設定
             attackTargetPos = core.playerTransform.position - core.transform.forward * targetDistance;

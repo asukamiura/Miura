@@ -34,6 +34,7 @@ namespace Player
         public bool IsJustDodge { get; set; } = false;
         public bool IsInvincible { get; set; } = false;   // 無敵状態フラグ
         public AnimatorStateInfo CurrentStateInfo { get; private set; }
+        public PlayerStateID CurrentState => stateMachine.CurrentState;
 
         bool CanHeal => justPointManager.JustPoint >= HealCost;
         bool CanPowerUp => justPointManager.JustPoint >= PowerUpCost && stateMachine.CurrentState == PlayerStateID.Locomotion;

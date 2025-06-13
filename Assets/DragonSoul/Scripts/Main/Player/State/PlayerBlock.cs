@@ -14,7 +14,7 @@ namespace Player
         const float TargetFOV = 50;             // 演出時の視野角
         const float DefaultDutch = 0;           // 通常のカメラの角度
         const float TargetDutch = 7;            // 演出時のカメラの角度
-        const float PerformanceAnimationSpeed = 0;
+        const float PerformanceAnimationSpeed = 0f;
         const float SlowAnimationSpeed = 0.5f;
         const float DefaultAnimationSpeed = 1;
         const float StopDuration = 0.25f; // 動きを止める時間

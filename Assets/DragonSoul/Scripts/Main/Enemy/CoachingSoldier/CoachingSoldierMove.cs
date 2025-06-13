@@ -24,31 +24,31 @@ namespace Enemy
             core.navMeshAgent.acceleration = Acceleration;
             core.navMeshAgent.stoppingDistance = AttackRange;
 
-            if (core.DistanceToPlayer < ChangeMoveDistance)
+            if (core.DistanceToPlayer() < ChangeMoveDistance)
             {
-                core.animator.CrossFade("WalkFront", 0.1f);
+                core.Animator.CrossFade("WalkFront", 0.1f);
                 core.navMeshAgent.speed = WalkSpeed;
             }
-            else if (core.DistanceToPlayer >= ChangeMoveDistance)
+            else if (core.DistanceToPlayer() >= ChangeMoveDistance)
             {
                 core.navMeshAgent.speed = RunSpeed;
-                core.animator.CrossFade("RunFront", 0.1f);
+                core.Animator.CrossFade("RunFront", 0.1f);
             }
         }
 
         public void Update()
         {
-            AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("WalkFront") && core.DistanceToPlayer > ChangeMoveDistance)
+            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
+            if (stateInfo.IsName("WalkFront") && core.DistanceToPlayer() > ChangeMoveDistance)
             {
                 core.navMeshAgent.speed = RunSpeed;
-                core.animator.CrossFade("RunFront", 0.1f);
+                core.Animator.CrossFade("RunFront", 0.1f);
             }
 
             core.LookAtPlayer();
             core.navMeshAgent.SetDestination(core.playerTransform.position);
 
-            if (core.DistanceToPlayer <= core.navMeshAgent.stoppingDistance)
+            if (core.DistanceToPlayer() <= core.navMeshAgent.stoppingDistance)
             {
                 core.navMeshAgent.ResetPath();
                 core.stateMachine.ChangeState(CoachingSoldierStateID.Attack);

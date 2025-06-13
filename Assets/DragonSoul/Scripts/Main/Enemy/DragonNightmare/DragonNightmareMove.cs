@@ -7,13 +7,13 @@ namespace Enemy
     {
         public DragonNightmareStateID StateID => DragonNightmareStateID.Move;
         DragonNightmareCore core;
-        float targetDistance;
 
         const float WalkSpeed = 3;
         const float RunSpeed = 40;
         const float Acceleration = 50;
         const float ChangeMoveDistance = 8;
-        readonly float[] attackRanges = { 4f, 4f, 4f };
+        //readonly float[] attackRanges = { 4f, 4f, 4f };
+        const float TargetDistance = 4;
 
         public DragonNightmareMove(DragonNightmareCore core)
         {
@@ -22,44 +22,37 @@ namespace Enemy
 
         public void Enter()
         {
-            // 攻撃タイプを抽選
-            core.attackType = core.ChooseAttack();
-
-            // 攻撃を行う距離を設定
-            targetDistance = attackRanges[core.attackType];
-
             // 移動速度、加速度、止まる距離を設定
             core.navMeshAgent.acceleration = Acceleration;
-            core.navMeshAgent.stoppingDistance = targetDistance;
+            core.navMeshAgent.stoppingDistance = TargetDistance;
 
-            if (core.DistanceToPlayer < ChangeMoveDistance)
+            if (core.DistanceToPlayer() < ChangeMoveDistance)
             {
-                core.animator.CrossFade("WalkFront", 0);
+                core.Animator.CrossFade("WalkFront", 0);
                 core.navMeshAgent.speed = WalkSpeed;
             }
-            else if (core.DistanceToPlayer >= ChangeMoveDistance)
+            else if (core.DistanceToPlayer() >= ChangeMoveDistance)
             {
                 core.navMeshAgent.speed = RunSpeed;
-                core.animator.CrossFade("RunFront", 0);
+                core.Animator.CrossFade("RunFront", 0);
             }
         }
 
         public void Update()
         {
-            AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
-            if (stateInfo.IsName("WalkFront") && core.DistanceToPlayer > ChangeMoveDistance)
+            if (core.CurrentStateInfo.IsName("WalkFront") && core.DistanceToPlayer() > ChangeMoveDistance)
             {
                 core.navMeshAgent.speed = RunSpeed;
-                core.animator.CrossFade("RunFront", 0);
+                core.Animator.CrossFade("RunFront", 0);
             }
 
             core.LookAtPlayer();
             core.navMeshAgent.SetDestination(core.playerTransform.position);
 
-            if (core.DistanceToPlayer <= core.navMeshAgent.stoppingDistance)
+            if (core.DistanceToPlayer() <= core.navMeshAgent.stoppingDistance)
             {
                 core.navMeshAgent.ResetPath();
-                core.stateMachine.ChangeState(DragonNightmareStateID.Attack);
+                core.stateMachine.ChangeState(core.AttackSelector.ChooseAttack());
             }
         }
 
