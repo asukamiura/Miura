@@ -15,10 +15,8 @@ namespace Player
         {
             {1, new AttackAnimationConfig("AttackUltimate1", 0.1f, 0, 0, 1, AttackType.Ultimate) },
             {2, new AttackAnimationConfig("AttackUltimate2", 0, 0, 0, 1, AttackType.Ultimate) },
-            {3, new AttackAnimationConfig("AttackUltimate3", 0, 0, 0, 1, AttackType.Ultimate) },
+            {3, new AttackAnimationConfig("AttackUltimate3", 0, 0, 0, 0.66f, AttackType.Ultimate) },
         };
-
-        Vector3 effectPosition;
 
         public override void Enter()
         {
@@ -32,8 +30,6 @@ namespace Player
             SlowManager.Instance.ApplySlow(0);
 
             core.StartCoroutine(ChangeCamera());
-
-            effectPosition = new Vector3(core.transform.position.x, core.transform.position.y, core.transform.position.z);
         }
 
         public override void Update()
@@ -53,7 +49,7 @@ namespace Player
 
                 if (step == 3)
                 {
-                    CameraManager.Instance.SwitchCamera(CameraType.Ultimate3, 0.3f);
+                    CameraManager.Instance.SwitchCamera(CameraType.Main, 0);
                     SlowManager.Instance.ApplySlow(1);
                 }
             }
@@ -71,7 +67,6 @@ namespace Player
             core.IsInvincible = false;
             core.bodyCollider.enabled = true;
             PostEffectManager.Instance.ChangePostEffect(ProfileNum.Normal, 1);
-            CameraManager.Instance.SwitchCamera(CameraType.Main, 1);
         }
       
         IEnumerator ChangeCamera()

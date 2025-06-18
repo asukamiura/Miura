@@ -19,12 +19,12 @@ namespace Enemy
             if (core.CanAttack1)
             {
                 core.effectPlayer.ShowEffect("CanGuardEffect", IndicateEffectShowingTime);
-                core.animator.CrossFade("Attack1", 0);
+                core.Animator.CrossFade("Attack1", 0);
             }
             else if (core.CanAttack2)
             {
                 core.effectPlayer.ShowEffect("CanDodgeEffect", IndicateEffectShowingTime);
-                core.animator.CrossFade("Attack2", 0);
+                core.Animator.CrossFade("Attack2", 0);
             }
             else
             {
@@ -34,7 +34,7 @@ namespace Enemy
 
         public void Update()
         {
-            AnimatorStateInfo stateInfo = core.animator.GetCurrentAnimatorStateInfo(0);
+            AnimatorStateInfo stateInfo = core.Animator.GetCurrentAnimatorStateInfo(0);
             if (stateInfo.IsName("Attack1") || stateInfo.IsName("Attack2"))
             {
                 if (stateInfo.normalizedTime >= 1)

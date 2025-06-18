@@ -1,24 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-
-namespace Enemy
+﻿namespace Enemy
 {
     public class CoachingSoldierCore : EnemyCoreBase
     {
-        [SerializeField] List<GameObject> attackColliders = new List<GameObject>();
-
         float previousHP;
 
-        const int Fov = 10;     // 視野角
-        const int MinSightDistance = 2;
-
-        public TutorialTaskManager tutorialTaskManager;
         public StateMachine<CoachingSoldierStateID> stateMachine;
-        public float AngleToPlayer { get; set; }
-        public float DistanceToPlayer { get; set; }
-        public Vector3 CrossProduct { get; set; }
-        public bool IsPlayerInSight => AngleToPlayer <= Fov && DistanceToPlayer >= MinSightDistance;
+        public TutorialTaskManager tutorialTaskManager;
         public bool CanAttack1 => tutorialTaskManager.currentTask is JustGuardTask && !tutorialTaskManager.currentTask.CheckTask();
         public bool CanAttack2 => tutorialTaskManager.currentTask is JustDodgeTask && !tutorialTaskManager.currentTask.CheckTask();
 
@@ -34,31 +21,23 @@ namespace Enemy
             attackManager.OnEnemyHit += ReceiveDamage;
         }
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             stateMachine.Initialize(CoachingSoldierStateID.Idle);
 
             ResetAttackCollider();
         }
 
-        void Update()
+        protected override void Update()
         {
-            if (healthManager.IsDead)
+            base.Update();
+
+            if (isMovable)
             {
-                stateMachine.ChangeState(CoachingSoldierStateID.Die);
+                stateMachine.StateUpdate();
             }
-
-            stateMachine.StateUpdate();
-
-            // プレイヤー方向の角度を計算
-            Vector3 direction = (playerTransform.position - transform.position).normalized;
-            AngleToPlayer = Vector3.Angle(transform.forward, direction);
-
-            // 外積
-            CrossProduct = Vector3.Cross(transform.forward, direction);
-
-            // プレイヤーとの距離を計算
-            DistanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
             if (healthManager.HP != previousHP)
             {
@@ -75,32 +54,6 @@ namespace Enemy
         protected void ReceiveDamage()
         {
             stateMachine.ChangeState(CoachingSoldierStateID.Damage);
-        }
-
-        public void AttackStart(string attackColliderName)
-        {
-            var attackCollider = attackColliders.FirstOrDefault(attackCollider => attackCollider.name == attackColliderName);
-
-            if (attackCollider == null) { return; }
-
-            attackCollider.SetActive(true);
-        }
-
-        public void AttackEnd(string attackColliderName)
-        {
-            var attackCollider = attackColliders.FirstOrDefault(attackCollider => attackCollider.name == attackColliderName);
-
-            if (attackCollider == null) { return; }
-
-            attackCollider.SetActive(false);
-        }
-
-        public void ResetAttackCollider()
-        {
-            foreach (var attackCollider in attackColliders)
-            {
-                attackCollider.SetActive(false);
-            }
         }
     }
 }

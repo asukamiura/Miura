@@ -1,5 +1,4 @@
-﻿using Unity.VisualScripting;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Enemy
 {
@@ -18,7 +17,7 @@ namespace Enemy
 
         public void Enter()
         {
-            core.animator.CrossFade("Idle", 0.1f);
+            core.Animator.CrossFade("Idle", 0.1f);
             core.transform.position = new Vector3(core.transform.position.x, resetPosY, core.transform.position.z);
         }
 

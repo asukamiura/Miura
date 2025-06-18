@@ -8,6 +8,9 @@
     Retreat,
     Move,
     Attack,
+    AttackBite,
+    AttackClaw,
+    AttackHorn,
     Damage,
     Die,
 }

@@ -1,14 +1,17 @@
 ﻿using Player;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
 public abstract class EnemyCoreBase : MonoBehaviour, ISlowable
 {
-    [SerializeField] float[] weights;
     [SerializeField] protected PlayerCore playerCore;
     [SerializeField] protected PlayerAttackManager attackManager;
+    [SerializeField] List<GameObject> attackColliders = new List<GameObject>();
+    [SerializeField] Collider bodyCollider;
 
-    float totalWeight;
+    protected bool isMovable = false;
     bool isRotate;
     float currentAngle;
     Quaternion targetRotation;
@@ -16,35 +19,52 @@ public abstract class EnemyCoreBase : MonoBehaviour, ISlowable
     float baseSpeed = 1;
 
     public EffectPlayer effectPlayer;
-    public Rigidbody rb;
-    public Animator animator;
     public HealthManager healthManager;
     public NavMeshAgent navMeshAgent;
     public Transform playerTransform;
     public float rotationSpeed = 1.0f;
-    public int attackType;
+    //public int attackType;
+    public Rigidbody Rb { get; private set; }
+    public Animator Animator { get; private set; }
+    public AnimatorStateInfo CurrentStateInfo => Animator.GetCurrentAnimatorStateInfo(0);
 
     protected virtual void Awake()
+    {
+        Rb = GetComponent<Rigidbody>();
+        Animator = GetComponent<Animator>();
+    }
+
+    protected virtual void Start()
     {
         SlowManager.Instance.Register(this);
     }
 
-    public void MoveActive(bool isActive)
+    protected virtual void Update()
     {
-        this.enabled = isActive;
+        if (Animator.IsInTransition(0))
+        {
+            ResetAttackCollider();
+        }
+
+        if (healthManager.IsDead)
+        {
+            bodyCollider.enabled = false;
+        }
     }
 
-    public void ApplySlow(float factor)
+    public float AngleToPlayer()
     {
-        slowFactor = factor;
-        animator.speed = slowFactor;
-        navMeshAgent.speed = baseSpeed * slowFactor;
+        // プレイヤー方向の角度を計算
+        Vector3 direction = (playerTransform.position - transform.position).normalized;
+        return Vector3.SignedAngle(transform.forward, direction, Vector3.up);
     }
 
-    public void SetBaseSpeed(float speed)
+    public float DistanceToPlayer()
     {
-        baseSpeed = speed;
-        navMeshAgent.speed = baseSpeed * slowFactor;
+        // プレイヤーとの距離を計算
+        Vector3 playerPosition = playerTransform.position;
+        playerPosition.y = transform.position.y;
+        return Vector3.Distance(transform.position, playerPosition);
     }
 
     /// <summary>
@@ -75,59 +95,48 @@ public abstract class EnemyCoreBase : MonoBehaviour, ISlowable
         }
     }
 
-    /// <summary>
-    /// 攻撃抽選の重さを初期化
-    /// </summary>
-    public void InitializeTotalWeight()
+    public void MoveActive(bool isActive)
     {
-        for (int i = 0; i < weights.Length; i++)
-        {
-            totalWeight += weights[i];
-        }
+        navMeshAgent.isStopped = !isActive;
+        isMovable = isActive;
     }
 
-    /// <summary>
-    /// 重さの更新
-    /// </summary>
-    /// <param name="attackNum">攻撃タイプ</param>
-    public void UpdateTotalWeight(int attackNum)
+    public void ApplySlow(float factor)
     {
-        totalWeight = 0;
-
-        for (int i = 0; i < weights.Length; i++)
-        {
-            if (i == attackNum)
-            {
-                weights[i] = 10;
-            }
-            else
-            {
-                weights[i] += 10;
-            }
-
-            totalWeight += weights[i];
-        }
+        slowFactor = factor;
+        Animator.speed = slowFactor;
+        navMeshAgent.speed = baseSpeed * slowFactor;
     }
 
-    /// <summary>
-    /// 攻撃タイプの抽選
-    /// </summary>
-    /// <returns>攻撃タイプ</returns>
-    public int ChooseAttack()
+    public void SetBaseSpeed(float speed)
     {
-        var randomPoint = Random.Range(0, totalWeight);
+        baseSpeed = speed;
+        navMeshAgent.speed = baseSpeed * slowFactor;
+    }
 
-        var currentWeight = 0f;
-        for (int i = 0; i < weights.Length; i++)
+    public void AttackStart(string attackColliderName)
+    {
+        var attackCollider = attackColliders.FirstOrDefault(attackCollider => attackCollider.name == attackColliderName);
+
+        if (attackCollider == null) { return; }
+
+        attackCollider.SetActive(true);
+    }
+
+    public void AttackEnd(string attackColliderName)
+    {
+        var attackCollider = attackColliders.FirstOrDefault(attackCollider => attackCollider.name == attackColliderName);
+
+        if (attackCollider == null) { return; }
+
+        attackCollider.SetActive(false);
+    }
+
+    public void ResetAttackCollider()
+    {
+        foreach (var attackCollider in attackColliders)
         {
-            currentWeight += weights[i];
-
-            if (randomPoint < currentWeight)
-            {
-                return i;
-            }
+            attackCollider.SetActive(false);
         }
-
-        return weights.Length - 1;
     }
 }
