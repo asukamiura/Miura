@@ -1518,7 +1518,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2117636195988938852}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.029428625, y: -0.15502536, z: 0.01342417, w: 0.9873808}
+  m_LocalRotation: {x: -0.029428652, y: -0.15502536, z: 0.013424183, w: 0.9873808}
   m_LocalPosition: {x: -44.81421, y: -3.4923196, z: -18.870375}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1581,7 +1581,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2320622036115912720}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0023609684, y: 0.024596162, z: -0.014061679, w: 0.99959576}
+  m_LocalRotation: {x: -0.0023609716, y: 0.024596162, z: -0.014061692, w: 0.99959576}
   m_LocalPosition: {x: -31.858198, y: 0.7377821, z: 0.07167935}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2867,6 +2867,7 @@ GameObject:
   - component: {fileID: 8065231349993632893}
   - component: {fileID: 1738272191226915279}
   - component: {fileID: 4129853314656525480}
+  - component: {fileID: 7419425259773104909}
   - component: {fileID: 234639639226804085}
   - component: {fileID: 6041508611405695080}
   - component: {fileID: 4218965704652188992}
@@ -2906,11 +2907,11 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4532858735606213782}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 79b50b34e44b5fd4db1cdc9535a3c86b, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 1420a40f7b2cd1341944b103718427f4, type: 3}
   m_Controller: {fileID: 9100000, guid: 4ed6cd7606c959946b46e12cfdda84f6, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -2957,29 +2958,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31f7a693293a66147a30c34818c4fe5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weights:
-  - 10
-  - 10
-  - 10
   playerCore: {fileID: 0}
   attackManager: {fileID: 0}
+  attackColliders:
+  - {fileID: 6627522629096563995}
+  - {fileID: 1249216487329870204}
+  bodyCollider: {fileID: 6104123767690520817}
   effectPlayer: {fileID: 4129853314656525480}
-  rb: {fileID: 1895367144242402313}
-  animator: {fileID: 988720251831324649}
   healthManager: {fileID: 1738272191226915279}
   navMeshAgent: {fileID: 234639639226804085}
   playerTransform: {fileID: 0}
   rotationSpeed: 10
-  attackType: 0
-  attackColliders:
-  - {fileID: 6627522629096563995}
-  - {fileID: 1249216487329870204}
   breathPoint: {fileID: 4943272216256874144}
-  energyBall: {fileID: 8014519059749287405, guid: a10fffb09cd6a1a4b92421e2bfc7a33b, type: 3}
-  eyeTransform: {fileID: 7264230067409447030}
-  energyBalls: []
-  rotationAngle: 10
-  minDistance: 0
   isJustGuarded: 0
   attack2EffectTransform: {fileID: 5624471764105475044}
 --- !u!114 &1738272191226915279
@@ -3010,6 +3000,20 @@ MonoBehaviour:
   effectList:
   - {fileID: 4002895575842129479}
   - {fileID: 2379347798294901139}
+--- !u!114 &7419425259773104909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4532858735606213782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5ac28fed005f654bb2e46909b2bca81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  breathPoint: {fileID: 4943272216256874144}
+  projectilePrefab: {fileID: 8014519059749287405, guid: a10fffb09cd6a1a4b92421e2bfc7a33b, type: 3}
 --- !u!195 &234639639226804085
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -3019,7 +3023,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 4532858735606213782}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 2
+  m_Radius: 2.6
   m_Speed: 0
   m_Acceleration: 0
   avoidancePriority: 50
@@ -3028,7 +3032,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 0
-  m_Height: 2
+  m_Height: 4
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -5430,7 +5434,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8418430597648675791}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.014022791, y: -0.15301722, z: -0.055567767, w: 0.98656034}
+  m_LocalRotation: {x: -0.014022804, y: -0.15301722, z: -0.05556782, w: 0.98656034}
   m_LocalPosition: {x: -20.147436, y: -0.81160164, z: -21.016256}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

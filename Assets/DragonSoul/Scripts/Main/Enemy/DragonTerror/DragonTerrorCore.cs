@@ -1,5 +1,4 @@
 ﻿using Player;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,12 +7,7 @@ namespace Enemy
     public class DragonTerrorCore : EnemyCoreBase
     {
         [SerializeField] Transform breathPoint;
-        [SerializeField] GameObject energyBall;
-        [SerializeField] Transform eyeTransform;
 
-        const float BreathPower = 20;
-
-        public List<GameObject> energyBalls = new List<GameObject>();
         public StateMachine<DragonTerrorStateID> stateMachine;
         public AttackSelector<DragonTerrorStateID> AttackSelector { get; private set; }
         public bool isFlying = false;
@@ -44,8 +38,10 @@ namespace Enemy
             attackManager.OnEnemyHit += ReceiveDamage;
         }
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             stateMachine.Initialize(DragonTerrorStateID.Idle);
 
             ResetAttackCollider();
@@ -74,8 +70,6 @@ namespace Enemy
             {
                 isJustGuarded = false;
             }
-
-            Debug.Log(stateMachine.CurrentState);
         }
 
         void FixedUpdate()
@@ -90,27 +84,6 @@ namespace Enemy
             {
                 stateMachine.ChangeState(DragonTerrorStateID.Damage);
             }
-        }
-
-        public void GenerateEnergyBall()
-        {
-            GameObject breathObj = Instantiate(energyBall, breathPoint.transform.position, Quaternion.identity);
-            breathObj.GetComponent<Rigidbody>().velocity = transform.forward * BreathPower;
-            energyBalls.Add(breathObj);
-            StartCoroutine(DestroyEnergyBall(12, breathObj));
-        }
-
-        IEnumerator DestroyEnergyBall(float delay, GameObject breathObj)
-        {
-            yield return new WaitForSeconds(delay);
-
-            energyBalls.Remove(breathObj);
-            Destroy(breathObj);
-        }
-
-        public void ClearEnergyBallsList()
-        {
-            energyBalls.Clear();
         }
     }
 }

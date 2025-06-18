@@ -21,8 +21,10 @@
             attackManager.OnEnemyHit += ReceiveDamage;
         }
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             stateMachine.Initialize(CoachingSoldierStateID.Idle);
 
             ResetAttackCollider();
@@ -32,7 +34,10 @@
         {
             base.Update();
 
-            stateMachine.StateUpdate();
+            if (isMovable)
+            {
+                stateMachine.StateUpdate();
+            }
 
             if (healthManager.HP != previousHP)
             {

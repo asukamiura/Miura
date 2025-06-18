@@ -23,16 +23,20 @@ public abstract class EnemyCoreBase : MonoBehaviour, ISlowable
     public NavMeshAgent navMeshAgent;
     public Transform playerTransform;
     public float rotationSpeed = 1.0f;
-    public int attackType;
+    //public int attackType;
     public Rigidbody Rb { get; private set; }
     public Animator Animator { get; private set; }
     public AnimatorStateInfo CurrentStateInfo => Animator.GetCurrentAnimatorStateInfo(0);
 
     protected virtual void Awake()
     {
-        SlowManager.Instance.Register(this);
         Rb = GetComponent<Rigidbody>();
         Animator = GetComponent<Animator>();
+    }
+
+    protected virtual void Start()
+    {
+        SlowManager.Instance.Register(this);
     }
 
     protected virtual void Update()

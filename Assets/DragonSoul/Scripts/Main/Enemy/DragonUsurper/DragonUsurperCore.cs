@@ -8,9 +8,7 @@ namespace Enemy
     public class DragonUsurperCore : EnemyCoreBase
     {
         [SerializeField] Transform breathPoint;
-        [SerializeField] GameObject energyBall;
 
-        public List<GameObject> energyBalls = new List<GameObject>();
         public StateMachine<DragonUsurperStateID> stateMachine;
         public AttackSelector<DragonUsurperStateID> attackSelector;
         public bool isJustGuarded = false;
@@ -40,9 +38,12 @@ namespace Enemy
             attackManager.OnEnemyHit += ReceiveDamage;
         }
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+            
             stateMachine.Initialize(DragonUsurperStateID.Idle);
+            
             ResetAttackCollider();
         }
 
@@ -83,28 +84,7 @@ namespace Enemy
             {
                 stateMachine.ChangeState(DragonUsurperStateID.Damage);
             }
-        }
-
-        public void GenerateEnergyBall()
-        {
-            GameObject breathObj = Instantiate(energyBall, breathPoint.transform.position, Quaternion.identity);
-            breathObj.GetComponent<Rigidbody>().velocity = transform.forward * 10;
-            energyBalls.Add(breathObj);
-            StartCoroutine(DestroyEnergyBall(12, breathObj));
-        }
-
-        IEnumerator DestroyEnergyBall(float delay, GameObject breathObj)
-        {
-            yield return new WaitForSeconds(delay);
-
-            energyBalls.Remove(breathObj);
-            Destroy(breathObj);
-        }
-
-        public void ClearEnergyBallsList()
-        {
-            energyBalls.Clear();
-        }
+        }  
     }
 }
 

@@ -34,8 +34,10 @@ namespace Enemy
             attackManager.OnEnemyHit += ReceiveDamage;
         }
 
-        void Start()
+        protected override void Start()
         {
+            base.Start();
+
             stateMachine.Initialize(DragonNightmareStateID.Idle);
 
             ResetAttackCollider();

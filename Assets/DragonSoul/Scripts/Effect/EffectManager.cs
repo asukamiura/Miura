@@ -48,21 +48,35 @@ public class EffectManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// エフェクトを再生
+    /// </summary>
+    /// <param name="effectName">エフェクトの名前</param>
+    /// <param name="effectPos">再生開始位置</param>
+    /// <param name="effectRotation">再生開始回転</param>
     public void PlayEffect(string effectName, Vector3 effectPos, Quaternion effectRotation)
     {
         var effect = effectList.FirstOrDefault(effect => effect.name == effectName);
 
         if (effect == null) { return; }
 
-        GameObject obj = Instantiate(effect, effectPos, effectRotation);
+        GameObject gameObject = ObjectPool.Instance.GetGameObject(effect,effectPos,effectRotation);
 
-        StartCoroutine(DestroyEffect(obj, effectDic[effectName]));
+        StartCoroutine(ReleaseEffect(gameObject, effectDic[effectName]));
     }
 
-    IEnumerator DestroyEffect(GameObject effect, float duration)
+    public void PlayEffect(GameObject effectPrefab, Vector3 effectPos, Quaternion effectRotation, float duration)
+    {
+        GameObject gameObject = ObjectPool.Instance.GetGameObject(effectPrefab, effectPos, effectRotation);
+
+        StartCoroutine(ReleaseEffect(gameObject, duration));
+
+    }
+
+    IEnumerator ReleaseEffect(GameObject effect, float duration)
     {
         yield return new WaitForSeconds(duration);
 
-        Destroy(effect);
+        ObjectPool.Instance.ReleaseGameObject(effect);
     }
 }
