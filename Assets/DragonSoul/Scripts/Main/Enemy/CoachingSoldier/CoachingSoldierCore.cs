@@ -41,7 +41,7 @@
 
             if (healthManager.HP != previousHP)
             {
-                healthManager.Heal(100);
+                healthManager.Heal(9999);
                 previousHP = healthManager.HP;
             }
         }
