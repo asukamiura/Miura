@@ -7,6 +7,7 @@ public class ClearState : IState<GameFlowStateID>
 {
     GameFlowManagerBase flowManager;
     const float ChangeTiming = 2f;
+    const float FadeDuration = 2f;
 
     public ClearState(GameFlowManagerBase flowManager)
     {
@@ -45,7 +46,7 @@ public class ClearState : IState<GameFlowStateID>
     void ChangeScene(PlayableDirector director)
     {
         SoundManager.Instance.StopBGMWithFadeOut("Main");
-        FadeManager.Instance.LoadScene("ResultScene");
+        FadeManager.Instance.LoadScene("ResultScene", FadeDuration);
     }
 
     IEnumerator WaitForTimelineEnd()
