@@ -5,9 +5,6 @@ public class SaveData
     public float volMaster;
     public float volBgm;
     public float volSe;
-    public int clearStageNum;
-    public int highScoreStage1;
-    public int highScoreStage2;
-    public int highScoreStage3;
-    public int[] highScore;
+    public int[] highScores = new int[3];
+    public int[] bestRanks = new int[3];
 }

@@ -1,1 +1,0 @@
-マニュアルはhttps://gitlab.com/towelfunnelvrc/towelcloud/-/wikis/TowelCloudにあります

@@ -32,13 +32,15 @@ public class ScoreManager : MonoBehaviour
     int justGuardCount = 0; // ジャストガードカウント
     int totalScore = 0;     // 合計スコア
     float currentTime = 0;  // 経過時間
-    enum Rank
+    int highScore = 0;
+
+    enum Rank 
     {
-        D,
-        C,
-        B,
+        S = 0,
         A,
-        S,
+        B,
+        C,
+        D,
     }
 
     Rank rank = Rank.D;
@@ -148,7 +150,17 @@ public class ScoreManager : MonoBehaviour
         return rankName;
     }
 
-    private void OnDisable()
+    public void UpdateHighScore()
+    {
+        SaveManager.Instance.SaveHighScore((int)StageSelectModel.inStageNum - 1, totalScore);
+    }
+
+    public void UpdateBestRank()
+    {
+        SaveManager.Instance.SaveBestRank((int)StageSelectModel.inStageNum - 1, (int)rank);
+    }
+
+    void OnDisable()
     {
         CurrentRank = GetRank();
         CurrentScore = totalScore;
