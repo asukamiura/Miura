@@ -1,16 +1,15 @@
 ﻿using Player;
+using SoundSystem;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using SoundSystem;
-using UnityEngine.Playables;
 
 public class TutorialTaskManager : MonoBehaviour
 {
     [SerializeField] GameFlowManagerBase gameFlowManager;
-   
+
     public PlayerCore playerCore;
     public ITutorialTask currentTask; // 現在のタスク
     public int attackNormalCount = 0;      // 通常攻撃をした回数
@@ -78,7 +77,7 @@ public class TutorialTaskManager : MonoBehaviour
         justDodgeTaskUI.SetActive(false);
         justGuardTaskUI.SetActive(false);
         attackUltimateTaskUI.SetActive(false);
-        StartCoroutine(SetFirstTask(tutorialTasks.First(), FirstWaitTime));
+        StartCoroutine(SetFirstTask(tutorialTasks.First()));
     }
 
     void Update()
@@ -123,9 +122,12 @@ public class TutorialTaskManager : MonoBehaviour
     /// <param name="task">最初のタスク</param>
     /// <param name="waitTime">最初のタスクを表示するまでの待機時間</param>
     /// <returns></returns>
-    IEnumerator SetFirstTask(ITutorialTask task, float waitTime)
+    IEnumerator SetFirstTask(ITutorialTask task)
     {
-        yield return new WaitForSeconds(waitTime);
+        while (gameFlowManager.CurrentState == GameFlowStateID.Intro)
+        {
+            yield return null;
+        }
 
         currentTask = task;
         currentTask.Enter();

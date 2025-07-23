@@ -11,8 +11,6 @@ public class SaveManager : MonoBehaviour
     const float DefaultVolumeMaster = 0.5f;
     const float DefaultVolumeBgm = 0.5f;
     const float DefaultVolumeSe = 0.5f;
-    const int DefaultClearStageNum = 0;
-    const int DefaultHighScore = 0;
 
     FileStream file;
     BinaryFormatter bf;
@@ -68,6 +66,8 @@ public class SaveManager : MonoBehaviour
             data.volMaster = DefaultVolumeMaster;
             data.volBgm = DefaultVolumeBgm;
             data.volSe = DefaultVolumeSe;
+            data.highScores = new int[] { 0, 0, 0 };
+            data.bestRanks = new int[] { 4, 4, 4 };
 
             bf.Serialize(file, data);
         }
@@ -85,16 +85,23 @@ public class SaveManager : MonoBehaviour
     {
         try
         {
-            int csn = LoadClearStageNum();
+            SaveData data;
 
-            InitFileSave();
+            if (SaveDataCheck())
+            {
+                InitFileLoad();
+                data = bf.Deserialize(file) as SaveData;
+                CloseFile();
+            }
+            else
+            {
+                data = new SaveData();
+            }
 
-            SaveData data = new SaveData();
             data.volMaster = vm;
             data.volBgm = vb;
             data.volSe = vs;
-            data.clearStageNum = csn;
-
+            InitFileSave();
             bf.Serialize(file, data);
         }
         catch (IOException)
@@ -128,76 +135,29 @@ public class SaveManager : MonoBehaviour
         }
     }
 
-    public void SaveClearStageNum(int csn)
+    public void SaveHighScore(int stageNum, int newScore)
     {
         try
         {
-            float vm = 0.5f;
-            float vb = 0.5f;
-            float vs = 0.5f;
-            LoadAudio(ref vm, ref vb, ref vs);
+            SaveData data;
+
+            if (SaveDataCheck())
+            {
+                InitFileLoad();
+                data = bf.Deserialize(file) as SaveData;
+                CloseFile();
+            }
+            else
+            {
+                data = new SaveData();
+            }
+
+            if (data.highScores[stageNum] < newScore)
+            {
+                data.highScores[stageNum] = newScore;
+            }
 
             InitFileSave();
-
-            SaveData data = new SaveData();
-            data.volMaster = vm;
-            data.volBgm = vb;
-            data.volSe = vs;
-            data.clearStageNum = csn;
-
-            bf.Serialize(file, data);
-        }
-        catch (IOException)
-        {
-            Debug.LogError("failed to open file");
-        }
-        finally
-        {
-            if (file != null) { CloseFile(); }
-        }
-    }
-
-    public int LoadClearStageNum()
-    {
-        int rp = 0;
-        try
-        {
-            InitFileLoad();
-
-            SaveData data = bf.Deserialize(file) as SaveData;
-            rp = data.clearStageNum;
-
-        }
-        catch (IOException)
-        {
-            Debug.LogError("failed to open file");
-        }
-        finally
-        {
-            if (file != null) { CloseFile(); }
-        }
-        return rp;
-    }
-
-    public void SaveHighScore(int stageNum, int highScore)
-    {
-        try
-        {
-            float vm = 0.5f;
-            float vb = 0.5f;
-            float vs = 0.5f;
-            LoadAudio(ref vm, ref vb, ref vs);
-            int csn = LoadClearStageNum();
-
-            InitFileSave();
-
-            SaveData data = new SaveData();
-            data.volMaster = vm;
-            data.volBgm = vb;
-            data.volSe = vs;
-            data.clearStageNum = csn;
-            data.highScore[stageNum] = highScore;
-
             bf.Serialize(file, data);
         }
         catch (IOException)
@@ -219,7 +179,7 @@ public class SaveManager : MonoBehaviour
 
             SaveData data = bf.Deserialize(file) as SaveData;
 
-            highScore = data.highScore[stageNum];
+            highScore = data.highScores[stageNum];
 
         }
         catch (IOException)
@@ -231,5 +191,63 @@ public class SaveManager : MonoBehaviour
             if (file != null) { CloseFile(); }
         }
         return highScore;
+    }
+
+    public void SaveBestRank(int stageNum, int newRank)
+    {
+        try
+        {
+            SaveData data;
+
+            if (SaveDataCheck())
+            {
+                InitFileLoad();
+                data = bf.Deserialize(file) as SaveData;
+                CloseFile();
+            }
+            else
+            {
+                data = new SaveData();
+            }
+
+            if (data.bestRanks[stageNum] > newRank)
+            {
+                data.bestRanks[stageNum] = newRank;
+            }
+
+            InitFileSave();
+            bf.Serialize(file, data);
+        }
+        catch (IOException)
+        {
+            Debug.LogError("failed to open file");
+        }
+        finally
+        {
+            if (file != null) { CloseFile(); }
+        }
+    }
+
+    public int LoadBestRank(int stageNum)
+    {
+        int bestRank = 0;
+        try
+        {
+            InitFileLoad();
+
+            SaveData data = bf.Deserialize(file) as SaveData;
+
+            bestRank = data.bestRanks[stageNum];
+
+        }
+        catch (IOException)
+        {
+            Debug.LogError("failed to open file");
+        }
+        finally
+        {
+            if (file != null) { CloseFile(); }
+        }
+        return bestRank;
     }
 }
