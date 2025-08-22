@@ -3,26 +3,25 @@
 public class PauseState : IState<GameFlowStateID>
 {
     GameFlowManagerBase flowManager;
-    PausePanelManager panelManager;
+    PauseMenuPresenter presenter;
+    //PausePanelManager panelManager;
 
     GameFlowStateID transitionStateID;
 
-    public PauseState(GameFlowManagerBase flowManager, PausePanelManager panelManager)
+    public PauseState(GameFlowManagerBase flowManager, PauseMenuPresenter presenter)
     {
         this.flowManager = flowManager;
-        this.panelManager = panelManager;          
+        this.presenter = presenter;          
     }
 
     InputReciver Input => InputReciver.Instance;
 
-    public GameFlowStateID StateID => GameFlowStateID.Pause;
-
-
+    public GameFlowStateID StateID => GameFlowStateID.Pause; 
 
     public void Enter() 
     {
         transitionStateID = flowManager.PreivousState;
-        panelManager.ClosePressed += () => flowManager.ChangeState(transitionStateID);
+        //panelManager.ClosePressed += () => flowManager.ChangeState(transitionStateID);
 
         flowManager.ShowBlackCurtain();
         flowManager.ShowOperationUI();
@@ -34,7 +33,8 @@ public class PauseState : IState<GameFlowStateID>
         Time.timeScale = 0;
 
         // ポーズ画面を表示
-        panelManager.ShowPausePanel();
+        //panelManager.ShowPausePanel();
+        presenter.Open(onClose: () => flowManager.ChangeState(transitionStateID));
     }
     
     public void Update() 
@@ -47,7 +47,8 @@ public class PauseState : IState<GameFlowStateID>
     public void Exit() 
     {
         // ポーズ画面を非表示
-        panelManager.HidePausePanel();
+        //panelManager.HidePausePanel();
+        presenter.Close();
 
         flowManager.HideBlackCurtain();
         flowManager.HideOperationUI();
@@ -57,6 +58,6 @@ public class PauseState : IState<GameFlowStateID>
         // UI操作を無効
         Input.EnableUIInput(false);
 
-        panelManager.ClosePressed -= () => flowManager.ChangeState(transitionStateID);
+        //panelManager.ClosePressed -= () => flowManager.ChangeState(transitionStateID);
     }
 }

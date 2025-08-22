@@ -4,14 +4,14 @@ using System.Collections;
 public class GameOverState : IState<GameFlowStateID>
 {
     GameFlowManagerBase flowManager;
-    GameOverPanelManager panelManager;
+    GameOverPresenter presenter;
 
     const float WaitTime = 2;
 
-    public GameOverState(GameFlowManagerBase flowManager, GameOverPanelManager panelManager)
+    public GameOverState(GameFlowManagerBase flowManager, GameOverPresenter presenter)
     {
         this.flowManager = flowManager;
-        this.panelManager = panelManager;
+        this.presenter = presenter;
     }
 
     InputReciver Input => InputReciver.Instance;
@@ -38,7 +38,7 @@ public class GameOverState : IState<GameFlowStateID>
     {
         yield return new WaitForSeconds(WaitTime);
 
-        panelManager.ShowGameOverPanel();
+        presenter.Open();
         flowManager.ShowBlackCurtain();
         flowManager.ShowOperationUI();
         Time.timeScale = 0;

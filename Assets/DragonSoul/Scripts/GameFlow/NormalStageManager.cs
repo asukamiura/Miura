@@ -2,29 +2,18 @@
 
 public class NormalStageManager : GameFlowManagerBase
 {
-    [SerializeField] PausePanelManager pausePanelManager;
-    [SerializeField] GameOverPanelManager gameOverManager;
-
-    public static NormalStageManager Instance { get; private set; }
+    [SerializeField] PauseMenuPresenter pauseMenuPresenter;
+    [SerializeField] GameOverPresenter gameOverPresenter;
 
     protected override void Awake()
     {
         base.Awake();
 
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-
         stateMachine.RegisterState(new IntroState(this, enemyCore));
         stateMachine.RegisterState(new PlayingState(this, playerHealthManager, enemyHealthManager, enemyCore));
-        stateMachine.RegisterState(new PauseState(this, pausePanelManager));
+        stateMachine.RegisterState(new PauseState(this, pauseMenuPresenter));
         stateMachine.RegisterState(new ClearState(this));
-        stateMachine.RegisterState(new GameOverState(this, gameOverManager));
+        stateMachine.RegisterState(new GameOverState(this, gameOverPresenter));
     }
 
     protected override void Start()

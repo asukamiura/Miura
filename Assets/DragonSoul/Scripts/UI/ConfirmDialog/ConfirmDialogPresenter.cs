@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SoundSystem;
+using System;
 using UnityEngine;
 
 public class ConfirmDialogPresenter : MonoBehaviour
@@ -17,25 +18,39 @@ public class ConfirmDialogPresenter : MonoBehaviour
 
     void Start()
     {
+        view.Hide();
+    }
+
+    void OnEnable()
+    {
         view.OnPressedLeft += TriggerPressedLeft;
         view.OnPressedRight += TriggerPressedRight;
         view.OnPressedDecision += TriggerPressedDecision;
+        view.OnPressedClose += TriggerPressedClose;
+    }
 
-        view.Hide();
+    void OnDisable()
+    {
+        view.OnPressedLeft -= TriggerPressedLeft;
+        view.OnPressedRight -= TriggerPressedRight;
+        view.OnPressedDecision -= TriggerPressedDecision;
+        view.OnPressedClose -= TriggerPressedClose;
     }
 
     void TriggerPressedLeft()
     {
-        if (isPressed) { return; }
+        if (isPressed || model.CurrentState == ConfirmDialogModel.ConfirmState.Yes) { return; }
 
+        SoundManager.Instance.PlaySe("MenuMove");
         model.ChangeStateLeft();
         view.MoveSelectArrow((int)model.CurrentState);
     }
 
     void TriggerPressedRight()
     {
-        if (isPressed) { return; }
+        if (isPressed || model.CurrentState == ConfirmDialogModel.ConfirmState.No) { return; }
 
+        SoundManager.Instance.PlaySe("MenuMove");
         model.ChangeStateRight();
         view.MoveSelectArrow((int)model.CurrentState);
     }
@@ -46,30 +61,33 @@ public class ConfirmDialogPresenter : MonoBehaviour
 
         isPressed = true;
 
+        SoundManager.Instance.PlaySe("Press");
+
         switch (model.CurrentState)
         {
             case ConfirmDialogModel.ConfirmState.Yes:
                 OnYes?.Invoke();
                 break;
             case ConfirmDialogModel.ConfirmState.No:
-                view.Hide();
-                OnNo?.Invoke();
+                TriggerPressedClose();
                 break;
         }
     }
 
+    void TriggerPressedClose()
+    {
+        view.Hide();
+        OnNo?.Invoke();
+    }
+
     public void Open(Action onYes, Action onNo)
     {
-        model.SetState();
         OnYes = onYes;
         OnNo = onNo;
 
+        isPressed = false;
+        model.SetInitialState();
         view.MoveSelectArrow((int)model.CurrentState);
         view.Show();
-    }
-
-    public void Close()
-    {
-        view.Hide();
     }
 }

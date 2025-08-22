@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class ConfirmDialogView : MonoBehaviour
+public class GameOverView : MonoBehaviour
 {
     InputReciver Input => InputReciver.Instance;
 
@@ -11,7 +11,6 @@ public class ConfirmDialogView : MonoBehaviour
     public Action OnPressedLeft;
     public Action OnPressedRight;
     public Action OnPressedDecision;
-    public Action OnPressedClose;
 
     void Update()
     {
@@ -28,11 +27,6 @@ public class ConfirmDialogView : MonoBehaviour
         if (Input.Decision)
         {
             OnPressedDecision?.Invoke();
-        }
-
-        if (Input.Return)
-        {
-            OnPressedClose?.Invoke();
         }
     }
 

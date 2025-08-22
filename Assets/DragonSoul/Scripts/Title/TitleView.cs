@@ -1,28 +1,30 @@
-﻿using System;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System;
 
-public class ConfirmDialogView : MonoBehaviour
+public class TitleView : MonoBehaviour
 {
     InputReciver Input => InputReciver.Instance;
 
     [SerializeField] GameObject[] buttons;
     [SerializeField] GameObject selectArrow;
 
-    public Action OnPressedLeft;
-    public Action OnPressedRight;
+    public Action OnPressedUp;
+    public Action OnPressedDown;
     public Action OnPressedDecision;
     public Action OnPressedClose;
 
     void Update()
     {
-        if (Input.SelectMoveLeft)
+        if (Input.SelectMoveUp)
         {
-            OnPressedLeft?.Invoke();
+            OnPressedUp?.Invoke();
         }
 
-        if (Input.SelectMoveRight)
+        if (Input.SelectMoveDown)
         {
-            OnPressedRight?.Invoke();
+            OnPressedDown?.Invoke();
         }
 
         if (Input.Decision)
