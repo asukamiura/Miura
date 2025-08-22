@@ -1,12 +1,7 @@
 ﻿public class ConfirmDialogModel
 {
     public enum ConfirmState { Yes=0, No }
-    ConfirmState currentState;
-
-    public ConfirmDialogModel(ConfirmState intialState = ConfirmState.No)
-    {
-        currentState = intialState;
-    }
+    ConfirmState currentState = ConfirmState.No;
 
     public ConfirmState CurrentState => currentState;
 
@@ -26,7 +21,7 @@
         }
     }
 
-    public void SetState()
+    public void SetInitialState()
     {
         currentState = ConfirmState.No;
     }

@@ -1,13 +1,13 @@
 ﻿using SoundSystem;
 using UnityEngine;
+using static StageSelectModel;
 
 public class StageSelectPresenter : MonoBehaviour
 {
-    [SerializeField] ConfirmDialogView confirmDialogView;
     [SerializeField] ConfirmDialogPresenter confirmDialogPresenter;
     [SerializeField] StageSelectView view;
     StageSelectModel model;
-    bool isDialogOpen = false;
+    bool isOpenDialog = false;
     bool isPressed = false;
 
     void Awake()
@@ -29,7 +29,7 @@ public class StageSelectPresenter : MonoBehaviour
 
     void TriggerPressedLeft()
     {
-        if (isDialogOpen || isPressed) { return; }
+        if (isOpenDialog || isPressed || model.CurrentState == SelectState.Tutorial) { return; }
 
         SoundManager.Instance.PlaySe("MenuMove");
         model.ChangeStateLeft();
@@ -38,7 +38,7 @@ public class StageSelectPresenter : MonoBehaviour
 
     void TriggerPressedRight()
     {
-        if (isDialogOpen || isPressed) { return; }
+        if (isOpenDialog || isPressed || model.CurrentState == SelectState.Stage3) { return; }
 
         SoundManager.Instance.PlaySe("MenuMove");
         model.ChangeStateRight();
@@ -47,13 +47,13 @@ public class StageSelectPresenter : MonoBehaviour
 
     void TriggerPressedDecision()
     {
-        if (isDialogOpen || isPressed) { return; }
+        if (isOpenDialog || isPressed) { return; }
 
         isPressed = true;
 
         SoundManager.Instance.PlaySe("Press");
 
-        StageSelectModel.inStageNum = model.CurrentState;
+        inStageNum = model.CurrentState;
 
         string sceneName = model.GetSceneName();
         StageSelectManager.Instance.StageSelected(sceneName);
@@ -61,14 +61,13 @@ public class StageSelectPresenter : MonoBehaviour
 
     void TriggerPressedReturn()
     {
-        isDialogOpen = true;
+        isOpenDialog = true;
 
         confirmDialogPresenter.Open(
             onYes: () => StageSelectManager.Instance.ReturnTitle(),
             onNo: () =>
             {
-                confirmDialogPresenter.Close();
-                isDialogOpen = false;
+                isOpenDialog = false;
             });
     }
 

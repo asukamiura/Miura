@@ -1,5 +1,6 @@
 ﻿using SoundSystem;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameFlowManagerBase : MonoBehaviour
 {
@@ -20,8 +21,19 @@ public class GameFlowManagerBase : MonoBehaviour
     public GameFlowStateID PreivousState => stateMachine.PreviousState;
     public float PreviousTimeScale { get; set; } = 1;
 
+    public static GameFlowManagerBase Instance { get; private set; }
+
     protected virtual void Awake()
-    {       
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+
         stateMachine = new StateMachine<GameFlowStateID>();
 
         saveObj = Instantiate(savePrefab);
@@ -73,5 +85,17 @@ public class GameFlowManagerBase : MonoBehaviour
     public void HideBlackCurtain()
     {
         blackCurtain.SetActive(false);
+    }
+
+    public void TransitionToSelectScenen()
+    {
+        SoundManager.Instance.StopBGMWithFadeOut(FadeTime);
+        FadeManager.Instance.LoadScene("SelectScene", FadeTime);
+    }
+
+    public void TransitionToCurrentScenen()
+    {
+        SoundManager.Instance.StopBGMWithFadeOut(FadeTime);
+        FadeManager.Instance.LoadScene(SceneManager.GetActiveScene().name, FadeTime);
     }
 }

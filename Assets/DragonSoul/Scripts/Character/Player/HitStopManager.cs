@@ -22,8 +22,8 @@ public class HitStopManager : MonoBehaviour
         {AttackType.Normal1, new HitStopConfig(0.03f, 0f) },
         {AttackType.Normal2, new HitStopConfig(0.03f, 0f) },
         {AttackType.Normal3, new HitStopConfig(0.03f, 0f) },
-        {AttackType.Special1_1, new HitStopConfig(0.03f, 0f) },
-        {AttackType.Special1_2, new HitStopConfig(0.03f, 0.3f) },
+        {AttackType.Special1_1, new HitStopConfig(0.08f, 0f) },
+        {AttackType.Special1_2, new HitStopConfig(0.08f, 0.3f) },
         {AttackType.Special1_3, new HitStopConfig(0.1f, 1f) },
         {AttackType.Special2_1, new HitStopConfig(0.05f, 0.5f) },
         {AttackType.Special2_2, new HitStopConfig(0.03f, 0.1f) },
@@ -40,17 +40,26 @@ public class HitStopManager : MonoBehaviour
     /// <param name="attackType">攻撃のタイプ</param>
     public void OnHitStop(Animator playerAnimator, Animator[] enemyAnimators, AttackType attackType)
     {
-        StartCoroutine(StopAnimation(playerAnimator, enemyAnimators, hitStopData[attackType].stopDuration));
+        StartCoroutine(StopPlayerAnimation(playerAnimator, hitStopData[attackType].stopDuration));
+        StartCoroutine(StopEnemyAnimation(enemyAnimators, hitStopData[attackType].stopDuration / 4));
 
         CameraManager.Instance.ApplyImpulse(hitStopData[attackType].impulseForce, hitStopData[attackType].stopDuration);
     }
 
     // アニメーションを止める処理
-    IEnumerator StopAnimation(Animator playerAnimator, Animator[] enemyAnimators, float duration)
+    IEnumerator StopPlayerAnimation(Animator playerAnimator, float duration)
     {      
         float playerAnimationSpeed = playerAnimator.speed;
-        playerAnimator.speed = 0;
+        playerAnimator.speed = 0;       
 
+        yield return new WaitForSeconds(duration);
+
+        playerAnimator.speed = playerAnimationSpeed;       
+    }
+
+    // アニメーションを止める処理
+    IEnumerator StopEnemyAnimation(Animator[] enemyAnimators, float duration)
+    {
         float[] enemyAnimationSpeeds = new float[enemyAnimators.Length];
 
         for (int i = 0; enemyAnimators.Length > i; i++)
@@ -60,8 +69,6 @@ public class HitStopManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(duration);
-
-        playerAnimator.speed = playerAnimationSpeed;
 
         for (int i = 0; i < enemyAnimators.Length; i++)
         {
