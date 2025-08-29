@@ -2,12 +2,14 @@
 using System.Collections;
 using SoundSystem;
 using UnityEngine.Playables;
+using Unity.VisualScripting;
 
 public class ClearState : IState<GameFlowStateID>
 {
     GameFlowManagerBase flowManager;
     const float ChangeTiming = 2f;
     const float FadeDuration = 2f;
+    const float WaitFrame = 30;
 
     public ClearState(GameFlowManagerBase flowManager)
     {
@@ -26,6 +28,9 @@ public class ClearState : IState<GameFlowStateID>
         TimelineManager.Instance.ClearDirector.Play();
 
         PostEffectManager.Instance.ChangePostEffect(ProfileNum.Clear, 0);
+
+        //ScreenShotManager.Instance.TakeScreenShot();
+        flowManager.StartCoroutine(WaitForTakeScreenShot());
 
         flowManager.StartCoroutine(ChangeTimeScale(ChangeTiming));
         flowManager.StartCoroutine(WaitForTimelineEnd());
@@ -61,5 +66,15 @@ public class ClearState : IState<GameFlowStateID>
         }
 
         ChangeScene(director);
+    }
+
+    IEnumerator WaitForTakeScreenShot()
+    {
+        for (int i = 0; i < WaitFrame; i++)
+        {
+            yield return null;
+        }
+
+        ScreenShotManager.Instance.TakeScreenShot();
     }
 }

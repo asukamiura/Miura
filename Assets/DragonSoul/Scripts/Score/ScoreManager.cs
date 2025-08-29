@@ -32,7 +32,7 @@ public class ScoreManager : MonoBehaviour
     int justGuardCount = 0; // ジャストガードカウント
     int totalScore = 0;     // 合計スコア
     float currentTime = 0;  // 経過時間
-    int highScore = 0;
+    bool isStopTimer = false;
 
     enum Rank 
     {
@@ -47,10 +47,11 @@ public class ScoreManager : MonoBehaviour
 
     public static ScoreManager Instance { get; set; }
 
-    public static int JustGuardCount { get; set; } = 0;
-    public static int JustDodgeCount { get; set; } = 0;
-    public static string CurrentRank { get; set; } = "D";
-    public static int CurrentScore { get; set; } = 0;
+    public int JustDodgeCount { get { return justDodgeCount; } }
+    public int JustGuardCount { get { return justGuardCount; } }
+    public string CurrentRank { get; set; } = "D";
+    public int CurrentScore { get { return totalScore; } }
+    public float ClearTime { get { return currentTime; } }
     
     void Awake()
     {
@@ -71,8 +72,83 @@ public class ScoreManager : MonoBehaviour
 
     void Update()
     {
-        currentTime += Time.deltaTime;
+        if (!isStopTimer)
+        {
+            currentTime += Time.deltaTime;
+        }
+    }
+  
+    void CountUpJustDodge(string timing)
+    {
+        if (timing == "Just")
+        {
+            justDodgeCount++;
+        }
+    }
 
+    void CountUpJustGuard(string timing)
+    {
+        if (timing == "Just")
+        {
+            justGuardCount++;
+        }
+    }
+
+    public void StopTimer()
+    {
+        isStopTimer = true;
+    }
+
+    /// <summary>
+    /// スコア加算処理
+    /// </summary>
+    /// <param name="name">加算するスコアの登録名</param>
+    public void AddScore(string name)
+    {
+        if (scoreDic.TryGetValue(name, out int score))
+        {
+            totalScore += score;
+        }
+
+        // ランクを更新
+        UpdateRank();
+    }
+
+    /// <summary>
+    /// スコア減算処理
+    /// </summary>
+    /// <param name="value">減算量</param>
+    public void SubtractScore(int value)
+    {
+        totalScore -= value;
+
+        // ランクを更新
+        UpdateRank();
+    }
+
+    /// <summary>
+    /// ランク取得用メソッド
+    /// </summary>
+    /// <returns>ランク</returns>
+    public string GetRank()
+    {
+        string rankName = "";
+        switch (rank)
+        {
+            case Rank.S: rankName = "S"; break;
+            case Rank.A: rankName = "A"; break;
+            case Rank.B: rankName = "B"; break;
+            case Rank.C: rankName = "C"; break;
+            case Rank.D: rankName = "D"; break;
+        }
+        return rankName;
+    }
+
+    /// <summary>
+    /// 現在のランクを更新
+    /// </summary>
+    void UpdateRank()
+    {
         if (totalScore >= 8000)
         {
             rank = Rank.S;
@@ -95,61 +171,6 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    void CountUpJustDodge(string timing)
-    {
-        if (timing == "Just")
-        {
-            justDodgeCount++;
-        }
-    }
-
-    void CountUpJustGuard(string timing)
-    {
-        if (timing == "Just")
-        {
-            justGuardCount++;
-        }
-    }
-
-    /// <summary>
-    /// スコア加算処理
-    /// </summary>
-    /// <param name="name">加算するスコアの登録名</param>
-    public void AddScore(string name)
-    {
-        if (scoreDic.TryGetValue(name, out int score))
-        {
-            totalScore += score;
-        }
-    }
-
-    /// <summary>
-    /// スコア減算処理
-    /// </summary>
-    /// <param name="value">減算量</param>
-    public void SubtractScore(int value)
-    {
-        totalScore -= value;
-    }
-
-    /// <summary>
-    /// ランク取得用メソッド
-    /// </summary>
-    /// <returns>ランク</returns>
-    public string GetRank()
-    {
-        string rankName = "";
-        switch (rank)
-        {
-            case Rank.S: rankName = "S"; break;
-            case Rank.A: rankName = "A"; break;
-            case Rank.B: rankName = "B"; break;
-            case Rank.C: rankName = "C"; break;
-            case Rank.D: rankName = "D"; break;
-        }
-        return rankName;
-    }
-
     public void UpdateHighScore()
     {
         SaveManager.Instance.SaveHighScore((int)StageSelectModel.inStageNum - 1, totalScore);
@@ -163,9 +184,6 @@ public class ScoreManager : MonoBehaviour
     void OnDisable()
     {
         CurrentRank = GetRank();
-        CurrentScore = totalScore;
-        JustDodgeCount = justDodgeCount;
-        JustGuardCount = justGuardCount;
 
         PlayerDash.OnJudgeDodgeTiming -= AddScore;
         PlayerGuard.OnJudgeGuardTiming -= AddScore;
