@@ -28,7 +28,7 @@ public class PowerManager : MonoBehaviour
         { AttackType.Special2_2, 10 },
         { AttackType.Special2_3, 12 },
         { AttackType.Special2_4, 20 },
-        { AttackType.Ultimate, 40 },
+        { AttackType.Ultimate, 30 },
     };
 
     void Awake()
