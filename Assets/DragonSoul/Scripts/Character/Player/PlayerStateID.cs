@@ -3,8 +3,6 @@
     public enum PlayerStateID
     {
         Locomotion,
-        //Idle,
-        //Move,
         Dash,
         Dodge,
         Guard,

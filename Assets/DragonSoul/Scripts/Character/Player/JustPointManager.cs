@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class JustPointManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class JustPointManager : MonoBehaviour
     public int MaxJustPoint { get; set; }   // ジャストポイント上限
     public int JustPoint => justPoint;
 
+    public Action<int> OnJustPointChanged;
+    
     void Awake()
     {
         MaxJustPoint = justPoint;
@@ -21,6 +24,8 @@ public class JustPointManager : MonoBehaviour
     public void AddJustPoint(int point)
     {
         justPoint = Mathf.Clamp(justPoint + point, minJustPoint, MaxJustPoint);
+
+        OnJustPointChanged?.Invoke(justPoint);
     }
 
     /// <summary>
@@ -30,5 +35,7 @@ public class JustPointManager : MonoBehaviour
     public void UseJustPoint(int point)
     {
         justPoint = Mathf.Clamp(justPoint - point, minJustPoint, MaxJustPoint);
+
+        OnJustPointChanged?.Invoke(justPoint);
     }
 }

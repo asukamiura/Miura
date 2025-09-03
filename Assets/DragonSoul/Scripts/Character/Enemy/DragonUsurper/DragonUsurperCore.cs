@@ -58,7 +58,7 @@ namespace Enemy
 
             if (isMovable)
             {
-                stateMachine.StateUpdate();
+                stateMachine.UpdateState();
             }
 
             if (playerCore.stateMachine.CurrentState == PlayerStateID.Block && stateMachine.CurrentState != DragonUsurperStateID.Damage
@@ -74,7 +74,7 @@ namespace Enemy
 
         void FixedUpdate()
         {
-            stateMachine.StateFixedUpdate();
+            stateMachine.FixedUpdateState();
         }
 
         void ReceiveDamage()

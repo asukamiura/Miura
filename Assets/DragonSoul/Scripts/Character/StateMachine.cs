@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 public class StateMachine<TStateID>
 {
@@ -8,6 +9,8 @@ public class StateMachine<TStateID>
 
     public TStateID CurrentState => currentState.StateID;
     public TStateID PreviousState => previousState.StateID;
+
+    public Action<TStateID> OnStateChanged { get; set; }
 
     // ステートを登録
     public void RegisterState(IState<TStateID> state)
@@ -38,15 +41,17 @@ public class StateMachine<TStateID>
             previousState = currentState;
             currentState = newState;
             currentState?.Enter();
+
+            OnStateChanged?.Invoke(stateID);
         }
     }
 
-    public void StateUpdate()
+    public void UpdateState()
     {
         currentState?.Update();
     }
 
-    public void StateFixedUpdate()
+    public void FixedUpdateState()
     {
         currentState?.FixedUpdate();
     }

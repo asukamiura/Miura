@@ -1,11 +1,12 @@
 ﻿using SoundSystem;
+using System;
 using UnityEngine;
 
 namespace Player
 {
     public class PlayerCore : MonoBehaviour
     {
-        [SerializeField] int healVal = 20;  // 回復量
+        [SerializeField] int healVal = 50;  // 回復量
 
         HealthManager healthManager;
         InputReciver Input => InputReciver.Instance;
@@ -25,7 +26,6 @@ namespace Player
         public AttackAssist attackAssist;
         public GameSePlayer gameSePlayer;
         public EffectPlayer effectPlayer;
-        public PlayerEventManager playerEventManager;
         public float MoveSpeed => powerManager.MoveSpeed;
         public Rigidbody Rb { get; set; }
         public Animator Animator { get; set; }
@@ -35,6 +35,7 @@ namespace Player
         public bool IsInvincible { get; set; } = false;   // 無敵状態フラグ
         public AnimatorStateInfo CurrentStateInfo { get; private set; }
         public PlayerStateID CurrentState => stateMachine.CurrentState;
+        public Action OnHeal;
 
         bool CanHeal => justPointManager.JustPoint >= HealCost;
         bool CanPowerUp => justPointManager.JustPoint >= PowerUpCost && stateMachine.CurrentState == PlayerStateID.Locomotion;
@@ -72,7 +73,7 @@ namespace Player
 
         void Update()
         {
-            stateMachine.StateUpdate();
+            stateMachine.UpdateState();
 
             CurrentStateInfo = Animator.GetCurrentAnimatorStateInfo(0);
 
@@ -105,13 +106,13 @@ namespace Player
             }
 
             // 回復処理を実行
-            if (Input.Heal && CanHeal && healthManager.HP < healthManager.MaxHP)
+            if (Input.Heal && CanHeal && healthManager.CurrentHP < healthManager.MaxHP)
             {
                 effectPlayer.ShowEffect("LifeEnchant", HealEffectShowingTime);
                 justPointManager.UseJustPoint(HealCost);
                 healthManager.Heal(healVal);
 
-                playerEventManager.TriggerHeal();
+                OnHeal?.Invoke();
             }
 
             // パワーアップ処理を実行
@@ -119,8 +120,6 @@ namespace Player
             {
                 justPointManager.UseJustPoint(PowerUpCost);
                 powerManager.ActionPowerUp();
-
-                playerEventManager.TriggerPowerUp();
 
                 stateMachine.ChangeState(PlayerStateID.PowerUp);
             }
@@ -135,7 +134,7 @@ namespace Player
 
         void FixedUpdate()
         {
-            stateMachine?.StateFixedUpdate();
+            stateMachine?.FixedUpdateState();
         }
 
         void OnTriggerEnter(Collider other)

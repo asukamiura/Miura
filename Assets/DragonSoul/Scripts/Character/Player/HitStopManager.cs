@@ -28,7 +28,7 @@ public class HitStopManager : MonoBehaviour
         {AttackType.Special2_1, new HitStopConfig(0.05f, 0.5f) },
         {AttackType.Special2_2, new HitStopConfig(0.03f, 0.1f) },
         {AttackType.Special2_3, new HitStopConfig(0.03f, 0.1f) },
-        {AttackType.Special2_4, new HitStopConfig(0.15f, 1.5f) },
+        {AttackType.Special2_4, new HitStopConfig(0.3f, 1.5f) },
         {AttackType.Ultimate, new HitStopConfig(0.2f, 2f) },      
     };
 
@@ -48,7 +48,7 @@ public class HitStopManager : MonoBehaviour
 
     // アニメーションを止める処理
     IEnumerator StopPlayerAnimation(Animator playerAnimator, float duration)
-    {      
+    {
         float playerAnimationSpeed = playerAnimator.speed;
         playerAnimator.speed = 0;       
 
