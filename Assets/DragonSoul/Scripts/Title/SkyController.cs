@@ -10,4 +10,9 @@ public class SkyController : MonoBehaviour
         currentTime += Time.deltaTime;
         RenderSettings.skybox.SetFloat("_Rotation", currentTime * rotationSpeed);
     }
+
+    private void OnDisable()
+    {
+        RenderSettings.skybox.SetFloat("_Rotation", 0);
+    }
 }

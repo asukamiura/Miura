@@ -12,7 +12,7 @@ public class TimingUIPresenter : MonoBehaviour
         view.HideTimingUI();
     }
 
-    void OnDestory()
+    void OnDisable()
     {
         PlayerDash.OnJudgeDodgeTiming -= view.ShowTimingUI;
         PlayerGuard.OnJudgeGuardTiming -= view.ShowTimingUI;
