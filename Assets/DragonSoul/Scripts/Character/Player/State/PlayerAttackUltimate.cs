@@ -20,7 +20,6 @@ namespace Player
 
         public override void Enter()
         {
-            core.playerEventManager.TriggerUltimateEnter();
             core.bodyCollider.enabled = false;
             core.IsInvincible = true;
             core.Rb.velocity = Vector3.zero;

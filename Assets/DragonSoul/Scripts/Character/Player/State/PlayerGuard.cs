@@ -27,8 +27,6 @@ namespace Player
         {
             core.attackAssist.CorrectionAttack();
             core.Animator.CrossFade("Guard", 0);
-
-            core.playerEventManager.TriggerGuard();
         }
 
         public void Update()

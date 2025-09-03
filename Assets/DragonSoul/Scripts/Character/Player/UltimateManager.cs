@@ -1,4 +1,5 @@
 ﻿using Player;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ public class UltimateManager : MonoBehaviour
 
     public int MaxUltVal { get; set; } = 100;   // 必殺技ゲージの上限
     public float UltVal => ultVal;
+
+    public Action<float, float> OnGaugeValueChanged;
 
     readonly Dictionary<AttackType, float> increaseValueData = new Dictionary<AttackType, float>
     {
@@ -33,6 +36,8 @@ public class UltimateManager : MonoBehaviour
     public void IncreaseGauge(AttackType currentType)
     {
         ultVal = Mathf.Clamp(ultVal + increaseValueData[currentType], minUltVal, MaxUltVal);
+
+        OnGaugeValueChanged?.Invoke(ultVal, MaxUltVal);
     }
 
     /// <summary>
@@ -42,5 +47,7 @@ public class UltimateManager : MonoBehaviour
     public void DecreaseGauge(int decreaseVal)
     {
         ultVal = Mathf.Clamp(ultVal - decreaseVal, minUltVal, MaxUltVal);
+
+        OnGaugeValueChanged?.Invoke(ultVal, MaxUltVal);
     }
 }

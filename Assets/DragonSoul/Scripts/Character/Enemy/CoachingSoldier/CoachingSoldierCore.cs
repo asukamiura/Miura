@@ -38,19 +38,19 @@ namespace Enemy
 
             if (isMovable)
             {
-                stateMachine.StateUpdate();
+                stateMachine.UpdateState();
             }
 
-            if (healthManager.HP != previousHP)
+            if (healthManager.CurrentHP != previousHP)
             {
                 healthManager.Heal(9999);
-                previousHP = healthManager.HP;
+                previousHP = healthManager.CurrentHP;
             }
         }
 
         void FixedUpdate()
         {
-            stateMachine.StateFixedUpdate();
+            stateMachine.FixedUpdateState();
         }
 
         protected void ReceiveDamage()

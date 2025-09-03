@@ -54,12 +54,12 @@ public class GameFlowManagerBase : MonoBehaviour
 
     void Update()
     {
-        stateMachine.StateUpdate();
+        stateMachine.UpdateState();
     }
 
     void FixedUpdate()
     {
-        stateMachine.StateUpdate();
+        stateMachine.UpdateState();
     }
 
     public void ChangeState(GameFlowStateID targetState)

@@ -54,13 +54,13 @@ namespace Enemy
 
             if (isMovable)
             {
-                stateMachine.StateUpdate();
+                stateMachine.UpdateState();
             }
         }
 
         void FixedUpdate()
         {
-            stateMachine.StateFixedUpdate();
+            stateMachine.FixedUpdateState();
         }
 
         void ReceiveDamage()

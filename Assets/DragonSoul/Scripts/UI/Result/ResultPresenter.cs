@@ -19,6 +19,8 @@ public class ResultPresenter : MonoBehaviour
     void Start()
     {
         StartCoroutine(WaitCanInput(WaitFrame));
+
+        SoundManager.Instance.PlayBGMWithFadeIn("Result", FadeTime);
     }
 
     void OnEnable()
@@ -79,6 +81,8 @@ public class ResultPresenter : MonoBehaviour
                 FadeManager.Instance.LoadScene("TitleScene", FadeTime);
                 break;
         }
+
+        SoundManager.Instance.StopBGMWithFadeOut();
     }
 
     /// <summary>

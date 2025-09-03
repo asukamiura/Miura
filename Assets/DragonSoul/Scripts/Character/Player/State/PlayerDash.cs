@@ -40,8 +40,6 @@ namespace Player
                 core.Animator.CrossFade("DashFront", 0.1f);
                 core.Rb.velocity = core.transform.forward * DashSpeed;
             }
-
-            core.playerEventManager.TriggerDash();
         }
 
         public void Update()
