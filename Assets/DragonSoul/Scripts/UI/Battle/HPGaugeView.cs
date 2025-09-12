@@ -15,12 +15,13 @@ public class HPGaugeView : MonoBehaviour
         float targetFillAount = currentHP / maxHP;
 
         hpGauge.fillAmount = targetFillAount;
+      
 
         if (targetFillAount >= smoothHPGauge.fillAmount)
         {
             if (smoothCoroutine != null)
             {
-                StopCoroutine(smoothCoroutine);
+                StopCoroutine(smoothCoroutine);      
             }
             smoothHPGauge.fillAmount = targetFillAount;
         }
@@ -30,7 +31,15 @@ public class HPGaugeView : MonoBehaviour
             {
                 StopCoroutine(smoothCoroutine);
             }
-            smoothCoroutine = StartCoroutine(Smooth(targetFillAount));            
+
+            if (targetFillAount <= 0)
+            {
+                smoothHPGauge.fillAmount = 0;
+            }
+            else
+            {
+                smoothCoroutine = StartCoroutine(Smooth(targetFillAount));            
+            }
         }
     }
 

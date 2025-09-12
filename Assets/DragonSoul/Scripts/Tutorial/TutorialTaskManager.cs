@@ -50,7 +50,6 @@ public class TutorialTaskManager : MonoBehaviour
     bool isChangedScene = false;     // シーン遷移が実行されたかどうか
 
     const float CompleteUIDisplayLatency = 1;   // 完了UI表示時間
-    const float FirstWaitTime = 5f;  // 最初のタスク表示までの待機時間
     const float FadeTime = 1;
 
     void Awake()
@@ -111,6 +110,8 @@ public class TutorialTaskManager : MonoBehaviour
         else if (!inTutorial && !isChangedScene)
         {
             isChangedScene = true;
+            InputReciver.Instance.EnablePlayerInput(false);
+            InputReciver.Instance.EnableUIInput(false);
             FadeManager.Instance.LoadScene("SelectScene", FadeTime);
             SoundManager.Instance.StopBGMWithFadeOut(FadeTime);
         }
@@ -132,7 +133,7 @@ public class TutorialTaskManager : MonoBehaviour
         currentTask = task;
         currentTask.Enter();
 
-        TutorialStageManager.Instance.ChangeState(GameFlowStateID.Tutorial);
+        GameFlowManagerBase.Instance.ChangeState(GameFlowStateID.Tutorial);
     }
 
     /// <summary>
@@ -143,9 +144,9 @@ public class TutorialTaskManager : MonoBehaviour
     /// <returns></returns>
     IEnumerator SetNextTask(ITutorialTask task, float waitTime)
     {
-        if (currentTask.ShowSuccessUI)
+        if (currentTask.ShowCompleteUI)
         {
-            yield return new WaitForSeconds(CompleteUIDisplayLatency);
+            yield return new WaitForSeconds(currentTask.ShowCompleteUITime());
             completeUI.SetActive(true);
             yield return new WaitForSeconds(CompleteUIDisplayLatency);
             completeUI.SetActive(false);
@@ -153,7 +154,6 @@ public class TutorialTaskManager : MonoBehaviour
 
         currentTask.Exit();
 
-        yield return new WaitForSeconds(waitTime);
 
         // タスクがない場合、チュートリアル終了
         if (tutorialTasks.Count <= 0)
@@ -162,10 +162,12 @@ public class TutorialTaskManager : MonoBehaviour
             yield break;
         }
 
+        yield return new WaitForSeconds(waitTime);
+
         currentTask = task;
         currentTask.Enter();
 
-        TutorialStageManager.Instance.ChangeState(GameFlowStateID.Tutorial);
+        GameFlowManagerBase.Instance.ChangeState(GameFlowStateID.Tutorial);
 
         taskExecuted = false;
     }

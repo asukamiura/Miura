@@ -7,23 +7,20 @@ public class UltimatePerformance : MonoBehaviour
     [SerializeField] EffectPlayer effectPlayer;
     [SerializeField] CinemachineVirtualCamera[] performanceCamera;
 
-    [Header("Timing (seconds)")]
-    [SerializeField] float firstCameraDelay = 0.1f;
-    [SerializeField] float secondCameraDuration = 1f;
-    [SerializeField] float thirdCameraDuration = 0.8f;
-    [SerializeField] float returnToPlayerDuration = 0.5f;
-    [SerializeField] float zoomOutWaitAfterThird = 0.5f;  // ← 0.5f をここに
+    const float FirstCameraDuration = 0.1f;
+    const float SecondCameraDuration = 1f;
+    const float ThirdCameraDuration = 0.75f;
+    const float ReturnToPlayerDuration = 0.5f;
+    const float ZoomOutWaitAfterThird = 0.5f;
 
-    [Header("Blend Times")]
-    [SerializeField] float firstToSecondBlend = 0.8f;
-    [SerializeField] float toPlayerBlend = 0.5f;
-    [SerializeField] float instantBlend = 0f;  // ← 0 を意味づけ
+    const float FirstToSecondBlend = 0.8f;
+    const float ToPlayerBlend = 0.5f;
+    const float InstantBlend = 0f;
 
-    [Header("FOV Settings")]
-    [SerializeField] float zoomOutTargetFOV = 100f;
-    [SerializeField] float zoomOutDuration = 0f;
-    [SerializeField] float zoomInTargetFOV = 80f;
-    [SerializeField] float zoomInDuration = 0f;
+    const float ZoomOutTargetFOV = 100f;
+    const float ZoomOutDuration = 0.05f;
+    const float ZoomInTargetFOV = 80f;
+    const float ZoomInDuration = 0f;
 
     public void StartPerformance()
     {
@@ -35,32 +32,32 @@ public class UltimatePerformance : MonoBehaviour
         CameraManager.Instance.IsInput = false;
         PostEffectManager.Instance.ChangePostEffect(ProfileNum.Ultimate, 0f);
         SlowManager.Instance.ApplySlow(0f, SlowTargetType.Enemy);
+        CameraManager.Instance.EnabledRecentering();
 
         // カメラ1へ
-        CameraManager.Instance.SwitchCamera(performanceCamera[0], instantBlend);
-        CameraManager.Instance.EnabledRecentering();
-        yield return new WaitForSeconds(firstCameraDelay);
+        CameraManager.Instance.SwitchCamera(performanceCamera[0], InstantBlend);
+        yield return new WaitForSeconds(FirstCameraDuration);
 
         // カメラ2へ
-        CameraManager.Instance.SwitchCamera(performanceCamera[1], firstToSecondBlend);
-        yield return new WaitForSeconds(secondCameraDuration);
+        CameraManager.Instance.SwitchCamera(performanceCamera[1], FirstToSecondBlend);
+        yield return new WaitForSeconds(SecondCameraDuration);
 
         // カメラ3へ
-        CameraManager.Instance.SwitchCamera(performanceCamera[2], instantBlend);
+        CameraManager.Instance.SwitchCamera(performanceCamera[2], InstantBlend);
 
-        yield return new WaitForSeconds(thirdCameraDuration);
-        CameraManager.Instance.PlayCameraEffect(performanceCamera[2], zoomOutDuration, targetFOV: zoomOutTargetFOV);
+        yield return new WaitForSeconds(ThirdCameraDuration);
+        CameraManager.Instance.PlayCameraEffect(performanceCamera[2], ZoomOutDuration, targetFOV: ZoomOutTargetFOV);
 
-        yield return new WaitForSeconds(zoomOutWaitAfterThird);
+        yield return new WaitForSeconds(ZoomOutWaitAfterThird);
 
         // プレイヤーカメラへ戻す
         CameraManager.Instance.DisabledRecentering();
-        CameraManager.Instance.ReturnToPlayerCamera(toPlayerBlend);
-        yield return new WaitForSeconds(returnToPlayerDuration);
+        CameraManager.Instance.ReturnToPlayerCamera(ToPlayerBlend);
+        yield return new WaitForSeconds(ReturnToPlayerDuration);
 
         CameraManager.Instance.IsInput = true;
         // ズームインで元に戻す
-        CameraManager.Instance.PlayCameraEffect(performanceCamera[2], zoomInDuration, targetFOV: zoomInTargetFOV);
+        CameraManager.Instance.PlayCameraEffect(performanceCamera[2], ZoomInDuration, targetFOV: ZoomInTargetFOV);
         PostEffectManager.Instance.ChangePostEffect(ProfileNum.Normal, 0f);
     }
 }

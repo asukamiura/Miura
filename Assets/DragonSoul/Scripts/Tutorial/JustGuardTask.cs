@@ -13,7 +13,7 @@ public class JustGuardTask : ITutorialTask
     public GameObject TaskUI => tutorialManager.justGuardTaskUI;
     public bool ShowExplanationPanel => true;
     public bool ShowTaskUI => true;
-    public bool ShowSuccessUI => true;
+    public bool ShowCompleteUI => true;
 
     public JustGuardTask(TutorialTaskManager tutorialManager)
     {
@@ -42,7 +42,7 @@ public class JustGuardTask : ITutorialTask
  
             TaskUI.SetActive(true);
 
-            TutorialStageManager.Instance.ChangeState(GameFlowStateID.Playing);
+            GameFlowManagerBase.Instance.ChangeState(GameFlowStateID.Playing);
         }
     }
 
@@ -60,7 +60,9 @@ public class JustGuardTask : ITutorialTask
         return false;
     }
 
-    public float TransitionTime() => 5f;
+    public float TransitionTime() => 2f;
+
+    public float ShowCompleteUITime() => 4f;
 
     void HandleStateChange(PlayerStateID currentState)
     {

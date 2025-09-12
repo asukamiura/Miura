@@ -3127,10 +3127,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 1974714168744906552, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -2.4999847
+      objectReference: {fileID: 0}
     - target: {fileID: 2145671777272867860, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
       propertyPath: playerCore
       value: 
       objectReference: {fileID: 1849004014}
+    - target: {fileID: 2353397527783159060, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2588161697129706144, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
       propertyPath: manager
       value: 
@@ -3139,9 +3147,21 @@ PrefabInstance:
       propertyPath: manager
       value: 
       objectReference: {fileID: 1849004013}
+    - target: {fileID: 3863049471161059066, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3941634413387606585, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4261920835250364278, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4316614974362392286, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -47.5
       objectReference: {fileID: 0}
     - target: {fileID: 4454988672478481846, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3155,9 +3175,23 @@ PrefabInstance:
       propertyPath: m_RenderMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4941142554879438876, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+      propertyPath: m_text
+      value: '0
+
+'
+      objectReference: {fileID: 0}
+    - target: {fileID: 4965983905651513216, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5119682832815660339, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5630564825780004280, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5784835050964325941, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
       propertyPath: playerCore
@@ -3166,6 +3200,10 @@ PrefabInstance:
     - target: {fileID: 5870757194453468225, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6347026439643747332, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6749475967761735118, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
       propertyPath: m_Pivot.x
@@ -3255,9 +3293,21 @@ PrefabInstance:
       propertyPath: healthManager
       value: 
       objectReference: {fileID: 1849004015}
+    - target: {fileID: 7476647815107090471, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -24
+      objectReference: {fileID: 0}
     - target: {fileID: 7517195277630451121, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7678142391255428502, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8041503833654977049, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

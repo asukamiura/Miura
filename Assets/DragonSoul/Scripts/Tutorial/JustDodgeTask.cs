@@ -13,7 +13,7 @@ public class JustDodgeTask : ITutorialTask
     public GameObject TaskUI => tutorialManager.justDodgeTaskUI;
     public bool ShowExplanationPanel => true;
     public bool ShowTaskUI => true;
-    public bool ShowSuccessUI => true;
+    public bool ShowCompleteUI => true;
 
     public JustDodgeTask(TutorialTaskManager tutorialManager)
     {
@@ -42,7 +42,7 @@ public class JustDodgeTask : ITutorialTask
             
             TaskUI.SetActive(true);
 
-            TutorialStageManager.Instance.ChangeState(GameFlowStateID.Playing);
+            GameFlowManagerBase.Instance.ChangeState(GameFlowStateID.Playing);
         }
     }
 
@@ -60,7 +60,9 @@ public class JustDodgeTask : ITutorialTask
         return false;
     }
 
-    public float TransitionTime() => 3f;
+    public float TransitionTime() => 2f;
+
+    public float ShowCompleteUITime() => 2.5f;
 
     void HandleStateChange(PlayerStateID currentState)
     {

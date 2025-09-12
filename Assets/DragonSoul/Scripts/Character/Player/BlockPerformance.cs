@@ -7,17 +7,15 @@ public class BlockPerformance : MonoBehaviour
     [SerializeField] EffectPlayer effectPlayer;
     [SerializeField] CinemachineVirtualCamera performanceCamera;
 
-    [SerializeField] float cameraBlendTime = 0.3f;
-    [SerializeField] float fovChangeDuration = 0.1f;
-    [SerializeField] float normalFOV = 50f;
-    [SerializeField] float justGuardFOV = 45f;
-    [SerializeField] float returnBlendTime = 1f;   // メインカメラへ戻す時のブレンド時間
-
-    [SerializeField] float stopDuration = 0.4f;       // 動きを止める時間
-    [SerializeField] float defaultAnimationSpeed = 1f;
-    [SerializeField] float stoppedAnimationSpeed = 0f;
-
-    [SerializeField] float postEffectBlendTime = 1f;  // ポストエフェクトを戻すときのブレンド時間
+    const float CameraBlendTime = 0.2f;
+    const float FovChangeDuration = 0.4f;
+    const float NormalFOV = 70f;
+    const float JustGuardFOV = 55f;
+    const float ReturnBlendTime = 1f;   // メインカメラへ戻す時のブレンド時間
+    const float StopDuration = 0.4f;       // 動きを止める時間
+    const float DefaultAnimationSpeed = 1f;
+    const float StoppedAnimationSpeed = 0f;
+    const float postEffectBlendTime = 1f;  // ポストエフェクトを戻すときのブレンド時間
 
     public void StartPerformance()
     {
@@ -30,8 +28,8 @@ public class BlockPerformance : MonoBehaviour
         PostEffectManager.Instance.ChangePostEffect(ProfileNum.JustGuard, 0f);
 
         // カメラ演出
-        CameraManager.Instance.SwitchCamera(performanceCamera, cameraBlendTime);
-        CameraManager.Instance.PlayCameraEffect(performanceCamera, fovChangeDuration, targetFOV: justGuardFOV);
+        CameraManager.Instance.SwitchCamera(performanceCamera, CameraBlendTime);
+        CameraManager.Instance.PlayCameraEffect(performanceCamera, FovChangeDuration, targetFOV: JustGuardFOV);
         CameraManager.Instance.ApplyImpulse();
         CameraManager.Instance.EnabledRecentering();
 
@@ -39,17 +37,17 @@ public class BlockPerformance : MonoBehaviour
         effectPlayer.ShowEffect("NovaLight");
 
         // 動きを停止
-        SlowManager.Instance.ApplySlow(stoppedAnimationSpeed, SlowTargetType.Player);
-        SlowManager.Instance.ApplySlow(stoppedAnimationSpeed, SlowTargetType.Enemy);
+        SlowManager.Instance.ApplySlow(StoppedAnimationSpeed, SlowTargetType.Player);
+        SlowManager.Instance.ApplySlow(StoppedAnimationSpeed, SlowTargetType.Enemy);
 
-        yield return new WaitForSeconds(stopDuration);
+        yield return new WaitForSeconds(StopDuration);
 
         // 復帰処理
         CameraManager.Instance.DisabledRecentering();
-        SlowManager.Instance.ApplySlow(defaultAnimationSpeed, SlowTargetType.Player);
-        SlowManager.Instance.ApplySlow(defaultAnimationSpeed, SlowTargetType.Enemy);
-        CameraManager.Instance.ReturnToPlayerCamera(returnBlendTime);
-        CameraManager.Instance.PlayCameraEffect(performanceCamera, fovChangeDuration, targetFOV: normalFOV);
+        SlowManager.Instance.ApplySlow(DefaultAnimationSpeed, SlowTargetType.Player);
+        SlowManager.Instance.ApplySlow(DefaultAnimationSpeed, SlowTargetType.Enemy);
+        CameraManager.Instance.ReturnToPlayerCamera(ReturnBlendTime);
+        CameraManager.Instance.PlayCameraEffect(performanceCamera, FovChangeDuration, targetFOV: NormalFOV);
         PostEffectManager.Instance.ChangePostEffect(ProfileNum.Normal, postEffectBlendTime);
     }
 }
