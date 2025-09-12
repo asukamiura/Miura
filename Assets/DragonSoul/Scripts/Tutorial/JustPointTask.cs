@@ -10,7 +10,7 @@ public class JustPointTask : ITutorialTask
     public GameObject TaskUI => null;
     public bool ShowExplanationPanel => true;
     public bool ShowTaskUI => false;
-    public bool ShowSuccessUI => false;
+    public bool ShowCompleteUI => false;
 
     public JustPointTask(TutorialTaskManager tutorialManager)
     {
@@ -38,7 +38,7 @@ public class JustPointTask : ITutorialTask
         {
             ExplanationPanel.SetActive(false);
 
-            TutorialStageManager.Instance.ChangeState(GameFlowStateID.Playing);
+            GameFlowManagerBase.Instance.ChangeState(GameFlowStateID.Playing);
 
             return true;
         }
@@ -46,4 +46,6 @@ public class JustPointTask : ITutorialTask
     }
 
     public float TransitionTime() => 2f;
+
+    public float ShowCompleteUITime() => 0;
 }

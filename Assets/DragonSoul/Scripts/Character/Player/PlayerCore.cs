@@ -129,6 +129,7 @@ namespace Player
                         switch (timingJudgement.JudgeDodge(CurrentStateInfo.normalizedTime))
                         {
                             case Timing.Fast:
+                            case Timing.Late:
                                 stateMachine.ChangeState(PlayerStateID.Dodge);
                                 OnDodgeTiming?.Invoke(timingJudgement.JudgeDodge(CurrentStateInfo.normalizedTime).ToString());
                                 break;
@@ -137,34 +138,14 @@ namespace Player
                                 stateMachine.ChangeState(PlayerStateID.Dodge);
                                 OnDodgeTiming?.Invoke(timingJudgement.JudgeDodge(CurrentStateInfo.normalizedTime).ToString());
                                 break;
-                            case Timing.Late:
-                                stateMachine.ChangeState(PlayerStateID.Dodge);
-                                OnDodgeTiming?.Invoke(timingJudgement.JudgeDodge(CurrentStateInfo.normalizedTime).ToString());
-                                break;
                             case Timing.None:
-                                healthManager.Damage(attack.damageVal);
-                                if (healthManager.IsDead)
-                                {
-                                    stateMachine.ChangeState(PlayerStateID.Dead);
-                                }
-                                else
-                                {
-                                    stateMachine.ChangeState(PlayerStateID.Damage);
-                                }
+                                TakeDamage(attack.damageVal);
                                 break;
                         }
                     }
                     else
                     {
-                        healthManager.Damage(attack.damageVal);
-                        if (healthManager.IsDead)
-                        {
-                            stateMachine.ChangeState(PlayerStateID.Dead);
-                        }
-                        else
-                        {
-                            stateMachine.ChangeState(PlayerStateID.Damage);
-                        }
+                        TakeDamage(attack.damageVal);
                     }
                     break;
 
@@ -174,6 +155,7 @@ namespace Player
                         switch (timingJudgement.JudgeGuard(CurrentStateInfo.normalizedTime))
                         {
                             case Timing.Fast:
+                            case Timing.Late:
                                 stateMachine.ChangeState(PlayerStateID.Block);
                                 OnGuardTiming?.Invoke(timingJudgement.JudgeGuard(CurrentStateInfo.normalizedTime).ToString());
                                 break;
@@ -182,38 +164,30 @@ namespace Player
                                 stateMachine.ChangeState(PlayerStateID.Block);
                                 OnGuardTiming?.Invoke(timingJudgement.JudgeGuard(CurrentStateInfo.normalizedTime).ToString());
                                 break;
-                            case Timing.Late:
-                                stateMachine.ChangeState(PlayerStateID.Block);
-                                OnGuardTiming?.Invoke(timingJudgement.JudgeGuard(CurrentStateInfo.normalizedTime).ToString());
-                                break;
                             case Timing.None:
-                                healthManager.Damage(attack.damageVal);
-                                // 死亡ステートに遷移
-                                if (healthManager.IsDead)
-                                {
-                                    stateMachine.ChangeState(PlayerStateID.Dead);
-                                }
-                                else
-                                {
-                                    stateMachine.ChangeState(PlayerStateID.Damage);
-                                }
+                                TakeDamage(attack.damageVal);
                                 break;
                         }
                     }
                     else
                     {
-                        healthManager.Damage(attack.damageVal);
-                        if (healthManager.IsDead)
-                        {
-                            stateMachine.ChangeState(PlayerStateID.Dead);
-                        }
-                        else
-                        {
-                            stateMachine.ChangeState(PlayerStateID.Damage);
-                        }
+                        TakeDamage(attack.damageVal);
                     }
                     break;
             }            
+        }
+
+        void TakeDamage(float damageVal)
+        {
+            healthManager.Damage(damageVal);
+            if (healthManager.IsDead)
+            {
+                stateMachine.ChangeState(PlayerStateID.Dead);
+            }
+            else
+            {
+                stateMachine.ChangeState(PlayerStateID.Damage);
+            }
         }
 
         public SlowTargetType Type => SlowTargetType.Player;

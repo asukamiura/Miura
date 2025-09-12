@@ -12,7 +12,7 @@ public class AttackNormalTask : ITutorialTask
     public GameObject TaskUI => tutorialManager.attackNormalTaskUI;
     public bool ShowExplanationPanel => true;
     public bool ShowTaskUI => true;
-    public bool ShowSuccessUI => true;
+    public bool ShowCompleteUI => true;
 
     public AttackNormalTask(TutorialTaskManager tutorialManager)
     {
@@ -41,7 +41,7 @@ public class AttackNormalTask : ITutorialTask
 
             TaskUI.SetActive(true);
 
-            TutorialStageManager.Instance.ChangeState(GameFlowStateID.Playing);
+            GameFlowManagerBase.Instance.ChangeState(GameFlowStateID.Playing);
         }
     }
 
@@ -60,6 +60,8 @@ public class AttackNormalTask : ITutorialTask
     }
 
     public float TransitionTime() => 2f;
+
+    public float ShowCompleteUITime() => 1f;
 
     void HandleStateChange(PlayerStateID currentState)
     {

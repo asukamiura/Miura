@@ -12,7 +12,7 @@ public class AttackUltimateTask : ITutorialTask
     public GameObject TaskUI => tutorialManager.attackUltimateTaskUI;
     public bool ShowExplanationPanel => true;
     public bool ShowTaskUI => true;
-    public bool ShowSuccessUI => true;
+    public bool ShowCompleteUI => true;
 
     public AttackUltimateTask(TutorialTaskManager tutorialManager)
     {
@@ -41,7 +41,7 @@ public class AttackUltimateTask : ITutorialTask
 
             TaskUI.SetActive(true);
 
-            TutorialStageManager.Instance.ChangeState(GameFlowStateID.Playing);
+            GameFlowManagerBase.Instance.ChangeState(GameFlowStateID.Playing);
         }
     }
 
@@ -59,7 +59,9 @@ public class AttackUltimateTask : ITutorialTask
         return false;
     }
 
-    public float TransitionTime() => 4;
+    public float TransitionTime() => 2f;
+
+    public float ShowCompleteUITime() => 3.5f;
 
     void HandleStateChange(PlayerStateID currentState)
     {

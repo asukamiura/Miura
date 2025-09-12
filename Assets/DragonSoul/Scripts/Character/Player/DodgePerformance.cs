@@ -7,8 +7,8 @@ public class DodgePerformance : MonoBehaviour
 {
     [SerializeField] EffectPlayer effectPlayer;
     [SerializeField] CinemachineVirtualCamera performanceCamera;
-    [SerializeField] float slowDuration = 1f;
 
+    const float SlowDuration = 0.95f;
     const float DefaultAnimationSpeed = 1;
     const float PerformanceAnimationSpeed = 0.3f;
     const float CameraBlendTime = 0.5f;
@@ -39,7 +39,7 @@ public class DodgePerformance : MonoBehaviour
         // ポストエフェクトを変更
         PostEffectManager.Instance.ChangePostEffect(ProfileNum.JustDodge, 0);
 
-        yield return new WaitForSeconds(slowDuration);
+        yield return new WaitForSeconds(SlowDuration);
 
         SlowManager.Instance.ApplySlow(DefaultAnimationSpeed, SlowTargetType.Player);
         SlowManager.Instance.ApplySlow(DefaultAnimationSpeed, SlowTargetType.Enemy);
