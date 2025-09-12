@@ -8,9 +8,9 @@ namespace Player
 
         protected override Dictionary<int, AttackAnimationConfig> AnimationData => new()
         {
-            {1, new AttackAnimationConfig("AttackSpecial1_1", 0.1f, 0, 0.3f, 0.7f, AttackType.Special1_1) },
-            {2, new AttackAnimationConfig("AttackSpecial1_2", 0.1f, 0, 0.3f, 0.7f, AttackType.Special1_2) },
-            {3, new AttackAnimationConfig("AttackSpecial1_3", 0.1f, 0, 0.1f, 0.8f, AttackType.Special1_3) },            
+            {1, new AttackAnimationConfig("AttackSpecial1_1", 0.1f, 0, 0.3f, 0.7f, PlayerAttackType.Special1_1) },
+            {2, new AttackAnimationConfig("AttackSpecial1_2", 0.1f, 0, 0.3f, 0.7f, PlayerAttackType.Special1_2) },
+            {3, new AttackAnimationConfig("AttackSpecial1_3", 0.1f, 0, 0.1f, 0.8f, PlayerAttackType.Special1_3) },            
         };
 
         public PlayerAttackSpecial1(PlayerCore core) : base(core) { }

@@ -4,17 +4,18 @@ using UnityEngine;
 public class TimingUIPresenter : MonoBehaviour
 {
     [SerializeField] TimingUIView view;
+    [SerializeField] PlayerCore playerCore;
 
     void Awake()
     {
-        PlayerDash.OnJudgeDodgeTiming += view.ShowTimingUI;
-        PlayerGuard.OnJudgeGuardTiming += view.ShowTimingUI;        
+        playerCore.OnDodgeTiming += view.ShowTimingUI;
+        playerCore.OnGuardTiming += view.ShowTimingUI;
         view.HideTimingUI();
     }
 
     void OnDisable()
     {
-        PlayerDash.OnJudgeDodgeTiming -= view.ShowTimingUI;
-        PlayerGuard.OnJudgeGuardTiming -= view.ShowTimingUI;
+        playerCore.OnDodgeTiming -= view.ShowTimingUI;
+        playerCore.OnGuardTiming -= view.ShowTimingUI;
     }
 }

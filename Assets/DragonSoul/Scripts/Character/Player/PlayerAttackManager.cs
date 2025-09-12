@@ -30,7 +30,7 @@ namespace Player
                 if (enemy.CompareTag("Enemy"))
                 {
                     // 現在の攻撃タイプを取得
-                    AttackType currentType = attackController.GetAttackType();
+                    PlayerAttackType currentType = attackController.GetAttackType();
 
                     // スコアを加算
                     scoreManager.AddScore(currentType.ToString());

@@ -10,7 +10,7 @@ public class PlayerAttackNormal1 : AttackStateBase<PlayerStateID>
 
     protected override Dictionary<int, AttackAnimationConfig> AnimationData => new()
     {
-        {1, new AttackAnimationConfig("AttackNormal1", 0.1f, 0, 0, 0.6f, AttackType.Normal1) },
+        {1, new AttackAnimationConfig("AttackNormal1", 0.1f, 0, 0, 0.6f, PlayerAttackType.Normal1) },
     };
 
     bool isCombo = false;
@@ -20,6 +20,18 @@ public class PlayerAttackNormal1 : AttackStateBase<PlayerStateID>
         if (Input.AttackNormal)
         {
             isCombo = true;
+        }
+
+        // ガードステートに遷移
+        if (Input.Guard)
+        {
+            core.stateMachine.ChangeState(PlayerStateID.Guard);
+        }
+
+        // ダッシュステートに遷移
+        if (Input.Dash)
+        {
+            core.stateMachine.ChangeState(PlayerStateID.Dash);
         }
 
         if (core.CurrentStateInfo.IsName(AnimationData[step].animationName))

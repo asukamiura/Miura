@@ -8,13 +8,30 @@ public class HPGaugeView : MonoBehaviour
     [SerializeField] Image smoothHPGauge;
     [SerializeField] float smoothSpeed = 1.0f;
 
+    Coroutine smoothCoroutine;
+
     public void SetHP(float currentHP, float maxHP)
     {
         float targetFillAount = currentHP / maxHP;
 
         hpGauge.fillAmount = targetFillAount;
 
-        StartCoroutine(Smooth(targetFillAount));
+        if (targetFillAount >= smoothHPGauge.fillAmount)
+        {
+            if (smoothCoroutine != null)
+            {
+                StopCoroutine(smoothCoroutine);
+            }
+            smoothHPGauge.fillAmount = targetFillAount;
+        }
+        else
+        {
+            if (smoothCoroutine != null)
+            {
+                StopCoroutine(smoothCoroutine);
+            }
+            smoothCoroutine = StartCoroutine(Smooth(targetFillAount));            
+        }
     }
 
     IEnumerator Smooth(float targetFillAmount)

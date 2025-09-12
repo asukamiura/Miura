@@ -4,22 +4,16 @@ using System.IO;
 
 public class AnimExtractor
 {
-
-    static string tempExportedClip = "Assets/tempClip.anim";
     static AnimationEvent[] emptyAnimationEventArray = new AnimationEvent[0];
 
     [MenuItem("Assets/AnimExtractor")]
     static void AssetCopy()
     {
-
-
         Object[] selectedAsset = Selection.GetFiltered(typeof(Object), SelectionMode.Assets);
         foreach (var go in selectedAsset)
         {
             ExtractFunc(go);
         }
-
-        AssetDatabase.Refresh();
     }
 
     private static void ExtractFunc(Object obj)
@@ -43,17 +37,16 @@ public class AnimExtractor
         if (clip.name.StartsWith("__preview__"))
             return;
 
-        var instance = Object.Instantiate(clip);
-        AnimationClip copiedAnim = instance as AnimationClip;
-        AnimationUtility.SetAnimationEvents(copiedAnim, emptyAnimationEventArray);  //AnimationEventを削除しなくていいならこの行を削除
+        var copiedAnim = new AnimationClip();
+        EditorUtility.CopySerialized(clip, copiedAnim);
 
-        AssetDatabase.CreateAsset(copiedAnim, tempExportedClip);
+        // 必要ならイベント削除
+        AnimationUtility.SetAnimationEvents(copiedAnim, emptyAnimationEventArray);
+
         string exportPath = folder + "/" + clip.name + ".anim";
-
         if (File.Exists(exportPath))
             exportPath = AssetDatabase.GenerateUniqueAssetPath(exportPath);
 
-        File.Copy(tempExportedClip, exportPath, true);
-        File.Delete(tempExportedClip);
+        AssetDatabase.CreateAsset(copiedAnim, exportPath);
     }
 }

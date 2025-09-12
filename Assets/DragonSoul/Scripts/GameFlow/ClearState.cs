@@ -1,8 +1,7 @@
-﻿using UnityEngine;
+﻿using SoundSystem;
 using System.Collections;
-using SoundSystem;
+using UnityEngine;
 using UnityEngine.Playables;
-using Unity.VisualScripting;
 
 public class ClearState : IState<GameFlowStateID>
 {
@@ -20,7 +19,7 @@ public class ClearState : IState<GameFlowStateID>
 
     public GameFlowStateID StateID => GameFlowStateID.Clear;
 
-    public void Enter() 
+    public void Enter()
     {
         ScoreManager.Instance.UpdateHighScore();
         ScoreManager.Instance.UpdateBestRank();
@@ -29,7 +28,6 @@ public class ClearState : IState<GameFlowStateID>
 
         PostEffectManager.Instance.ChangePostEffect(ProfileNum.Clear, 0);
 
-        //ScreenShotManager.Instance.TakeScreenShot();
         flowManager.StartCoroutine(WaitForTakeScreenShot());
 
         flowManager.StartCoroutine(ChangeTimeScale(ChangeTiming));

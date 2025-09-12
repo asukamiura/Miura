@@ -14,26 +14,26 @@ public class UltimateManager : MonoBehaviour
 
     public Action<float, float> OnGaugeValueChanged;
 
-    readonly Dictionary<AttackType, float> increaseValueData = new Dictionary<AttackType, float>
+    readonly Dictionary<PlayerAttackType, float> increaseValueData = new Dictionary<PlayerAttackType, float>
     {
-        {AttackType.Normal1, 1},
-        {AttackType.Normal2, 2},
-        {AttackType.Normal3, 3},
-        {AttackType.Special1_1, 5},
-        {AttackType.Special1_2, 5},
-        {AttackType.Special1_3, 5},
-        {AttackType.Special2_1, 5},
-        {AttackType.Special2_2, 5},
-        {AttackType.Special2_3, 5},
-        {AttackType.Special2_4, 5},
-        {AttackType.Ultimate, 0 },
+        {PlayerAttackType.Normal1, 1},
+        {PlayerAttackType.Normal2, 2},
+        {PlayerAttackType.Normal3, 3},
+        {PlayerAttackType.Special1_1, 5},
+        {PlayerAttackType.Special1_2, 5},
+        {PlayerAttackType.Special1_3, 5},
+        {PlayerAttackType.Special2_1, 5},
+        {PlayerAttackType.Special2_2, 5},
+        {PlayerAttackType.Special2_3, 5},
+        {PlayerAttackType.Special2_4, 5},
+        {PlayerAttackType.Ultimate, 0 },
     };
 
     /// <summary>
     /// 必殺技ゲージ増加処理
     /// </summary>
     /// <param name="increaseVal">増加させる量</param>
-    public void IncreaseGauge(AttackType currentType)
+    public void IncreaseGauge(PlayerAttackType currentType)
     {
         ultVal = Mathf.Clamp(ultVal + increaseValueData[currentType], minUltVal, MaxUltVal);
 

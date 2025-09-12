@@ -105,6 +105,8 @@ public abstract class EnemyCoreBase : MonoBehaviour, ISlowable
         isMovable = isActive;
     }
 
+    public SlowTargetType Type => SlowTargetType.Enemy;
+
     public void ApplySlow(float factor)
     {
         slowFactor = factor;

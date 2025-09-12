@@ -4,24 +4,24 @@ using UnityEngine;
 
 namespace Player
 {
-    public class PlayerCore : MonoBehaviour
+    public class PlayerCore : MonoBehaviour, ISlowable
     {
         [SerializeField] int healVal = 50;  // 回復量
+        [SerializeField] TimingJudgement timingJudgement;
 
         HealthManager healthManager;
+        JustPointManager justPointManager;
         InputReciver Input => InputReciver.Instance;
 
         const int HealCost = 2;                      // 回復に必要なジャストポイント数
         const float HealEffectShowingTime = 1;       // 回復エフェクトの表示時間
         const int PowerUpCost = 3;                   // パワーアップに必要なジャストポイント数
         const int UltCost = 100;                     // 必殺技に必要なゲージ量
+        const int GetJustPoint = 1;                  // 一回でのジャストポイント獲得量
 
         public StateMachine<PlayerStateID> stateMachine;
-        public JustPointManager justPointManager;
         public PowerManager powerManager;
         public UltimateManager ultimateManager;
-        public ScoreManager scoreManager;
-        public PlayerAttackManager attackManager;
         public AttackTypeHolder attackTypeHolder;
         public AttackAssist attackAssist;
         public GameSePlayer gameSePlayer;
@@ -30,12 +30,12 @@ namespace Player
         public Rigidbody Rb { get; set; }
         public Animator Animator { get; set; }
         public Collider bodyCollider;
-        public bool IsJustGuard { get; set; } = false;
-        public bool IsJustDodge { get; set; } = false;
         public bool IsInvincible { get; set; } = false;   // 無敵状態フラグ
         public AnimatorStateInfo CurrentStateInfo { get; private set; }
         public PlayerStateID CurrentState => stateMachine.CurrentState;
         public Action OnHeal;
+        public Action<string> OnDodgeTiming;
+        public Action<string> OnGuardTiming;
 
         bool CanHeal => justPointManager.JustPoint >= HealCost;
         bool CanPowerUp => justPointManager.JustPoint >= PowerUpCost && stateMachine.CurrentState == PlayerStateID.Locomotion;
@@ -68,42 +68,18 @@ namespace Player
 
         void Start()
         {
+            SlowManager.Instance.Register(this);
             stateMachine.Initialize(PlayerStateID.Locomotion);
         }
 
         void Update()
         {
-            stateMachine.UpdateState();
+            stateMachine?.UpdateState();
 
             CurrentStateInfo = Animator.GetCurrentAnimatorStateInfo(0);
 
             // 死亡していた場合、以降の処理を実行しない。
-            if (stateMachine.CurrentState == PlayerStateID.Dead) { return; }
-
-            // 死亡ステートに遷移
-            if (healthManager.IsDead && stateMachine.CurrentState != PlayerStateID.Dead)
-            {
-                stateMachine.ChangeState(PlayerStateID.Dead);
-            }
-
-            // ガード、ブロック、回避、特殊攻撃1、特殊攻撃2、ダメージ状態でなければ実行可能
-            if (stateMachine.CurrentState != PlayerStateID.Guard && stateMachine.CurrentState != PlayerStateID.Block
-                && stateMachine.CurrentState != PlayerStateID.Dash && stateMachine.CurrentState != PlayerStateID.Dodge
-                && stateMachine.CurrentState != PlayerStateID.Damage && stateMachine.CurrentState != PlayerStateID.AttackSpecial1
-                && stateMachine.CurrentState != PlayerStateID.AttackSpecial2)
-            {
-                // ガードステートに遷移
-                if (Input.Guard)
-                {
-                    stateMachine.ChangeState(PlayerStateID.Guard);
-                }
-
-                // 回避ステートに遷移
-                if (Input.Dash)
-                {
-                    stateMachine.ChangeState(PlayerStateID.Dash);
-                }
-            }
+            if (stateMachine.CurrentState == PlayerStateID.Dead) { return; }            
 
             // 回復処理を実行
             if (Input.Heal && CanHeal && healthManager.CurrentHP < healthManager.MaxHP)
@@ -139,30 +115,117 @@ namespace Player
 
         void OnTriggerEnter(Collider other)
         {
-            if (stateMachine.CurrentState == PlayerStateID.Dead || IsJustDodge || IsInvincible) { return; }
+            if (stateMachine.CurrentState == PlayerStateID.Dead || IsInvincible) { return; }
 
-            var enemyAttackHit = other.GetComponent<EnemyAttackHit>();
+            var attack = other.GetComponent<EnemyAttack>();
 
-            if (other.CompareTag("EnemyAttackCanGuard") || other.CompareTag("EnemyAttackCanDodge"))
+            if (attack.IsHit) { return; }
+
+            switch (attack.attackType)
             {
-                if (other.CompareTag("EnemyAttackCanGuard") && stateMachine.CurrentState == PlayerStateID.Guard)
-                {
-                    IsJustGuard = true;                    
-                }
-                else if (other.CompareTag("EnemyAttackCanDodge") && stateMachine.CurrentState == PlayerStateID.Dash)
-                {
-                    IsJustDodge = true;
-                }
-                else
-                {
-                    // 攻撃アシストの位置補正処理を止める                   
-                    attackAssist.StopAssist();
+                case EnemyAttack.EnemyAttackType.Dodgeable:
+                    if (stateMachine.CurrentState == PlayerStateID.Dash)
+                    {
+                        switch (timingJudgement.JudgeDodge(CurrentStateInfo.normalizedTime))
+                        {
+                            case Timing.Fast:
+                                stateMachine.ChangeState(PlayerStateID.Dodge);
+                                OnDodgeTiming?.Invoke(timingJudgement.JudgeDodge(CurrentStateInfo.normalizedTime).ToString());
+                                break;
+                            case Timing.Just:
+                                justPointManager.AddJustPoint(GetJustPoint);
+                                stateMachine.ChangeState(PlayerStateID.Dodge);
+                                OnDodgeTiming?.Invoke(timingJudgement.JudgeDodge(CurrentStateInfo.normalizedTime).ToString());
+                                break;
+                            case Timing.Late:
+                                stateMachine.ChangeState(PlayerStateID.Dodge);
+                                OnDodgeTiming?.Invoke(timingJudgement.JudgeDodge(CurrentStateInfo.normalizedTime).ToString());
+                                break;
+                            case Timing.None:
+                                healthManager.Damage(attack.damageVal);
+                                if (healthManager.IsDead)
+                                {
+                                    stateMachine.ChangeState(PlayerStateID.Dead);
+                                }
+                                else
+                                {
+                                    stateMachine.ChangeState(PlayerStateID.Damage);
+                                }
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        healthManager.Damage(attack.damageVal);
+                        if (healthManager.IsDead)
+                        {
+                            stateMachine.ChangeState(PlayerStateID.Dead);
+                        }
+                        else
+                        {
+                            stateMachine.ChangeState(PlayerStateID.Damage);
+                        }
+                    }
+                    break;
 
-                    // 攻撃を受けたらダメージステートへ遷移
-                    stateMachine.ChangeState(PlayerStateID.Damage);
-                    scoreManager.SubtractScore((int)enemyAttackHit.damageVal);
-                }
-            }
+                case EnemyAttack.EnemyAttackType.Guardable:
+                    if (stateMachine.CurrentState == PlayerStateID.Guard)
+                    {
+                        switch (timingJudgement.JudgeGuard(CurrentStateInfo.normalizedTime))
+                        {
+                            case Timing.Fast:
+                                stateMachine.ChangeState(PlayerStateID.Block);
+                                OnGuardTiming?.Invoke(timingJudgement.JudgeGuard(CurrentStateInfo.normalizedTime).ToString());
+                                break;
+                            case Timing.Just:
+                                justPointManager.AddJustPoint(GetJustPoint);
+                                stateMachine.ChangeState(PlayerStateID.Block);
+                                OnGuardTiming?.Invoke(timingJudgement.JudgeGuard(CurrentStateInfo.normalizedTime).ToString());
+                                break;
+                            case Timing.Late:
+                                stateMachine.ChangeState(PlayerStateID.Block);
+                                OnGuardTiming?.Invoke(timingJudgement.JudgeGuard(CurrentStateInfo.normalizedTime).ToString());
+                                break;
+                            case Timing.None:
+                                healthManager.Damage(attack.damageVal);
+                                // 死亡ステートに遷移
+                                if (healthManager.IsDead)
+                                {
+                                    stateMachine.ChangeState(PlayerStateID.Dead);
+                                }
+                                else
+                                {
+                                    stateMachine.ChangeState(PlayerStateID.Damage);
+                                }
+                                break;
+                        }
+                    }
+                    else
+                    {
+                        healthManager.Damage(attack.damageVal);
+                        if (healthManager.IsDead)
+                        {
+                            stateMachine.ChangeState(PlayerStateID.Dead);
+                        }
+                        else
+                        {
+                            stateMachine.ChangeState(PlayerStateID.Damage);
+                        }
+                    }
+                    break;
+            }            
+        }
+
+        public SlowTargetType Type => SlowTargetType.Player;
+
+        public void ApplySlow(float factor)
+        {
+            Animator.speed = factor;
+        }
+
+        public void SetBaseSpeed(float speed)
+        {
+            Animator.speed = speed;
         }
     }
 }

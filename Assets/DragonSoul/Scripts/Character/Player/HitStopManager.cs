@@ -17,19 +17,19 @@ public class HitStopManager : MonoBehaviour
         }
     }
 
-    readonly Dictionary<AttackType, HitStopConfig> hitStopData = new Dictionary<AttackType, HitStopConfig>
+    readonly Dictionary<PlayerAttackType, HitStopConfig> hitStopData = new Dictionary<PlayerAttackType, HitStopConfig>
     { 
-        {AttackType.Normal1, new HitStopConfig(0.03f, 0f) },
-        {AttackType.Normal2, new HitStopConfig(0.03f, 0f) },
-        {AttackType.Normal3, new HitStopConfig(0.03f, 0f) },
-        {AttackType.Special1_1, new HitStopConfig(0.08f, 0f) },
-        {AttackType.Special1_2, new HitStopConfig(0.08f, 0.3f) },
-        {AttackType.Special1_3, new HitStopConfig(0.1f, 1f) },
-        {AttackType.Special2_1, new HitStopConfig(0.05f, 0.5f) },
-        {AttackType.Special2_2, new HitStopConfig(0.03f, 0.1f) },
-        {AttackType.Special2_3, new HitStopConfig(0.03f, 0.1f) },
-        {AttackType.Special2_4, new HitStopConfig(0.3f, 1.5f) },
-        {AttackType.Ultimate, new HitStopConfig(0.2f, 2f) },      
+        {PlayerAttackType.Normal1, new HitStopConfig(0.03f, 0f) },
+        {PlayerAttackType.Normal2, new HitStopConfig(0.03f, 0f) },
+        {PlayerAttackType.Normal3, new HitStopConfig(0.03f, 0f) },
+        {PlayerAttackType.Special1_1, new HitStopConfig(0.08f, 0f) },
+        {PlayerAttackType.Special1_2, new HitStopConfig(0.08f, 0.3f) },
+        {PlayerAttackType.Special1_3, new HitStopConfig(0.1f, 1f) },
+        {PlayerAttackType.Special2_1, new HitStopConfig(0.05f, 0.5f) },
+        {PlayerAttackType.Special2_2, new HitStopConfig(0.03f, 0.1f) },
+        {PlayerAttackType.Special2_3, new HitStopConfig(0.03f, 0.1f) },
+        {PlayerAttackType.Special2_4, new HitStopConfig(0.3f, 1.5f) },
+        {PlayerAttackType.Ultimate, new HitStopConfig(0.2f, 2f) },      
     };
 
     /// <summary>
@@ -38,7 +38,7 @@ public class HitStopManager : MonoBehaviour
     /// <param name="playerAnimator">プレイヤーのアニメーター</param>
     /// <param name="enemyAnimators">攻撃の当たった敵のアニメーター</param>
     /// <param name="attackType">攻撃のタイプ</param>
-    public void OnHitStop(Animator playerAnimator, Animator[] enemyAnimators, AttackType attackType)
+    public void OnHitStop(Animator playerAnimator, Animator[] enemyAnimators, PlayerAttackType attackType)
     {
         StartCoroutine(StopPlayerAnimation(playerAnimator, hitStopData[attackType].stopDuration));
         StartCoroutine(StopEnemyAnimation(enemyAnimators, hitStopData[attackType].stopDuration / 4));

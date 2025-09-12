@@ -3,25 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CameraType { Main, JustDodge, Ultimate1,  Ultimate2, Ultimate3 };
-
 public class CameraManager : MonoBehaviour
 {
     [SerializeField] CinemachineBrain cinemachineBrain;
     [SerializeField] CinemachineImpulseSource impulseSource;
     [SerializeField] CinemachineVirtualCamera playerCamera;
-    [SerializeField] CinemachineVirtualCamera justDodgeCamera;
-    [SerializeField] CinemachineVirtualCamera ultimateCamera1;
-    [SerializeField] CinemachineVirtualCamera ultimateCamera2;
-    [SerializeField] CinemachineVirtualCamera ultimateCamera3;
-
-
-    readonly Dictionary<CameraType, CinemachineVirtualCamera> cameraData = new Dictionary<CameraType, CinemachineVirtualCamera>();
 
     CinemachinePOV pov;
-    float horizontalSpeed = 2;
-    float verticalSpeed = 1;
-    float sensitivity = 50;
+    float sensitivityX = 100;
+    float sensitivityY = 50;
     CinemachineVirtualCamera currentCamera;     // 現在のカメラ
     const float RecenteringTime = 0.1f;
 
@@ -45,13 +35,7 @@ public class CameraManager : MonoBehaviour
 
     void Start()
     {
-        cameraData.Add(CameraType.Main, playerCamera);
-        cameraData.Add(CameraType.JustDodge, justDodgeCamera);
-        cameraData.Add(CameraType.Ultimate1, ultimateCamera1);
-        cameraData.Add(CameraType.Ultimate2, ultimateCamera2);
-        cameraData.Add(CameraType.Ultimate3, ultimateCamera3);
-
-        SwitchCamera(CameraType.Main, 0);
+        SwitchCamera(playerCamera, 0);
         pov = playerCamera.GetCinemachineComponent<CinemachinePOV>();
     }
 
@@ -60,59 +44,88 @@ public class CameraManager : MonoBehaviour
         if (IsInput)
         {
             // 視点を動かす処理
-            pov.m_HorizontalAxis.Value += Input.Look.x * horizontalSpeed * sensitivity * Time.deltaTime;
-            pov.m_VerticalAxis.Value -= Input.Look.y * verticalSpeed * sensitivity * Time.deltaTime;
+            pov.m_HorizontalAxis.Value += Input.Look.x  * sensitivityX * Time.deltaTime;
+            pov.m_VerticalAxis.Value -= Input.Look.y * sensitivityY * Time.deltaTime;
         }
-    }
-
-    IEnumerator ChangeFOV(float targetFOV, float duration)
-    {
-        float startFOV = playerCamera.m_Lens.FieldOfView;
-        float time = 0;
-
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            playerCamera.m_Lens.FieldOfView = Mathf.Lerp(startFOV, targetFOV, time / duration);
-            yield return null;
-        }
-
-        playerCamera.m_Lens.FieldOfView = targetFOV;
-    }
-
-    IEnumerator ChangeDutch(float targetDutch, float duration)
-    {
-        float startDutch = playerCamera.m_Lens.Dutch;
-        float time = 0;
-
-        while (time < duration)
-        {
-            time += Time.deltaTime;
-            playerCamera.m_Lens.Dutch = Mathf.Lerp(startDutch, targetDutch, time / duration);
-            yield return null;
-        }
-
-        playerCamera.m_Lens.Dutch = targetDutch;
     }
 
     /// <summary>
-    /// 視野角・カメラ傾きをまとめて管理する演出メソッド
+    /// 視野角の変更
     /// </summary>
+    /// <param name="camera">対象カメラ</param>
+    /// <param name="targetFOV">目標視野角</param>
+    /// <param name="duration">変更にかかる時間</param>
+    /// <returns></returns>
+    IEnumerator ChangeFOV(CinemachineVirtualCamera camera, float targetFOV, float duration)
+    {
+        if (duration <= 0)
+        {
+            camera.m_Lens.FieldOfView = targetFOV;
+            yield break;
+        }
+
+        float startFOV = camera.m_Lens.FieldOfView;
+        float time = 0;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            camera.m_Lens.FieldOfView = Mathf.Lerp(startFOV, targetFOV, time / duration);
+            yield return null;
+        }
+
+        camera.m_Lens.FieldOfView = targetFOV;
+    }
+
+    /// <summary>
+    /// 傾きの変更
+    /// </summary>
+    /// <param name="camera">対象カメラ</param>
+    /// <param name="targetDutch">目標傾き</param>
+    /// <param name="duration">変更にかかる時間</param>
+    /// <returns></returns>
+    IEnumerator ChangeDutch(CinemachineVirtualCamera camera, float targetDutch, float duration)
+    {
+        if (duration <= 0)
+        {
+            camera.m_Lens.Dutch = targetDutch;
+            yield break;
+        }
+
+        float startDutch = camera.m_Lens.Dutch;
+        float time = 0;
+
+        while (time < duration)
+        {
+            time += Time.deltaTime;
+            camera.m_Lens.Dutch = Mathf.Lerp(startDutch, targetDutch, time / duration);
+            yield return null;
+        }
+
+        camera.m_Lens.Dutch = targetDutch;
+    }
+
+    /// <summary>
+    /// カメラ演出開始
+    /// </summary>
+    /// <param name="camera">対象カメラ</param>
     /// <param name="targetFOV">目標視野角</param>
     /// <param name="targetDutch">目標傾き</param>
-    /// <param name="duration">演出にかける時間</param>
-    public void PlayCameraEffect(float? targetFOV = null, float? targetDutch = null, float duration = 0.5f)
+    /// <param name="duration">変更にかかる時間</param>
+    public void PlayCameraEffect(CinemachineVirtualCamera camera, float duration, float? targetFOV = null, float? targetDutch = null)
     {
-        StopAllCoroutines();
+        //StopAllCoroutines();
 
         if (targetFOV.HasValue)
         {
-            StartCoroutine(ChangeFOV(targetFOV.Value, duration));
+            StopCoroutine(nameof(ChangeFOV));
+            StartCoroutine(ChangeFOV(camera, targetFOV.Value, duration));
         }
 
         if (targetDutch.HasValue)
         {
-            StartCoroutine(ChangeDutch(targetDutch.Value, duration));
+            StopCoroutine(nameof(ChangeDutch));
+            StartCoroutine(ChangeDutch(camera, targetDutch.Value, duration));
         }
     }
 
@@ -123,9 +136,14 @@ public class CameraManager : MonoBehaviour
     /// <param name="duration">減衰にかかる時間</param>
     public void ApplyImpulse(float force = 1, float duration = 0.2f)
     {
-        //impulseSource.m_ImpulseDefinition.m_TimeEnvelope.m_SustainTime = duration /2; 
         impulseSource.m_ImpulseDefinition.m_TimeEnvelope.m_DecayTime = duration;
         impulseSource.GenerateImpulse(force);
+    }
+
+    public void ApplyImpulse(CinemachineImpulseSource cinemachineImpulseSorce, float force = 1, float duration = 0.2f)
+    {
+        cinemachineImpulseSorce.m_ImpulseDefinition.m_TimeEnvelope.m_DecayTime = duration;
+        cinemachineImpulseSorce.GenerateImpulse(force);
     }
 
     // カメラの視点を中央に戻す処理開始
@@ -143,22 +161,27 @@ public class CameraManager : MonoBehaviour
     {
         pov.m_VerticalRecentering.m_enabled = false;
         pov.m_HorizontalRecentering.m_enabled = false;
-    }  
+    } 
 
-    public void SwitchCamera(CameraType targetCamera, float blendTime)
+    public void SwitchCamera(CinemachineVirtualCamera camera, float blendTime)
     {
         cinemachineBrain.m_DefaultBlend.m_Time = blendTime;
-        
+
         if (currentCamera != null)
         {
             currentCamera.Priority = 0;
         }
 
-        currentCamera = cameraData[targetCamera];
+        currentCamera = camera;
 
         if (currentCamera != null)
         {
             currentCamera.Priority = 1;
         }
+    }
+
+    public void ReturnToPlayerCamera(float blendTime)
+    {
+        SwitchCamera(playerCamera, blendTime);
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace Player
 {
-    public enum AttackType
+    public enum PlayerAttackType
     {
         None,
         Normal1,

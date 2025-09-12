@@ -6,17 +6,17 @@ public class ScoreManager : MonoBehaviour
 {
     readonly Dictionary<string, int> scoreDic = new Dictionary<string, int>
     {
-        { (AttackType.Normal1).ToString(), 10 },
-        { (AttackType.Normal2).ToString(), 20 },
-        { (AttackType.Normal3).ToString(), 30 },
-        { (AttackType.Special1_1).ToString(), 300 },
-        { (AttackType.Special1_2).ToString(), 300 },
-        { (AttackType.Special1_3).ToString(), 300 },
-        { (AttackType.Special2_1).ToString(), 300 },
-        { (AttackType.Special2_2).ToString(), 300 },
-        { (AttackType.Special2_3).ToString(), 300 },
-        { (AttackType.Special2_4).ToString(), 300 },
-        { (AttackType.Ultimate).ToString(), 500 },
+        { (PlayerAttackType.Normal1).ToString(), 10 },
+        { (PlayerAttackType.Normal2).ToString(), 20 },
+        { (PlayerAttackType.Normal3).ToString(), 30 },
+        { (PlayerAttackType.Special1_1).ToString(), 300 },
+        { (PlayerAttackType.Special1_2).ToString(), 300 },
+        { (PlayerAttackType.Special1_3).ToString(), 300 },
+        { (PlayerAttackType.Special2_1).ToString(), 300 },
+        { (PlayerAttackType.Special2_2).ToString(), 300 },
+        { (PlayerAttackType.Special2_3).ToString(), 300 },
+        { (PlayerAttackType.Special2_4).ToString(), 300 },
+        { (PlayerAttackType.Ultimate).ToString(), 500 },
         { "Fast", 300 },
         { "Just", 500 },
         { "Late", 300 },       
@@ -27,6 +27,8 @@ public class ScoreManager : MonoBehaviour
         { "NoDamageBonus", 1000 },
         { "Damage", -50 },
     };
+
+    [SerializeField] PlayerCore playerCore;
 
     int justDodgeCount = 0; // ジャスト回避カウント
     int justGuardCount = 0; // ジャストガードカウント
@@ -64,10 +66,10 @@ public class ScoreManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        PlayerDash.OnJudgeDodgeTiming += AddScore;
-        PlayerDash.OnJudgeDodgeTiming += CountUpJustDodge;
-        PlayerGuard.OnJudgeGuardTiming += AddScore;
-        PlayerGuard.OnJudgeGuardTiming += CountUpJustGuard;     
+        playerCore.OnDodgeTiming += AddScore; 
+        playerCore.OnDodgeTiming += CountUpJustDodge; 
+        playerCore.OnGuardTiming += AddScore;
+        playerCore.OnGuardTiming += CountUpJustGuard;   
     }
 
     void Update()
@@ -185,9 +187,9 @@ public class ScoreManager : MonoBehaviour
     {
         CurrentRank = GetRank();
 
-        PlayerDash.OnJudgeDodgeTiming -= AddScore;
-        PlayerGuard.OnJudgeGuardTiming -= AddScore;
-        PlayerDash.OnJudgeDodgeTiming -= CountUpJustDodge;
-        PlayerGuard.OnJudgeGuardTiming -= CountUpJustGuard;
+        playerCore.OnDodgeTiming -= AddScore;
+        playerCore.OnDodgeTiming -= CountUpJustDodge;
+        playerCore.OnGuardTiming -= AddScore;
+        playerCore.OnGuardTiming -= CountUpJustGuard;
     }
 }

@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class AttackTypeHolder : MonoBehaviour
 {
-    AttackType currentAttackType = AttackType.None;
+    PlayerAttackType currentAttackType = PlayerAttackType.None;
 
     /// <summary>
     /// 攻撃タイプを設定
     /// </summary>
     /// <param name="attackType">攻撃タイプ</param>
-    public void SetAttackType(AttackType attackType)
+    public void SetAttackType(PlayerAttackType attackType)
     {
         currentAttackType = attackType;
     }
@@ -18,7 +18,7 @@ public class AttackTypeHolder : MonoBehaviour
     /// 攻撃タイプを取得
     /// </summary>
     /// <returns>現在の攻撃タイプ</returns>
-    public AttackType GetAttackType()
+    public PlayerAttackType GetAttackType()
     {
         return currentAttackType;
     }

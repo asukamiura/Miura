@@ -16,19 +16,19 @@ public class PowerManager : MonoBehaviour
     public float MoveSpeed { get; private set; }
     public bool InPowerUp { get; private set; } = false;
 
-    readonly Dictionary<AttackType, float> defaultAttackMultiplier = new Dictionary<AttackType, float>
+    readonly Dictionary<PlayerAttackType, float> defaultAttackMultiplier = new Dictionary<PlayerAttackType, float>
     {
-        { AttackType.Normal1, 2 },
-        { AttackType.Normal2, 4 },
-        { AttackType.Normal3, 6 },
-        { AttackType.Special1_1, 8 },
-        { AttackType.Special1_2, 10 },
-        { AttackType.Special1_3, 20 },
-        { AttackType.Special2_1, 8 },
-        { AttackType.Special2_2, 10 },
-        { AttackType.Special2_3, 12 },
-        { AttackType.Special2_4, 20 },
-        { AttackType.Ultimate, 30 },
+        { PlayerAttackType.Normal1, 2 },
+        { PlayerAttackType.Normal2, 4 },
+        { PlayerAttackType.Normal3, 6 },
+        { PlayerAttackType.Special1_1, 8 },
+        { PlayerAttackType.Special1_2, 10 },
+        { PlayerAttackType.Special1_3, 20 },
+        { PlayerAttackType.Special2_1, 8 },
+        { PlayerAttackType.Special2_2, 10 },
+        { PlayerAttackType.Special2_3, 12 },
+        { PlayerAttackType.Special2_4, 20 },
+        { PlayerAttackType.Ultimate, 30 },
     };
 
     void Awake()
@@ -40,7 +40,7 @@ public class PowerManager : MonoBehaviour
     /// 与えるダメージを取得
     /// </summary>
     /// <returns>与えるダメージ</returns>
-    public float GetAttackPower(AttackType currentType)
+    public float GetAttackPower(PlayerAttackType currentType)
     {
         if (defaultAttackMultiplier.TryGetValue(currentType, out float multiplier))
         {
