@@ -8,13 +8,14 @@ public class BattleOperationUIPresenter : MonoBehaviour
 
     void Start()
     {
-        playerCore.stateMachine.OnStateChanged = HandleStateChanged;
+        playerCore.stateMachine.OnStateChanged += HandleStateChanged;
         playerCore.OnHeal += view.ReactHealIcon;
     }
 
     void OnDisable()
     {
-        playerCore.OnHeal -= view.ReactHealIcon;        
+        playerCore.OnHeal -= view.ReactHealIcon;     
+        playerCore.stateMachine.OnStateChanged -= HandleStateChanged;
     }
 
     void HandleStateChanged(PlayerStateID newState)

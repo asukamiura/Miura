@@ -15,7 +15,7 @@ public class SlowManager : MonoBehaviour
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
     }
@@ -25,11 +25,14 @@ public class SlowManager : MonoBehaviour
         slowTargets.Add(target);
     }
 
-    public void ApplySlow(float factor)
+    public void ApplySlow(float factor, SlowTargetType type)
     {
         foreach (ISlowable target in slowTargets)
         {
-            target.ApplySlow(factor);
+            if (target.Type == type)
+            {
+                target.ApplySlow(factor);
+            }
         }
     }
 }

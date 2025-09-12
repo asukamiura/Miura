@@ -8,20 +8,11 @@ namespace Player
         public PlayerStateID StateID => PlayerStateID.Dash;
         InputReciver Input => InputReciver.Instance;
         PlayerCore core;
-        float currentTime;
+        string animationName;
 
-        private const float DashTime = 0.3f;        // ダッシュする時間
-        private const float DashSpeed = 10f;        // ダッシュ速度
-        private const float DashDeceleration = 0.95f; // ダッシュ減速率
-
-        private const int GetJustPoints = 1;        // ジャスト回避成功時に得るジャストポイント量
-        private const float LateThreshold = 0.05f;  // 遅すぎる判定のしきい値
-        private const float JustStartThreshold = 0.05f; // ジャスト判定の開始時間
-        private const float JustEndThreshold = 0.25f;   // ジャスト判定の終了時間
-        private const float FastThreshold = 0.25f;  // 速すぎる判定のしきい値
-        private const float DashEndThreshold = 0.3f; // ダッシュ終了時間
-
-        public static event Action<string> OnJudgeDodgeTiming;
+        const float DashSpeed = 10f;        // ダッシュ速度
+        const float DashDeceleration = 0.95f; // ダッシュ減速率
+        const float AnimationEndThreshold = 0.5f; // アニメーション終了のしきい値
 
         public PlayerDash(PlayerCore core)
         {
@@ -33,40 +24,22 @@ namespace Player
             if (Input.Move == Vector2.zero)
             {
                 core.Animator.CrossFade("DashBack", 0.1f);
+                animationName = "DashBack";
                 core.Rb.velocity = -core.transform.forward * DashSpeed;
             }
             else
             {
                 core.Animator.CrossFade("DashFront", 0.1f);
+                animationName = "DashFront";
                 core.Rb.velocity = core.transform.forward * DashSpeed;
             }
         }
 
         public void Update()
         {
-            currentTime += Time.deltaTime;
-            if (currentTime >= DashTime)
+            if (core.CurrentStateInfo.normalizedTime >= AnimationEndThreshold && core.CurrentStateInfo.IsName(animationName))
             {
                 core.stateMachine.ChangeState(PlayerStateID.Locomotion);
-            }
-
-            if (core.IsJustDodge)
-            {
-                if (currentTime > 0 && currentTime < LateThreshold)
-                {
-                    OnJudgeDodgeTiming?.Invoke("Late");
-                }
-                else if (currentTime >= JustStartThreshold && currentTime < JustEndThreshold)
-                {
-                    OnJudgeDodgeTiming?.Invoke("Just");
-                    core.justPointManager.AddJustPoint(GetJustPoints);
-                }
-                else if (currentTime >= FastThreshold && currentTime < DashEndThreshold)
-                {
-                    OnJudgeDodgeTiming?.Invoke("Fast");
-                }
-
-                core.stateMachine.ChangeState(PlayerStateID.Dodge);
             }
         }
 
@@ -78,8 +51,6 @@ namespace Player
         public void Exit()
         {
             core.Rb.velocity = Vector3.zero;
-            currentTime = 0;
-            core.IsJustDodge = false;
         }
     }
 }

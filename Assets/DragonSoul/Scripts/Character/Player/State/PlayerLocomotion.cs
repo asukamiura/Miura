@@ -21,6 +21,13 @@ namespace Player
 
         public void Update()
         {
+            // ガードステートに遷移
+            if (Input.Guard)
+            {
+                core.stateMachine.ChangeState(PlayerStateID.Guard);
+            }
+
+            // ダッシュステートに遷移
             if (Input.Dash)
             {
                 core.stateMachine.ChangeState(PlayerStateID.Dash);

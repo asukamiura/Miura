@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections;
-using System.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EffectManager : MonoBehaviour
@@ -8,7 +7,13 @@ public class EffectManager : MonoBehaviour
     public static EffectManager Instance { get; private set; }
     [SerializeField] List<GameObject> effectList = new List<GameObject>();
 
-    Dictionary<string, float> effectDic = new Dictionary<string, float>();
+    Dictionary<string, EffectData> effectDict = new Dictionary<string, EffectData>();
+
+    public struct EffectData
+    {
+        public GameObject prefab;
+        public float duration;
+    }
 
     void Awake()
     {
@@ -18,7 +23,7 @@ public class EffectManager : MonoBehaviour
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
             return;
         }
 
@@ -28,23 +33,32 @@ public class EffectManager : MonoBehaviour
     // エフェクトの再生時間を登録する処理
     void RegisterEffectDuration()
     {
-        for (int i = 0; i < effectList.Count; i++)
+        foreach (var effect in effectList)
         {
-            ParticleSystem[] particleSystems = effectList[i].GetComponentsInChildren<ParticleSystem>();
+            if (effect == null) continue;
 
             float maxDuration = 0;
-
-            foreach (ParticleSystem ps in particleSystems)
+            var particleSystems = effect.GetComponentsInChildren<ParticleSystem>();
+            foreach (var ps in particleSystems)
             {
-                float duration = ps.main.duration;
-
-                if (duration > maxDuration)
+                if (ps.main.duration > maxDuration)
                 {
-                    maxDuration = duration;
+                    maxDuration = ps.main.duration;
                 }
             }
 
-            effectDic.Add(effectList[i].name, maxDuration);
+            if (!effectDict.ContainsKey(effect.name))
+            {
+                effectDict.Add(effect.name, new EffectData
+                {
+                    prefab = effect,
+                    duration = maxDuration
+                });
+            }
+            else
+            {
+                Debug.LogWarning($"Effect {effect.name} が重複しています。");
+            }
         }
     }
 
@@ -56,13 +70,11 @@ public class EffectManager : MonoBehaviour
     /// <param name="effectRotation">再生開始回転</param>
     public void PlayEffect(string effectName, Vector3 effectPos, Quaternion effectRotation)
     {
-        var effect = effectList.FirstOrDefault(effect => effect.name == effectName);
+        if (!effectDict.TryGetValue(effectName, out var data)) return;
 
-        if (effect == null) { return; }
+        GameObject gameObject = ObjectPool.Instance.GetGameObject(data.prefab, effectPos, effectRotation);
 
-        GameObject gameObject = ObjectPool.Instance.GetGameObject(effect,effectPos,effectRotation);
-
-        StartCoroutine(ReleaseEffect(gameObject, effectDic[effectName]));
+        StartCoroutine(ReleaseEffect(gameObject, data.duration));
     }
 
     public void PlayEffect(GameObject effectPrefab, Vector3 effectPos, Quaternion effectRotation, float duration)
@@ -70,7 +82,6 @@ public class EffectManager : MonoBehaviour
         GameObject gameObject = ObjectPool.Instance.GetGameObject(effectPrefab, effectPos, effectRotation);
 
         StartCoroutine(ReleaseEffect(gameObject, duration));
-
     }
 
     IEnumerator ReleaseEffect(GameObject effect, float duration)

@@ -9,6 +9,7 @@ public abstract class AttackStateBase<TStateID> : IState<TStateID>
     protected int MaxStep => AnimationData.Count;
 
     public abstract TStateID StateID { get; }
+    InputReciver Input => InputReciver.Instance;
 
     public AttackStateBase(PlayerCore core)
     {
@@ -64,9 +65,9 @@ public abstract class AttackStateBase<TStateID> : IState<TStateID>
         public readonly int layer = 0;
         public readonly float offset = 0;
         public readonly float nextStateTransitionTime = 1;
-        public readonly AttackType attackType = AttackType.None;
+        public readonly PlayerAttackType attackType = PlayerAttackType.None;
 
-        public AttackAnimationConfig(string animationName, float transitionDuration, int layer, float offset, float nextStateTransitionTime, AttackType attackType)
+        public AttackAnimationConfig(string animationName, float transitionDuration, int layer, float offset, float nextStateTransitionTime, PlayerAttackType attackType)
         {
             this.animationName = animationName;
             this.transitionDuration = transitionDuration;

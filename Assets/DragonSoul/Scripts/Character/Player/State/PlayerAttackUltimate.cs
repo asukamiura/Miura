@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 namespace Player
 {
@@ -13,22 +11,16 @@ namespace Player
 
         protected override Dictionary<int, AttackAnimationConfig> AnimationData => new()
         {
-            {1, new AttackAnimationConfig("AttackUltimate1", 0.1f, 0, 0, 1, AttackType.Ultimate) },
-            {2, new AttackAnimationConfig("AttackUltimate2", 0, 0, 0, 1, AttackType.Ultimate) },
-            {3, new AttackAnimationConfig("AttackUltimate3", 0, 0, 0, 0.66f, AttackType.Ultimate) },
+            {1, new AttackAnimationConfig("AttackUltimate1", 0.1f, 0, 0, 1, PlayerAttackType.Ultimate) },
+            {2, new AttackAnimationConfig("AttackUltimate2", 0, 0, 0, 1, PlayerAttackType.Ultimate) },
+            {3, new AttackAnimationConfig("AttackUltimate3", 0, 0, 0, 0.66f, PlayerAttackType.Ultimate) },
         };
 
         public override void Enter()
         {
-            core.bodyCollider.enabled = false;
             core.IsInvincible = true;
             core.Rb.velocity = Vector3.zero;
             base.Enter();
-
-            PostEffectManager.Instance.ChangePostEffect(ProfileNum.Ultimate, 0);
-            SlowManager.Instance.ApplySlow(0);
-
-            core.StartCoroutine(ChangeCamera());
         }
 
         public override void Update()
@@ -39,17 +31,17 @@ namespace Player
 
                 if (step > MaxStep)
                 {
-                    core.stateMachine.ChangeState(PlayerStateID.Locomotion);                    
+                    core.stateMachine.ChangeState(PlayerStateID.Locomotion);
                 }
                 else
                 {
-                    PlayCurrentAnimation();                                            
+                    PlayCurrentAnimation();
                 }
 
                 if (step == 3)
                 {
-                    CameraManager.Instance.SwitchCamera(CameraType.Main, 0);
-                    SlowManager.Instance.ApplySlow(1);
+
+                    SlowManager.Instance.ApplySlow(1, SlowTargetType.Enemy);
                 }
             }
             else if (core.CurrentStateInfo.normalizedTime >= 1 && core.CurrentStateInfo.IsName(AnimationData[step].animationName))
@@ -64,17 +56,6 @@ namespace Player
         {
             base.Exit();
             core.IsInvincible = false;
-            core.bodyCollider.enabled = true;
-            PostEffectManager.Instance.ChangePostEffect(ProfileNum.Normal, 1);
-        }
-      
-        IEnumerator ChangeCamera()
-        {
-            CameraManager.Instance.SwitchCamera(CameraType.Ultimate1, 0);
-
-            yield return new WaitForSeconds(0.1f);
-
-            CameraManager.Instance.SwitchCamera(CameraType.Ultimate2, 1);
         }
     }
 }
