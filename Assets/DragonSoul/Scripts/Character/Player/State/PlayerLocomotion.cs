@@ -7,6 +7,7 @@ namespace Player
         public PlayerStateID StateID => PlayerStateID.Locomotion;
         PlayerCore core;
         InputReciver Input => InputReciver.Instance;
+        Vector3 moveDirection;
 
         public PlayerLocomotion(PlayerCore core)
         {
@@ -38,27 +39,29 @@ namespace Player
                 core.stateMachine.ChangeState(PlayerStateID.AttackNormal1);
             }
 
+            // 移動方向を更新
+            Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
+            moveDirection = cameraRotation * new Vector3(Input.Move.x, 0, Input.Move.y).normalized;
+
             core.Animator.SetFloat("Speed", Mathf.Clamp(core.Rb.velocity.magnitude, 0, 5), 0.1f, Time.deltaTime);
         }
 
         public void FixedUpdate()
         {
-            // カメラの角度に沿って移動
-            Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
-            Vector3 moveDirection = cameraRotation * new Vector3(Input.Move.x, 0, Input.Move.y).normalized;
-
-            if (moveDirection.magnitude > 0.1f)
+            if (moveDirection.sqrMagnitude > 0.01f)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
-                core.transform.rotation = Quaternion.Slerp(core.transform.rotation, targetRotation, 10 * Time.deltaTime);
+                core.transform.rotation = Quaternion.Slerp(core.transform.rotation, targetRotation, 10 * Time.fixedDeltaTime);
             }
 
-            core.Rb.velocity = moveDirection * core.MoveSpeed;
+            Vector3 velocity = moveDirection * core.MoveSpeed;
+            velocity.y = core.Rb.velocity.y;
+            core.Rb.velocity = velocity;
         }
 
         public void Exit()
         {
-            //core.Rb.velocity = Vector3.zero;
+            core.Rb.velocity = Vector3.zero;
             //core.Animator.applyRootMotion = true;
         }
     }
