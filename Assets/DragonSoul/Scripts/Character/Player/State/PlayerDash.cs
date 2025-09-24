@@ -1,5 +1,5 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Player
 {
@@ -9,8 +9,9 @@ namespace Player
         InputReciver Input => InputReciver.Instance;
         PlayerCore core;
         string animationName;
+        Vector3 targetDirection;
 
-        const float DashSpeed = 10f;        // ダッシュ速度
+        const float DashSpeed = 7f;        // ダッシュ速度
         const float DashDeceleration = 0.95f; // ダッシュ減速率
         const float AnimationEndThreshold = 0.5f; // アニメーション終了のしきい値
 
@@ -21,17 +22,23 @@ namespace Player
 
         public void Enter()
         {
+
             if (Input.Move == Vector2.zero)
             {
                 core.Animator.CrossFade("DashBack", 0.1f);
                 animationName = "DashBack";
-                core.Rb.velocity = -core.transform.forward * DashSpeed;
+
+                targetDirection = - core.transform.forward;
             }
             else
             {
+                // 移動方向を更新
+                Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
+                targetDirection = cameraRotation * new Vector3(Input.Move.x, 0, Input.Move.y).normalized;
+                core.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+
                 core.Animator.CrossFade("DashFront", 0.1f);
                 animationName = "DashFront";
-                core.Rb.velocity = core.transform.forward * DashSpeed;
             }
         }
 
@@ -41,11 +48,33 @@ namespace Player
             {
                 core.stateMachine.ChangeState(PlayerStateID.Locomotion);
             }
+
+            // 移動方向を更新
+            if (animationName == "DashFront")
+            {
+                Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
+                targetDirection = cameraRotation * new Vector3(Input.Move.x, 0, Input.Move.y).normalized;
+            }
         }
 
         public void FixedUpdate()
         {
-            core.Rb.velocity *= DashDeceleration;
+            if (targetDirection.sqrMagnitude > 0.01f && animationName != "DashBack")
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
+                core.transform.rotation = Quaternion.Slerp(core.transform.rotation, targetRotation, 5 * Time.fixedDeltaTime);
+            }
+
+            Vector3 moveDirection = animationName switch
+            {
+                "DashFront" => core.transform.forward,
+                "DashBack" => -core.transform.forward,
+                _ => targetDirection,
+            };
+
+            Vector3 velocity = moveDirection * DashSpeed;
+            velocity.y = core.Rb.velocity.y;
+            core.Rb.velocity = velocity;
         }
 
         public void Exit()

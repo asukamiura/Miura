@@ -17,13 +17,14 @@ public class TimingJudgement : MonoBehaviour
 
     Timing JudgeTiming(float normalizedTime, TimingConfig[] timingConfigs)
     {
+        Timing result = Timing.None;
         foreach (var config in timingConfigs)
         {
             if (config.Contains(normalizedTime))
             {
-                return config.timing;
+                result = config.timing;
             }
         }
-        return Timing.None;
+        return result;
     }
 }

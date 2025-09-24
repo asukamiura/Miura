@@ -10,7 +10,7 @@ public class CameraManager : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera playerCamera;
 
     CinemachinePOV pov;
-    float sensitivityX = 100;
+    float sensitivityX = 500;
     float sensitivityY = 50;
     CinemachineVirtualCamera currentCamera;     // 現在のカメラ
     const float RecenteringTime = 0.1f;
