@@ -902,8 +902,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c7fbed4ebe9fa84699e9fb61d93f9a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageVal: 20
   attackType: 0
+  damageVal: 20
 --- !u!1 &1395255712156556802
 GameObject:
   m_ObjectHideFlags: 0
@@ -2960,13 +2960,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerCore: {fileID: 0}
   attackManager: {fileID: 0}
+  enemyData: {fileID: 11400000, guid: 3334394a574ee184a81daa121edbe58a, type: 2}
   attackColliders:
   - {fileID: 6627522629096563995}
   - {fileID: 1249216487329870204}
   bodyCollider: {fileID: 6104123767690520817}
   effectPlayer: {fileID: 4129853314656525480}
   healthManager: {fileID: 1738272191226915279}
-  navMeshAgent: {fileID: 234639639226804085}
   playerTransform: {fileID: 0}
   rotationSpeed: 10
   breathPoint: {fileID: 4943272216256874144}
@@ -2984,7 +2984,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2a517a601fd2b45a8cfd476ff3e8a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 7000
 --- !u!114 &4129853314656525480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4300,8 +4299,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c7fbed4ebe9fa84699e9fb61d93f9a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageVal: 10
   attackType: 0
+  damageVal: 10
 --- !u!1 &6684880564606152301
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,13 +1,13 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputReciver : MonoBehaviour
 {
     public static InputReciver Instance { get; private set; }
-    public bool IsGamepad { get; private set; }    // ゲームパッド使用時はtrue、キーボード&マウス使用時はfalse
 
     // それぞれのデバイスの全ての入力を取得する
-    InputAction gamepadAny = new InputAction(type: InputActionType.PassThrough, binding: "<Gamepad>/*", interactions: "Press");
+    InputAction gamepadAny = new InputAction(type: InputActionType.PassThrough, binding: "<Gamepad>/*/", interactions: "Press");
     InputAction keyboardAny = new InputAction(type: InputActionType.PassThrough, binding: "<Keyboard>/*", interactions: "Press");
     InputAction mouseAny = new InputAction(type: InputActionType.PassThrough, binding: "<Mouse>/*", interactions: "Press");
 
@@ -35,8 +35,32 @@ public class InputReciver : MonoBehaviour
     // チュートリアル操作用
     public bool GoNext { get { return gameInput.Tutorial.GoNext.WasPressedThisFrame(); } }
 
+    public bool IsGamepad { get; private set; }    // ゲームパッド使用時はtrue、キーボード&マウス使用時はfalse
     public bool PlayerInputEnabled { get; private set; }
     public bool UIInputEnabled { get; private set; }
+
+    public Action<bool> OnDeviceChanged;  // trueはゲームパッド、falseはキーボードマウス
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            gameInput = new GameInput();
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        EnableUIInput(false);
+        EnablePlayerInput(false);
+
+        gamepadAny.performed += _ => SetGamepad(true);
+        keyboardAny.performed += _ => SetGamepad(false);
+        mouseAny.performed += _ => SetGamepad(false);
+    }
 
     void OnEnable()
     {
@@ -59,33 +83,17 @@ public class InputReciver : MonoBehaviour
         gameInput.Dispose();
     }
 
-    void Awake()
+    /// <summary>
+    /// 有効デバイスの切り替え
+    /// </summary>
+    /// <param name="isGamepad">trueはゲームパッド、falseはキーボードマウス</param>
+    void SetGamepad(bool isGamepad)
     {
-        if (Instance == null)
+        if (IsGamepad != isGamepad)
         {
-            Instance = this;
-            gameInput = new GameInput();
+            IsGamepad = isGamepad;
+            OnDeviceChanged?.Invoke(IsGamepad);
         }
-        else
-        {
-            Destroy(gameObject);
-        }
-
-        EnableUIInput(false);
-        EnablePlayerInput(false);
-    }
-
-    void Update()
-    {
-        if (gamepadAny.triggered)
-        {
-            IsGamepad = true;
-        }
-
-        if (keyboardAny.triggered || mouseAny.triggered)
-        {
-            IsGamepad = false;
-        }        
     }
 
     public void EnablePlayerInput(bool enable)

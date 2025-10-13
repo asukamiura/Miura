@@ -27,6 +27,7 @@ public class EffectManager : MonoBehaviour
             return;
         }
 
+        // 再生時間を登録
         RegisterEffectDuration();
     }
 

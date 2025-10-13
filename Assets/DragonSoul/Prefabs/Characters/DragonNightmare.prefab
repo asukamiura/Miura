@@ -1593,30 +1593,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a7ca39eccd86a47b2d624681122cef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  weights:
-  - 10
-  - 10
-  - 10
   playerCore: {fileID: 0}
   attackManager: {fileID: 0}
-  effectPlayer: {fileID: 8344192130640826161}
-  rb: {fileID: 6271136701806210909}
-  animator: {fileID: 6180691071375491217}
-  healthManager: {fileID: 8644722023114623301}
-  navMeshAgent: {fileID: 4152465529124620438}
-  playerTransform: {fileID: 0}
-  rotationSpeed: 5
-  attackType: 0
+  enemyData: {fileID: 11400000, guid: 24edeff00785afc44abe565268a1f41e, type: 2}
   attackColliders:
   - {fileID: 8501711869306399543}
   - {fileID: 8565711232835718091}
   - {fileID: 3860417888381556750}
-  eyeTransform: {fileID: 1259211029530619618}
-  minDistance: 0
-  rotationAngle: 10
-  isJustGuarded: 0
-  attack3EffectTransform: {fileID: 2594458736423794690}
   bodyCollider: {fileID: 0}
+  effectPlayer: {fileID: 8344192130640826161}
+  healthManager: {fileID: 8644722023114623301}
+  playerTransform: {fileID: 0}
+  rotationSpeed: 5
+  attack3EffectTransform: {fileID: 2594458736423794690}
 --- !u!114 &8644722023114623301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1629,7 +1618,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be2a517a601fd2b45a8cfd476ff3e8a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hp: 7000
 --- !u!114 &8344192130640826161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2095,8 +2083,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c7fbed4ebe9fa84699e9fb61d93f9a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageVal: 10
   attackType: 1
+  damageVal: 10
 --- !u!1 &4043236682614481040
 GameObject:
   m_ObjectHideFlags: 0
@@ -4131,8 +4119,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c7fbed4ebe9fa84699e9fb61d93f9a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageVal: 10
   attackType: 1
+  damageVal: 10
 --- !u!1 &8526414600877012928
 GameObject:
   m_ObjectHideFlags: 0
@@ -4266,8 +4254,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c7fbed4ebe9fa84699e9fb61d93f9a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageVal: 10
   attackType: 0
+  damageVal: 10
 --- !u!1 &8584574716117813714
 GameObject:
   m_ObjectHideFlags: 0
