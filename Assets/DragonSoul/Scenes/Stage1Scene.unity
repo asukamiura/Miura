@@ -255,6 +255,7 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!114 &545882049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,6 +409,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1532806954557499674, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -8141695231911360911, guid: fe8e6d8b8492d814287de988048c32b2, type: 2}
     - target: {fileID: 1767678881996438151, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
       propertyPath: m_Name
       value: Canvas
@@ -456,6 +461,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6646474459718469323, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+      propertyPath: dashCooldownManager
+      value: 
+      objectReference: {fileID: 8626347565039993168}
     - target: {fileID: 6749475967761735118, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -4135,10 +4144,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 438048278375530293, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
-      propertyPath: scoreManager
-      value: 
-      objectReference: {fileID: 677154631}
     - target: {fileID: 2395332098619381053, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -5560,6 +5565,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f804116f72cd99546b9baa9bf5c2e264, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8626347565039993168 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8180621231755367468, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
+  m_PrefabInstance: {fileID: 3828262506412502790}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3461180732426873621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54721985132b9ae40869ca42e50f3ab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &8819610376976171791
