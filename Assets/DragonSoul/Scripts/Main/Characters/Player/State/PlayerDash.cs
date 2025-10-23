@@ -11,7 +11,7 @@ namespace Player
         Vector3 targetDirection;
 
         const float DashSpeed = 10f;      // ダッシュ速度
-        const float AnimationEndThreshold = 0.3f; // アニメーション終了のしきい値
+        const float AnimationEndThreshold = 0.5f; // アニメーション終了のしきい値
   
 
         public PlayerDash(PlayerCore core)

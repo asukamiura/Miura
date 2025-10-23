@@ -1,5 +1,4 @@
-﻿using Player;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace Enemy
@@ -72,7 +71,7 @@ namespace Enemy
         void FixedUpdate()
         {
             stateMachine.FixedUpdateState();
-        }     
+        }
     }
 }
 

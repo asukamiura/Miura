@@ -1543,6 +1543,10 @@ PrefabInstance:
       value: -15.854488
       objectReference: {fileID: 0}
     - target: {fileID: 4152465529124620438, guid: d5272bd5b05667b41a3a60ca3333619a, type: 3}
+      propertyPath: m_Speed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4152465529124620438, guid: d5272bd5b05667b41a3a60ca3333619a, type: 3}
       propertyPath: m_Radius
       value: 3.16
       objectReference: {fileID: 0}
@@ -1957,6 +1961,10 @@ PrefabInstance:
     - target: {fileID: 6180691071375491217, guid: d5272bd5b05667b41a3a60ca3333619a, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6271136701806210909, guid: d5272bd5b05667b41a3a60ca3333619a, type: 3}
+      propertyPath: m_Constraints
+      value: 116
       objectReference: {fileID: 0}
     - target: {fileID: 6736973613082615224, guid: d5272bd5b05667b41a3a60ca3333619a, type: 3}
       propertyPath: playerCore
@@ -2409,6 +2417,10 @@ PrefabInstance:
     - target: {fileID: 9030695308701089879, guid: d5272bd5b05667b41a3a60ca3333619a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -3.7903159
+      objectReference: {fileID: 0}
+    - target: {fileID: 9045763356523259056, guid: d5272bd5b05667b41a3a60ca3333619a, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9045763356523259056, guid: d5272bd5b05667b41a3a60ca3333619a, type: 3}
       propertyPath: m_Materials.Array.size
@@ -4703,6 +4715,14 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.012553107
       objectReference: {fileID: 0}
+    - target: {fileID: 2566271806134516613, guid: f5368643a445a8c45b16b372539c1167, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.260489
+      objectReference: {fileID: 0}
+    - target: {fileID: 2566271806134516613, guid: f5368643a445a8c45b16b372539c1167, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5.0221534
+      objectReference: {fileID: 0}
     - target: {fileID: 4062631400747377949, guid: f5368643a445a8c45b16b372539c1167, type: 3}
       propertyPath: m_Name
       value: ClearCameras
@@ -4719,6 +4739,14 @@ PrefabInstance:
       propertyPath: m_LookAt
       value: 
       objectReference: {fileID: 1204625068}
+    - target: {fileID: 6469075026092054465, guid: f5368643a445a8c45b16b372539c1167, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.200489
+      objectReference: {fileID: 0}
+    - target: {fileID: 6469075026092054465, guid: f5368643a445a8c45b16b372539c1167, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.4421535
+      objectReference: {fileID: 0}
     - target: {fileID: 8040337661619090595, guid: f5368643a445a8c45b16b372539c1167, type: 3}
       propertyPath: m_TrackedObjectOffset.y
       value: 0.63
