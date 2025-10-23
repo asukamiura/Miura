@@ -42,9 +42,6 @@ namespace Player
             {
                 if (enemy.CompareTag("Enemy"))
                 {
-                    // 現在の攻撃タイプを取得
-                    //PlayerAttackType currentType = typeHolder.GetAttackType();
-
                     float damage = powerManager.CurrentAttackPower * attackData.AttackMultiplier;
 
                     // スコアを加算

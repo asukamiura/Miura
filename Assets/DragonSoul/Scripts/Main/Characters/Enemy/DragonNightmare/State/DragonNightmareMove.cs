@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.AI;
 
 namespace Enemy
 {
@@ -12,7 +11,6 @@ namespace Enemy
         const float RunSpeed = 40;
         const float Acceleration = 50;
         const float ChangeMoveDistance = 8;
-        //readonly float[] attackRanges = { 4f, 4f, 4f };
         const float TargetDistance = 4;
 
         public DragonNightmareMove(DragonNightmareCore core)

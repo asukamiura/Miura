@@ -7,7 +7,7 @@ namespace Player
         public PlayerStateID StateID => PlayerStateID.Dodge;
         InputReciver Input => InputReciver.Instance;
         PlayerCore core;
-        bool isNextAttack = false;  // 特殊攻撃2を行う場合true,行わない場合false
+        bool isNextAttack = false;  // 特殊攻撃1を行う場合true,行わない場合false
 
         const float NormalizedTimeOffset = 0.3f;
         const float TranstionAttackSpecialNormalizedTime = 0.75f;

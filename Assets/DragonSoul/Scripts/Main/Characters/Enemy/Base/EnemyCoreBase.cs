@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class EnemyCoreBase : MonoBehaviour, ISlowable, IEnemyDamageable, IJustGuardable
+public abstract class EnemyCoreBase : MonoBehaviour, ISlowable, IEnemyDamageable
 {
     [SerializeField] protected EnemyData enemyData;
     [SerializeField] List<GameObject> attackColliders = new List<GameObject>();
@@ -33,7 +33,8 @@ public abstract class EnemyCoreBase : MonoBehaviour, ISlowable, IEnemyDamageable
         // 各攻撃コライダーに、この敵自身(ジャストガード対象)を登録する
         foreach (GameObject collider in attackColliders)
         {
-            collider.GetComponent<EnemyAttack>().SetJustGuardable(this);
+            //collider.GetComponent<EnemyAttack>().SetJustGuardable(this);
+            collider.GetComponent<EnemyAttack>().OnPlayerJustGuarded += HandleJustGuarded;
         }
     }
 
@@ -58,6 +59,12 @@ public abstract class EnemyCoreBase : MonoBehaviour, ISlowable, IEnemyDamageable
         }
     }
 
+    // 攻撃がジャストガードされた際の処理
+    void HandleJustGuarded()
+    {
+        isJustGuarded = true;
+    }
+
     /// <summary>
     /// ダメージを受ける
     /// </summary>
@@ -76,12 +83,6 @@ public abstract class EnemyCoreBase : MonoBehaviour, ISlowable, IEnemyDamageable
                 isFlinch = canFlinch;
                 break;
         }
-    }
-
-    // ジャストガードされる
-    public void OnJustGuarded()
-    {
-        isJustGuarded = true;
     }
 
     /// <summary>
