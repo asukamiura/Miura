@@ -121,68 +121,6 @@ namespace Player
             stateMachine?.FixedUpdateState();
         }
 
-        //public void TakeDamage(float damage, EnemyAttackType attackType, IJustGuardable justGuardable)
-        //{
-        //    if (stateMachine.CurrentState == PlayerStateID.Dead || IsInvincible) { return; }
-
-        //    switch (attackType)
-        //    {
-        //        case EnemyAttackType.Dodgeable:
-        //            if (stateMachine.CurrentState == PlayerStateID.Dash)
-        //            {
-        //                switch (timingJudgement.JudgeDodge(CurrentStateInfo.normalizedTime))
-        //                {
-        //                    case Timing.Fast:
-        //                    case Timing.Late:
-        //                        stateMachine.ChangeState(PlayerStateID.Dodge);
-        //                        OnDodgeTiming?.Invoke(timingJudgement.JudgeDodge(CurrentStateInfo.normalizedTime).ToString());
-        //                        break;
-        //                    case Timing.Just:
-        //                        justPointManager.AddJustPoint(GetJustPoint);
-        //                        stateMachine.ChangeState(PlayerStateID.Dodge);
-        //                        OnDodgeTiming?.Invoke(timingJudgement.JudgeDodge(CurrentStateInfo.normalizedTime).ToString());
-        //                        break;
-        //                    case Timing.Miss:
-        //                        Damage(damage);
-        //                        break;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                Damage(damage);
-        //            }
-        //            break;
-
-        //        case EnemyAttackType.Guardable:
-        //            if (stateMachine.CurrentState == PlayerStateID.Guard)
-        //            {
-        //                switch (timingJudgement.JudgeGuard(CurrentStateInfo.normalizedTime))
-        //                {
-        //                    case Timing.Fast:
-        //                    case Timing.Late:
-        //                        stateMachine.ChangeState(PlayerStateID.Block);
-        //                        OnGuardTiming?.Invoke(timingJudgement.JudgeGuard(CurrentStateInfo.normalizedTime).ToString());
-        //                        justGuardable.OnJustGuarded();
-        //                        break;
-        //                    case Timing.Just:
-        //                        justPointManager.AddJustPoint(GetJustPoint);
-        //                        stateMachine.ChangeState(PlayerStateID.Block);
-        //                        OnGuardTiming?.Invoke(timingJudgement.JudgeGuard(CurrentStateInfo.normalizedTime).ToString());
-        //                        justGuardable.OnJustGuarded();
-        //                        break;
-        //                    case Timing.Miss:
-        //                        Damage(damage);
-        //                        break;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                Damage(damage);
-        //            }
-        //            break;
-        //    }
-        //}
-
         public void TakeDamage(float damage, EnemyAttackType attackType, EnemyAttack enemyAttack)
         {
             if (stateMachine.CurrentState == PlayerStateID.Dead || IsInvincible) { return; }
@@ -205,13 +143,13 @@ namespace Player
                                 OnDodgeTiming?.Invoke(timingJudgement.JudgeDodge(CurrentStateInfo.normalizedTime).ToString());
                                 break;
                             case Timing.Miss:
-                                Damage(damage);
+                                SetDamage(damage);
                                 break;
                         }
                     }
                     else
                     {
-                        Damage(damage);
+                        SetDamage(damage);
                     }
                     break;
 
@@ -234,21 +172,26 @@ namespace Player
                                 enemyAttack.OnPlayerJustGuarded?.Invoke();
                                 break;
                             case Timing.Miss:
-                                Damage(damage);
+                                SetDamage(damage);
                                 break;
                         }
                     }
                     else
                     {
-                        Damage(damage);
+                        SetDamage(damage);
                     }
                     break;
             }
         }
 
-        void Damage(float damageVal)
+        /// <summary>
+        /// ダメージを受ける
+        /// </summary>
+        /// <param name="damageVal">受けるダメージ量</param>
+        void SetDamage(float damageVal)
         {
             healthManager.ReduceHP(damageVal);
+
             if (healthManager.IsDead)
             {
                 stateMachine.ChangeState(PlayerStateID.Dead);
