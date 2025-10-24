@@ -34,6 +34,7 @@ public class TitleManager : MonoBehaviour
 
     void Start()
     {
+        StageSelectModel.inStageNum = 0;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
