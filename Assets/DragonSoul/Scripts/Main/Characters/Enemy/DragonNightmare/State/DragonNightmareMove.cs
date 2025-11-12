@@ -5,7 +5,7 @@ namespace Enemy
     public class DragonNightmareMove : IState<DragonNightmareStateID>
     {
         public DragonNightmareStateID StateID => DragonNightmareStateID.Move;
-        DragonNightmareCore core;
+        readonly DragonNightmareCore core;
 
         const float WalkSpeed = 3;
         const float RunSpeed = 40;

@@ -3,8 +3,7 @@
     public class PlayerDead : IState<PlayerStateID>
     {
         public PlayerStateID StateID => PlayerStateID.Dead;
-        InputReciver input => InputReciver.Instance;
-        PlayerCore core;
+        readonly PlayerCore core;
 
         public PlayerDead(PlayerCore core)
         {
@@ -17,16 +16,10 @@
             core.Animator.CrossFade("Death", 0);
         }
 
-        public void Update()
-        {
-
-        }
+        public void Update() { }    
 
         public void FixedUpdate() { }
 
-        public void Exit()
-        {
-
-        }
+        public void Exit() { }     
     }
 }

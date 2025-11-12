@@ -13,14 +13,14 @@ namespace Player
             {3, new AttackAnimationConfig("AttackSpecial1_3", 0.1f, 0, 0.1f, 0.8f) },            
         };
 
-        public PlayerAttackSpecial1(PlayerCore core) : base(core) { }
+        public PlayerAttackSpecial1(PlayerCore core, PlayerAttack playerAttack, AttackAssist attackAssist) : base(core, playerAttack, attackAssist) { }
 
         public override void Enter()
         {
             base.Enter();
             core.Animator.applyRootMotion = true;
             core.IsInvincible = true;
-            core.playerAttack.SetCombAttack(PlayerAttackType.Special1);
+            playerAttack.SetCombAttack(PlayerAttackType.Special1);
         }
 
         public override void Update()

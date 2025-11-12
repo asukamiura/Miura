@@ -6,7 +6,7 @@ public class PlayerAttackNormal1 : AttackStateBase<PlayerStateID>
     InputReciver Input => InputReciver.Instance;
 
     public override PlayerStateID StateID => PlayerStateID.AttackNormal1;
-    public PlayerAttackNormal1(PlayerCore core) : base(core) { }
+    public PlayerAttackNormal1(PlayerCore core, PlayerAttack playerAttack, AttackAssist attackAssist) : base(core, playerAttack, attackAssist) { }
 
     protected override Dictionary<int, AttackAnimationConfig> AnimationData => new()
     {
@@ -18,7 +18,7 @@ public class PlayerAttackNormal1 : AttackStateBase<PlayerStateID>
     public override void Enter()
     {
         base.Enter();
-        core.playerAttack.SetCombAttack(PlayerAttackType.Normal);
+        playerAttack.SetCombAttack(PlayerAttackType.Normal);
     }
 
     public override void Update()
@@ -31,24 +31,24 @@ public class PlayerAttackNormal1 : AttackStateBase<PlayerStateID>
         // ガードステートに遷移
         if (Input.Guard)
         {
-            core.stateMachine.ChangeState(PlayerStateID.Guard);
+            core.StateMachine.ChangeState(PlayerStateID.Guard);
         }
 
         // ダッシュステートに遷移
         if (Input.Dash)
         {
-            core.stateMachine.ChangeState(PlayerStateID.Dash);
+            core.StateMachine.ChangeState(PlayerStateID.Dash);
         }
 
         if (core.CurrentStateInfo.IsName(AnimationData[step].animationName))
         {
             if (isCombo && core.CurrentStateInfo.normalizedTime >= AnimationData[step].nextStateTransitionTime)
             {
-                core.stateMachine.ChangeState(PlayerStateID.AttackNormal2);
+                core.StateMachine.ChangeState(PlayerStateID.AttackNormal2);
             }
             else if (!isCombo && core.CurrentStateInfo.normalizedTime >= 1.0)
             {
-                core.stateMachine.ChangeState(PlayerStateID.Locomotion);
+                core.StateMachine.ChangeState(PlayerStateID.Locomotion);
             }
         }
     }

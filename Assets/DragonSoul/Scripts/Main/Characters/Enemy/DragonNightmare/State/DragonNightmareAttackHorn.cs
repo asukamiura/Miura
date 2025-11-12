@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-
-namespace Enemy
+﻿namespace Enemy
 {
     public class DragonNightmareAttackHorn : IState<DragonNightmareStateID>
     {
@@ -8,7 +6,7 @@ namespace Enemy
         const float TransitionTime = 1f;        // アニメーションを遷移させる時間
         const float TrackingDuration = 0.4f;    // プレイヤーを追従する継続時間
 
-        DragonNightmareCore core;
+        readonly DragonNightmareCore core;
 
         public DragonNightmareAttackHorn(DragonNightmareCore core)
         {
@@ -19,7 +17,7 @@ namespace Enemy
 
         public void Enter()
         {
-            core.effectPlayer.ShowEffect("CanGuardEffect");
+            core.warningEffectManager.ShowWarningEffect(EnemyAttackType.Guardable);
             core.Animator.CrossFade("Attack2", TransitionDuration);
         }
 

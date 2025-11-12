@@ -6,7 +6,7 @@ namespace Enemy
     {
         public DragonUsurperStateID StateID => DragonUsurperStateID.Damage;
         
-        DragonUsurperCore core;
+        readonly DragonUsurperCore core;
 
         const float TransitionDuration = 0.1f;  // アニメーションの遷移継続時間
         const float TransitionTime = 0.8f;      // アニメーションを遷移させる時間
@@ -39,8 +39,6 @@ namespace Enemy
 
         public void FixedUpdate() { }
 
-        public void Exit()
-        {
-        }
+        public void Exit() { }
     }
 }

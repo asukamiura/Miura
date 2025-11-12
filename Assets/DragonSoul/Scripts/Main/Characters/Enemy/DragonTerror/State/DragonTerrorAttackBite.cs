@@ -7,7 +7,7 @@
         const float BlockedTransitionTime = 0.8f;        // アニメーションを遷移させる時間
         const float TrackingDuration = 0.4f;    // プレイヤーを追従する継続時間
 
-        DragonTerrorCore core;
+        readonly DragonTerrorCore core;
 
         public DragonTerrorAttackBite(DragonTerrorCore core)
         {
@@ -18,7 +18,7 @@
 
         public void Enter()
         {
-            core.effectPlayer.ShowEffect("CanGuardEffect");
+            core.warningEffectManager.ShowWarningEffect(EnemyAttackType.Guardable);
             core.Animator.CrossFade("Attack1", TransitionDuration);
         }
 

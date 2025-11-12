@@ -4,7 +4,7 @@ using Cinemachine;
 
 public class BlockPerformance : MonoBehaviour
 {
-    [SerializeField] EffectPlayer effectPlayer;
+    [SerializeField] EffectController effectController;
     [SerializeField] CinemachineVirtualCamera performanceCamera;
 
     const float CameraBlendTime = 0.2f;
@@ -34,7 +34,7 @@ public class BlockPerformance : MonoBehaviour
         CameraManager.Instance.EnabledRecentering();
 
         // エフェクト
-        effectPlayer.ShowEffect("NovaLight");
+        effectController.ShowEffect("NovaLight");
 
         // 動きを停止
         SlowManager.Instance.ApplySlow(StoppedAnimationSpeed, SlowTargetType.Player);

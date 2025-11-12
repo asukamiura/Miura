@@ -5,7 +5,7 @@ namespace Enemy
     public class CoachingSoldierDamage : IState<CoachingSoldierStateID>
     {
         public CoachingSoldierStateID StateID => CoachingSoldierStateID.Damage;
-        CoachingSoldierCore core;
+        readonly CoachingSoldierCore core;
 
         public CoachingSoldierDamage(CoachingSoldierCore core)
         {
@@ -31,9 +31,7 @@ namespace Enemy
 
         public void FixedUpdate() { }
 
-        public void Exit()
-        {
-        }
+        public void Exit() { }       
     }
 }
 

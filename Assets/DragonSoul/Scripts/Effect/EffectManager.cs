@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class EffectManager : MonoBehaviour
@@ -66,6 +65,20 @@ public class EffectManager : MonoBehaviour
     /// <summary>
     /// エフェクトを再生
     /// </summary>
+    /// <param name="effectName">エフェクト名</param>
+    /// <param name="effectPos">再生開始位置</param>
+    public void PlayEffect(string effectName, Vector3 effectPos)
+    {
+        if (!effectDict.TryGetValue(effectName, out var data)) return;
+
+        GameObject effect = ObjectPool.Instance.GetGameObject(data.prefab, effectPos, data.prefab.transform.rotation);
+
+        //StartCoroutine(ReleaseEffect(effect, data.duration));
+    }
+
+    /// <summary>
+    /// エフェクトを再生
+    /// </summary>
     /// <param name="effectName">エフェクトの名前</param>
     /// <param name="effectPos">再生開始位置</param>
     /// <param name="effectRotation">再生開始回転</param>
@@ -73,22 +86,29 @@ public class EffectManager : MonoBehaviour
     {
         if (!effectDict.TryGetValue(effectName, out var data)) return;
 
-        GameObject gameObject = ObjectPool.Instance.GetGameObject(data.prefab, effectPos, effectRotation);
+        GameObject effect = ObjectPool.Instance.GetGameObject(data.prefab, effectPos, effectRotation);
 
-        StartCoroutine(ReleaseEffect(gameObject, data.duration));
+        ///StartCoroutine(ReleaseEffect(effect, data.duration));
     }
 
+    /// <summary>
+    /// エフェクトを再生
+    /// </summary>
+    /// <param name="effectPrefab">エフェクトプレハブ</param>
+    /// <param name="effectPos">再生開始位置</param>
+    /// <param name="effectRotation">>再生開始回転</param>
+    /// <param name="duration">継続時間</param>
     public void PlayEffect(GameObject effectPrefab, Vector3 effectPos, Quaternion effectRotation, float duration)
     {
-        GameObject gameObject = ObjectPool.Instance.GetGameObject(effectPrefab, effectPos, effectRotation);
+        GameObject effect = ObjectPool.Instance.GetGameObject(effectPrefab, effectPos, effectRotation);
 
-        StartCoroutine(ReleaseEffect(gameObject, duration));
+        //StartCoroutine(ReleaseEffect(effect, duration));
     }
 
-    IEnumerator ReleaseEffect(GameObject effect, float duration)
-    {
-        yield return new WaitForSeconds(duration);
+    //IEnumerator ReleaseEffect(GameObject effect, float duration)
+    //{
+    //    yield return new WaitForSeconds(duration);
 
-        ObjectPool.Instance.ReleaseGameObject(effect);
-    }
+    //    ObjectPool.Instance.ReleaseGameObject(effect);
+    //}
 }

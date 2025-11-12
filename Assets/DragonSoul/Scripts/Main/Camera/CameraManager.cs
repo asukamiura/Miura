@@ -1,4 +1,5 @@
 ﻿using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,17 +9,21 @@ public class CameraManager : MonoBehaviour
     [SerializeField] CinemachineBrain cinemachineBrain;
     [SerializeField] CinemachineImpulseSource impulseSource;
     [SerializeField] CinemachineVirtualCamera playerCamera;
+    [SerializeField] CinemachineVirtualCamera lockOnCamera;
 
     CinemachinePOV pov;
     float sensitivityX = 400;
     float sensitivityY = 100;
     CinemachineVirtualCamera currentCamera;     // 現在のカメラ
+    CinemachineVirtualCamera currentPlayerCamera;     // 現在ノーマルカメラかロックオンカメラか
+    InputReciver Input => InputReciver.Instance;
 
     const float RecenteringTime = 0.1f;         // カメラが初期位置まで戻るのにかかる時間
 
-    InputReciver Input => InputReciver.Instance;
-    public bool IsInput { get; set; } = true;
-    public static CameraManager Instance { get; set; }
+    public bool CanInputLook { get; set; } = true;
+    public static CameraManager Instance { get; private set; }
+    public bool IsLockOn { get; private set; } = false;
+    public Action<bool> OnLockOn;
 
     // カメラの揺れる力のデータ
     readonly Dictionary<CameraShakeType, CameraShakeConfig> shakeData = new Dictionary<CameraShakeType, CameraShakeConfig>
@@ -44,17 +49,53 @@ public class CameraManager : MonoBehaviour
 
     void Start()
     {
-        SwitchCamera(playerCamera, 0);
+        currentPlayerCamera = playerCamera;
+        currentCamera = playerCamera;
         pov = playerCamera.GetCinemachineComponent<CinemachinePOV>();
+        OnLockOn?.Invoke(IsLockOn);
     }
 
     void Update()
     {
-        if (IsInput)
+        if (CanInputLook)
         {
             // 視点を動かす処理
             pov.m_HorizontalAxis.Value += Input.Look.x * sensitivityX * Time.deltaTime;
             pov.m_VerticalAxis.Value -= Input.Look.y * sensitivityY * Time.deltaTime;
+        }
+
+        // ノーマルカメラとロックオンカメラの切り替え
+        if (Input.LockOn)
+        {
+            if (!IsLockOn)
+            {
+                IsLockOn = true;
+                CanInputLook = false;
+
+                if (currentCamera == playerCamera)
+                {
+                    SwitchCamera(lockOnCamera, 0.5f);
+                }
+
+                currentPlayerCamera = lockOnCamera;
+            }
+            else
+            {
+                IsLockOn = false;
+                CanInputLook = true;
+
+                // PlayerCameraをLockOnCameraの角度にする
+                pov.m_VerticalAxis.Value = Mathf.Repeat(lockOnCamera.transform.eulerAngles.x + 180, 360) - 180;
+                pov.m_HorizontalAxis.Value = lockOnCamera.transform.eulerAngles.y;
+
+                if (currentCamera == lockOnCamera)
+                {
+                    SwitchCamera(playerCamera, 0.5f);
+                }
+                currentPlayerCamera = playerCamera;
+            }
+
+            OnLockOn?.Invoke(IsLockOn);
         }
     }
 
@@ -178,7 +219,12 @@ public class CameraManager : MonoBehaviour
         pov.m_HorizontalRecentering.m_enabled = false;
     }
 
-    public void SwitchCamera(CinemachineVirtualCamera camera, float blendTime)
+    /// <summary>
+    /// カメラの切り替え
+    /// </summary>
+    /// <param name="camera">使用したいカメラ</param>
+    /// <param name="blendTime">カメラの変更のブレンド時間</param>
+    public void SwitchCamera(CinemachineVirtualCamera camera, float blendTime = 0)
     {
         cinemachineBrain.m_DefaultBlend.m_Time = blendTime;
 
@@ -197,6 +243,6 @@ public class CameraManager : MonoBehaviour
 
     public void ReturnToPlayerCamera(float blendTime)
     {
-        SwitchCamera(playerCamera, blendTime);
+        SwitchCamera(currentPlayerCamera, blendTime);
     }
 }

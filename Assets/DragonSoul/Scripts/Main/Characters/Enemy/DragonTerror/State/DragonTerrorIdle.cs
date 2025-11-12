@@ -5,7 +5,7 @@ namespace Enemy
     public class DragonTerrorIdle : IState<DragonTerrorStateID>
     {
         public DragonTerrorStateID StateID => DragonTerrorStateID.Idle;
-        DragonTerrorCore core;
+        readonly DragonTerrorCore core;
         float currentTime = 0;
         const float restTime = 3f;
 

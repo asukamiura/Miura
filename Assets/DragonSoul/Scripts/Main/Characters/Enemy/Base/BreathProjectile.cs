@@ -10,10 +10,12 @@ public class BreathProjectile : MonoBehaviour
     [SerializeField] GameObject explosionEffect;
 
     Coroutine lifeTimer;
+    Rigidbody rb;
 
     public void Launch(Vector3 direction)
     {
-        gameObject.GetComponent<Rigidbody>().velocity = direction.normalized * speed;
+        rb = GetComponent<Rigidbody>();
+        rb.velocity = direction.normalized * speed;
         lifeTimer = StartCoroutine(AutoDestroy());
     }
 
@@ -48,7 +50,12 @@ public class BreathProjectile : MonoBehaviour
         {
             StopCoroutine(lifeTimer);
         }
-
+        Debug.Log("非表示");
         ObjectPool.Instance.ReleaseGameObject(gameObject);
+    }
+
+    void OnDisable()
+    {
+        rb.velocity = Vector3.zero;                
     }
 }

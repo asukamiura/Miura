@@ -6,7 +6,7 @@
         const float TransitionTime = 1f;        // アニメーションを遷移させる時間
         const float TrackingDuration = 0.4f;    // プレイヤーを追従する継続時間
 
-        DragonNightmareCore core;
+        readonly DragonNightmareCore core;
 
         public DragonNightmareAttackClaw(DragonNightmareCore core)
         {
@@ -17,7 +17,7 @@
 
         public void Enter()
         {
-            core.effectPlayer.ShowEffect("CanDodgeEffect");
+            core.warningEffectManager.ShowWarningEffect(EnemyAttackType.Dodgeable);
             core.Animator.CrossFade("Attack3", TransitionDuration);
         }
 

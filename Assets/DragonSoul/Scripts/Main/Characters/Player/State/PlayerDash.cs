@@ -5,8 +5,10 @@ namespace Player
     public class PlayerDash : IState<PlayerStateID>
     {
         public PlayerStateID StateID => PlayerStateID.Dash;
+        readonly PlayerCore core;
+        readonly DashCooldownManager dashCooldownManager;
+
         InputReciver Input => InputReciver.Instance;
-        PlayerCore core;
         string animationName;
         Vector3 targetDirection;
 
@@ -14,14 +16,16 @@ namespace Player
         const float AnimationEndThreshold = 0.5f; // アニメーション終了のしきい値
   
 
-        public PlayerDash(PlayerCore core)
+        public PlayerDash(PlayerCore core, DashCooldownManager dashCooldownManager)
         {
             this.core = core;
+            this.dashCooldownManager = dashCooldownManager;
         }
 
         public void Enter()
         {
-            core.dashCooldownManager.StartCooldown();
+            core.CreateDodgeCollider();
+            dashCooldownManager.StartCooldown();
 
             if (Input.Move == Vector2.zero)
             {
@@ -46,7 +50,7 @@ namespace Player
         {
             if (core.CurrentStateInfo.normalizedTime >= AnimationEndThreshold && core.CurrentStateInfo.IsName(animationName))
             {
-                core.stateMachine.ChangeState(PlayerStateID.Locomotion);
+                core.StateMachine.ChangeState(PlayerStateID.Locomotion);
             }         
         }
 
@@ -66,6 +70,7 @@ namespace Player
 
         public void Exit()
         {
+            core.DestroyDodgeCollider();
             core.Rb.velocity = Vector3.zero;
         }
     }

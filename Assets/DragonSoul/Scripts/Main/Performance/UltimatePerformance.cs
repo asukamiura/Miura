@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class UltimatePerformance : MonoBehaviour
 {
-    [SerializeField] EffectPlayer effectPlayer;
     [SerializeField] CinemachineVirtualCamera[] performanceCamera;
 
     const float FirstCameraDuration = 0.1f;
@@ -14,7 +13,7 @@ public class UltimatePerformance : MonoBehaviour
     const float ZoomOutWaitAfterThird = 0.5f;
 
     const float FirstToSecondBlend = 0.8f;
-    const float ToPlayerBlend = 0.5f;
+    const float ReturnBlendTime = 0.5f;   // メインカメラへ戻す時のブレンド時間
     const float InstantBlend = 0f;
 
     const float ZoomOutTargetFOV = 100f;
@@ -29,7 +28,7 @@ public class UltimatePerformance : MonoBehaviour
 
     IEnumerator PerformanceFlow()
     {
-        CameraManager.Instance.IsInput = false;
+        CameraManager.Instance.CanInputLook = false;
         PostEffectManager.Instance.ChangePostEffect(ProfileNum.Ultimate, 0f);
         SlowManager.Instance.ApplySlow(0f, SlowTargetType.Enemy);
         CameraManager.Instance.EnabledRecentering();
@@ -52,10 +51,10 @@ public class UltimatePerformance : MonoBehaviour
 
         // プレイヤーカメラへ戻す
         CameraManager.Instance.DisabledRecentering();
-        CameraManager.Instance.ReturnToPlayerCamera(ToPlayerBlend);
+        CameraManager.Instance.ReturnToPlayerCamera(ReturnBlendTime);
         yield return new WaitForSeconds(ReturnToPlayerDuration);
 
-        CameraManager.Instance.IsInput = true;
+        CameraManager.Instance.CanInputLook = true;
         // ズームインで元に戻す
         CameraManager.Instance.PlayCameraEffect(performanceCamera[2], ZoomInDuration, targetFOV: ZoomInTargetFOV);
         PostEffectManager.Instance.ChangePostEffect(ProfileNum.Normal, 0f);

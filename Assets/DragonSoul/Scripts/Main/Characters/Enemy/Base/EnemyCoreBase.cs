@@ -16,7 +16,7 @@ public abstract class EnemyCoreBase : MonoBehaviour, ISlowable, IEnemyDamageable
 
     public float rotationSpeed = 1.0f;
     public bool isJustGuarded = false;  // ジャストガードされたかどうか
-    public EffectPlayer effectPlayer;
+    public WarningEffectController warningEffectManager;
     public HealthManager healthManager;
     public Transform playerTransform;
     public NavMeshAgent NavMeshAgent { get; private set; }
@@ -33,8 +33,7 @@ public abstract class EnemyCoreBase : MonoBehaviour, ISlowable, IEnemyDamageable
         // 各攻撃コライダーに、この敵自身(ジャストガード対象)を登録する
         foreach (GameObject collider in attackColliders)
         {
-            //collider.GetComponent<EnemyAttack>().SetJustGuardable(this);
-            collider.GetComponent<EnemyAttack>().OnPlayerJustGuarded += HandleJustGuarded;
+            collider.GetComponent<EnemyAttack>().OnJustGuarded += HandleJustGuarded;
         }
     }
 

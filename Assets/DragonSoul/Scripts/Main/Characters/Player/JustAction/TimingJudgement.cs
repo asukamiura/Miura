@@ -5,26 +5,25 @@ public class TimingJudgement : MonoBehaviour
     [SerializeField] TimingConfig[] dodgeConfig;
     [SerializeField] TimingConfig[] guardConfig;
      
-    public Timing JudgeDodge(float normalizedTime)
+    public TimingType JudgeDodge(float normalizedTime)
     {
         return JudgeTiming(normalizedTime, dodgeConfig);
     }
 
-    public Timing JudgeGuard(float normalizedTime)
+    public TimingType JudgeGuard(float normalizedTime)
     {
         return JudgeTiming(normalizedTime, guardConfig);
     }
 
-    Timing JudgeTiming(float normalizedTime, TimingConfig[] timingConfigs)
+    TimingType JudgeTiming(float normalizedTime, TimingConfig[] timingConfigs)
     {
-        Timing result = Timing.Miss;
         foreach (var config in timingConfigs)
         {
             if (config.Contains(normalizedTime))
             {
-                result = config.timing;
+                return config.timing;
             }
         }
-        return result;
+        return TimingType.Miss;
     }
 }

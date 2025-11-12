@@ -23,6 +23,7 @@ public class InputReciver : MonoBehaviour
     public bool Heal { get { return gameInput.Player.Heal.WasPressedThisFrame(); } }
     public bool PowerUp { get { return gameInput.Player.PowerUp.WasPressedThisFrame(); } }
     public bool Pause { get { return gameInput.Player.Pause.WasPressedThisFrame() || gameInput.UI.Pause.WasPressedThisFrame(); } }
+    public bool LockOn { get { return gameInput.Player.LockOn.WasPressedThisFrame(); } }
 
     // UI操作用
     public bool Decision { get { return gameInput.UI.Decision.WasPressedThisFrame(); } }

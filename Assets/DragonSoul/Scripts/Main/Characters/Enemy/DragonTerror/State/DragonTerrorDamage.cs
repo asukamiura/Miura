@@ -6,7 +6,7 @@ namespace Enemy
     {
         public DragonTerrorStateID StateID => DragonTerrorStateID.Damage;
 
-        DragonTerrorCore core;
+        readonly DragonTerrorCore core;
 
         const float TransitionDuration = 0.1f;  // アニメーションの遷移継続時間
         const float TransitionTime = 0.8f;      // アニメーションを遷移させる時間

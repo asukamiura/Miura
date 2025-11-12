@@ -5,7 +5,7 @@ namespace Enemy
     public class DragonTerrorDie : IState<DragonTerrorStateID>
     {
         public DragonTerrorStateID StateID => DragonTerrorStateID.Die;
-        private DragonTerrorCore core;
+        readonly DragonTerrorCore core;
 
         public DragonTerrorDie(DragonTerrorCore core)
         {

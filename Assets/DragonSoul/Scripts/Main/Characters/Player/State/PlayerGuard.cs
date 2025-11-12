@@ -3,19 +3,20 @@
     public class PlayerGuard : IState<PlayerStateID>
     {
         public PlayerStateID StateID => PlayerStateID.Guard;
-        InputReciver input => InputReciver.Instance;
-        PlayerCore core;
+        readonly PlayerCore core;
+        readonly AttackAssist attackAssist;
 
         const float AnimationEndThreshold = 1f; // アニメーション終了のしきい値
 
-        public PlayerGuard(PlayerCore core)
+        public PlayerGuard(PlayerCore core, AttackAssist attackAssist)
         {
             this.core = core;
+            this.attackAssist = attackAssist;
         }
 
         public void Enter()
         {
-            core.attackAssist.CorrectionAttack();
+            attackAssist.CorrectionAttack();
             core.Animator.CrossFade("Guard", 0);
         }
 
@@ -25,7 +26,7 @@
 
             if (normalizedTime >= AnimationEndThreshold && core.CurrentStateInfo.IsName("Guard"))
             {
-                core.stateMachine.ChangeState(PlayerStateID.Locomotion);
+                core.StateMachine.ChangeState(PlayerStateID.Locomotion);
             }
         }
 

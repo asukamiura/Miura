@@ -5,9 +5,9 @@ namespace Enemy
     public class DragonUsurperIdle : IState<DragonUsurperStateID>
     {
         public DragonUsurperStateID StateID => DragonUsurperStateID.Idle;
-        DragonUsurperCore core;
+        readonly DragonUsurperCore core;
         float currentTime = 0;
-        const float restTime = 2f;
+        const float RestTime = 2f;
 
         public DragonUsurperIdle(DragonUsurperCore core)
         {
@@ -23,7 +23,7 @@ namespace Enemy
         {
             currentTime += Time.deltaTime;
 
-            if (currentTime >= restTime)
+            if (currentTime >= RestTime)
             {
                 core.stateMachine.ChangeState(DragonUsurperStateID.Move);
             }

@@ -8,7 +8,7 @@ namespace Enemy
     {
         public DragonUsurperStateID StateID => DragonUsurperStateID.Move;
 
-        DragonUsurperCore core;
+        readonly DragonUsurperCore core;
         float targetDistance;
         Vector3 targetPos;
         string animationName;
