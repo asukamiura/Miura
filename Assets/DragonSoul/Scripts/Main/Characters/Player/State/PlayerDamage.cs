@@ -5,20 +5,21 @@ namespace Player
     public class PlayerDamage : IState<PlayerStateID>
     {
         public PlayerStateID StateID => PlayerStateID.Damage;
-        InputReciver Input => InputReciver.Instance;
-        PlayerCore core;
+        readonly PlayerCore core;
+        readonly AttackAssist attackAssist;
 
         const float KnockBackSpeed = 10;     // ノックバックスピード
         const float KnockBackDeceleration = 0.94f; // ノックバック減速率
 
-        public PlayerDamage(PlayerCore core)
+        public PlayerDamage(PlayerCore core, AttackAssist attackAssist)
         {
             this.core = core;
+            this.attackAssist = attackAssist;
         }
 
         public void Enter()
         {
-            core.attackAssist.CorrectionAttack();
+            attackAssist.CorrectionAttack();
             core.Animator.CrossFade("Damage", 0);
             core.Rb.velocity = -core.transform.forward * KnockBackSpeed;
         }
@@ -29,7 +30,7 @@ namespace Player
             {
                 if (core.CurrentStateInfo.normalizedTime >= 1)
                 {
-                    core.stateMachine.ChangeState(PlayerStateID.Locomotion);
+                    core.StateMachine.ChangeState(PlayerStateID.Locomotion);
                 }
             }
         }

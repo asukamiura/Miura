@@ -10,12 +10,12 @@ public class PerformanceManager : MonoBehaviour
 
     void Start()
     {
-        playerCore.stateMachine.OnStateChanged += StartPerformance;
+        playerCore.StateMachine.OnStateChanged += StartPerformance;
     }
 
     void OnDisable()
     {
-        playerCore.stateMachine.OnStateChanged -= StartPerformance;        
+        playerCore.StateMachine.OnStateChanged -= StartPerformance;        
     }
 
     void StartPerformance(PlayerStateID stateID)

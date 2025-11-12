@@ -1,11 +1,9 @@
-﻿using UnityEngine;
-
-namespace Enemy
+﻿namespace Enemy
 {
     public class DragonUsurperDie : IState<DragonUsurperStateID>
     {
         public DragonUsurperStateID StateID => DragonUsurperStateID.Die;
-        DragonUsurperCore core;
+        readonly DragonUsurperCore core;
 
         public DragonUsurperDie(DragonUsurperCore core)
         {
@@ -17,17 +15,11 @@ namespace Enemy
             core.Animator.CrossFade("Die", 0);
         }
 
-        public void Update()
-        {
-
-        }
+        public void Update() { }       
 
         public void FixedUpdate() { }
 
-        public void Exit()
-        {
-
-        }
+        public void Exit() { }    
     }
 }
 

@@ -5,7 +5,7 @@ namespace Enemy
     public class DragonNightmareDamage : IState<DragonNightmareStateID>
     {
         public DragonNightmareStateID StateID => DragonNightmareStateID.Damage;
-        DragonNightmareCore core;
+        readonly DragonNightmareCore core;
 
         public DragonNightmareDamage(DragonNightmareCore core)
         {
@@ -31,8 +31,6 @@ namespace Enemy
 
         public void FixedUpdate() { }
 
-        public void Exit()
-        {
-        }
+        public void Exit() { }       
     }
 }

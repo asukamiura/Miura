@@ -5,13 +5,15 @@ using UnityEngine;
 
 public class DodgePerformance : MonoBehaviour
 {
-    [SerializeField] EffectPlayer effectPlayer;
+    [SerializeField] EffectController effectController;
     [SerializeField] CinemachineVirtualCamera performanceCamera;
+    [SerializeField] Transform playerTransform;
 
     const float SlowDuration = 0.95f;
     const float DefaultAnimationSpeed = 1;
     const float PerformanceAnimationSpeed = 0.3f;
     const float CameraBlendTime = 0.5f;
+    const float ReturnBlendTime = 1f;   // メインカメラへ戻す時のブレンド時間
 
     public void StartPerformance()
     {
@@ -29,8 +31,8 @@ public class DodgePerformance : MonoBehaviour
         CameraManager.Instance.EnabledRecentering();
 
         // エフェクトの再生
-        EffectManager.Instance.PlayEffect("NovaLight", transform.position, Quaternion.Euler(-90, 0, 0));
-        effectPlayer.ShowEffect("SpikyExplosion");
+        EffectManager.Instance.PlayEffect("NovaLight", playerTransform.position);
+        effectController.ShowEffect("SpikyExplosion");
 
         // スローにする
         SlowManager.Instance.ApplySlow(PerformanceAnimationSpeed, SlowTargetType.Player);
@@ -47,6 +49,6 @@ public class DodgePerformance : MonoBehaviour
         PostEffectManager.Instance.ChangePostEffect(ProfileNum.Normal, 0);
 
         CameraManager.Instance.DisabledRecentering();
-        CameraManager.Instance.ReturnToPlayerCamera(1);
+        CameraManager.Instance.ReturnToPlayerCamera(ReturnBlendTime);
     }
 }

@@ -6,7 +6,7 @@ namespace Enemy
     {
         public DragonUsurperStateID StateID => DragonUsurperStateID.AttackClaw;
 
-        DragonUsurperCore core;
+        readonly DragonUsurperCore core;
         Vector3 targetPos;
         bool isPlayedEffect = false;
         Quaternion effectRotation = Quaternion.Euler(-90, 0, 0);
@@ -31,7 +31,7 @@ namespace Enemy
         {
             isPlayedEffect = false;
 
-            core.effectPlayer.ShowEffect("CanGuardEffect");
+            core.warningEffectManager.ShowWarningEffect(EnemyAttackType.Guardable);
             core.Animator.CrossFade("Attack2", TransitionDuration);
 
             targetPos = core.playerTransform.position - core.transform.forward * TargetOffset;

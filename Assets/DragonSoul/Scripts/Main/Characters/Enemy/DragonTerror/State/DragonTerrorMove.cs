@@ -8,7 +8,7 @@ namespace Enemy
     {
         public DragonTerrorStateID StateID => DragonTerrorStateID.Move;
 
-        DragonTerrorCore core;
+        readonly DragonTerrorCore core;
         float targetDistance;
         Vector3 targetPos;
         string animationName;
@@ -45,7 +45,6 @@ namespace Enemy
 
             // 移動速度、加速度、止まる距離を設定
             core.NavMeshAgent.acceleration = Acceleration;
-            ////core.navMeshAgent.stoppingDistance = targetDistance;
 
             if (core.DistanceToPlayer() > targetDistance)
             {

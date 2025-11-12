@@ -7,9 +7,9 @@ public class BreathController : MonoBehaviour
 
     public void GenerateEnergyBall()
     {
-        GameObject gameObject = ObjectPool.Instance.GetGameObject(projectilePrefab, breathPoint.transform.position, breathPoint.transform.rotation);
+        GameObject effect = ObjectPool.Instance.GetGameObject(projectilePrefab, breathPoint.transform.position, breathPoint.transform.rotation);
 
-        var projectile = gameObject.GetComponent<BreathProjectile>();
+        var projectile = effect.GetComponent<BreathProjectile>();
 
         if (projectile != null)
         {

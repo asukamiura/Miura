@@ -14,7 +14,7 @@ namespace Enemy
         bool isPlayedEffect2 = false;
         Quaternion effectRotation = Quaternion.Euler(-90, 0, 0);
 
-        DragonTerrorCore core;
+        readonly DragonTerrorCore core;
 
         public DragonTerrorAttackClaw(DragonTerrorCore core)
         {
@@ -28,7 +28,7 @@ namespace Enemy
             isPlayedEffect1 = false;
             isPlayedEffect2 = false;
 
-            core.effectPlayer.ShowEffect("CanDodgeEffect");
+            core.warningEffectManager.ShowWarningEffect(EnemyAttackType.Dodgeable);
             core.Animator.CrossFade("Attack2", TransitionDuration);
         }
 

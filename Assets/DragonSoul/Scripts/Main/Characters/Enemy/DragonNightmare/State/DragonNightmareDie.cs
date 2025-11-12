@@ -1,11 +1,9 @@
-﻿using UnityEngine;
-
-namespace Enemy
+﻿namespace Enemy
 {
     public class DragonNightmareDie : IState<DragonNightmareStateID>
     {
         public DragonNightmareStateID StateID => DragonNightmareStateID.Die;
-        private DragonNightmareCore core;
+        readonly DragonNightmareCore core;
 
         public DragonNightmareDie(DragonNightmareCore core)
         {
@@ -17,17 +15,9 @@ namespace Enemy
             core.Animator.CrossFade("Die", 0);
         }
 
-        public void Update()
-        {
-           
-        }
-
+        public void Update() { }
         public void FixedUpdate() { }
-
-        public void Exit()
-        {
-
-        }
+        public void Exit() { }
     }
 }
 

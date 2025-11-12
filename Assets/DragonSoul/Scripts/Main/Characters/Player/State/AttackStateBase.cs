@@ -4,16 +4,19 @@ using System.Collections.Generic;
 public abstract class AttackStateBase<TStateID> : IState<TStateID>
 {    
     protected int step = 1;
-    protected PlayerCore core;
+    protected readonly PlayerCore core;
+    protected readonly PlayerAttack playerAttack;
+    protected readonly AttackAssist attackAssist;
     protected abstract Dictionary<int, AttackAnimationConfig> AnimationData { get; }
     protected int MaxStep => AnimationData.Count;
 
     public abstract TStateID StateID { get; }
-    InputReciver Input => InputReciver.Instance;
 
-    public AttackStateBase(PlayerCore core)
+    public AttackStateBase(PlayerCore core, PlayerAttack playerAttack, AttackAssist attackAssist)
     {
         this.core = core;
+        this.playerAttack = playerAttack;
+        this.attackAssist = attackAssist;
     }
 
     public virtual void Enter() 
@@ -30,7 +33,7 @@ public abstract class AttackStateBase<TStateID> : IState<TStateID>
 
             if (step > MaxStep)
             {
-                core.stateMachine.ChangeState(PlayerStateID.Locomotion);
+                core.StateMachine.ChangeState(PlayerStateID.Locomotion);
             }
             else
             {
@@ -44,7 +47,7 @@ public abstract class AttackStateBase<TStateID> : IState<TStateID>
     public virtual void Exit() 
     {
         step = 1;
-        core.attackAssist.StopAssist();
+        attackAssist.StopAssist();
         core.Animator.applyRootMotion = false;
     }
 
@@ -56,6 +59,7 @@ public abstract class AttackStateBase<TStateID> : IState<TStateID>
         core.Animator.CrossFade(config.animationName, config.transitionDuration, config.layer, config.offset);
     }
 
+    // アニメーションの設定
     protected class AttackAnimationConfig
     {
         public readonly string animationName;

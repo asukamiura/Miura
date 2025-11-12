@@ -5,11 +5,11 @@ namespace Enemy
     public class CoachingSoldierTakeWarning : IState<CoachingSoldierStateID>
     {
         public CoachingSoldierStateID StateID => CoachingSoldierStateID.TakeWarning;
-        private CoachingSoldierCore core;
-        private float currentTime = 0;
-        private const float warningTime = 3;
-        private int moveDirection;
-        private const int ResetPosY = 0;
+        readonly CoachingSoldierCore core;
+        float currentTime = 0;
+        int moveDirection;
+        const float WarningTime = 3;
+        const int ResetPosY = 0;
         const float MoveOffset = 2;
         const float WalkSpeed = 1;
         const float Acceleration = 50;
@@ -45,7 +45,7 @@ namespace Enemy
         {
             currentTime += Time.deltaTime;
 
-            if (currentTime >= warningTime)
+            if (currentTime >= WarningTime)
             {
                 if (!core.CanAttack1 && !core.CanAttack2)
                 {

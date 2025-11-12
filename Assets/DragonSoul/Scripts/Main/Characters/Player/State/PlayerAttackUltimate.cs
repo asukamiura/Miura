@@ -7,7 +7,7 @@ namespace Player
     {
         public override PlayerStateID StateID => PlayerStateID.AttackUltimate;
 
-        public PlayerAttackUltimate(PlayerCore core) : base(core) { }
+        public PlayerAttackUltimate(PlayerCore core, PlayerAttack playerAttack, AttackAssist attackAssist) : base(core, playerAttack, attackAssist) { }
 
         protected override Dictionary<int, AttackAnimationConfig> AnimationData => new()
         {
@@ -21,7 +21,7 @@ namespace Player
             base.Enter();
             core.IsInvincible = true;
             core.Rb.velocity = Vector3.zero;
-            core.playerAttack.SetCombAttack(PlayerAttackType.Ultimate);
+            playerAttack.SetCombAttack(PlayerAttackType.Ultimate);
         }
 
         public override void Update()
@@ -32,7 +32,7 @@ namespace Player
 
                 if (step > MaxStep)
                 {
-                    core.stateMachine.ChangeState(PlayerStateID.Locomotion);
+                    core.StateMachine.ChangeState(PlayerStateID.Locomotion);
                 }
                 else
                 {
@@ -46,7 +46,7 @@ namespace Player
             }
             else if (core.CurrentStateInfo.normalizedTime >= 1 && core.CurrentStateInfo.IsName(AnimationData[step].animationName))
             {
-                core.stateMachine.ChangeState(PlayerStateID.Locomotion);
+                core.StateMachine.ChangeState(PlayerStateID.Locomotion);
             }
         }
 

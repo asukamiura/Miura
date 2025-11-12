@@ -5,7 +5,6 @@ namespace Player
     public class PlayerAttackSpecial2 : AttackStateBase<PlayerStateID>
     {
         public override PlayerStateID StateID => PlayerStateID.AttackSpecial2;
-        InputReciver Input => InputReciver.Instance;
 
         protected override Dictionary<int, AttackAnimationConfig> AnimationData => new()
         {
@@ -15,13 +14,13 @@ namespace Player
             {4, new AttackAnimationConfig("AttackSpecial2_4", 0, 0, 0, 1) }
         };
 
-        public PlayerAttackSpecial2(PlayerCore core) : base(core) { }
+        public PlayerAttackSpecial2(PlayerCore core, PlayerAttack playerAttack, AttackAssist attackAssist) : base(core, playerAttack, attackAssist) { }
 
         public override void Enter()
         {
             base.Enter();
             core.IsInvincible = true;     
-            core.playerAttack.SetCombAttack(PlayerAttackType.Special2);
+            playerAttack.SetCombAttack(PlayerAttackType.Special2);
         }
 
         public override void Update()

@@ -63,9 +63,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2ad92a9ad581bf4fb3c3b3a8fcbab39, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectPlayer: {fileID: 0}
+  effectController: {fileID: 0}
   performanceCamera: {fileID: 0}
-  slowDuration: 0.95
+  playerTransform: {fileID: 0}
 --- !u!114 &5839313602477452002
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,17 +78,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89718463fc419e54ba9752a3f8cc1b00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectPlayer: {fileID: 0}
+  effectController: {fileID: 0}
   performanceCamera: {fileID: 0}
-  cameraBlendTime: 0.2
-  fovChangeDuration: 0.4
-  normalFOV: 70
-  justGuardFOV: 55
-  returnBlendTime: 1
-  stopDuration: 0.4
-  defaultAnimationSpeed: 1
-  stoppedAnimationSpeed: 0
-  postEffectBlendTime: 1
 --- !u!114 &4172550688055945959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -101,20 +92,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76083c0a01bd04044a05575aeb6e0aba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effectPlayer: {fileID: 0}
   performanceCamera:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  firstCameraDelay: 0.1
-  secondCameraDuration: 1
-  thirdCameraDuration: 0.75
-  returnToPlayerDuration: 0.5
-  zoomOutWaitAfterThird: 0.5
-  firstToSecondBlend: 0.8
-  toPlayerBlend: 0.5
-  instantBlend: 0
-  zoomOutTargetFOV: 100
-  zoomOutDuration: 0.05
-  zoomInTargetFOV: 80
-  zoomInDuration: 0

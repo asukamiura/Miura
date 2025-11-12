@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class EffectPlayer : MonoBehaviour
+public class EffectController : MonoBehaviour
 {
     [SerializeField] List<GameObject> effectList = new List<GameObject>();
 
@@ -38,7 +38,7 @@ public class EffectPlayer : MonoBehaviour
     }
 
     /// <summary>
-    /// エフェクトを再生(手動で時間指定)
+    /// エフェクトを再生(登録された時間で終了)
     /// </summary>
     /// <param name="effectName">エフェクト名</param>
     public void ShowEffect(string effectName)
@@ -58,7 +58,7 @@ public class EffectPlayer : MonoBehaviour
     }
 
     /// <summary>
-    /// エフェクトを再生(登録された時間で終了)
+    /// エフェクトを再生(手動で時間指定)
     /// </summary>
     /// <param name="effectName">エフェクト名</param>
     /// <param name="duration">エフェクト表示する時間</param>

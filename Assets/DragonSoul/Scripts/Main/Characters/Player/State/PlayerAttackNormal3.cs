@@ -6,7 +6,7 @@ public class PlayerAttackNormal3 : AttackStateBase<PlayerStateID>
     InputReciver Input => InputReciver.Instance;
 
     public override PlayerStateID StateID => PlayerStateID.AttackNormal3;
-    public PlayerAttackNormal3(PlayerCore core) : base(core) { }
+    public PlayerAttackNormal3(PlayerCore core, PlayerAttack playerAttack, AttackAssist attackAssist) : base(core, playerAttack, attackAssist) { }
 
     protected override Dictionary<int, AttackAnimationConfig> AnimationData => new()
     {
@@ -20,13 +20,13 @@ public class PlayerAttackNormal3 : AttackStateBase<PlayerStateID>
         // ガードステートに遷移
         if (Input.Guard)
         {
-            core.stateMachine.ChangeState(PlayerStateID.Guard);
+            core.StateMachine.ChangeState(PlayerStateID.Guard);
         }
 
         // ダッシュステートに遷移
         if (Input.Dash)
         {
-            core.stateMachine.ChangeState(PlayerStateID.Dash);
+            core.StateMachine.ChangeState(PlayerStateID.Dash);
         }
     }
 }

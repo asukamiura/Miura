@@ -1,9 +1,11 @@
-﻿public enum Timing { Miss, Fast, Just, Late }
+﻿using UnityEngine;
+
+public enum TimingType { Miss, Fast, Just, Late }
 
 [System.Serializable]
 public struct TimingConfig
 {
-    public Timing timing;
+    public TimingType timing;
     public float start;
     public float end;
 

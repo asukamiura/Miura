@@ -3,7 +3,7 @@
     public class DragonUsurperAttackBite : IState<DragonUsurperStateID>
     {
         public DragonUsurperStateID StateID => DragonUsurperStateID.AttackBite;
-        DragonUsurperCore core;
+        readonly DragonUsurperCore core;
         const float TransitionDuration = 0.1f;  // アニメーションの遷移継続時間
         const float TransitionTime = 1f;        // アニメーションを遷移させる時間
         const float TrackingDuration = 0.4f;    // プレイヤーを追従する継続時間
@@ -15,7 +15,7 @@
 
         public void Enter()
         {
-            core.effectPlayer.ShowEffect("CanGuardEffect");
+            core.warningEffectManager.ShowWarningEffect(EnemyAttackType.Guardable);
             core.Animator.CrossFade("Attack1", TransitionDuration);
         }
 

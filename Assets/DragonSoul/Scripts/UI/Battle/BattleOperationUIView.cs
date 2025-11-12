@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class BattleOperationUIView : MonoBehaviour
-{
+{    
     [SerializeField] Image attackIcon;
     [SerializeField] Image dashIcon;
     [SerializeField] Image guardIcon;

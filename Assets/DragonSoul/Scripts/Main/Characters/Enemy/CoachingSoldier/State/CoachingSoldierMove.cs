@@ -5,7 +5,7 @@ namespace Enemy
     public class CoachingSoldierMove : IState<CoachingSoldierStateID>
     {
         public CoachingSoldierStateID StateID => CoachingSoldierStateID.Move;
-        CoachingSoldierCore core;
+        readonly CoachingSoldierCore core;
 
         const float WalkSpeed = 3;
         const float RunSpeed = 9;

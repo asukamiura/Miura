@@ -15,7 +15,7 @@ public class ObjectPool : MonoBehaviour
         }
         else
         {
-            Destroy(this);
+            Destroy(gameObject);
         }
     }
 
@@ -39,9 +39,7 @@ public class ObjectPool : MonoBehaviour
             if (!go.activeInHierarchy)
             {
                 go.transform.position = position;
-
                 go.transform.rotation = rotation;
-
                 go.SetActive(true);
 
                 return go;

@@ -5,10 +5,10 @@ namespace Enemy
     public class CoachingSoldierIdle : IState<CoachingSoldierStateID>
     {
         public CoachingSoldierStateID StateID => CoachingSoldierStateID.Idle;
-        CoachingSoldierCore core;
+        readonly CoachingSoldierCore core;
         float currentTime = 0;
-        const float restTime = 1.5f;
-        const int resetPosY = 0;
+        const float RestTime = 1.5f;
+        const int ResetPosY = 0;
 
         public CoachingSoldierIdle(CoachingSoldierCore core)
         {
@@ -18,14 +18,14 @@ namespace Enemy
         public void Enter()
         {
             core.Animator.CrossFade("Idle", 0.1f);
-            core.transform.position = new Vector3(core.transform.position.x, resetPosY, core.transform.position.z);
+            core.transform.position = new Vector3(core.transform.position.x, ResetPosY, core.transform.position.z);
         }
 
         public void Update()
         {
             currentTime += Time.deltaTime;
 
-            if (currentTime >= restTime)
+            if (currentTime >= RestTime)
             {
                 core.stateMachine.ChangeState(CoachingSoldierStateID.TakeWarning);
             }

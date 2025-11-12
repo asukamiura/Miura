@@ -9614,6 +9614,7 @@ GameObject:
   - component: {fileID: 7055356423421932774}
   - component: {fileID: 4759373625908936714}
   - component: {fileID: 1847905315169755457}
+  - component: {fileID: 1468799199947376619}
   m_Layer: 0
   m_Name: EarthBlast
   m_TagString: Untagged
@@ -14479,6 +14480,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1468799199947376619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2784477270521200907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f804116f72cd99546b9baa9bf5c2e264, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4463621377696152823
 GameObject:
   m_ObjectHideFlags: 0

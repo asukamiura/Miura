@@ -6,7 +6,7 @@ public class EnemyAttack : MonoBehaviour
 {
     public EnemyAttackType attackType;  // ジャストガード可能攻撃か、ジャスト回避可能攻撃か
     public int damageVal = 0;   // 与えるダメージ量
-    public Action OnPlayerJustGuarded;
+    public Action OnJustGuarded;
 
     HashSet<GameObject> hitObjs = new HashSet<GameObject>();    // 攻撃が当たったオブジェクトを一時的に保持(多段ヒットを防ぐため)
 
@@ -17,7 +17,7 @@ public class EnemyAttack : MonoBehaviour
             if (!hitObjs.Contains(other.gameObject))
             {
                 // ダメージを与える
-                other.GetComponentInParent<IPlayerDamageable>().TakeDamage(damageVal, attackType, this);
+                other.GetComponentInParent<IPlayerDamageable>().TakeDamage(damageVal, attackType, OnJustGuarded);
                 hitObjs.Add(other.gameObject);
             }          
         }        
