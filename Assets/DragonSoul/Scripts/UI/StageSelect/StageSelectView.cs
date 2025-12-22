@@ -41,19 +41,11 @@ public class StageSelectView : MonoBehaviour
 
     public void MoveSelectArrow(int index)
     {
-        Vector3 selectArrowPos = selectArrow.transform.position;
-
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            if (i == index)
-            {
-                selectArrowPos.x = buttons[i].transform.position.x;
-                selectArrowPos.y = selectArrow.transform.position.y;
-                selectArrowPos.z = buttons[i].transform.position.z;
-            }
-
-            selectArrow.transform.position = selectArrowPos;
-        }
+        selectArrow.transform.position = new Vector3(
+            buttons[index].transform.position.x,
+            selectArrow.transform.position.y,
+            buttons[index].transform.position.z
+        );
     }
 
     public void SetHighScore(int stageNum, int score)
