@@ -69,17 +69,17 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    void CountUpJustDodge(string timing)
+    void CountUpJustDodge(TimingType timing)
     {
-        if (timing == "Just")
+        if (timing.ToString() == "Just")
         {
             justDodgeCount++;
         }
     }
 
-    void CountUpJustGuard(string timing)
+    void CountUpJustGuard(TimingType timing)
     {
-        if (timing == "Just")
+        if (timing.ToString() == "Just")
         {
             justGuardCount++;
         }
@@ -105,9 +105,28 @@ public class ScoreManager : MonoBehaviour
         UpdateRank();
     }
 
+    /// <summary>
+    /// 攻撃用スコア加算
+    /// </summary>
+    /// <param name="score"></param>
     public void AddScore(int score)
     {
         totalScore += score;
+
+        // ランクを更新
+        UpdateRank();
+    }
+
+    /// <summary>
+    /// スコア加算処理
+    /// </summary>
+    /// <param name="name">加算するスコアの登録名</param>
+    public void AddScore(TimingType timing)
+    {
+        if (scoreDic.TryGetValue(timing.ToString(), out int score))
+        {
+            totalScore += score;
+        }
 
         // ランクを更新
         UpdateRank();

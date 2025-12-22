@@ -5,21 +5,21 @@ namespace Player
 {
     public class PlayerCore : MonoBehaviour, ISlowable, IPlayerDamageable
     {
-        [SerializeField] PlayerParameterData parameterData;
-        [SerializeField] HealData healData;
-        [SerializeField] PowerUpData powerUpData;
-        [SerializeField] Animator animator;
+        [SerializeField] PlayerParameterData parameterData;       // 初期パラメーターデータ
+        [SerializeField] HealData healData;                       // ヒールアクションのデータ
+        [SerializeField] PowerUpData powerUpData;                 // パワーアップアクションのデータ
+        [SerializeField] Animator animator;                     
         [SerializeField] Collider bodyCollider;
         [SerializeField] Rigidbody rb;
-        [SerializeField] HealthManager healthManager;
-        [SerializeField] JustPointManager justPointManager;
-        [SerializeField] GameObject dodgeCollider;
-        [SerializeField] TimingJudgement timingJudgement;
-        [SerializeField] DashCooldownManager dashCooldownManager;
-        [SerializeField] PowerManager powerManager;
-        [SerializeField] UltimateManager ultimateManager;
-        [SerializeField] PlayerAttack playerAttack;
-        [SerializeField] AttackAssist attackAssist;
+        [SerializeField] HealthManager healthManager;             // HPの管理
+        [SerializeField] JustPointManager justPointManager;       // ジャストポイントの管理
+        [SerializeField] GameObject dodgeCollider;                // ジャスト回避を判定するコライダー
+        [SerializeField] TimingJudgement timingJudgement;         // 回避とガードの行われたタイミングを判定する
+        [SerializeField] DashCooldownManager dashCooldownManager; // ダッシュのクールダウンの管理
+        [SerializeField] PowerManager powerManager;               // 攻撃力の管理
+        [SerializeField] UltimateManager ultimateManager;         // 必殺技ゲージの管理
+        [SerializeField] PlayerAttack playerAttack;               // 攻撃処理の管理
+        [SerializeField] AttackAssist attackAssist;               // 攻撃アシストの管理
 
         GameObject currentDodgeCollider;
         InputReciver Input => InputReciver.Instance;
@@ -34,8 +34,8 @@ namespace Player
         public AnimatorStateInfo CurrentStateInfo { get; private set; }
         public PlayerStateID CurrentState => StateMachine.CurrentState;
         public Action OnHealed;
-        public Action<string> OnDodgeTiming;
-        public Action<string> OnGuardTiming;
+        public Action<TimingType> OnDodgeTiming;    // どの判定されたタイミングを通知
+        public Action<TimingType> OnGuardTiming;
 
         bool CanHeal => justPointManager.JustPoint >= healData.Cost;
         bool CanPowerUp => justPointManager.JustPoint >= powerUpData.Cost && StateMachine.CurrentState == PlayerStateID.Locomotion;
@@ -145,14 +145,14 @@ namespace Player
                 case TimingType.Fast:
                 case TimingType.Late:
                     StateMachine.ChangeState(PlayerStateID.Block);
-                    OnGuardTiming?.Invoke(guardTiming.ToString());
+                    OnGuardTiming?.Invoke(guardTiming);
                     onJustGuarded?.Invoke();
                     break;
                 case TimingType.Just:
                     // ジャストポイントを追加
                     justPointManager.AddJustPoint(GetJustPoint);                    
                     StateMachine.ChangeState(PlayerStateID.Block);
-                    OnGuardTiming?.Invoke(guardTiming.ToString());
+                    OnGuardTiming?.Invoke(guardTiming);
                     onJustGuarded?.Invoke();
                     break;
                 case TimingType.Miss:
@@ -175,13 +175,13 @@ namespace Player
                 case TimingType.Fast:
                 case TimingType.Late:
                     StateMachine.ChangeState(PlayerStateID.Dodge);
-                    OnGuardTiming?.Invoke(dodgeTiming.ToString());
+                    OnDodgeTiming?.Invoke(dodgeTiming);
                     break;
                 case TimingType.Just:
                     // ジャストポイントを追加
                     justPointManager.AddJustPoint(GetJustPoint);
                     StateMachine.ChangeState(PlayerStateID.Dodge);
-                    OnGuardTiming?.Invoke(dodgeTiming.ToString());
+                    OnDodgeTiming?.Invoke(dodgeTiming);
                     break;
             }
         }

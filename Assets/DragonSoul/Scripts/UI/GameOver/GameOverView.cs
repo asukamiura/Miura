@@ -31,14 +31,8 @@ public class GameOverView : MonoBehaviour
     }
 
     public void MoveSelectArrow(int index)
-    {
-        for (int i = 0; i < buttons.Length; i++)
-        {
-            if (i == index)
-            {
-                selectArrow.transform.position = buttons[i].transform.position;
-            }
-        }
+    {      
+        selectArrow.transform.position = buttons[index].transform.position;
     }
 
     public void Show()
