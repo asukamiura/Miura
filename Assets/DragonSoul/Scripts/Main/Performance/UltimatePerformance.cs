@@ -41,6 +41,7 @@ public class UltimatePerformance : MonoBehaviour
         CameraManager.Instance.SwitchCamera(performanceCamera[1], FirstToSecondBlend);
         yield return new WaitForSeconds(SecondCameraDuration);
 
+        SlowManager.Instance.ApplySlow(1f, SlowTargetType.Enemy);
         // カメラ3へ
         CameraManager.Instance.SwitchCamera(performanceCamera[2], InstantBlend);
 

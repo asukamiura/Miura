@@ -6,19 +6,21 @@ namespace Player
     {
         public PlayerStateID StateID => PlayerStateID.Dash;
         readonly PlayerCore core;
+        readonly AnimationController animationController;
         readonly DashCooldownManager dashCooldownManager;
-
         InputReciver Input => InputReciver.Instance;
-        string animationName;
+        string animationStateName;
         Vector3 targetDirection;
 
         const float DashSpeed = 10f;      // ダッシュ速度
-        const float AnimationEndThreshold = 0.5f; // アニメーション終了のしきい値
-  
+        const string DashFrontAnimationStateName = "DashFront";
+        const string DashBackAnimationStateName = "DashBack";
+        const float TransitionThreshold = 0.3f;  // 遷移を開始するアニメーションの進捗率
 
-        public PlayerDash(PlayerCore core, DashCooldownManager dashCooldownManager)
+        public PlayerDash(PlayerCore core, AnimationController animationController, DashCooldownManager dashCooldownManager)
         {
             this.core = core;
+            this.animationController = animationController;
             this.dashCooldownManager = dashCooldownManager;
         }
 
@@ -29,8 +31,8 @@ namespace Player
 
             if (Input.Move == Vector2.zero)
             {
-                core.Animator.CrossFade("DashBack", 0);
-                animationName = "DashBack";
+                animationController.PlayAniamtion(DashBackAnimationStateName);
+                animationStateName = DashBackAnimationStateName;
 
                 targetDirection = -core.transform.forward;
             }
@@ -41,29 +43,23 @@ namespace Player
                 targetDirection = cameraRotation * new Vector3(Input.Move.x, 0, Input.Move.y).normalized;
                 core.transform.rotation = Quaternion.LookRotation(targetDirection, Vector3.up);
 
-                core.Animator.CrossFade("DashFront", 0);
-                animationName = "DashFront";
+                animationController.PlayAniamtion(DashFrontAnimationStateName);
+                animationStateName = DashFrontAnimationStateName;
             }
         }
 
         public void Update()
         {
-            if (core.CurrentStateInfo.normalizedTime >= AnimationEndThreshold && core.CurrentStateInfo.IsName(animationName))
+            if (animationController.IsTimeElapsed(animationStateName, TransitionThreshold))
             {
                 core.StateMachine.ChangeState(PlayerStateID.Locomotion);
             }         
         }
 
         public void FixedUpdate()
-        {
-            if (targetDirection.sqrMagnitude > 0.01f && animationName != "DashBack")
-            {
-                Quaternion targetRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
-                core.transform.rotation = Quaternion.Slerp(core.transform.rotation, targetRotation, 5 * Time.fixedDeltaTime);
-            }
-
+        {         
             // 減速カーブ
-            float t = Mathf.Clamp01(core.CurrentStateInfo.normalizedTime);
+            float t = Mathf.Clamp01(animationController.StateInfo.normalizedTime);
             float speedFactor = 1f - t * t;
             core.Rb.velocity = DashSpeed * speedFactor * targetDirection;
         }
@@ -71,7 +67,6 @@ namespace Player
         public void Exit()
         {
             core.DestroyDodgeCollider();
-            core.Rb.velocity = Vector3.zero;
         }
     }
 }

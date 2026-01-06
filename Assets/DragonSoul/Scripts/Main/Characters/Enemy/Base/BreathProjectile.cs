@@ -50,7 +50,6 @@ public class BreathProjectile : MonoBehaviour
         {
             StopCoroutine(lifeTimer);
         }
-        Debug.Log("非表示");
         ObjectPool.Instance.ReleaseGameObject(gameObject);
     }
 

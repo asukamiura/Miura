@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class PowerManager : MonoBehaviour
+public class AttackPowerManager : MonoBehaviour
 {
     float baseAttackPower = 0;
     float basePowerUpMultiplier = 0;

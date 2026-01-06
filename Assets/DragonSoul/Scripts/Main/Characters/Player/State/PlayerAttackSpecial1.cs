@@ -1,40 +1,84 @@
-﻿using System.Collections.Generic;
-
-namespace Player
+﻿namespace Player
 {
-    public class PlayerAttackSpecial1 : AttackStateBase<PlayerStateID>
+    public class PlayerAttackSpecial1 : IState<PlayerStateID>
     {
-        public override PlayerStateID StateID => PlayerStateID.AttackSpecial1;
+        readonly PlayerCore core;
+        readonly AnimationController animationController;
+        readonly PlayerAttackSpecial1Controller specialAttack1Controller;
+        PlayerAttackData currentAttackData;
+        int currentStep = 1;
+        InputReciver Input => InputReciver.Instance;
 
-        protected override Dictionary<int, AttackAnimationConfig> AnimationData => new()
+        public PlayerStateID StateID => PlayerStateID.AttackSpecial1;
+
+        public PlayerAttackSpecial1(PlayerCore core, AnimationController animationController, PlayerAttackSpecial1Controller specialAttack1Controller)
         {
-            {1, new AttackAnimationConfig("AttackSpecial1_1", 0.1f, 0, 0.3f, 0.7f) },
-            {2, new AttackAnimationConfig("AttackSpecial1_2", 0.1f, 0, 0.3f, 0.7f) },
-            {3, new AttackAnimationConfig("AttackSpecial1_3", 0.1f, 0, 0.1f, 0.8f) },            
-        };
+            this.core = core;
+            this.animationController = animationController;
+            this.specialAttack1Controller = specialAttack1Controller;
+        }
 
-        public PlayerAttackSpecial1(PlayerCore core, PlayerAttack playerAttack, AttackAssist attackAssist) : base(core, playerAttack, attackAssist) { }
-
-        public override void Enter()
+        public void Enter()
         {
-            base.Enter();
-            core.Animator.applyRootMotion = true;
             core.IsInvincible = true;
-            playerAttack.SetCombAttack(PlayerAttackType.Special1);
+            PlayAnimation();
+            animationController.SetRootMotion(true);
+            specialAttack1Controller.OnHitDetectionPerformed += HandlePerformHit;
         }
 
-        public override void Update()
+        public void Update()
         {
-            base.Update();
+            // 現在の段が最終段か？
+            bool isLastStep = currentStep >= specialAttack1Controller.GetMaxComboCount();
+
+            // ガードステートに遷移
+            if (Input.Guard)
+            {
+                core.StateMachine.ChangeState(PlayerStateID.Guard);
+                return;
+            }
+
+            // ダッシュステートに遷移
+            if (Input.Dash)
+            {
+                core.StateMachine.ChangeState(PlayerStateID.Dash);
+                return;
+            }
+
+            if (!isLastStep && animationController.IsTimeElapsed(currentAttackData.AnimationStateName, currentAttackData.TransitionTime))
+            {
+                currentStep++;
+                PlayAnimation();
+                return;
+            }
+
+            if (isLastStep && animationController.IsTimeElapsed(currentAttackData.AnimationStateName, currentAttackData.TransitionTime))
+            {
+                core.StateMachine.ChangeState(PlayerStateID.Locomotion);
+            }
         }
 
-        public override void FixedUpdate() { }
+        public void FixedUpdate() { }
 
-        public override void Exit()
+        public void Exit()
         {
-            base.Exit();
-            core.Animator.speed = 1;
+            currentStep = 1;
+            animationController.SetRootMotion(false);
             core.IsInvincible = false;
+            specialAttack1Controller.OnHitDetectionPerformed -= HandlePerformHit;
+        }
+
+        // アニメーションを再生
+        void PlayAnimation()
+        {
+            currentAttackData = specialAttack1Controller.GetCurrentAttackData(currentStep);
+
+            animationController.PlayAniamtion(currentAttackData.AnimationStateName, currentAttackData.TransitionDuration, 0, currentAttackData.TimeOffset);
+        }
+
+        void HandlePerformHit()
+        {
+            specialAttack1Controller.ExecuteAttack(currentAttackData, core.AttackPower, core.InPowerUp, core.CenterTransform, animationController.Animator);
         }
     }
 }

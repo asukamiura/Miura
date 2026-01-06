@@ -4,27 +4,28 @@
     {
         public PlayerStateID StateID => PlayerStateID.Guard;
         readonly PlayerCore core;
+        readonly AnimationController animationController;
         readonly AttackAssist attackAssist;
 
-        const float AnimationEndThreshold = 1f; // アニメーション終了のしきい値
+        const string AnimationStateName = "Guard";
+        const float TransitionThreshold = 1.0f;     // 遷移を開始するアニメーションの進捗率
 
-        public PlayerGuard(PlayerCore core, AttackAssist attackAssist)
+        public PlayerGuard(PlayerCore core, AnimationController animationController, AttackAssist attackAssist)
         {
             this.core = core;
+            this.animationController = animationController;
             this.attackAssist = attackAssist;
         }
 
         public void Enter()
         {
             attackAssist.CorrectionAttack();
-            core.Animator.CrossFade("Guard", 0);
+            animationController.PlayAniamtion(AnimationStateName);
         }
 
         public void Update()
         {
-            float normalizedTime = core.CurrentStateInfo.normalizedTime;
-
-            if (normalizedTime >= AnimationEndThreshold && core.CurrentStateInfo.IsName("Guard"))
+            if (animationController.IsTimeElapsed(AnimationStateName, TransitionThreshold))
             {
                 core.StateMachine.ChangeState(PlayerStateID.Locomotion);
             }

@@ -33,7 +33,7 @@ public abstract class EnemyCoreBase : MonoBehaviour, ISlowable, IEnemyDamageable
         // 各攻撃コライダーに、この敵自身(ジャストガード対象)を登録する
         foreach (GameObject collider in attackColliders)
         {
-            collider.GetComponent<EnemyAttack>().OnJustGuarded += HandleJustGuarded;
+            collider.GetComponent<EnemyAttackBox>().OnJustGuarded += HandleJustGuarded;
         }
     }
 

@@ -21,7 +21,7 @@ public class JudgeDodgeController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.TryGetComponent<EnemyAttack>(out var enemyAttack))
+        if (other.gameObject.TryGetComponent<EnemyAttackBox>(out var enemyAttack))
         {
             if (enemyAttack.attackType == EnemyAttackType.Dodgeable)
             {

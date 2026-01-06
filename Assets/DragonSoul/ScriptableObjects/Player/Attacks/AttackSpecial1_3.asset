@@ -12,11 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f070a07f7f97f4e956b2eb081ff8ee, type: 3}
   m_Name: AttackSpecial1_3
   m_EditorClassIdentifier: 
-  attackName: AttackSpecial1_3
+  animationStateName: 
+  transitionDuration: 0.1
+  timeOffset: 0.1
+  comboEnableTime: 0
+  transitionTime: 0.8
+  comboResetTime: 0
   attackMultiplier: 20
   attackRange: 2
   ultAmount: 5
-  canFlinch: 1
+  canFlinch: 0
   hitStopDuration: 0.03
   cameraShakeForce: 1
   score: 300

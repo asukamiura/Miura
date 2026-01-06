@@ -7,16 +7,19 @@ namespace Player
         public PlayerStateID StateID => PlayerStateID.Block;
         InputReciver Input => InputReciver.Instance;
         readonly PlayerCore core;
+        readonly AnimationController animationController;
         bool isNextAttack = false;  // 特殊攻撃2を行う場合true,行わない場合false
 
-        const float TranstionAttackSpecialNormalizedTime = 0.75f;
-        const float TranstionIdleNormalizedTime = 1;
+        const string AnimationStateName = "Block";
+        const float TransitionAttackSpecial2Threshold = 0.75f;  // 特殊攻撃2へ遷移を開始するアニメーションの進捗率
+        const float TransitionLocomotionThreshold = 1;          // ロコモーションへ遷移を開始するアニメーションの進捗率
         const float KnockBackPower = 20;
         const float DecelerationRate = 0.95f; // 減速率
 
-        public PlayerBlock(PlayerCore core)
+        public PlayerBlock(PlayerCore core, AnimationController animationController)
         {
             this.core = core;
+            this.animationController = animationController;
         }
 
         public void Enter()
@@ -24,7 +27,7 @@ namespace Player
             // プレイヤーを無敵状態にする
             core.IsInvincible = true;
 
-            core.Animator.CrossFade("Block", 0);
+            animationController.PlayAniamtion(AnimationStateName);
 
             // プレイヤーをノックバックさせる
             core.Rb.velocity = -core.transform.forward * KnockBackPower;
@@ -32,22 +35,18 @@ namespace Player
 
         public void Update()
         {
-            if (core.CurrentStateInfo.IsName("Block"))
+            if (Input.AttackNormal)
             {
-                // 次攻撃の入力があった場合、特殊攻撃2に遷移
-                if (core.CurrentStateInfo.normalizedTime >= TranstionAttackSpecialNormalizedTime && isNextAttack)
-                {
-                    core.StateMachine.ChangeState(PlayerStateID.AttackSpecial2);
-                }
-                else if (core.CurrentStateInfo.normalizedTime >= TranstionIdleNormalizedTime && !isNextAttack)
-                {
-                    core.StateMachine.ChangeState(PlayerStateID.Locomotion);
-                }
+                isNextAttack = true;
+            }
 
-                if (Input.AttackNormal)
-                {
-                    isNextAttack = true;
-                }
+            if (animationController.IsTimeElapsed(AnimationStateName, TransitionAttackSpecial2Threshold) && isNextAttack)
+            {
+                core.StateMachine.ChangeState(PlayerStateID.AttackSpecial2);
+            }
+            else if (animationController.IsTimeElapsed(AnimationStateName, TransitionLocomotionThreshold) && !isNextAttack)
+            {
+                core.StateMachine.ChangeState(PlayerStateID.Locomotion);
             }
         }
 

@@ -9,10 +9,10 @@ public class DodgePerformance : MonoBehaviour
     [SerializeField] CinemachineVirtualCamera performanceCamera;
     [SerializeField] Transform playerTransform;
 
-    const float SlowDuration = 0.95f;
+    const float SlowDuration = 0.45f;
     const float DefaultAnimationSpeed = 1;
     const float PerformanceAnimationSpeed = 0.3f;
-    const float CameraBlendTime = 0.5f;
+    const float CameraBlendTime = 0.16f;
     const float ReturnBlendTime = 1f;   // メインカメラへ戻す時のブレンド時間
 
     public void StartPerformance()

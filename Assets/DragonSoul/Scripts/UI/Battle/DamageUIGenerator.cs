@@ -3,13 +3,35 @@ using UnityEngine;
 
 public class DamageUIGenerator : MonoBehaviour
 {
+    [SerializeField] PlayerAttackBroadcaster attackBroadcaster;
     [SerializeField] GameObject damageUIPrefab;
     [SerializeField] Canvas uiCanvas;
     [SerializeField] GameObject overlayUI;
 
     const float ShowingTime = 0.8f;
 
-    public void GenerateDamageUI(float damageValue, Vector3 targetPosition, bool inPowerUp)
+    void OnEnable()
+    {
+        attackBroadcaster.OnHitNotified += HandleHit;
+    }
+
+    void OnDisable()
+    {
+        attackBroadcaster.OnHitNotified -= HandleHit;
+    }
+
+    void HandleHit(HitInfo hitInfo)
+    {
+        GenerateDamageUI(hitInfo.damage, hitInfo.hitPoint, hitInfo.inPowerUp);
+    }
+
+    /// <summary>
+    /// ダメージUIを生成
+    /// </summary>
+    /// <param name="damageValue">ダメージ量</param>
+    /// <param name="targetPosition">生成する位置</param>
+    /// <param name="inPowerUp">パワーアップ中か？</param>
+    void GenerateDamageUI(float damageValue, Vector3 targetPosition, bool inPowerUp)
     {
         if (damageValue == 0) { return; }
 
