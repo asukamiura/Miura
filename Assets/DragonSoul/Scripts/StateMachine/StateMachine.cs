@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-public class StateMachine<TStateID>
+public class StateMachine<TStateID> where TStateID : Enum
 {
     IState<TStateID> currentState;
     IState<TStateID> previousState;

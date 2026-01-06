@@ -1,16 +1,14 @@
-﻿using UnityEngine;
-
-public class NormalStageManager : GameFlowManagerBase
+﻿public class NormalStageManager : GameFlowManagerBase
 {
-    [SerializeField] PauseMenuPresenter pauseMenuPresenter;
-    [SerializeField] GameOverPresenter gameOverPresenter;
-
     protected override void Awake()
     {
         base.Awake();
 
+        playerHealthManager.OnDied += () => ChangeState(GameFlowStateID.GameOver);
+        enemyHealthManager.OnDied += () => ChangeState(GameFlowStateID.Clear);
+
         stateMachine.RegisterState(new IntroState(this, enemyCore));
-        stateMachine.RegisterState(new PlayingState(this, playerHealthManager, enemyHealthManager, enemyCore));
+        stateMachine.RegisterState(new PlayingState(this, enemyCore));
         stateMachine.RegisterState(new PauseState(this, pauseMenuPresenter));
         stateMachine.RegisterState(new ClearState(this));
         stateMachine.RegisterState(new GameOverState(this, gameOverPresenter));

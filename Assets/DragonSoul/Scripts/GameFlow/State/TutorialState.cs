@@ -43,6 +43,6 @@ public class TutorialState : IState<GameFlowStateID>
         Input.EnableTutorialInput(false);
 
         // UI操作を無効
-        Input.EnableUIInput(true);
+        Input.EnableUIInput(false);
     }
 }

@@ -10,6 +10,9 @@ public class GameFlowManagerBase : MonoBehaviour
     [SerializeField] protected HealthManager playerHealthManager;
     [SerializeField] protected HealthManager enemyHealthManager;
     [SerializeField] protected EnemyCoreBase enemyCore;
+    [SerializeField] protected PauseMenuPresenter pauseMenuPresenter;
+    [SerializeField] protected GameOverPresenter gameOverPresenter;
+    [SerializeField] int stageNum = 0;
 
     protected StateMachine<GameFlowStateID> stateMachine;
     GameObject saveObj;
@@ -39,6 +42,8 @@ public class GameFlowManagerBase : MonoBehaviour
         saveObj = Instantiate(savePrefab);
         saveObj.name = "SaveManager";
         saveManager = saveObj.GetComponent<SaveManager>();
+
+        StageSelectModel.inStageNum = (StageSelectModel.SelectState)stageNum;
     }
 
     protected virtual void Start()
