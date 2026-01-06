@@ -12,6 +12,7 @@ public class HealthManager : MonoBehaviour
     public bool IsDead => 0 >= currentHP;     // 死亡フラグ
 
     public Action<float, float> OnHPChanged;
+    public Action OnDied;
 
     /// <summary>
     /// 最大HPを設定
@@ -44,5 +45,10 @@ public class HealthManager : MonoBehaviour
         currentHP = Mathf.Clamp(currentHP - damageVal, MinHP, MaxHP);
 
         OnHPChanged?.Invoke(currentHP, MaxHP);
+
+        if (currentHP <= 0)
+        {
+            OnDied?.Invoke();
+        }
     }
 }
