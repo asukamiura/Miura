@@ -10,13 +10,8 @@ namespace Player
         [SerializeField] float stopDistance = 1;
 
         bool isAssisting = false;   // 攻撃アシストが有効な場合true,無効の場合false
-        Collider targetCollider;    
+        Collider targetCollider;
         float targetDistance = 0;
-
-        void Awake()
-        {
-            rb = GetComponent<Rigidbody>();
-        }
 
         void FixedUpdate()
         {
@@ -90,8 +85,20 @@ namespace Player
         {
             var (collider, distance, direction) = GetClosestTarget();
 
-            // アシスト範囲内にコライダーがなかった場合、処理を飛ばす
-            if (collider == null) { return; }
+            // アシスト範囲内にターゲットがいなかった場合
+            if (collider == null)
+            {
+                // 入力があった場合、入力方向を向く
+                if (InputReciver.Instance.Move != Vector2.zero)
+                {
+                    Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
+                    Vector3 moveDirection = cameraRotation * new Vector3(InputReciver.Instance.Move.x, 0, InputReciver.Instance.Move.y);
+                    Quaternion targetRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
+                    transform.rotation = targetRotation;
+                }              
+
+                return;
+            }
 
             targetCollider = collider;
 

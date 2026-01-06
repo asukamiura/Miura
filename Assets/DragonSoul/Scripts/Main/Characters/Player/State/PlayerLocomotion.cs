@@ -6,22 +6,26 @@ namespace Player
     {
         public PlayerStateID StateID => PlayerStateID.Locomotion;
         readonly PlayerCore core;
+        readonly AnimationController animationController;
         readonly DashCooldownManager dashCooldownManager;
         InputReciver Input => InputReciver.Instance;
         Vector3 moveDirection;
+        const string AnimationStateName = "Locomotion";
         const float TransitionDuration = 0.2f;
+        const float DampTime = 0.2f;
         const float RotationSpeed = 10f;
 
-        public PlayerLocomotion(PlayerCore core, DashCooldownManager dashCooldownManager)
+        public PlayerLocomotion(PlayerCore core, AnimationController animationController, DashCooldownManager dashCooldownManager)
         {
             this.core = core;
+            this.animationController = animationController;
             this.dashCooldownManager = dashCooldownManager;
         }
 
         public void Enter()
         {
-            core.Animator.applyRootMotion = false;
-            core.Animator.CrossFade("Locomotion", TransitionDuration);
+            animationController.SetRootMotion(false);
+            animationController.PlayAniamtion(AnimationStateName, TransitionDuration);
         }
 
         public void Update()
@@ -30,21 +34,24 @@ namespace Player
             if (Input.Guard)
             {
                 core.StateMachine.ChangeState(PlayerStateID.Guard);
+                return;
             }
 
             // ダッシュステートに遷移
             if (Input.Dash && dashCooldownManager.CanDash)
             {
                 core.StateMachine.ChangeState(PlayerStateID.Dash);
+                return;
             }
 
             if (Input.AttackNormal)
             {
-                core.StateMachine.ChangeState(PlayerStateID.AttackNormal1);
+                core.StateMachine.ChangeState(PlayerStateID.AttackNormal);
+                return;
             }
 
             // アニメーションの更新
-            core.Animator.SetFloat("Speed", Input.Move.magnitude * core.MoveSpeed, 0.2f, Time.fixedDeltaTime);
+            animationController.SetFloat("Speed", Input.Move.magnitude * core.MoveSpeed, DampTime);
         }
 
         public void FixedUpdate()

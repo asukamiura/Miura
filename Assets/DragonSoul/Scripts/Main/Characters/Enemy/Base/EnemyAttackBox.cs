@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyAttack : MonoBehaviour
+public class EnemyAttackBox : MonoBehaviour
 {
     public EnemyAttackType attackType;  // ジャストガード可能攻撃か、ジャスト回避可能攻撃か
     public int damageVal = 0;   // 与えるダメージ量
@@ -26,5 +26,15 @@ public class EnemyAttack : MonoBehaviour
     void OnDisable()
     {
         hitObjs.Clear();
+    }
+
+    public void ShowAttackBox()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void HideAttackBox()
+    {
+        gameObject.SetActive(false);
     }
 }

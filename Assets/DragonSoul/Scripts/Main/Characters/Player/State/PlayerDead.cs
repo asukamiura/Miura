@@ -4,16 +4,19 @@
     {
         public PlayerStateID StateID => PlayerStateID.Dead;
         readonly PlayerCore core;
+        readonly AnimationController animationController;
+        const string AnimationStateName = "Death";
 
-        public PlayerDead(PlayerCore core)
+        public PlayerDead(PlayerCore core, AnimationController animationController)
         {
             this.core = core;
+            this.animationController = animationController;
         }
 
         public void Enter()
         {
-            core.Animator.applyRootMotion = true;
-            core.Animator.CrossFade("Death", 0);
+            animationController.PlayAniamtion(AnimationStateName);
+            animationController.SetRootMotion(true);
         }
 
         public void Update() { }    

@@ -12,11 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13f070a07f7f97f4e956b2eb081ff8ee, type: 3}
   m_Name: AttackSpecial2_1
   m_EditorClassIdentifier: 
-  attackName: AttackSpecial2_1
-  attackMultiplier: 8
+  animationStateName: AttackSpecial2_1
+  isFinalStep: 0
+  transitionDuration: 0.1
+  timeOffset: 0.15
+  comboEnableTime: 0
+  transitionTime: 0.4
+  comboResetTime: 0
+  attackMultiplier: 12
   attackRange: 2
   ultAmount: 5
-  canFlinch: 1
+  canFlinch: 0
   hitStopDuration: 0.03
   cameraShakeForce: 1
   score: 300

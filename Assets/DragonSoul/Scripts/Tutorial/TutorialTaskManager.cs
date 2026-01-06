@@ -10,13 +10,15 @@ public class TutorialTaskManager : MonoBehaviour
 {
     [SerializeField] GameFlowManagerBase gameFlowManager;
 
+    public InputReciver Input => InputReciver.Instance;
     public PlayerCore playerCore;
-    public ITutorialTask currentTask; // 現在のタスク
-    public int attackNormalCount = 0;      // 通常攻撃をした回数
+    public PlayerAttackNormalController playerNormalAttackController;
+    public ITutorialTask currentTask;       // 現在のタスク
+    public int attackNormalCount = 0;       // 通常攻撃をした回数
     public int justDodgeCount = 0;          // ジャスト回避回数          
-    public int attackSpecial1Count = 0;    // 特殊攻撃1をした回数
+    public int attackSpecial1Count = 0;     // 特殊攻撃1をした回数
     public int justGuardCount = 0;          // ジャストガード回数
-    public int attackSpecial2Count = 0;    // 特殊攻撃2をした回数
+    public int attackSpecial2Count = 0;     // 特殊攻撃2をした回数
     public int attackUltimateCount = 0;
 
     [Header("説明画面")]
@@ -43,7 +45,6 @@ public class TutorialTaskManager : MonoBehaviour
     [Header("完了UI")]
     [SerializeField] GameObject completeUI;
 
-    public InputReciver Input => InputReciver.Instance;
     List<ITutorialTask> tutorialTasks; // タスクリスト
     bool taskExecuted = false;
     bool inTutorial = true;     // チュートリアル中かどうか

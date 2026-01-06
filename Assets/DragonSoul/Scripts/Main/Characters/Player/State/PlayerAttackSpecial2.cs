@@ -1,40 +1,84 @@
-﻿using System.Collections.Generic;
-
-namespace Player
+﻿namespace Player
 {
-    public class PlayerAttackSpecial2 : AttackStateBase<PlayerStateID>
+    public class PlayerAttackSpecial2 : IState<PlayerStateID>
     {
-        public override PlayerStateID StateID => PlayerStateID.AttackSpecial2;
+        readonly PlayerCore core;
+        readonly AnimationController animationController;
+        readonly PlayerAttackSpecial2Controller specialAttack2Controller;
+        PlayerAttackData currentAttackData;
+        int currentStep = 1;
+        InputReciver Input => InputReciver.Instance;
 
-        protected override Dictionary<int, AttackAnimationConfig> AnimationData => new()
+        public PlayerStateID StateID => PlayerStateID.AttackSpecial2;
+
+        public PlayerAttackSpecial2(PlayerCore core, AnimationController animationController, PlayerAttackSpecial2Controller specialAttack2Controller)
         {
-            {1, new AttackAnimationConfig("AttackSpecial2_1", 0.1f, 0, 0.15f, 0.645f) },
-            {2, new AttackAnimationConfig("AttackSpecial2_2", 0, 0, 0.5f, 1) },
-            {3, new AttackAnimationConfig("AttackSpecial2_3", 0, 0, 0, 1) },
-            {4, new AttackAnimationConfig("AttackSpecial2_4", 0, 0, 0, 1) }
-        };
-
-        public PlayerAttackSpecial2(PlayerCore core, PlayerAttack playerAttack, AttackAssist attackAssist) : base(core, playerAttack, attackAssist) { }
-
-        public override void Enter()
-        {
-            base.Enter();
-            core.IsInvincible = true;     
-            playerAttack.SetCombAttack(PlayerAttackType.Special2);
+            this.core = core;
+            this.animationController = animationController;
+            this.specialAttack2Controller = specialAttack2Controller;
         }
 
-        public override void Update()
-        { 
-            base.Update();
+        public void Enter()
+        {
+            core.IsInvincible = true;
+            PlayAnimation();
+            animationController.SetRootMotion(true);
+            specialAttack2Controller.OnHitDetectionPerformed += HandlePerformHit;
         }
 
-        public override void FixedUpdate() { }
-
-        public override void Exit()
+        public void Update()
         {
-            base.Exit();
-            core.Animator.speed = 1;
+            // 現在の段が最終段か？
+            bool isLastStep = currentStep >= specialAttack2Controller.GetMaxComboCount();
+
+            // ガードステートに遷移
+            if (Input.Guard)
+            {
+                core.StateMachine.ChangeState(PlayerStateID.Guard);
+                return;
+            }
+
+            // ダッシュステートに遷移
+            if (Input.Dash)
+            {
+                core.StateMachine.ChangeState(PlayerStateID.Dash);
+                return;
+            }
+
+            if (!isLastStep && animationController.IsTimeElapsed(currentAttackData.AnimationStateName, currentAttackData.TransitionTime))
+            {
+                currentStep++;
+                PlayAnimation();
+                return;
+            }
+
+            if (isLastStep && animationController.IsTimeElapsed(currentAttackData.AnimationStateName, currentAttackData.TransitionTime))
+            {
+                core.StateMachine.ChangeState(PlayerStateID.Locomotion);
+            }
+        }
+
+        public void FixedUpdate() { }
+
+        public void Exit()
+        {
+            currentStep = 1;
+            animationController.SetRootMotion(false);
             core.IsInvincible = false;
+            specialAttack2Controller.OnHitDetectionPerformed -= HandlePerformHit;
+        }
+
+        // アニメーションを再生
+        void PlayAnimation()
+        {
+            currentAttackData = specialAttack2Controller.GetCurrentAttackData(currentStep);
+
+            animationController.PlayAniamtion(currentAttackData.AnimationStateName, currentAttackData.TransitionDuration, 0, currentAttackData.TimeOffset);
+        }
+
+        void HandlePerformHit()
+        {
+            specialAttack2Controller.ExecuteAttack(currentAttackData, core.AttackPower, core.InPowerUp, core.CenterTransform, animationController.Animator);
         }
     }
 }

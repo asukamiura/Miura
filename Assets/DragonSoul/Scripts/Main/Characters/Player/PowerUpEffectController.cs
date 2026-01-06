@@ -2,17 +2,17 @@
 
 public class PowerUpEffectController : MonoBehaviour
 {
-    [SerializeField] PowerManager powerManager;
+    [SerializeField] AttackPowerManager attackPowerManager;
     [SerializeField] GameObject lightningAura;
 
     void Awake()
     {
-        powerManager.OnPowerUpEnd += HidePowerUpEffect;
+        attackPowerManager.OnPowerUpEnd += HidePowerUpEffect;
     }
 
     void OnDisable()
     {
-        powerManager.OnPowerUpEnd -= HidePowerUpEffect;        
+        attackPowerManager.OnPowerUpEnd -= HidePowerUpEffect;        
     }
 
     public void ShowPowerUpEffect()

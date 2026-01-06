@@ -8,17 +8,20 @@ namespace Player
         [SerializeField] PlayerParameterData parameterData;       // 初期パラメーターデータ
         [SerializeField] HealData healData;                       // ヒールアクションのデータ
         [SerializeField] PowerUpData powerUpData;                 // パワーアップアクションのデータ
-        [SerializeField] Animator animator;                     
-        [SerializeField] Collider bodyCollider;
+        [SerializeField] Transform centerTransform;
         [SerializeField] Rigidbody rb;
         [SerializeField] HealthManager healthManager;             // HPの管理
         [SerializeField] JustPointManager justPointManager;       // ジャストポイントの管理
         [SerializeField] GameObject dodgeCollider;                // ジャスト回避を判定するコライダー
         [SerializeField] TimingJudgement timingJudgement;         // 回避とガードの行われたタイミングを判定する
         [SerializeField] DashCooldownManager dashCooldownManager; // ダッシュのクールダウンの管理
-        [SerializeField] PowerManager powerManager;               // 攻撃力の管理
+        [SerializeField] AttackPowerManager attackPowerManager;   // 攻撃力の管理
         [SerializeField] UltimateManager ultimateManager;         // 必殺技ゲージの管理
-        [SerializeField] PlayerAttack playerAttack;               // 攻撃処理の管理
+        [SerializeField] AnimationController animationController;
+        [SerializeField] PlayerAttackNormalController normalAttackController;       // 通常攻撃の管理
+        [SerializeField] PlayerAttackSpecial1Controller specialAttack1Controller;   // 回避反撃の管理
+        [SerializeField] PlayerAttackSpecial2Controller specialAttack2Controller;   // ガード反撃の管理
+        [SerializeField] PlayerAttackUltimateController ultimateAttackController;   // 必殺技の管理
         [SerializeField] AttackAssist attackAssist;               // 攻撃アシストの管理
 
         GameObject currentDodgeCollider;
@@ -27,14 +30,15 @@ namespace Player
         const int GetJustPoint = 1;                  // 一回でのジャストポイント獲得量
 
         public StateMachine<PlayerStateID> StateMachine { get; private set; }
-        public float MoveSpeed => parameterData.MoveSpeed;
+        public float MoveSpeed => parameterData.MoveSpeed;                   // 移動速度
+        public float AttackPower => attackPowerManager.CurrentAttackPower;   // 現在の攻撃力
+        public Transform CenterTransform => centerTransform;
         public Rigidbody Rb => rb;
-        public Animator Animator => animator;
+        public bool InPowerUp => attackPowerManager.InPowerUp;
         public bool IsInvincible { get; set; } = false;   // 無敵状態フラグ
-        public AnimatorStateInfo CurrentStateInfo { get; private set; }
         public PlayerStateID CurrentState => StateMachine.CurrentState;
-        public Action OnHealed;
-        public Action<TimingType> OnDodgeTiming;    // どの判定されたタイミングを通知
+        public Action OnHealed;                     // 回復したことを通知するイベント
+        public Action<TimingType> OnDodgeTiming;    // どの判定されたタイミングを通知するイベント
         public Action<TimingType> OnGuardTiming;
 
         bool CanHeal => justPointManager.JustPoint >= healData.Cost;
@@ -46,20 +50,18 @@ namespace Player
         void Awake()
         {
             StateMachine = new StateMachine<PlayerStateID>();
-            StateMachine.RegisterState(new PlayerLocomotion(this, dashCooldownManager));
-            StateMachine.RegisterState(new PlayerDash(this, dashCooldownManager));
-            StateMachine.RegisterState(new PlayerDodge(this));
-            StateMachine.RegisterState(new PlayerGuard(this, attackAssist));
-            StateMachine.RegisterState(new PlayerBlock(this));
-            StateMachine.RegisterState(new PlayerAttackNormal1(this, playerAttack, attackAssist));
-            StateMachine.RegisterState(new PlayerAttackNormal2(this, playerAttack, attackAssist));
-            StateMachine.RegisterState(new PlayerAttackNormal3(this, playerAttack, attackAssist));
-            StateMachine.RegisterState(new PlayerAttackSpecial1(this, playerAttack, attackAssist));
-            StateMachine.RegisterState(new PlayerAttackSpecial2(this, playerAttack, attackAssist));
-            StateMachine.RegisterState(new PlayerAttackUltimate(this, playerAttack, attackAssist));
-            StateMachine.RegisterState(new PlayerPowerUp(this));
-            StateMachine.RegisterState(new PlayerDamage(this, attackAssist));
-            StateMachine.RegisterState(new PlayerDead(this));
+            StateMachine.RegisterState(new PlayerLocomotion(this, animationController, dashCooldownManager));
+            StateMachine.RegisterState(new PlayerDash(this, animationController, dashCooldownManager));
+            StateMachine.RegisterState(new PlayerDodge(this, animationController));
+            StateMachine.RegisterState(new PlayerGuard(this, animationController, attackAssist));
+            StateMachine.RegisterState(new PlayerBlock(this, animationController));
+            StateMachine.RegisterState(new PlayerAttackNormal(this, animationController, normalAttackController, attackAssist));
+            StateMachine.RegisterState(new PlayerAttackSpecial1(this, animationController, specialAttack1Controller));
+            StateMachine.RegisterState(new PlayerAttackSpecial2(this, animationController, specialAttack2Controller));
+            StateMachine.RegisterState(new PlayerAttackUltimate(this, animationController, ultimateAttackController));
+            StateMachine.RegisterState(new PlayerPowerUp(this, animationController));
+            StateMachine.RegisterState(new PlayerDamage(this, animationController, attackAssist));
+            StateMachine.RegisterState(new PlayerDead(this, animationController));
         }
 
         void Start()
@@ -70,7 +72,7 @@ namespace Player
             // HPを設定
             healthManager.SetMaxHP(parameterData.MaxHP);
             // 攻撃力、攻撃力アップ倍率、攻撃力アップ時間を設定
-            powerManager.SetParameter(parameterData.AttackPower, powerUpData.Multiplier, powerUpData.Duration);
+            attackPowerManager.SetParameter(parameterData.AttackPower, powerUpData.Multiplier, powerUpData.Duration);
             // ジャストポイントを設定
             justPointManager.SetJustPoint(parameterData.JustPoint);
             // ダッシュのクールタイムを設定
@@ -80,8 +82,6 @@ namespace Player
         void Update()
         {
             StateMachine?.UpdateState();
-
-            CurrentStateInfo = Animator.GetCurrentAnimatorStateInfo(0);
 
             // 死亡していた場合、以降の処理を実行しない。
             if (StateMachine.CurrentState == PlayerStateID.Dead) { return; }
@@ -96,10 +96,10 @@ namespace Player
             }
 
             // パワーアップ処理を実行
-            if (Input.PowerUp && CanPowerUp && !powerManager.InPowerUp)
+            if (Input.PowerUp && CanPowerUp && !attackPowerManager.InPowerUp)
             {
                 justPointManager.UseJustPoint(powerUpData.Cost);
-                powerManager.ActionPowerUp();
+                attackPowerManager.ActionPowerUp();
 
                 StateMachine.ChangeState(PlayerStateID.PowerUp);
             }
@@ -138,7 +138,7 @@ namespace Player
         /// <param name="onJustGuarded">相手にガードされたことを通知</param>
         void HandleGuard(float damage, Action onJustGuarded)
         {
-            TimingType guardTiming = timingJudgement.JudgeGuard(CurrentStateInfo.normalizedTime);
+            TimingType guardTiming = timingJudgement.JudgeGuard(animationController.StateInfo.normalizedTime);
 
             switch (guardTiming)
             {
@@ -150,7 +150,7 @@ namespace Player
                     break;
                 case TimingType.Just:
                     // ジャストポイントを追加
-                    justPointManager.AddJustPoint(GetJustPoint);                    
+                    justPointManager.AddJustPoint(GetJustPoint);
                     StateMachine.ChangeState(PlayerStateID.Block);
                     OnGuardTiming?.Invoke(guardTiming);
                     onJustGuarded?.Invoke();
@@ -174,16 +174,16 @@ namespace Player
             {
                 case TimingType.Fast:
                 case TimingType.Late:
-                    StateMachine.ChangeState(PlayerStateID.Dodge);
                     OnDodgeTiming?.Invoke(dodgeTiming);
                     break;
                 case TimingType.Just:
                     // ジャストポイントを追加
                     justPointManager.AddJustPoint(GetJustPoint);
-                    StateMachine.ChangeState(PlayerStateID.Dodge);
                     OnDodgeTiming?.Invoke(dodgeTiming);
                     break;
             }
+
+            StateMachine.ChangeState(PlayerStateID.Dodge);
         }
 
         /// <summary>
@@ -208,12 +208,12 @@ namespace Player
 
         public void ApplySlow(float factor)
         {
-            Animator.speed = factor;
+            animationController.ChangeAnimationSpeed(factor);
         }
 
         public void SetBaseSpeed(float speed)
         {
-            Animator.speed = speed;
+            animationController.ChangeAnimationSpeed(speed);
         }
 
         // Fast/Just/Late回避できるか判定するコライダーの生成

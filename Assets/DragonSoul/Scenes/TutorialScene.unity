@@ -970,6 +970,17 @@ Camera:
   m_CorrespondingSourceObject: {fileID: 794594056573781747, guid: 2e84634d7c316314c93ce07529adcf80, type: 3}
   m_PrefabInstance: {fileID: 629360471}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &653382450 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8305283236101413222, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
+  m_PrefabInstance: {fileID: 1849004009}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e8fbf828a44abc42b222db13b71eedc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &690058026 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1217041992293451335, guid: f5368643a445a8c45b16b372539c1167, type: 3}
@@ -1557,7 +1568,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameFlowManager: {fileID: 415793509}
   playerCore: {fileID: 1849004014}
-  playerNormalAttackController: {fileID: 1887308223}
+  playerNormalAttackController: {fileID: 653382450}
   attackNormalCount: 0
   justDodgeCount: 0
   attackSpecial1Count: 0
@@ -2686,17 +2697,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1886709084}
   m_CullTransparentMesh: 1
---- !u!114 &1887308216 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6197171121382576669, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
-  m_PrefabInstance: {fileID: 1849004009}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 514d8b5ecea110a499b07bad8ccf1e40, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1887308217 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4521829462612962065, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
@@ -2706,17 +2706,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2941caf45493fdb4b958ffca4589eb08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1887308223 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 735052990929407609, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
-  m_PrefabInstance: {fileID: 1849004009}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd9d1a15a58b8a1428f933679cf3f4b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1897839498
@@ -17558,7 +17547,7 @@ PrefabInstance:
     - target: {fileID: 8594047881918256793, guid: 06f7710770f7a6048aead2a47fcfeb10, type: 3}
       propertyPath: powerManager
       value: 
-      objectReference: {fileID: 1887308216}
+      objectReference: {fileID: 0}
     - target: {fileID: 8594047881918256793, guid: 06f7710770f7a6048aead2a47fcfeb10, type: 3}
       propertyPath: attackBroadcaster
       value: 

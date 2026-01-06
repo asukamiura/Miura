@@ -1,61 +1,51 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Player
 {
-    public class PlayerAttackUltimate : AttackStateBase<PlayerStateID>
+    public class PlayerAttackUltimate : IState<PlayerStateID>
     {
-        public override PlayerStateID StateID => PlayerStateID.AttackUltimate;
+        readonly PlayerCore core;
+        readonly AnimationController animationController;
+        readonly PlayerAttackUltimateController ultimateAttackController;
+        PlayerAttackData attackData;
 
-        public PlayerAttackUltimate(PlayerCore core, PlayerAttack playerAttack, AttackAssist attackAssist) : base(core, playerAttack, attackAssist) { }
+        public PlayerStateID StateID => PlayerStateID.AttackUltimate;
 
-        protected override Dictionary<int, AttackAnimationConfig> AnimationData => new()
+        public PlayerAttackUltimate(PlayerCore core, AnimationController animationController, PlayerAttackUltimateController ultimateAttackController)
         {
-            {1, new AttackAnimationConfig("AttackUltimate1", 0.1f, 0, 0, 1) },
-            {2, new AttackAnimationConfig("AttackUltimate2", 0, 0, 0, 1) },
-            {3, new AttackAnimationConfig("AttackUltimate3", 0, 0, 0, 0.66f) },
-        };
-
-        public override void Enter()
-        {
-            base.Enter();
-            core.IsInvincible = true;
-            core.Rb.velocity = Vector3.zero;
-            playerAttack.SetCombAttack(PlayerAttackType.Ultimate);
+            this.core = core;
+            this.animationController = animationController;
+            this.ultimateAttackController = ultimateAttackController;
         }
 
-        public override void Update()
+        public void Enter()
         {
-            if (core.CurrentStateInfo.normalizedTime >= AnimationData[step].nextStateTransitionTime && core.CurrentStateInfo.IsName(AnimationData[step].animationName))
-            {
-                step++;
+            core.IsInvincible = true;
+            core.Rb.velocity = Vector3.zero;
+            ultimateAttackController.OnHitDetectionPerformed += HandlePerformHit;
+            attackData = ultimateAttackController.GetAttackData();
+            animationController.PlayAniamtion(attackData.AnimationStateName, attackData.TransitionDuration, 0, attackData.TimeOffset);
+        }
 
-                if (step > MaxStep)
-                {
-                    core.StateMachine.ChangeState(PlayerStateID.Locomotion);
-                }
-                else
-                {
-                    PlayCurrentAnimation();
-                }
-
-                if (step == 3)
-                {
-                    SlowManager.Instance.ApplySlow(1, SlowTargetType.Enemy);
-                }
-            }
-            else if (core.CurrentStateInfo.normalizedTime >= 1 && core.CurrentStateInfo.IsName(AnimationData[step].animationName))
+        public void Update()
+        {
+            if (animationController.IsTimeElapsed(attackData.AnimationStateName, attackData.TransitionTime))
             {
                 core.StateMachine.ChangeState(PlayerStateID.Locomotion);
             }
         }
 
-        public override void FixedUpdate() { }
+        public void FixedUpdate() { }
 
-        public override void Exit()
+        public void Exit()
         {
-            base.Exit();
             core.IsInvincible = false;
+            ultimateAttackController.OnHitDetectionPerformed -= HandlePerformHit;
+        }
+
+        void HandlePerformHit()
+        {
+            ultimateAttackController.ExecuteAttack(attackData, core.AttackPower, core.InPowerUp, core.CenterTransform, animationController.Animator);
         }
     }
 }

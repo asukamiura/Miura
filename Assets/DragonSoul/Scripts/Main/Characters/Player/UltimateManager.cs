@@ -3,12 +3,29 @@ using UnityEngine;
 
 public class UltimateManager : MonoBehaviour
 {
+    [SerializeField] PlayerAttackBroadcaster attackBroadcaster;
+
     float ultVal = 0;
     const float MinUltVal = 0;    // 必殺技ゲージの下限
     public float MaxUltVal { get; private set; } = 100;   // 必殺技ゲージの上限
     public float UltVal => ultVal;
 
     public Action<float, float> OnGaugeValueChanged;
+
+    void OnEnable()
+    {
+        attackBroadcaster.OnHitNotified += HandleHit;        
+    }
+
+    void OnDisable()
+    {
+        attackBroadcaster.OnHitNotified -= HandleHit;
+    }
+
+    void HandleHit(HitInfo hitInfo)
+    {
+        IncreaseGauge(hitInfo.attackData.UltAmount);
+    }
 
     /// <summary>
     /// 必殺技ゲージ増加処理

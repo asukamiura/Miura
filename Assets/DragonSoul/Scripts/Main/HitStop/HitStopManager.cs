@@ -1,28 +1,22 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Player;
 
 public class HitStopManager : MonoBehaviour
 {
-    /// <summary>
-    /// ヒットストップを開始
-    /// </summary>
-    /// <param name="playerAnimator">プレイヤーのアニメーター</param>
-    /// <param name="enemyAnimators">攻撃の当たった敵のアニメーター</param>
-    /// <param name="attackType">攻撃のタイプ</param>
-    public void OnHitStop(Animator playerAnimator, Animator[] enemyAnimators, float stopDuration, CameraShakeType shakeType)
-    {
-        StartCoroutine(StopPlayerAnimation(playerAnimator, stopDuration));
-        StartCoroutine(StopEnemyAnimation(enemyAnimators, stopDuration / 4));
+    [SerializeField] PlayerAttackBroadcaster attackBroadcaster;
 
-        CameraManager.Instance.ApplyImpulse(shakeType, stopDuration);
-    }
+    Coroutine playerStopCoroutine;
 
-    public void OnHitStop(Animator playerAnimator, Animator[] enemyAnimators, float stopDuration, float shakeForce)
+    public void PlayHitStop(Animator playerAnimator, Animator[] enemyAnimators, float stopDuration, float shakeForce)
     {
-        StartCoroutine(StopPlayerAnimation(playerAnimator, stopDuration));
-        StartCoroutine(StopEnemyAnimation(enemyAnimators, stopDuration / 4));
+        // 既にヒットストップ中の場合、一度リセットして上書きする
+        if (playerStopCoroutine != null)
+        {
+            StopCoroutine(playerStopCoroutine);
+        }
+        
+        playerStopCoroutine = StartCoroutine(StopPlayerAnimation(playerAnimator, stopDuration));
+        StartCoroutine(StopEnemyAnimation(enemyAnimators, stopDuration));
 
         CameraManager.Instance.ApplyImpulse(shakeForce, stopDuration);
     }
@@ -31,11 +25,11 @@ public class HitStopManager : MonoBehaviour
     IEnumerator StopPlayerAnimation(Animator playerAnimator, float duration)
     {
         float playerAnimationSpeed = playerAnimator.speed;
-        playerAnimator.speed = 0;       
+        playerAnimator.speed = 0;
 
         yield return new WaitForSeconds(duration);
 
-        playerAnimator.speed = playerAnimationSpeed;       
+        playerAnimator.speed = playerAnimationSpeed;
     }
 
     // アニメーションを止める処理
