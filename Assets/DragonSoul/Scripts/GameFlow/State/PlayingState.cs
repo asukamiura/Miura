@@ -3,16 +3,12 @@
 public class PlayingState : IState<GameFlowStateID>
 {
     GameFlowManagerBase flowManager;
-    HealthManager playerHealthManager;
-    HealthManager enemyHealthManager;
     EnemyCoreBase enemyCore;
     bool ignorePause = true;
 
-    public PlayingState(GameFlowManagerBase flowManager, HealthManager playerHealthManager, HealthManager enemyHealthManager, EnemyCoreBase enemyCore)
+    public PlayingState(GameFlowManagerBase flowManager, EnemyCoreBase enemyCore)
     {
         this.flowManager = flowManager;
-        this.playerHealthManager = playerHealthManager;
-        this.enemyHealthManager = enemyHealthManager;
         this.enemyCore = enemyCore;
     }
 
@@ -45,24 +41,14 @@ public class PlayingState : IState<GameFlowStateID>
             {
                 flowManager.ChangeState(GameFlowStateID.Pause);
             }
-        }
-
-        if (playerHealthManager.IsDead)
-        {
-            flowManager.ChangeState(GameFlowStateID.GameOver);
-        }
-
-        if (enemyHealthManager.IsDead)
-        {
-            flowManager.ChangeState(GameFlowStateID.Clear);
-        }
+        }      
     }
 
     public void FixedUpdate() { }
 
     public void Exit() 
     {
-        enemyCore.MoveActive(true);
+        enemyCore.MoveActive(false);
 
         // プレイヤー操作無効
         Input.EnablePlayerInput(false);

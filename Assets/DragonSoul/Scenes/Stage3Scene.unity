@@ -1505,6 +1505,10 @@ PrefabInstance:
       value: NormalStageManager
       objectReference: {fileID: 0}
     - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
+      propertyPath: stageNum
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2422021466851482287, guid: b41a2170def242c46baa730d78fceb4f, type: 3}
       propertyPath: enemyCore
       value: 
       objectReference: {fileID: 4195507757269357861}
@@ -1989,6 +1993,14 @@ PrefabInstance:
       propertyPath: overlayUI
       value: 
       objectReference: {fileID: 735113669}
+    - target: {fileID: 8594047881918256793, guid: 06f7710770f7a6048aead2a47fcfeb10, type: 3}
+      propertyPath: powerManager
+      value: 
+      objectReference: {fileID: 1624739554}
+    - target: {fileID: 8594047881918256793, guid: 06f7710770f7a6048aead2a47fcfeb10, type: 3}
+      propertyPath: attackBroadcaster
+      value: 
+      objectReference: {fileID: 1624739555}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2663,6 +2675,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: add58309ed1cf5f4e8d0e63383b49922, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1624739554 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6197171121382576669, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
+  m_PrefabInstance: {fileID: 1624739549}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624739558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 514d8b5ecea110a499b07bad8ccf1e40, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1624739555 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4521829462612962065, guid: 3312932484cf66e4e87cc020d8fdd862, type: 3}
+  m_PrefabInstance: {fileID: 1624739549}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1624739558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2941caf45493fdb4b958ffca4589eb08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1624739556 stripped
@@ -3571,6 +3605,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 631089846632190516, guid: 5a0cab90d8047b54d821fe84206c5dd4, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 2621297542790987093, guid: 5a0cab90d8047b54d821fe84206c5dd4, type: 3}
       propertyPath: m_Name
       value: DragonTerror
