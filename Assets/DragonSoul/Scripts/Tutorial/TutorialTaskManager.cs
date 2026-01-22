@@ -10,7 +10,7 @@ public class TutorialTaskManager : MonoBehaviour
 {
     [SerializeField] GameFlowManagerBase gameFlowManager;
 
-    public InputReciver Input => InputReciver.Instance;
+    public InputReceiver Input => InputReceiver.Instance;
     public PlayerCore playerCore;
     public PlayerAttackNormalController playerNormalAttackController;
     public ITutorialTask currentTask;       // 現在のタスク
@@ -111,8 +111,8 @@ public class TutorialTaskManager : MonoBehaviour
         else if (!inTutorial && !isChangedScene)
         {
             isChangedScene = true;
-            InputReciver.Instance.EnablePlayerInput(false);
-            InputReciver.Instance.EnableUIInput(false);
+            InputReceiver.Instance.EnablePlayerInput(false);
+            InputReceiver.Instance.EnableUIInput(false);
             FadeManager.Instance.LoadScene("SelectScene", FadeTime);
             SoundManager.Instance.StopBGMWithFadeOut(FadeTime);
         }

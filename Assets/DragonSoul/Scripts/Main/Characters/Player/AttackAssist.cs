@@ -89,10 +89,10 @@ namespace Player
             if (collider == null)
             {
                 // 入力があった場合、入力方向を向く
-                if (InputReciver.Instance.Move != Vector2.zero)
+                if (InputReceiver.Instance.Move != Vector2.zero)
                 {
                     Quaternion cameraRotation = Quaternion.Euler(0, Camera.main.transform.eulerAngles.y, 0);
-                    Vector3 moveDirection = cameraRotation * new Vector3(InputReciver.Instance.Move.x, 0, InputReciver.Instance.Move.y);
+                    Vector3 moveDirection = cameraRotation * new Vector3(InputReceiver.Instance.Move.x, 0, InputReceiver.Instance.Move.y);
                     Quaternion targetRotation = Quaternion.LookRotation(moveDirection, Vector3.up);
                     transform.rotation = targetRotation;
                 }              

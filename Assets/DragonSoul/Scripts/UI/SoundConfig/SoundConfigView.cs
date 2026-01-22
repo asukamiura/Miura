@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SoundConfigView : MonoBehaviour
 {
-    InputReciver Input => InputReciver.Instance;
+    InputReceiver Input => InputReceiver.Instance;
 
     [SerializeField] GameObject[] buttons;
     [SerializeField] GameObject selectArrow;

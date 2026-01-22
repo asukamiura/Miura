@@ -14,16 +14,16 @@ public class ChangeInputUI : MonoBehaviour
         ui = GetComponent<Image>();    
         
         // 初期Sprite設定
-        ui.sprite = InputReciver.Instance.IsGamepad ? gamepadUI : keyboardMouseUI;
+        ui.sprite = InputReceiver.Instance.IsGamepad ? gamepadUI : keyboardMouseUI;
 
-        InputReciver.Instance.OnDeviceChanged += OnDeviceChanged;
+        InputReceiver.Instance.OnDeviceChanged += OnDeviceChanged;
     }
 
     void OnDestroy()
     {
-        if (InputReciver.Instance != null)
+        if (InputReceiver.Instance != null)
         {
-            InputReciver.Instance.OnDeviceChanged -= OnDeviceChanged;
+            InputReceiver.Instance.OnDeviceChanged -= OnDeviceChanged;
         }        
     }
 

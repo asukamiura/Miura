@@ -8,7 +8,7 @@ public class PlayerAttackNormal : IState<PlayerStateID>
     readonly AttackAssist attackAssist;
     PlayerAttackData currentAttackData;
     int currentStep = 1;
-    InputReciver Input => InputReciver.Instance;
+    InputReceiver Input => InputReceiver.Instance;
     bool isComboContinue = false;
 
     public PlayerStateID StateID => PlayerStateID.AttackNormal;

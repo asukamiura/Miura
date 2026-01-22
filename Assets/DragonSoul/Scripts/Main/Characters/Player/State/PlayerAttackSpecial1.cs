@@ -7,7 +7,7 @@
         readonly PlayerAttackSpecial1Controller specialAttack1Controller;
         PlayerAttackData currentAttackData;
         int currentStep = 1;
-        InputReciver Input => InputReciver.Instance;
+        InputReceiver Input => InputReceiver.Instance;
 
         public PlayerStateID StateID => PlayerStateID.AttackSpecial1;
 

@@ -8,7 +8,7 @@ namespace Player
         readonly PlayerCore core;
         readonly AnimationController animationController;
         readonly DashCooldownManager dashCooldownManager;
-        InputReciver Input => InputReciver.Instance;
+        InputReceiver Input => InputReceiver.Instance;
         Vector3 moveDirection;
         const string AnimationStateName = "Locomotion";
         const float TransitionDuration = 0.2f;

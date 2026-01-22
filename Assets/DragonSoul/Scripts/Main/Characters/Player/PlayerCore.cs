@@ -25,7 +25,7 @@ namespace Player
         [SerializeField] AttackAssist attackAssist;               // 攻撃アシストの管理
 
         GameObject currentDodgeCollider;
-        InputReciver Input => InputReciver.Instance;
+        InputReceiver Input => InputReceiver.Instance;
 
         const int GetJustPoint = 1;                  // 一回でのジャストポイント獲得量
 

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class TitleView : MonoBehaviour
 {
-    InputReciver Input => InputReciver.Instance;
+    InputReceiver Input => InputReceiver.Instance;
 
     [SerializeField] GameObject[] buttons;
     [SerializeField] GameObject selectArrow;
