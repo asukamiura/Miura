@@ -5513,7 +5513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 903a2a5b95e1c1f44aa8bcc11de53409, type: 2}
+  m_Material: {fileID: 2100000, guid: b933207482a8e114e8d3c118f6d2c696, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -5549,7 +5549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetImage: {fileID: 557759964}
-  material: {fileID: 2100000, guid: 903a2a5b95e1c1f44aa8bcc11de53409, type: 2}
+  material: {fileID: 2100000, guid: b933207482a8e114e8d3c118f6d2c696, type: 2}
 --- !u!1 &583662840
 GameObject:
   m_ObjectHideFlags: 0
@@ -31604,6 +31604,7 @@ MonoBehaviour:
   m_DeselectOnBackgroundClick: 1
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
+  m_ScrollDeltaPerTick: 6
 --- !u!114 &1597177748
 MonoBehaviour:
   m_ObjectHideFlags: 0

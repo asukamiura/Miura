@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Custom_Blend
-  m_Shader: {fileID: 4800000, guid: b2c8d0c76970dfb4d925f28d55116a5f, type: 3}
+  m_Name: UI_BlendRawImage
+  m_Shader: {fileID: 4800000, guid: 57173dc7d5632ae4aa1f071c0685fbf4, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -32,11 +32,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SubTex:
-        m_Texture: {fileID: 2800000, guid: c34bbb33a3833654eac82a175ed56d2b, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Subex:
-        m_Texture: {fileID: 2800000, guid: c34bbb33a3833654eac82a175ed56d2b, type: 3}
+        m_Texture: {fileID: 2800000, guid: 7d35c397a0d6501468ed39b0b5d1e233, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []

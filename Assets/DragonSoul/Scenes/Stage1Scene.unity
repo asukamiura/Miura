@@ -132,6 +132,11 @@ PlayableDirector:
   m_CorrespondingSourceObject: {fileID: 991290121378997284, guid: 8e3758f60fb422b4ab96e0a7e5b5b056, type: 3}
   m_PrefabInstance: {fileID: 6131528772673193442}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &98230518 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5290374721994364631, guid: 8f90fa844ea43e5419211a2c5e80309e, type: 3}
+  m_PrefabInstance: {fileID: 1566444023}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &135412773
 GameObject:
   m_ObjectHideFlags: 0
@@ -3641,11 +3646,11 @@ PrefabInstance:
     - target: {fileID: 991290121378997284, guid: 8e3758f60fb422b4ab96e0a7e5b5b056, type: 3}
       propertyPath: m_SceneBindings.Array.data[0].value
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 98230518}
     - target: {fileID: 991290121378997284, guid: 8e3758f60fb422b4ab96e0a7e5b5b056, type: 3}
       propertyPath: m_SceneBindings.Array.data[1].value
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1566444024}
     - target: {fileID: 991290121378997284, guid: 8e3758f60fb422b4ab96e0a7e5b5b056, type: 3}
       propertyPath: m_SceneBindings.Array.data[2].value
       value: 
