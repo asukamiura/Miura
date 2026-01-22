@@ -6,13 +6,7 @@ public class EffectManager : MonoBehaviour
     public static EffectManager Instance { get; private set; }
     [SerializeField] List<GameObject> effectList = new List<GameObject>();
 
-    Dictionary<string, EffectData> effectDict = new Dictionary<string, EffectData>();
-
-    public struct EffectData
-    {
-        public GameObject prefab;
-        public float duration;
-    }
+    Dictionary<string, GameObject> effectDict = new Dictionary<string, GameObject>();
 
     void Awake()
     {
@@ -26,34 +20,20 @@ public class EffectManager : MonoBehaviour
             return;
         }
 
-        // 再生時間を登録
-        RegisterEffectDuration();
+        // エフェクトを登録
+        Register();
     }
 
     // エフェクトの再生時間を登録する処理
-    void RegisterEffectDuration()
+    void Register()
     {
         foreach (var effect in effectList)
         {
-            if (effect == null) continue;
-
-            float maxDuration = 0;
-            var particleSystems = effect.GetComponentsInChildren<ParticleSystem>();
-            foreach (var ps in particleSystems)
-            {
-                if (ps.main.duration > maxDuration)
-                {
-                    maxDuration = ps.main.duration;
-                }
-            }
+            if (effect == null) continue;      
 
             if (!effectDict.ContainsKey(effect.name))
             {
-                effectDict.Add(effect.name, new EffectData
-                {
-                    prefab = effect,
-                    duration = maxDuration
-                });
+                effectDict.Add(effect.name, effect);
             }
             else
             {
@@ -69,11 +49,9 @@ public class EffectManager : MonoBehaviour
     /// <param name="effectPos">再生開始位置</param>
     public void PlayEffect(string effectName, Vector3 effectPos)
     {
-        if (!effectDict.TryGetValue(effectName, out var data)) return;
+        if (!effectDict.TryGetValue(effectName, out var effect)) return;
 
-        GameObject effect = ObjectPool.Instance.GetGameObject(data.prefab, effectPos, data.prefab.transform.rotation);
-
-        //StartCoroutine(ReleaseEffect(effect, data.duration));
+        ObjectPool.Instance.GetGameObject(effect, effectPos, effect.transform.rotation);
     }
 
     /// <summary>
@@ -84,11 +62,9 @@ public class EffectManager : MonoBehaviour
     /// <param name="effectRotation">再生開始回転</param>
     public void PlayEffect(string effectName, Vector3 effectPos, Quaternion effectRotation)
     {
-        if (!effectDict.TryGetValue(effectName, out var data)) return;
+        if (!effectDict.TryGetValue(effectName, out var effect)) return;
 
-        GameObject effect = ObjectPool.Instance.GetGameObject(data.prefab, effectPos, effectRotation);
-
-        ///StartCoroutine(ReleaseEffect(effect, data.duration));
+        ObjectPool.Instance.GetGameObject(effect, effectPos, effectRotation);
     }
 
     /// <summary>
@@ -100,15 +76,6 @@ public class EffectManager : MonoBehaviour
     /// <param name="duration">継続時間</param>
     public void PlayEffect(GameObject effectPrefab, Vector3 effectPos, Quaternion effectRotation, float duration)
     {
-        GameObject effect = ObjectPool.Instance.GetGameObject(effectPrefab, effectPos, effectRotation);
-
-        //StartCoroutine(ReleaseEffect(effect, duration));
+        ObjectPool.Instance.GetGameObject(effectPrefab, effectPos, effectRotation);
     }
-
-    //IEnumerator ReleaseEffect(GameObject effect, float duration)
-    //{
-    //    yield return new WaitForSeconds(duration);
-
-    //    ObjectPool.Instance.ReleaseGameObject(effect);
-    //}
 }
