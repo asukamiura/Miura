@@ -14,7 +14,7 @@ public class PauseState : IState<GameFlowStateID>
         this.presenter = presenter;          
     }
 
-    InputReciver Input => InputReciver.Instance;
+    InputReceiver Input => InputReceiver.Instance;
 
     public GameFlowStateID StateID => GameFlowStateID.Pause; 
 

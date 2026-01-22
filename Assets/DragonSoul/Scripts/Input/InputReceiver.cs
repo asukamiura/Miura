@@ -2,9 +2,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InputReciver : MonoBehaviour
+public class InputReceiver : MonoBehaviour
 {
-    public static InputReciver Instance { get; private set; }
+    public static InputReceiver Instance { get; private set; }
 
     // それぞれのデバイスの全ての入力を取得する
     InputAction gamepadAny = new InputAction(type: InputActionType.PassThrough, binding: "<Gamepad>/*/", interactions: "Press");

@@ -5,7 +5,7 @@ namespace Player
     public class PlayerBlock : IState<PlayerStateID>
     {
         public PlayerStateID StateID => PlayerStateID.Block;
-        InputReciver Input => InputReciver.Instance;
+        InputReceiver Input => InputReceiver.Instance;
         readonly PlayerCore core;
         readonly AnimationController animationController;
         bool isNextAttack = false;  // 特殊攻撃2を行う場合true,行わない場合false

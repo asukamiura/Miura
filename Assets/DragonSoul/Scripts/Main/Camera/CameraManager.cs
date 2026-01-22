@@ -16,7 +16,7 @@ public class CameraManager : MonoBehaviour
     float sensitivityY = 100;
     CinemachineVirtualCamera currentCamera;     // 現在のカメラ
     CinemachineVirtualCamera currentPlayerCamera;     // 現在ノーマルカメラかロックオンカメラか
-    InputReciver Input => InputReciver.Instance;
+    InputReceiver Input => InputReceiver.Instance;
 
     const float RecenteringTime = 0.1f;         // カメラが初期位置まで戻るのにかかる時間
 

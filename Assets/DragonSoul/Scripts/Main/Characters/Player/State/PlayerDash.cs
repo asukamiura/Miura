@@ -8,7 +8,7 @@ namespace Player
         readonly PlayerCore core;
         readonly AnimationController animationController;
         readonly DashCooldownManager dashCooldownManager;
-        InputReciver Input => InputReciver.Instance;
+        InputReceiver Input => InputReceiver.Instance;
         string animationStateName;
         Vector3 targetDirection;
 

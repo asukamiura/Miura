@@ -9,7 +9,7 @@ public class TutorialState : IState<GameFlowStateID>
         this.flowManager = flowManager;
     }
 
-    InputReciver Input => InputReciver.Instance;
+    InputReceiver Input => InputReceiver.Instance;
 
     public GameFlowStateID StateID => GameFlowStateID.Tutorial;
 

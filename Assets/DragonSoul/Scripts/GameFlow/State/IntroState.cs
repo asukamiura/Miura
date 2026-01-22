@@ -12,7 +12,7 @@ public class IntroState : IState<GameFlowStateID>
         this.enemyCore = enemyCore;
     }
 
-    InputReciver Input => InputReciver.Instance;
+    InputReceiver Input => InputReceiver.Instance;
 
     public GameFlowStateID StateID => GameFlowStateID.Intro;
 
